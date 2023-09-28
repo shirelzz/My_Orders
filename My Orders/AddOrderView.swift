@@ -8,25 +8,36 @@
 import SwiftUI
 
 struct AddOrderView: View {
-    @State private var client = Client(name: "", phoneNumber: "")
+    
+    @State private var customer = Customer(name: "", phoneNumber: 0)
+    
     @State private var DessertName = ""
     @State private var DessertQuantity = 1
     @State private var DessertPrice = 0
-    @State private var quantity = 1
-    @State private var allergies = ""
-    @State private var notes = ""
     @State private var isAddingDessert = false
     @State private var Desserts: [Dessert] = []
+    
+    @State private var delivery = "No"
+    @State private var delivery_details = ""
+    
+    @State private var allergies = "No"
+    @State private var allergies_details = ""
+    
+    @State private var notes = ""
     
     
     var body: some View {
         
         Form {
             
-            Section(header: Text("Client Information")) {
+            Section(header: Text("Customer Information")) {
                 
-                TextField("Client Name", text: $client.name)
-                TextField("Phone Number", text: $client.phoneNumber)
+                TextField("Customer Name", text: $customer.name)
+                TextField("Phone Number", text: Binding<String>(
+                    get: { String(customer.phoneNumber) },
+                    set: { if let newValue = Int($0) { customer.phoneNumber = newValue } }
+                ))
+                .keyboardType(.numberPad)
 
             }
             
@@ -36,7 +47,7 @@ struct AddOrderView: View {
                     self.isAddingDessert.toggle()
                     if !self.isAddingDessert {
                         if !self.DessertName.isEmpty {
-                            self.Desserts.append(Dessert(name: self.DessertName, quantity: self.DessertQuantity, price: self.DessertPrice))
+                            self.Desserts.append(Dessert(dessertName: self.DessertName, quantity: self.DessertQuantity, price: Double(self.DessertPrice)))
                             self.DessertName = ""
                             self.DessertQuantity = 1
                             self.DessertPrice = 0
@@ -54,7 +65,7 @@ struct AddOrderView: View {
                 
                 ForEach(Desserts.indices, id: \.self) { index in
                     HStack {
-                        Text("\(self.Desserts[index].name) (Quantity: \(self.Desserts[index].quantity))")
+                        Text("\(self.Desserts[index].dessertName) (Quantity: \(self.Desserts[index].quantity))")
                         Spacer()
                         
                         Button(action: {
@@ -71,14 +82,45 @@ struct AddOrderView: View {
             
             Section(header: Text("More Information")) {
                 
+                Picker("Delivery", selection: $delivery) {
+                    Text("No").tag("No")
+                    Text("Yes").tag("Yes")
+                }
+                .onChange(of: delivery) { newValue in
+                    if newValue == "Yes" {
+                        delivery_details = ""
+                    }
+//                    else {
+//                        delivery_details = ""
+//                    }
+                }
+
+                if delivery == "Yes" {
+                        TextEditor(text: $delivery_details)
+                            .frame(height: 50)
+                }
+                
                 Picker("Allergies", selection: $allergies) {
                     Text("No").tag("No")
                     Text("Yes").tag("Yes")
                 }
+                .onChange(of: allergies) { newValue in
+                    if newValue == "Yes" {
+                        allergies_details = ""
+                    }
+                    else {
+                        allergies_details = ""
+                    }
+                }
+
+                if allergies == "Yes" {
+                        TextEditor(text: $allergies_details)
+                            .frame(height: 50)
+                }
                 
                 Section(header: Text("Notes")) {
                     TextEditor(text: $notes)
-                        .frame(height: 100) // Adjust the height as needed
+                        .frame(height: 100)
                 }
             }
             

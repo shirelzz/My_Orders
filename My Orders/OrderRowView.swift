@@ -12,7 +12,7 @@ struct OrderRowView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Customer: \(order.customerName)")
+            Text("Customer: \(order.customer.name)") // Access the customer's name
             Text("Order Date: \(formattedDate(order.orderDate))")
             Text("Total Price: $\(order.totalPrice)")
         }

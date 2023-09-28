@@ -19,7 +19,7 @@ struct OrderDetailsView: View {
     
     var body: some View {
         VStack {
-            Text("Customer: \(order.customerName)")
+            Text("Customer: \(order.customer.name)")
             Text("Order Date: \(Self.dateFormatter.string(from: order.orderDate))")
 
             // Display a list of desserts in the order
@@ -42,9 +42,10 @@ struct OrderDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         let sampleOrder = DessertOrder(
             orderID: "123",
-            customerName: "John Doe",
+            customer: Customer(name: "John Doe", phoneNumber: 0546768900),
             desserts: [Dessert(dessertName: "Chocolate Cake", quantity: 2, price: 10.99)],
             orderDate: Date(),
+            delivery: Delivery(address: "yefe nof 18, peduel", cost: 10),
             notes: "None",
             allergies: "None",
             isCompleted: false

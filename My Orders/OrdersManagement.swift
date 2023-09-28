@@ -9,9 +9,14 @@ import Foundation
 import Combine
 
 
-struct Client {
+struct Customer {
     var name: String
-    var phoneNumber: String
+    var phoneNumber: Int
+}
+
+struct Delivery {
+    var address: String
+    var cost: Double
 }
 
 struct Dessert {
@@ -25,14 +30,16 @@ struct DessertOrder: Identifiable {
     var id: String { orderID }
 
     var orderID: String
-    var customerName: String
+    var customer: Customer
     var desserts: [Dessert] // An array to store multiple desserts per order
     var orderDate: Date
+    var delivery: Delivery
     var notes: String
     var allergies: String
     var isCompleted: Bool
     var totalPrice: Double {
-        return desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
+        let dessertsTotal = desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
+        return dessertsTotal + delivery.cost
     }
 }
 
