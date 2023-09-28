@@ -13,6 +13,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
+            
             List {
                 ForEach(orders, id: \.orderID) { order in
                     NavigationLink(destination: OrderDetailsView(order: order)) {
@@ -20,6 +21,7 @@ struct ContentView: View {
                     }
                 }
             }
+            
             .navigationTitle("Order Management")
             .navigationBarItems(
                 trailing: HStack {

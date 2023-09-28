@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct AllOrdersView: View {
-    @ObservedObject var orderManagement: OrderManagement
+    @ObservedObject var orderManagement: OrderManager
 
     var body: some View {
         List(orderManagement.getOrders()) { order in
@@ -22,6 +22,6 @@ struct AllOrdersView: View {
 
 struct AllOrdersView_Previews: PreviewProvider {
     static var previews: some View {
-        AllOrdersView()
+        AllOrdersView(orderManagement: OrderManager.shared)
     }
 }

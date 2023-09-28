@@ -45,6 +45,8 @@ struct OrderDetailsView_Previews: PreviewProvider {
             customerName: "John Doe",
             desserts: [Dessert(dessertName: "Chocolate Cake", quantity: 2, price: 10.99)],
             orderDate: Date(),
+            notes: "None",
+            allergies: "None",
             isCompleted: false
         )
         
