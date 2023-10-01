@@ -10,11 +10,18 @@ import SwiftUI
 struct OrderRowView: View {
     let order: DessertOrder // Assuming DessertOrder is your data model
     
+    let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long // Choose the desired date style
+        formatter.timeStyle = .short // Choose the desired time style
+        return formatter
+    }()
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("Customer: \(order.customer.name)") // Access the customer's name
-            Text("Order Date: \(formattedDate(order.orderDate))")
-            Text("Total Price: $\(order.totalPrice)")
+            Text("Date: \(dateFormatter.string(from: order.orderDate))")
+            Text("Total Price: ₪\(order.totalPrice,  specifier: "%.2f")")
         }
     }
     

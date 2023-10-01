@@ -7,45 +7,54 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
     
     @State private var orders: [DessertOrder] = []
+    @StateObject private var orderManager = OrderManager.shared
+    
+    init() {
+        // Load orders from UserDefaults when ContentView is initialized
+        OrderManager.shared.loadOrders()
+        print(OrderManager.shared.getOrders())
 
+    }
+
+    
     var body: some View {
+        
+        
         NavigationView {
             
-            List {
-                ForEach(orders, id: \.orderID) { order in
+            VStack {
+                
+                List(orders, id: \.orderID) { order in
                     NavigationLink(destination: OrderDetailsView(order: order)) {
                         OrderRowView(order: order)
                     }
                 }
+                .listStyle(InsetGroupedListStyle())
             }
+        
             
             .navigationTitle("Order Management")
             .navigationBarItems(
+                
                 trailing: HStack {
                     
-                    NavigationLink(destination: AddOrderView()) {
+                    NavigationLink(destination: AddOrderView(orderManager: OrderManager.shared)) {
                         Text("New Order")
-                            .font(.headline).position(x: 155, y: 300)
-                        
                     }
                     
-                    Button(action: {
-                        // Action to view upcoming orders
-                    }) {
+                    NavigationLink(destination: UpcomingOrdersView(orderManager: OrderManager.shared)) {
                         Text("Upcoming Orders")
-                            .font(.headline).position(x: 53, y: 400)
-
                     }
                     
-                    NavigationLink(destination: AllOrdersView(orderManagement: OrderManager.shared)) {
+                    NavigationLink(destination: AllOrdersView(orderManager: OrderManager.shared)) {
+                        
                         Text("All Orders")
-                            .font(.headline).position(x: -98, y: 500)
-
                     }
-
+                    
                 }
             )
         }

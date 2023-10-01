@@ -7,16 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D68867E02ACA247A00BCE734 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68867DF2ACA247900BCE734 /* SearchBar.swift */; };
 		D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */; };
 		D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3322AC593F8002ECA81 /* ContentView.swift */; };
 		D6F6A3352AC593FA002ECA81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6F6A3342AC593FA002ECA81 /* Assets.xcassets */; };
 		D6F6A3382AC593FA002ECA81 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6F6A3372AC593FA002ECA81 /* Preview Assets.xcassets */; };
-		D6F6A35B2AC59961002ECA81 /* OrdersManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A35A2AC59961002ECA81 /* OrdersManagement.swift */; };
+		D6F6A35B2AC59961002ECA81 /* OrdersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A35A2AC59961002ECA81 /* OrdersManager.swift */; };
 		D6F6A35F2AC59CEF002ECA81 /* OrderDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A35E2AC59CEF002ECA81 /* OrderDetailsView.swift */; };
 		D6F6A3612AC59FB6002ECA81 /* OrderRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3602AC59FB6002ECA81 /* OrderRowView.swift */; };
 		D6F6A3632AC59FCE002ECA81 /* AddOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3622AC59FCE002ECA81 /* AddOrderView.swift */; };
 		D6F6A3652AC5B058002ECA81 /* AllOrdersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3642AC5B058002ECA81 /* AllOrdersView.swift */; };
 		D6F6A3692AC5BDFF002ECA81 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3682AC5BDFF002ECA81 /* FileManager.swift */; };
+		D6F6A36B2AC5FA1B002ECA81 /* UpcomingOrdersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A36A2AC5FA1B002ECA81 /* UpcomingOrdersView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D68867DF2ACA247900BCE734 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		D6F6A32D2AC593F8002ECA81 /* My Orders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Orders.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersApp.swift; sourceTree = "<group>"; };
 		D6F6A3322AC593F8002ECA81 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -44,12 +47,13 @@
 		D6F6A3372AC593FA002ECA81 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D6F6A33D2AC593FA002ECA81 /* My OrdersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "My OrdersTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F6A3472AC593FA002ECA81 /* My OrdersUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "My OrdersUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6F6A35A2AC59961002ECA81 /* OrdersManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersManagement.swift; sourceTree = "<group>"; };
+		D6F6A35A2AC59961002ECA81 /* OrdersManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersManager.swift; sourceTree = "<group>"; };
 		D6F6A35E2AC59CEF002ECA81 /* OrderDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsView.swift; sourceTree = "<group>"; };
 		D6F6A3602AC59FB6002ECA81 /* OrderRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderRowView.swift; sourceTree = "<group>"; };
 		D6F6A3622AC59FCE002ECA81 /* AddOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOrderView.swift; sourceTree = "<group>"; };
 		D6F6A3642AC5B058002ECA81 /* AllOrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllOrdersView.swift; sourceTree = "<group>"; };
 		D6F6A3682AC5BDFF002ECA81 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
+		D6F6A36A2AC5FA1B002ECA81 /* UpcomingOrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingOrdersView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,12 +104,14 @@
 			children = (
 				D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */,
 				D6F6A3682AC5BDFF002ECA81 /* FileManager.swift */,
-				D6F6A35A2AC59961002ECA81 /* OrdersManagement.swift */,
+				D6F6A35A2AC59961002ECA81 /* OrdersManager.swift */,
 				D6F6A3322AC593F8002ECA81 /* ContentView.swift */,
 				D6F6A3622AC59FCE002ECA81 /* AddOrderView.swift */,
+				D6F6A36A2AC5FA1B002ECA81 /* UpcomingOrdersView.swift */,
 				D6F6A3642AC5B058002ECA81 /* AllOrdersView.swift */,
 				D6F6A3602AC59FB6002ECA81 /* OrderRowView.swift */,
 				D6F6A35E2AC59CEF002ECA81 /* OrderDetailsView.swift */,
+				D68867DF2ACA247900BCE734 /* SearchBar.swift */,
 				D6F6A3342AC593FA002ECA81 /* Assets.xcassets */,
 				D6F6A3362AC593FA002ECA81 /* Preview Content */,
 			);
@@ -251,11 +257,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */,
-				D6F6A35B2AC59961002ECA81 /* OrdersManagement.swift in Sources */,
+				D6F6A35B2AC59961002ECA81 /* OrdersManager.swift in Sources */,
 				D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */,
 				D6F6A3632AC59FCE002ECA81 /* AddOrderView.swift in Sources */,
 				D6F6A3612AC59FB6002ECA81 /* OrderRowView.swift in Sources */,
 				D6F6A35F2AC59CEF002ECA81 /* OrderDetailsView.swift in Sources */,
+				D6F6A36B2AC5FA1B002ECA81 /* UpcomingOrdersView.swift in Sources */,
+				D68867E02ACA247A00BCE734 /* SearchBar.swift in Sources */,
 				D6F6A3652AC5B058002ECA81 /* AllOrdersView.swift in Sources */,
 				D6F6A3692AC5BDFF002ECA81 /* FileManager.swift in Sources */,
 			);

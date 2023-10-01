@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct MyOrdersApp: App {
+    
+    let orderManager = OrderManager.shared
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environmentObject(orderManager)
+
         }
     }
 }
