@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct OrderRowView: View {
-    let order: DessertOrder // Assuming DessertOrder is your data model
+    
+    let order: DessertOrder
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateStyle = .long // Choose the desired date style
-        formatter.timeStyle = .short // Choose the desired time style
+        formatter.dateStyle = .long
+        formatter.timeStyle = .short 
         return formatter
     }()
     
@@ -22,6 +23,10 @@ struct OrderRowView: View {
             Text("Customer: \(order.customer.name)") // Access the customer's name
             Text("Date: \(dateFormatter.string(from: order.orderDate))")
             Text("Total Price: ₪\(order.totalPrice,  specifier: "%.2f")")
+            
+            if order.isCompleted == true{
+                
+            }
         }
     }
     

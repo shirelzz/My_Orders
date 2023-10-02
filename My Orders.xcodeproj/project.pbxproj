@@ -17,7 +17,6 @@
 		D6F6A3612AC59FB6002ECA81 /* OrderRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3602AC59FB6002ECA81 /* OrderRowView.swift */; };
 		D6F6A3632AC59FCE002ECA81 /* AddOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3622AC59FCE002ECA81 /* AddOrderView.swift */; };
 		D6F6A3652AC5B058002ECA81 /* AllOrdersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3642AC5B058002ECA81 /* AllOrdersView.swift */; };
-		D6F6A3692AC5BDFF002ECA81 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3682AC5BDFF002ECA81 /* FileManager.swift */; };
 		D6F6A36B2AC5FA1B002ECA81 /* UpcomingOrdersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A36A2AC5FA1B002ECA81 /* UpcomingOrdersView.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,7 +51,6 @@
 		D6F6A3602AC59FB6002ECA81 /* OrderRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderRowView.swift; sourceTree = "<group>"; };
 		D6F6A3622AC59FCE002ECA81 /* AddOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOrderView.swift; sourceTree = "<group>"; };
 		D6F6A3642AC5B058002ECA81 /* AllOrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllOrdersView.swift; sourceTree = "<group>"; };
-		D6F6A3682AC5BDFF002ECA81 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		D6F6A36A2AC5FA1B002ECA81 /* UpcomingOrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingOrdersView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,7 +101,6 @@
 			isa = PBXGroup;
 			children = (
 				D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */,
-				D6F6A3682AC5BDFF002ECA81 /* FileManager.swift */,
 				D6F6A35A2AC59961002ECA81 /* OrdersManager.swift */,
 				D6F6A3322AC593F8002ECA81 /* ContentView.swift */,
 				D6F6A3622AC59FCE002ECA81 /* AddOrderView.swift */,
@@ -265,7 +262,6 @@
 				D6F6A36B2AC5FA1B002ECA81 /* UpcomingOrdersView.swift in Sources */,
 				D68867E02ACA247A00BCE734 /* SearchBar.swift in Sources */,
 				D6F6A3652AC5B058002ECA81 /* AllOrdersView.swift in Sources */,
-				D6F6A3692AC5BDFF002ECA81 /* FileManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
