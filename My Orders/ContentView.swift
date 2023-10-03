@@ -50,20 +50,20 @@ struct ContentView: View {
                 .listStyle(PlainListStyle())
                 
                 Button(action: {
-                    self.showAllOrders.toggle()
-                }) {
-                    HStack {
-                        Text("All Orders")
-                            .font(.headline)
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                }
-                NavigationLink(destination: AllOrdersView(orderManager: orderManager), isActive: $showAllOrders) {
-                    EmptyView()
-                }
+                            self.showAllOrders = true
+                        }) {
+                            HStack {
+                                Text("All Orders")
+                                    .font(.headline)
+                                    .padding()
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                            }
+                        }
+                        .navigationDestination(isPresented: $showAllOrders) {
+                            AllOrdersView(orderManager: orderManager)
+                        }
                 .buttonStyle(PlainButtonStyle())
 
                 
@@ -72,8 +72,7 @@ struct ContentView: View {
         }
         .accentColor(.blue)
         .onAppear {
-            // Sort orders by order date in ascending order
-            orderManager.orders.sort { $0.orderDate < $1.orderDate }
+            orderManager.orders.sort { $0.orderDate > $1.orderDate }
         }
     }
     

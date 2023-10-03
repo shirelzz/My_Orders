@@ -9,13 +9,8 @@ import SwiftUI
 
 struct OrderDetailsView: View {
     
-//    let order: DessertOrder
     @State var order: DessertOrder
- 
-    
-//    @Binding var order: DessertOrder
-
-
+    @State private var showReceipt = false
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -26,70 +21,76 @@ struct OrderDetailsView: View {
     
     var body: some View {
         
-            VStack(alignment: .leading, spacing: 10) {
-                Section(header:
-                            Text("Customer Information")
-                    .font(.headline) // Apply headline font size
-                    .fontWeight(.bold) // Apply bold font weight
-                    .padding(.top)
-                ) {
-                    Text("Name: \(order.customer.name)")
-                    Text("Phone: 0\(order.customer.phoneNumber)")
-                }
-                
-                Section(header:
-                            Text("Order Information")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .padding(.top)
-                ) {
-                    List(order.desserts, id: \.dessertName) { dessert in
-                        HStack {
-                            Text("\(dessert.dessertName)")
-                            Spacer()
-                            Text("Q: \(dessert.quantity)")
-                            Text(" ₪\(dessert.price, specifier: "%.2f")")
-                        }
-                    }
-                }
-                
-                Section(header:
-                            Text("Additional Details")
-                    .font(.headline) // Apply headline font size
-                    .fontWeight(.bold) // Apply bold font weight
-                    .padding(.top)
-                ) {
-                    Text("Delivery Address: \(order.delivery.address)")
-                    Text("Notes: \(order.notes)")
-                    Text("Allergies: \(order.allergies)")
-
-                }
-                
-                Section(header:
-                            Text("Order Status")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .padding(.top)
-                ) {
-                    Toggle("Completed", isOn: $order.isCompleted)
-                        .onChange(of: order.isCompleted) { newValue in
-                            OrderManager.shared.updateOrderStatus(orderID: order.id, isCompleted: newValue)
-                        }
-                    }
-                
-                Section(header:
-                            Text("Price")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .padding(.top)
-                ) {
-                        Text("Delivery: ₪\(order.delivery.cost, specifier: "%.2f")")
-                        Text("Total Price: ₪\(order.totalPrice, specifier: "%.2f")")
-                    }
+        VStack(alignment: .leading, spacing: 10) {
+            Section(header:
+                        Text("Customer Information")
+                .font(.headline) // Apply headline font size
+                .fontWeight(.bold) // Apply bold font weight
+                .padding(.top)
+            ) {
+                Text("Name: \(order.customer.name)")
+                Text("Phone: 0\(order.customer.phoneNumber)")
             }
-            .padding()
-        
-        .navigationBarTitle("Order Details")
+            
+            Section(header:
+                        Text("Order Information")
+                .font(.headline)
+                .fontWeight(.bold)
+                .padding(.top)
+            ) {
+                List(order.desserts, id: \.dessertName) { dessert in
+                    HStack {
+                        Text("\(dessert.dessertName)")
+                        Spacer()
+                        Text("Q: \(dessert.quantity)")
+                        Text(" ₪\(dessert.price, specifier: "%.2f")")
+                    }
+                }
+            }
+            
+            Section(header:
+                        Text("Additional Details")
+                .font(.headline) // Apply headline font size
+                .fontWeight(.bold) // Apply bold font weight
+                .padding(.top)
+            ) {
+                Text("Delivery Address: \(order.delivery.address)")
+                Text("Notes: \(order.notes)")
+                Text("Allergies: \(order.allergies)")
+                
+            }
+            
+            Section(header:
+                                    Text("Order Status")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .padding(.top)
+                        ) {
+                            Toggle("Completed", isOn: $order.isCompleted)
+                                .onChange(of: order.isCompleted) { newValue in
+                                    OrderManager.shared.updateOrderStatus(orderID: order.id, isCompleted: newValue)
+                                }
+                            
+                            Button("Generate Receipt") {
+                                showReceipt.toggle() // Toggle the state variable to show/hide receipt view
+                            }
+                        }
+            
+            Section(header:
+                        Text("Price")
+                .font(.headline)
+                .fontWeight(.bold)
+                .padding(.top)
+            ) {
+                Text("Delivery: ₪\(order.delivery.cost, specifier: "%.2f")")
+                Text("Total Price: ₪\(order.totalPrice, specifier: "%.2f")")
+            }
+        }
+        .padding()
+                .navigationBarTitle("Order Details")
+                .sheet(isPresented: $showReceipt) {
+                    ReceiptView(order: order, isPresented: $showReceipt) // Present receipt view when the state variable is true
+                }
     }
 }
 
