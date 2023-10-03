@@ -10,7 +10,9 @@ import SwiftUI
 struct ContentView: View {
     
     @StateObject private var orderManager = OrderManager.shared
+    
     @State private var showAllOrders = false
+    @State private var showAllReceipts = false
     @State private var isAddOrderViewPresented = false // This controls the navigation
     
     
@@ -49,22 +51,41 @@ struct ContentView: View {
                 }
                 .listStyle(PlainListStyle())
                 
-                Button(action: {
-                            self.showAllOrders = true
-                        }) {
-                            HStack {
-                                Text("All Orders")
-                                    .font(.headline)
-                                    .padding()
-                                    .background(Color.blue)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
-                            }
+                HStack{
+                    Button(action: {
+                        self.showAllOrders = true
+                    }) {
+                        HStack {
+                            Text("All Orders")
+                                .font(.headline)
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
                         }
-                        .navigationDestination(isPresented: $showAllOrders) {
-                            AllOrdersView(orderManager: orderManager)
+                    }
+                    .navigationDestination(isPresented: $showAllOrders) {
+                        AllOrdersView(orderManager: orderManager)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    
+                    Button(action: {
+                        showAllReceipts = true // Activate navigation
+                    }) {
+                        HStack {
+                            Text("All Receipts")
+                                .font(.headline)
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
                         }
-                .buttonStyle(PlainButtonStyle())
+                    }
+                    .navigationDestination(isPresented: $showAllReceipts) {
+                        AllReceiptsView(orderManager: orderManager)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
 
                 
             }

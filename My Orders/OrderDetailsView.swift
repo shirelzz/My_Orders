@@ -73,6 +73,22 @@ struct OrderDetailsView: View {
                             
                             Button("Generate Receipt") {
                                 showReceipt.toggle() // Toggle the state variable to show/hide receipt view
+                                @AppStorage("receipts") var receiptsData: Data = Data()
+                                var receipts: [Receipt] {
+                                    get {
+                                        if let decodedReceipts = try? JSONDecoder().decode([Receipt].self, from: receiptsData) {
+                                            return decodedReceipts
+                                        }
+                                        return []
+                                    }
+                                    set {
+                                        if let encodedReceipts = try? JSONEncoder().encode(newValue) {
+                                            receiptsData = encodedReceipts
+                                        }
+                                    }
+                                }
+
+                                
                             }
                         }
             
