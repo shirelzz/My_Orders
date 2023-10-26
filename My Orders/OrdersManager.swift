@@ -26,6 +26,8 @@ struct Receipt: Identifiable, Codable {
     var orderID: String
     var pdfData: Data
     var dateGenerated: Date
+    var paymentMethod: String
+    var paymentDate: Date
 }
 
 
@@ -47,38 +49,19 @@ struct DessertOrder: Identifiable, Codable {
     var notes: String
     var allergies: String
     var isCompleted: Bool
+    
     var totalPrice: Double {
         let dessertsTotal = desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
         return dessertsTotal + delivery.cost
     }
     
-    //    // Implement the Encodable protocol methods
-    //       enum CodingKeys: String, CodingKey {
-    //           case id, customer, desserts, orderDate, delivery, notes, allergies, isCompleted, totalPrice
-    //       }
-    //
-    //       func encode(to encoder: Encoder) throws {
-    //           var container = encoder.container(keyedBy: CodingKeys.self)
-    //
-    //           try container.encode(id, forKey: .id)
-    //           try container.encode(customer, forKey: .customer)
-    //           try container.encode(desserts, forKey: .desserts)
-    //           try container.encode(orderDate, forKey: .orderDate)
-    //           try container.encode(delivery, forKey: .delivery)
-    //           try container.encode(notes, forKey: .notes)
-    //           try container.encode(allergies, forKey: .allergies)
-    //           try container.encode(isCompleted, forKey: .isCompleted)
-    //           try container.encode(totalPrice, forKey: .totalPrice)
-    //
-    //       }
+    var receipt: Receipt?
+    
 }
 
 class OrderManager: ObservableObject {
     
     static var shared = OrderManager()
-    private var generatedReceiptIDs: Set<String> = Set()
-    
-    
     @Published var orders: [DessertOrder] = []
     
     func addOrder(order: DessertOrder) {
@@ -109,7 +92,6 @@ class OrderManager: ObservableObject {
         }
     }
     
-    // Initialization
     init() {
         // Load orders from UserDefaults when the manager is initialized
         loadOrders()
@@ -121,6 +103,9 @@ class OrderManager: ObservableObject {
             saveOrders()
         }
     }
+    
+    
+    private var generatedReceiptIDs: Set<String> = Set()
     
     var receipts: [Receipt] {
         get {
@@ -146,18 +131,18 @@ class OrderManager: ObservableObject {
         }
     }
     
+    // Function to save receipts to UserDefaults
+    private func saveReceipts() {
+        if let encodedData = try? JSONEncoder().encode(receipts) {
+            UserDefaults.standard.set(encodedData, forKey: "receipts")
+        }
+    }
+    
     // Function to load receipts from UserDefaults
     func loadReceipts() {
         if let savedData = UserDefaults.standard.data(forKey: "receipts"),
            let decodedReceipts = try? JSONDecoder().decode([Receipt].self, from: savedData) {
             receipts = decodedReceipts
-        }
-    }
-    
-    // Function to save receipts to UserDefaults
-    private func saveReceipts() {
-        if let encodedData = try? JSONEncoder().encode(receipts) {
-            UserDefaults.standard.set(encodedData, forKey: "receipts")
         }
     }
     

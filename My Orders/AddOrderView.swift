@@ -18,8 +18,8 @@ struct AddOrderView: View {
     @State private var Desserts: [Dessert] = []
     
     @State private var delivery = "No"
-    @State private var delivery_details = ""
-    @State private var deliveryCost = Int("")
+    @State private var deliveryDetails = ""
+    @State private var deliveryCost = Double("")
     
     @State private var pickupDateTime = Date()
     
@@ -102,7 +102,7 @@ struct AddOrderView: View {
                 }
                 .onChange(of: delivery) { newValue in
                     if newValue == "Yes" {
-                        delivery_details = ""
+                        deliveryDetails = ""
                     }
                     //                    else {
                     //                        delivery_details = ""
@@ -110,7 +110,7 @@ struct AddOrderView: View {
                 }
                 
                 if delivery == "Yes" {
-                    TextEditor(text: $delivery_details)
+                    TextEditor(text: $deliveryDetails)
                         .frame(height: 50)
                     
                     TextField("Delivery cost: ₪", value: $deliveryCost, formatter: NumberFormatter())
@@ -158,10 +158,12 @@ struct AddOrderView: View {
                         customer: customer,
                         desserts: Desserts,
                         orderDate: pickupDateTime,
-                        delivery: Delivery(address: delivery_details, cost: 0.0), // You can adjust the cost as needed
+                        delivery: Delivery(address: deliveryDetails, cost: deliveryCost ?? 0.0), // You can adjust the cost as needed
                         notes: notes,
                         allergies: allergies_details,
-                        isCompleted: false
+                        isCompleted: false,
+                        receipt: nil
+
                     )
                     
                     // Add the new order to the OrderManager

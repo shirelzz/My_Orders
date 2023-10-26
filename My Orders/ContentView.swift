@@ -28,13 +28,13 @@ struct ContentView: View {
             VStack {
                 
                 Button(action: {
-                    isAddOrderViewPresented = true // Activate navigation
+                    isAddOrderViewPresented = true
                 }) {
                     Image(systemName: "plus.circle.fill")
                         .font(.system(size: 36))
                         .foregroundColor(.blue)
                         .padding()
-                        .shadow(radius: 4)
+                        .shadow(radius: 2)
                 }
                 .padding()
                 .sheet(isPresented: $isAddOrderViewPresented) {
@@ -52,22 +52,6 @@ struct ContentView: View {
                 .listStyle(PlainListStyle())
                 
                 HStack{
-                    Button(action: {
-                        self.showAllOrders = true
-                    }) {
-                        HStack {
-                            Text("All Orders")
-                                .font(.headline)
-                                .padding()
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                        }
-                    }
-                    .navigationDestination(isPresented: $showAllOrders) {
-                        AllOrdersView(orderManager: orderManager)
-                    }
-                    .buttonStyle(PlainButtonStyle())
                     
                     Button(action: {
                         showAllReceipts = true // Activate navigation
@@ -85,6 +69,24 @@ struct ContentView: View {
                         AllReceiptsView(orderManager: orderManager)
                     }
                     .buttonStyle(PlainButtonStyle())
+                    
+                    Button(action: {
+                        self.showAllOrders = true
+                    }) {
+                        HStack {
+                            Text("All Orders")
+                                .font(.headline)
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+                    }
+                    .navigationDestination(isPresented: $showAllOrders) {
+                        AllOrdersView(orderManager: orderManager)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    
                 }
 
                 

@@ -11,6 +11,8 @@ struct OrderDetailsView: View {
     
     @State var order: DessertOrder
     @State private var showReceipt = false
+    @State private var showReceiptPreview = false
+    
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -24,8 +26,8 @@ struct OrderDetailsView: View {
         VStack(alignment: .leading, spacing: 10) {
             Section(header:
                         Text("Customer Information")
-                .font(.headline) // Apply headline font size
-                .fontWeight(.bold) // Apply bold font weight
+                .font(.headline)
+                .fontWeight(.bold)
                 .padding(.top)
             ) {
                 Text("Name: \(order.customer.name)")
@@ -50,8 +52,8 @@ struct OrderDetailsView: View {
             
             Section(header:
                         Text("Additional Details")
-                .font(.headline) // Apply headline font size
-                .fontWeight(.bold) // Apply bold font weight
+                .font(.headline)
+                .fontWeight(.bold)
                 .padding(.top)
             ) {
                 Text("Delivery Address: \(order.delivery.address)")
@@ -61,36 +63,27 @@ struct OrderDetailsView: View {
             }
             
             Section(header:
-                                    Text("Order Status")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                            .padding(.top)
-                        ) {
-                            Toggle("Completed", isOn: $order.isCompleted)
-                                .onChange(of: order.isCompleted) { newValue in
-                                    OrderManager.shared.updateOrderStatus(orderID: order.id, isCompleted: newValue)
-                                }
-                            
-                            Button("Generate Receipt") {
-                                showReceipt.toggle() // Toggle the state variable to show/hide receipt view
-                                @AppStorage("receipts") var receiptsData: Data = Data()
-                                var receipts: [Receipt] {
-                                    get {
-                                        if let decodedReceipts = try? JSONDecoder().decode([Receipt].self, from: receiptsData) {
-                                            return decodedReceipts
-                                        }
-                                        return []
-                                    }
-                                    set {
-                                        if let encodedReceipts = try? JSONEncoder().encode(newValue) {
-                                            receiptsData = encodedReceipts
-                                        }
-                                    }
-                                }
-
-                                
-                            }
+                        Text("Order Status")
+                .font(.headline)
+                .fontWeight(.bold)
+                .padding(.top)
+            ) {
+                Toggle("Completed", isOn: $order.isCompleted)
+                    .onChange(of: order.isCompleted) { newValue in
+                        OrderManager.shared.updateOrderStatus(orderID: order.id, isCompleted: newValue)
+                    }
+                
+                if order.isCompleted {
+                    Button("Show Receipt Preview") {
+                        showReceiptPreview = true
+                    }
+                    .sheet(isPresented: $showReceiptPreview) {
+                        NavigationView {
+                            ReceiptView(order: order, isPresented: $showReceiptPreview)
                         }
+                    }
+                }
+            }
             
             Section(header:
                         Text("Price")
@@ -103,10 +96,10 @@ struct OrderDetailsView: View {
             }
         }
         .padding()
-                .navigationBarTitle("Order Details")
-                .sheet(isPresented: $showReceipt) {
-                    ReceiptView(order: order, isPresented: $showReceipt) // Present receipt view when the state variable is true
-                }
+        .navigationBarTitle("Order Details")
+        .sheet(isPresented: $showReceipt) {
+            ReceiptView(order: order, isPresented: $showReceipt) // Present receipt view when the state variable is true
+        }
     }
 }
 
