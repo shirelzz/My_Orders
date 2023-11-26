@@ -43,8 +43,8 @@ struct AllReceiptsView: View {
                     }
                 }
                 .listStyle(InsetGroupedListStyle())
-
-
+                
+                
             }
             .navigationBarTitle("All Receipts")
         }
@@ -57,46 +57,49 @@ struct AllReceiptsView: View {
         }
     }
     
-        private func exportReceipts() {
-            // Filter receipts by the selected year
-            let filteredReceipts = orderManager.receipts.filter { receipt in
-                let receiptYear = Calendar.current.component(.year, from: receipt.dateGenerated)
-                return receiptYear == selectedYear
-            }
-
-            // Create a file name for the exported file
-            let fileName = "Receipts-\(selectedYear).json"
-
-            // Get the documents directory URL
-            if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-                let fileURL = documentsDirectory.appendingPathComponent(fileName)
-
-                do {
-                    // Encode the filtered receipts as JSON data
-                    let encoder = JSONEncoder()
-                    let jsonData = try encoder.encode(filteredReceipts)
-
-                    // Write the JSON data to the file
-                    try jsonData.write(to: fileURL)
-
-                    // Create a URL to the exported file
-                    let exportURL = fileURL
-
-                    // Create a share activity view controller
-                    let activityViewController = UIActivityViewController(activityItems: [exportURL], applicationActivities: nil)
-
-                    // Present the share view controller
-                    if let topViewController = UIApplication.shared.windows.first?.rootViewController {
-                        topViewController.present(activityViewController, animated: true, completion: nil)
-                    }
-                } catch {
-                    // Handle any errors that may occur during the export
-                    print("Error exporting receipts: \(error.localizedDescription)")
+    private func exportReceipts() {
+        // Filter receipts by the selected year
+        let filteredReceipts = orderManager.receipts.filter { receipt in
+            let receiptYear = Calendar.current.component(.year, from: receipt.dateGenerated)
+            return receiptYear == selectedYear
+        }
+        
+        // Create a file name for the exported file
+        let fileName = "Receipts-\(selectedYear).json"
+        
+        // Get the documents directory URL
+        if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let fileURL = documentsDirectory.appendingPathComponent(fileName)
+            
+            do {
+                // Encode the filtered receipts as JSON data
+                let encoder = JSONEncoder()
+                let jsonData = try encoder.encode(filteredReceipts)
+                
+                // Write the JSON data to the file
+                try jsonData.write(to: fileURL)
+                
+                // Create a URL to the exported file
+                let exportURL = fileURL
+                
+                // Create a share activity view controller
+                let activityViewController = UIActivityViewController(activityItems: [exportURL], applicationActivities: nil)
+                
+                // Present the share view controller
+                let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                let window = windowScene?.windows.first
+                
+                if let topViewController = window?.rootViewController {
+                    topViewController.present(activityViewController, animated: true, completion: nil)
                 }
+            } catch {
+                // Handle any errors that may occur during the export
+                print("Error exporting receipts: \(error.localizedDescription)")
             }
         }
-
-
+    }
+    
+    
 }
 
 

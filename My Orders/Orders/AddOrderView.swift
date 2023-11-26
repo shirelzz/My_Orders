@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddOrderView: View {
-
+    
     @State private var customer = Customer(name: "", phoneNumber: Int("") ?? 0)
     
     @State private var DessertName = ""
@@ -18,8 +18,11 @@ struct AddOrderView: View {
     @State private var Desserts: [Dessert] = []
     
     @State private var delivery = "No"
-    @State private var deliveryDetails = ""
-    @State private var deliveryCost = Double("")
+    @State private var deliveryAddress = ""
+    //    @State private var deliveryCost = Double("")
+    @State private var selectedDeliveryCost = 10
+    let deliveryCosts = [0, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100]
+    
     
     @State private var pickupDateTime = Date()
     
@@ -89,7 +92,7 @@ struct AddOrderView: View {
                 }
                 
                 // Calculate and display the total price
-                    let totalPrice = Desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
+                let totalPrice = Desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
                 Text("Total Price: ₪\(totalPrice, specifier: "%.2f")")
                 
             }
@@ -102,25 +105,26 @@ struct AddOrderView: View {
                 }
                 .onChange(of: delivery) { newValue in
                     if newValue == "Yes" {
-                        deliveryDetails = ""
+                        deliveryAddress = ""
+                        //                        deliveryCost = 0.0
                     }
-                    //                    else {
-                    //                        delivery_details = ""
-                    //                    }
                 }
                 
                 if delivery == "Yes" {
-                    TextEditor(text: $deliveryDetails)
+                    TextEditor(text: $deliveryAddress)
                         .frame(height: 50)
                     
-                    TextField("Delivery cost: ₪", value: $deliveryCost, formatter: NumberFormatter())
-                        .keyboardType(.numberPad)
+                    Picker("Delivery cost: ₪", selection: $selectedDeliveryCost) {
+                        ForEach(deliveryCosts, id: \.self) { cost in
+                            Text("₪\(cost)").tag(cost)
+                        }
+                    }
+                    .pickerStyle(DefaultPickerStyle())
                     
-
                 }
                 
                 DatePicker("Pickup Date and Time", selection: $pickupDateTime, in: Date()..., displayedComponents: [.date, .hourAndMinute])
-
+                
                 
                 Picker("Allergies", selection: $allergies) {
                     Text("No").tag("No")
@@ -144,26 +148,26 @@ struct AddOrderView: View {
                     TextEditor(text: $notes)
                         .frame(height: 100)
                 }
-            
-            
+                
+                
                 
             }
             
             Section {
                 Button(action: {
-                    // Create a new DessertOrder based on the user's input
+                    
                     let newOrder = DessertOrder(
                         
-                        orderID: UUID().uuidString, // Generate a unique ID for the order
+                        orderID: UUID().uuidString, // Generates a unique ID for the order
                         customer: customer,
                         desserts: Desserts,
                         orderDate: pickupDateTime,
-                        delivery: Delivery(address: deliveryDetails, cost: deliveryCost ?? 0.0), // You can adjust the cost as needed
+                        delivery: Delivery(address: deliveryAddress, cost: Double(selectedDeliveryCost)),
                         notes: notes,
                         allergies: allergies_details,
                         isCompleted: false,
                         receipt: nil
-
+                        
                     )
                     
                     // Add the new order to the OrderManager
@@ -182,7 +186,7 @@ struct AddOrderView: View {
                     Text("Add Order")
                 }
             }
-            }
-            .navigationBarTitle("New Order")
         }
+        .navigationBarTitle("New Order")
     }
+}

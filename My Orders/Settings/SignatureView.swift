@@ -1,18 +1,18 @@
 //
-//  ContentView2.swift
+//  SignatureView.swift
 //  My Orders
 //
-//  Created by שיראל זכריה on 25/11/2023.
+//  Created by שיראל זכריה on 26/11/2023.
 //
 
 import SwiftUI
 
-struct ContentView2: View {
+struct SignatureView: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
 #Preview {
-    ContentView2()
+    SignatureView()
 }

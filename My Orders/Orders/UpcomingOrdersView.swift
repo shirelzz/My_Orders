@@ -25,6 +25,7 @@ struct UpcomingOrdersView: View {
     var body: some View {
         
         VStack {
+            
             SearchBar(searchText: $searchText)
             
             List(filteredOrders, id: \.orderID) { order in
@@ -34,7 +35,6 @@ struct UpcomingOrdersView: View {
             }
             .listStyle(InsetGroupedListStyle())
         }
-//        .navigationBarTitle("Upcoming Orders")
     }
 
 }

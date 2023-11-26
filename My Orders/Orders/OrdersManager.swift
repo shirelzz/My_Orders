@@ -23,6 +23,7 @@ struct Delivery: Codable {
 
 struct Receipt: Identifiable, Codable {
     var id = UUID()
+    var myID: Int
     var orderID: String
     var pdfData: Data
     var dateGenerated: Date
@@ -58,6 +59,27 @@ struct DessertOrder: Identifiable, Codable {
     var receipt: Receipt?
     
 }
+
+
+class ReceiptIDManager {
+    static let shared = ReceiptIDManager()
+    
+    private init() {
+        // Load the last assigned ID from UserDefaults
+        nextReceiptID = UserDefaults.standard.integer(forKey: "nextReceiptID")
+    }
+    
+    private(set) var nextReceiptID: Int
+    
+    func getNextReceiptID() -> Int {
+        // Increment the ID and save it to UserDefaults
+        nextReceiptID += 1
+        UserDefaults.standard.set(nextReceiptID, forKey: "nextReceiptID")
+        return nextReceiptID
+    }
+}
+
+
 
 class OrderManager: ObservableObject {
     
@@ -95,12 +117,15 @@ class OrderManager: ObservableObject {
     init() {
         // Load orders from UserDefaults when the manager is initialized
         loadOrders()
+        
     }
     
     func updateOrderStatus(orderID: String, isCompleted: Bool) {
         if let index = orders.firstIndex(where: { $0.id == orderID }) {
-            orders[index].isCompleted = isCompleted
-            saveOrders()
+            if !receiptExists(forOrderID: orders[index].orderID) {
+                orders[index].isCompleted = isCompleted
+                saveOrders()
+            }
         }
     }
     
@@ -121,6 +146,7 @@ class OrderManager: ObservableObject {
             }
         }
     }
+    
     
     // Function to add and save a receipt
     func addReceipt(receipt: Receipt) {

@@ -13,6 +13,12 @@ struct OrderDetailsView: View {
     @State private var showReceipt = false
     @State private var showReceiptPreview = false
     
+    var isReceiptExists: Bool {
+        return OrderManager.shared.receiptExists(forOrderID: order.orderID)
+    }
+    
+    var flag = false
+    
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -24,18 +30,17 @@ struct OrderDetailsView: View {
     var body: some View {
         
         VStack(alignment: .leading, spacing: 10) {
-            Section(header:
-                        Text("Customer Information")
+            
+            Section(header: Text("Customer Information")
                 .font(.headline)
                 .fontWeight(.bold)
                 .padding(.top)
             ) {
                 Text("Name: \(order.customer.name)")
-                Text("Phone: 0\(order.customer.phoneNumber)")
+                Text("Phone: 0\(String(order.customer.phoneNumber))")
             }
             
-            Section(header:
-                        Text("Order Information")
+            Section(header: Text("Order Information")
                 .font(.headline)
                 .fontWeight(.bold)
                 .padding(.top)
@@ -48,18 +53,32 @@ struct OrderDetailsView: View {
                         Text(" ₪\(dessert.price, specifier: "%.2f")")
                     }
                 }
+
+                Text("Order Date: \(order.orderDate.formatted())")
+                
             }
             
-            Section(header:
-                        Text("Additional Details")
-                .font(.headline)
-                .fontWeight(.bold)
-                .padding(.top)
-            ) {
-                Text("Delivery Address: \(order.delivery.address)")
-                Text("Notes: \(order.notes)")
-                Text("Allergies: \(order.allergies)")
+            if (order.delivery.address != "" || order.notes != "" || order.allergies != "") {
+                Section(header:
+                            Text("Additional Details")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .padding(.top)
+                ) {
+                    
+                    if(order.delivery.address != ""){
+                        Text("Delivery Address: \(order.delivery.address)")
+                    }
+                    
+                    if(order.notes != ""){
+                        Text("Notes: \(order.notes)")
+                    }
                 
+                    if(order.allergies != ""){
+                        Text("Notes: \(order.allergies)")
+                    }
+                    
+                }
             }
             
             Section(header:
@@ -69,9 +88,14 @@ struct OrderDetailsView: View {
                 .padding(.top)
             ) {
                 Toggle("Completed", isOn: $order.isCompleted)
+//                    .disabled(OrderManager.shared.receiptExists(forOrderID: order.orderID))
                     .onChange(of: order.isCompleted) { newValue in
-                        OrderManager.shared.updateOrderStatus(orderID: order.id, isCompleted: newValue)
-                    }
+                        if !flag{
+                            
+                            OrderManager.shared.updateOrderStatus(orderID: order.id, isCompleted: newValue)
+                        }
+
+                }
                 
                 if order.isCompleted {
                     Button("Show Receipt Preview") {
@@ -91,7 +115,11 @@ struct OrderDetailsView: View {
                 .fontWeight(.bold)
                 .padding(.top)
             ) {
-                Text("Delivery: ₪\(order.delivery.cost, specifier: "%.2f")")
+                
+                if(order.delivery.cost != 0){
+                    Text("Delivery Cost: ₪\(order.delivery.cost, specifier: "%.2f")")
+                }
+                
                 Text("Total Price: ₪\(order.totalPrice, specifier: "%.2f")")
             }
         }

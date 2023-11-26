@@ -16,10 +16,11 @@ struct ReceiptView: View {
     @Binding var isPresented: Bool
     @State private var pdfData: Data?
     @State private var showConfirmationAlert = false
-    //    @ObservedObject var orderManager: OrderManager
-    @State private var selectedPaymentMethod = ""
+    @State private var selectedPaymentMethod = "Paybox"
     @State private var selectedPaymentDate: Date = Date()
-    
+    @State private var showSuccessMessage = false
+    @State private var nextID = ReceiptIDManager.shared.getNextReceiptID()
+
     
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -37,13 +38,17 @@ struct ReceiptView: View {
                 .bold()
                 .padding(.bottom, 20)
             
-            HStack{
-                Text("עבור:")
-                    .bold()
-                Text(order.customer.name)
-            }
-            .environment(\.layoutDirection, .rightToLeft)
+//            order.receipt?.myID = nextID
+            Text("קבלה מספר \(nextID)")
 
+            
+//            if let receiptID = order.receipt.myID + 1 {
+//                Text("קבלה מספר \(receiptID)")
+//            } else {
+//                Text("קבלה לא נמצאה")
+//            }
+
+            
             
             HStack{
                 Text("תאריך יצירת המסמך:")
@@ -55,7 +60,14 @@ struct ReceiptView: View {
                     .padding(.bottom)
             }
             .environment(\.layoutDirection, .rightToLeft)
-
+            
+            HStack{
+                Text("עבור:")
+                    .bold()
+                Text(order.customer.name)
+            }
+            .environment(\.layoutDirection, .rightToLeft)
+            
             
             Section(header:
                         Text("פרטי הזמנה:")
@@ -78,33 +90,28 @@ struct ReceiptView: View {
                 Text(String(format: "%.2f", order.totalPrice))
                 Text("מחיר: ")
                     .font(.headline)
-
+                
             }
             
-            VStack(alignment: .leading, spacing: 5) {
+            HStack(alignment: .center, spacing: 160) {
                 Text("אופן התשלום:")
                     .font(.headline)
                 
-                Picker("", selection: $selectedPaymentMethod) {
-                    Text("Paybox")
-                    Text("Bit")
-                    Text("Bank transfer")
-                    Text("Cash")
-//                    Text("העברה בנקאית")
-//                    Text("מזומן")
+                Picker(selection: $selectedPaymentMethod, label: Text("אופן התשלום:")) {
+                    Text("Paybox").tag("Paybox")
+                    Text("Bit").tag("Bit")
+                    //                  Text("Bank transfer").tag("Bank transfer")
+                    //                  Text("Cash").tag("Cash")
+                    Text("העברה בנקאית").tag("העברה בנקאית")
+                    Text("מזומן").tag("מזומן")
                 }
                 .pickerStyle(DefaultPickerStyle())
                 
-                Text("Selected Payment Method: \(selectedPaymentMethod)")
             }
             .environment(\.layoutDirection, .rightToLeft)
-
-
-
-
             
-            HStack {
-                Text("מועד התשלום:ֿ")
+            HStack(alignment: .center, spacing: 5){
+                Text("מועד התשלום:")
                     .font(.headline)
                 Spacer()
                 
@@ -116,11 +123,9 @@ struct ReceiptView: View {
             .environment(\.layoutDirection, .rightToLeft)
             
             
-            
-            
             if !OrderManager.shared.receiptExists(forOrderID: order.orderID) {
                 Button("Generate PDF Receipt") {
-                    showConfirmationAlert = true // Show the confirmation alert
+                    showConfirmationAlert = true
                 }
                 .padding(.top, 20)
                 .alert(isPresented: $showConfirmationAlert) {
@@ -128,14 +133,17 @@ struct ReceiptView: View {
                         title: Text("Generate Receipt"),
                         message: Text("Are you sure you want to generate this receipt?"),
                         primaryButton: .default(Text("Generate")) {
-                            // User confirmed, generate the receipt
                             generatePDF()
+                            if showSuccessMessage {
+                                Toast.showToast(message: "Receipt generated successfully.")
+                            }
+
                         },
                         secondaryButton: .cancel(Text("Cancel")) {
-                            // User canceled, dismiss the alert
                         }
                     )
                 }
+                
             }
             
             
@@ -145,11 +153,9 @@ struct ReceiptView: View {
                         return
                     }
                     
-                    // Get the active window scene
                     if let windowScene = UIApplication.shared.connectedScenes
                         .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
                         
-                        // Present the PDF sharing view
                         let pdfShareView = SharePDFView(pdfData: pdfData)
                         let hostingController = UIHostingController(rootView: pdfShareView)
                         
@@ -160,7 +166,7 @@ struct ReceiptView: View {
                 }
                 .padding(.top, 20)
             }
-                        
+            
         }
         .padding()
     }
@@ -195,16 +201,16 @@ struct ReceiptView: View {
             
             // Create a Receipt instance
             let receipt = Receipt(
-                    orderID: order.orderID,
-                    pdfData: pdfData,
-                    dateGenerated: Date(),
-                    paymentMethod: selectedPaymentMethod ,
-                    paymentDate: selectedPaymentDate
-                )
+                myID: nextID,
+                orderID: order.orderID,
+                pdfData: pdfData,
+                dateGenerated: Date(),
+                paymentMethod: selectedPaymentMethod ,
+                paymentDate: selectedPaymentDate
+            )
             
             // Save the receipt and mark the order ID as generated
             OrderManager.shared.addReceipt(receipt: receipt)
-            
             
             isPresented = true
             
@@ -216,7 +222,9 @@ struct ReceiptView: View {
                     print("Error listing files in document directory: \(error.localizedDescription)")
                 }
             }
-
+            
+            showSuccessMessage = true
+            
             
         } catch {
             print("Error saving PDF: \(error.localizedDescription)")
@@ -234,7 +242,7 @@ struct ReceiptView: View {
         let pdfFormat = UIGraphicsPDFRendererFormat()
         pdfFormat.documentInfo = pdfMetaData as [String: Any]
         
-        let pageRect = CGRect(x: 0, y: 0, width: 612, height: 792) // US Letter size
+        let pageRect = CGRect(x: 0, y: 0, width: 612, height: 792)
         
         let renderer = UIGraphicsPDFRenderer(bounds: pageRect, format: pdfFormat)
         let pdfData = renderer.pdfData { (context) in
@@ -244,137 +252,196 @@ struct ReceiptView: View {
             var currentY: CGFloat = 50
             
             // Title
-            let title = "Receipt for Order \(order.orderID)"
+            let title = "קבלה עבור הזמנה \(order.orderID)"
             let titleAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 24)
+                .font: UIFont.systemFont(ofSize: 24, weight: .bold),
+                .paragraphStyle: {
+                    let paragraphStyle = NSMutableParagraphStyle()
+                    paragraphStyle.alignment = .right
+                    return paragraphStyle
+                }()
             ]
             let textRect = CGRect(x: 50, y: currentY, width: 512, height: 50)
             title.draw(in: textRect, withAttributes: titleAttributes)
             
             currentY += 50
             
+            let DocumentDateAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 12),
+                .paragraphStyle: {
+                    let paragraphStyle = NSMutableParagraphStyle()
+                    paragraphStyle.alignment = .right
+                    return paragraphStyle
+                }()
+            ]
+            _ = CGRect(x: 50, y: currentY, width: 512, height: 20)
+            let DocumentDateText = "תאריך יצירת המסמך: \(Date().formatted())"
+            DocumentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: DocumentDateAttributes)
+            
+            currentY += 50
+            
+            
             // Draw contact details
-
             let contactHeaderAttributes: [NSAttributedString.Key: Any] = [
-                        .font: UIFont.boldSystemFont(ofSize: 14)
-                    ]
-                    let contactHeaderRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
-
-                    let contactHeaderText = "Contact Details"
-                    contactHeaderText.draw(in: contactHeaderRect, withAttributes: contactHeaderAttributes)
-
-                    // Update the Y position
-                    currentY += 25
+                .font: UIFont.boldSystemFont(ofSize: 14),
+                .paragraphStyle: {
+                    let paragraphStyle = NSMutableParagraphStyle()
+                    paragraphStyle.alignment = .right
+                    return paragraphStyle
+                }()
+            ]
+            let contactHeaderRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
+            
+            let contactHeaderText = "פרטי הלקוח"
+            contactHeaderText.draw(in: contactHeaderRect, withAttributes: contactHeaderAttributes)
+            
+            // Update the Y position
+            currentY += 25
             
             let contactDetailsAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 12)
+                .font: UIFont.systemFont(ofSize: 12),
+                .paragraphStyle: {
+                    let paragraphStyle = NSMutableParagraphStyle()
+                    paragraphStyle.alignment = .right
+                    return paragraphStyle
+                }()
             ]
             let contactDetailsRect = CGRect(x: 50, y: currentY, width: 512, height: 20)
             let contactDetailsText =
-                "Name: \(order.customer.name)\n"
+            "שם: \(order.customer.name)\n"
             contactDetailsText.draw(in: contactDetailsRect, withAttributes: contactDetailsAttributes)
             
             currentY += 20
-
-            let phoneNumberText = "Phone Number: \(order.customer.phoneNumber)"
+            
+            let phoneNumberText = "מס׳ טלפון: \(order.customer.phoneNumber)"
             phoneNumberText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: contactDetailsAttributes)
             
             currentY += 50
-
+            
             
             // Draw a table header
             let orderHeaderAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.boldSystemFont(ofSize: 14)
+                .font: UIFont.boldSystemFont(ofSize: 14),
+                .paragraphStyle: {
+                    let paragraphStyle = NSMutableParagraphStyle()
+                    paragraphStyle.alignment = .right
+                    return paragraphStyle
+                }()
             ]
             let orderHeaderRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
-            let orderHeaderText = "Order Details"
+            let orderHeaderText = "פרטי הזמנה"
             orderHeaderText.draw(in: orderHeaderRect, withAttributes: orderHeaderAttributes)
-
+            
             // Update the Y position
             currentY += 25
-
+            
             // Draw table headers
             let columnHeaderAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.boldSystemFont(ofSize: 12)
+                .font: UIFont.boldSystemFont(ofSize: 12),
+                .paragraphStyle: {
+                    let paragraphStyle = NSMutableParagraphStyle()
+                    paragraphStyle.alignment = .right
+                    return paragraphStyle
+                }()
             ]
-            let columnHeaderRect = CGRect(x: 50, y: currentY, width: 200, height: 20)
-            let columnHeaderText = "Dessert Name"
+            let columnHeaderRect = CGRect(x: 262, y: currentY, width: 200, height: 20)
+            let columnHeaderText = "מוצר"
             columnHeaderText.draw(in: columnHeaderRect, withAttributes: columnHeaderAttributes)
-
-            let quantityColumnRect = CGRect(x: 250, y: currentY, width: 100, height: 20)
-            let quantityColumnText = "Quantity"
+            
+            let quantityColumnRect = CGRect(x: 462, y: currentY, width: 100, height: 20)
+            let quantityColumnText = "כמות"
             quantityColumnText.draw(in: quantityColumnRect, withAttributes: columnHeaderAttributes)
-
-//            let priceColumnRect = CGRect(x: 350, y: currentY, width: 150, height: 20)
-//            let priceColumnText = "Price"
-//            priceColumnText.draw(in: priceColumnRect, withAttributes: columnHeaderAttributes)
-
+            
+            //            let priceColumnRect = CGRect(x: 350, y: currentY, width: 150, height: 20)
+            //            let priceColumnText = "Price"
+            //            priceColumnText.draw(in: priceColumnRect, withAttributes: columnHeaderAttributes)
+            
             // Update the Y position
             currentY += 20
-
+            
             // Draw the order details in a tabular form
             let cellAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 12)
+                .font: UIFont.systemFont(ofSize: 12),
+                .paragraphStyle: {
+                    let paragraphStyle = NSMutableParagraphStyle()
+                    paragraphStyle.alignment = .right
+                    return paragraphStyle
+                }()
             ]
-
+            
             for dessert in order.desserts {
-                let dessertNameRect = CGRect(x: 50, y: currentY, width: 200, height: 20)
+                let dessertNameRect = CGRect(x: 262, y: currentY, width: 200, height: 20)
                 dessert.dessertName.draw(in: dessertNameRect, withAttributes: cellAttributes)
-
-                let quantityRect = CGRect(x: 250, y: currentY, width: 100, height: 20)
+                
+                let quantityRect = CGRect(x: 462, y: currentY, width: 100, height: 20)
                 String(dessert.quantity).draw(in: quantityRect, withAttributes: cellAttributes)
-
-//                let priceRect = CGRect(x: 350, y: currentY, width: 150, height: 20)
-//                String(format: "₪%.2f", dessert.price * Double(dessert.quantity)).draw(in: priceRect, withAttributes: cellAttributes)
-
+                
+                //                let priceRect = CGRect(x: 350, y: currentY, width: 150, height: 20)
+                //                String(format: "₪%.2f", dessert.price * Double(dessert.quantity)).draw(in: priceRect, withAttributes: cellAttributes)
+                
                 // Update the Y position
                 currentY += 20
             }
             
             // Draw the total price
-                    let totalPriceAttributes: [NSAttributedString.Key: Any] = [
-                        .font: UIFont.boldSystemFont(ofSize: 14)
-                    ]
-                    let totalPriceRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
-
-                    let totalPriceText = "Total Price: ₪\(order.totalPrice)"
-                    totalPriceText.draw(in: totalPriceRect, withAttributes: totalPriceAttributes)
-
-                    // Update the Y position
-                    currentY += 50
+            let totalPriceAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.boldSystemFont(ofSize: 12),
+                .paragraphStyle: {
+                    let paragraphStyle = NSMutableParagraphStyle()
+                    paragraphStyle.alignment = .right
+                    return paragraphStyle
+                }()
+            ]
+            let totalPriceRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
+            
+            let totalPriceText = "עלות כוללת: ₪\(order.totalPrice)"
+            totalPriceText.draw(in: totalPriceRect, withAttributes: totalPriceAttributes)
+            
+            // Update the Y position
+            currentY += 50
             
             
-//            if order.delivery.cost != 0 {
-//                let deliveryCostText = "Delivery Cost: \(order.delivery.cost)"
-//                deliveryCostText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: contactDetailsAttributes)
-//
-//                currentY += 20
-//            }
+            //            if order.delivery.cost != 0 {
+            //                let deliveryCostText = "Delivery Cost: \(order.delivery.cost)"
+            //                deliveryCostText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: contactDetailsAttributes)
+            //
+            //                currentY += 20
+            //            }
             
             // Draw the payment details
-                    let paymentHeaderAttributes: [NSAttributedString.Key: Any] = [
-                        .font: UIFont.boldSystemFont(ofSize: 14)
-                    ]
-                    let paymentHeaderRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
-
-                    let paymentHeaderText = "Payment Details"
-                    paymentHeaderText.draw(in: paymentHeaderRect, withAttributes: paymentHeaderAttributes)
-
-                    // Update the Y position
-                    currentY += 25
+            let paymentHeaderAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.boldSystemFont(ofSize: 14),
+                .paragraphStyle: {
+                    let paragraphStyle = NSMutableParagraphStyle()
+                    paragraphStyle.alignment = .right
+                    return paragraphStyle
+                }()
+            ]
+            let paymentHeaderRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
+            
+            let paymentHeaderText = "פרטי התשלום"
+            paymentHeaderText.draw(in: paymentHeaderRect, withAttributes: paymentHeaderAttributes)
+            
+            // Update the Y position
+            currentY += 25
             
             let paymentDetailsAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 12)
+                .font: UIFont.systemFont(ofSize: 12),
+                .paragraphStyle: {
+                    let paragraphStyle = NSMutableParagraphStyle()
+                    paragraphStyle.alignment = .right
+                    return paragraphStyle
+                }()
             ]
             let paymentDetailsRect = CGRect(x: 50, y: currentY, width: 512, height: 20)
-
-            let paymentMethodText = "Payment Method: \(selectedPaymentMethod)"
+            
+            let paymentMethodText = "שיטת התשלום: \(selectedPaymentMethod)"
             paymentMethodText.draw(in: paymentDetailsRect, withAttributes: paymentDetailsAttributes)
-
+            
             // Update the Y position for the next detail
             currentY += 20
-
-            let paymentDateText = "Payment Date: \(dateFormatter.string(from: selectedPaymentDate))"
+            
+            let paymentDateText = "מועד התשלום: \(dateFormatter.string(from: selectedPaymentDate))"
             paymentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: paymentDetailsAttributes)
             
             // Digital signature
@@ -382,8 +449,8 @@ struct ReceiptView: View {
         
         return pdfData
     }
-
-
+    
+    
 }
 
 struct ReceiptView_Previews: PreviewProvider {
