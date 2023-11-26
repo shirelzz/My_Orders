@@ -25,8 +25,7 @@ struct ContentView: View {
         
         NavigationStack {
             
-            VStack {
-                
+            List {
                 Button(action: {
                     isAddOrderViewPresented = true
                 }) {
