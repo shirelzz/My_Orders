@@ -18,7 +18,7 @@ struct SettingsView: View {
             
             List{
                 
-                Section(header: Text("Account Information")) {
+                Section(header: Text("Personal Information")) {
                         
 //                        HStack{
                             NavigationLink(destination: AccountView()) {
@@ -28,7 +28,7 @@ struct SettingsView: View {
                         
     //                    HStack{
                             NavigationLink(destination: SignatureView()) {
-                                Label("Signature", systemImage: "signature")
+                                Label("Customized Data", systemImage: "wand.and.stars")
                                 }
     //                    }
                         
