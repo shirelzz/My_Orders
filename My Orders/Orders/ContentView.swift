@@ -9,7 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @StateObject private var appManager = AppManager.shared
     @StateObject private var orderManager = OrderManager.shared
+
+    
 //    @StateObject private var inventoryManager = InventoryManager.shared
 
     @State private var showAllOrders = false
@@ -27,27 +30,50 @@ struct ContentView: View {
         
         NavigationStack{
             
-            ZStack(alignment: .center) {
+//            Image(uiImage: UIImage(data: appManager.manager.logoImgData ?? Data()) ?? UIImage())
+//                .resizable(capInsets: EdgeInsets())
+//                .frame(width: 50, height: 50)
+//                .cornerRadius(10)
+//                .padding(.leading, 150.0)
+            
+            
+            ZStack(alignment: .topTrailing) {
+                
                 
                 VStack (alignment: .trailing, spacing: 10) {
                     
-                    Button(action: {
-                        isAddOrderViewPresented = true
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 36))
-                            .foregroundColor(.blue)
-                            .padding()
-                            .shadow(radius: 1)
-                    }
-                    .sheet(isPresented: $isAddOrderViewPresented) {
-                        AddOrderView(orderManager: orderManager)
+                    HStack {
+                        
+                        Spacer()
+
+                        Text("Upcoming Orders")
+                            .font(.largeTitle)
+                            .bold()
+                        
+                        Spacer()
+                        Spacer()
+                        
+                        Button(action: {
+                            isAddOrderViewPresented = true
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.system(size: 36))
+                                .foregroundColor(.blue)
+                                .padding()
+                                .shadow(radius: 1)
+                        }
+                        .sheet(isPresented: $isAddOrderViewPresented) {
+                            AddOrderView(orderManager: orderManager)
+                        }
+                        
+
                     }
                                     
                     if upcomingOrders.isEmpty {
                         Text("No upcoming orders")
                             .font(.headline)
                             .padding()
+                            
                     } else {
                         List {
                             ForEach(upcomingOrders, id: \.orderID) { order in
@@ -57,19 +83,20 @@ struct ContentView: View {
                             }
                             .listRowBackground(Color.clear)
                         }
-                        .listStyle(.plain)
+                        .listStyle(.plain) 
                     }
+                    
+//                    AdBannerView()
+//                                       .frame(width: UIScreen.main.bounds.width, height: 50)
+//                                       .background(Color.gray) // Optional background color
                 }
                 
             }
-            
-            .navigationTitle("Upcoming Orders")
-
-            
-            
-            .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
                         
+        
+            .toolbar {
+                
+                    ToolbarItem(placement: .navigationBarLeading) {
                         
                         Menu {
         

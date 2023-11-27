@@ -14,7 +14,7 @@ struct MyOrdersApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(orderManager)
+            MainView().environmentObject(orderManager)
 
         }
     }

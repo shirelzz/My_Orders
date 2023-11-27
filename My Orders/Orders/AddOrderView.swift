@@ -19,9 +19,8 @@ struct AddOrderView: View {
     
     @State private var delivery = "No"
     @State private var deliveryAddress = ""
-    //    @State private var deliveryCost = Double("")
-    @State private var selectedDeliveryCost = 10
-    let deliveryCosts = [0, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100]
+    @State private var selectedDeliveryCost = 0
+    let deliveryCosts = [0, 10, 15, 20, 25, 30, 40, 50, 60]
     
     
     @State private var pickupDateTime = Date()
@@ -106,7 +105,6 @@ struct AddOrderView: View {
                 .onChange(of: delivery) { newValue in
                     if newValue == "Yes" {
                         deliveryAddress = ""
-                        //                        deliveryCost = 0.0
                     }
                 }
                 
@@ -166,6 +164,7 @@ struct AddOrderView: View {
                         notes: notes,
                         allergies: allergies_details,
                         isCompleted: false,
+                        isPaid: false,
                         receipt: nil
                         
                     )

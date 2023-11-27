@@ -15,6 +15,11 @@ struct CustomizedDataView: View {
     @State private var showLogoImgPicker = false
     @State private var showSignatureImgPicker = false
     
+    @StateObject private var appManager = AppManager.shared
+//    let logoImage = AppManager.shared.logoImg
+//    let signatureImage = AppManager.shared.signatureImg
+
+    
     var body: some View {
         
 //        VStack{
@@ -29,12 +34,23 @@ struct CustomizedDataView: View {
                     HStack{
                         
                         Spacer()
+                        
+
 
                         if (logoImage != nil){
+                            
                             Image(uiImage: logoImage!)
                                 .resizable()
                                 .frame(width: 100, height: 100)
-                        } else {
+                        } 
+                        
+//                        if let logoImage = logoImage {
+//                            Image(uiImage: logoImage)
+//                                .resizable()
+//                                .frame(width: 100, height: 100)
+//                        }
+                        
+                        else {
                             Image(systemName: "photo.on.rectangle")
                                 .resizable()
                                 .frame(width: 50, height: 50)
@@ -44,12 +60,13 @@ struct CustomizedDataView: View {
                         
                         Button{
                             showLogoImgPicker = true
+
                         } label: {
                             Text("Select logo image")
                         }
-                        .sheet(isPresented: $showLogoImgPicker, content: {
+                        .sheet(isPresented: $showLogoImgPicker) {
                             ImagePicker(selectedImage: $logoImage, isPickerShowing: $showLogoImgPicker)
-                        })
+                        }
                         
                         Spacer()
 
@@ -86,6 +103,33 @@ struct CustomizedDataView: View {
                 Spacer()
                
             }
+            
+            Spacer()
+            
+            HStack {
+                
+                Spacer()
+                
+                Button("Save images"){
+                    
+                    if let logoImageData = logoImage?.pngData(),
+                        let signatureImageData = signatureImage?.pngData() {
+                        
+                        let manager = Manager(
+                            
+                            logoImgData: logoImageData,
+                            signatureImgData: signatureImageData
+                        )
+                        AppManager.shared.saveManager(manager: manager)
+                    }
+                }
+                
+                Spacer()
+
+            }
+
+            
+            
             
             Spacer()
         }

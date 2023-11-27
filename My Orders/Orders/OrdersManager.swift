@@ -16,21 +16,8 @@ struct Customer: Codable {
 
 struct Delivery: Codable {
     var address: String
-    //    var city: String
-    //    var street: String
     var cost: Double
 }
-
-struct Receipt: Identifiable, Codable {
-    var id = UUID()
-    var myID: Int
-    var orderID: String
-    var pdfData: Data
-    var dateGenerated: Date
-    var paymentMethod: String
-    var paymentDate: Date
-}
-
 
 struct Dessert: Codable {
     var dessertName: String
@@ -40,6 +27,7 @@ struct Dessert: Codable {
 }
 
 struct DessertOrder: Identifiable, Codable {
+    
     var id: String { orderID }
     
     var orderID: String
@@ -50,6 +38,7 @@ struct DessertOrder: Identifiable, Codable {
     var notes: String
     var allergies: String
     var isCompleted: Bool
+    var isPaid: Bool
     
     var totalPrice: Double {
         let dessertsTotal = desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
@@ -60,23 +49,14 @@ struct DessertOrder: Identifiable, Codable {
     
 }
 
-
-class ReceiptIDManager {
-    static let shared = ReceiptIDManager()
-    
-    private init() {
-        // Load the last assigned ID from UserDefaults
-        nextReceiptID = UserDefaults.standard.integer(forKey: "nextReceiptID")
-    }
-    
-    private(set) var nextReceiptID: Int
-    
-    func getNextReceiptID() -> Int {
-        // Increment the ID and save it to UserDefaults
-        nextReceiptID += 1
-        UserDefaults.standard.set(nextReceiptID, forKey: "nextReceiptID")
-        return nextReceiptID
-    }
+struct Receipt: Identifiable, Codable {
+    var id = UUID()
+    var myID: Int
+    var orderID: String
+    var pdfData: Data?
+    var dateGenerated: Date
+    var paymentMethod: String
+    var paymentDate: Date
 }
 
 
@@ -116,14 +96,22 @@ class OrderManager: ObservableObject {
     
     init() {
         // Load orders from UserDefaults when the manager is initialized
-        loadOrders()
-        
+        loadOrders()        
     }
     
     func updateOrderStatus(orderID: String, isCompleted: Bool) {
         if let index = orders.firstIndex(where: { $0.id == orderID }) {
             if !receiptExists(forOrderID: orders[index].orderID) {
                 orders[index].isCompleted = isCompleted
+                saveOrders()
+            }
+        }
+    }
+    
+    func updatePaymentStatus(orderID: String, isPaid: Bool) {
+        if let index = orders.firstIndex(where: { $0.id == orderID }) {
+            if !receiptExists(forOrderID: orders[index].orderID) {
+                orders[index].isPaid = isPaid
                 saveOrders()
             }
         }
@@ -157,6 +145,12 @@ class OrderManager: ObservableObject {
         }
     }
     
+    func assignReceiptToOrder(receipt: Receipt, toOrderWithID orderID: String) {
+        if let index = orders.firstIndex(where: { $0.id == orderID }) {
+            orders[index].receipt = receipt
+        }
+    }
+    
     // Function to save receipts to UserDefaults
     private func saveReceipts() {
         if let encodedData = try? JSONEncoder().encode(receipts) {
@@ -176,5 +170,16 @@ class OrderManager: ObservableObject {
         return generatedReceiptIDs.contains(orderID)
     }
     
+    func getLastReceipt() -> Receipt? {
+        // Get the most recently generated receipt by sorting receipts based on dateGenerated
+        return receipts.sorted(by: { $0.dateGenerated > $1.dateGenerated }).first
+    }
+    
+    func getLastReceiptID() -> Int {
+        // Get the most recently generated receipt by sorting receipts based on dateGenerated
+        guard let lastReceipt = receipts.sorted(by: { $0.dateGenerated > $1.dateGenerated }).first else {
+                return 0
+            }
+        return lastReceipt.myID    }
 }
 

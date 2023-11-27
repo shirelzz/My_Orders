@@ -34,17 +34,20 @@ struct OrderDetailsView: View {
             Section(header: Text("Customer Information")
                 .font(.headline)
                 .fontWeight(.bold)
-                .padding(.top)
+                .padding(.leading)
             ) {
-                Text("Name: \(order.customer.name)")
-                Text("Phone: 0\(String(order.customer.phoneNumber))")
+                Text("Name: \(order.customer.name)").padding(.leading)
+                Text("Phone: 0\(String(order.customer.phoneNumber))").padding(.leading)
             }
             
             Section(header: Text("Order Information")
                 .font(.headline)
                 .fontWeight(.bold)
-                .padding(.top)
+                .padding(.leading)
             ) {
+                
+                Text("Order Date: \(order.orderDate.formatted())").padding(.leading)
+                
                 List(order.desserts, id: \.dessertName) { dessert in
                     HStack {
                         Text("\(dessert.dessertName)")
@@ -53,8 +56,6 @@ struct OrderDetailsView: View {
                         Text(" ₪\(dessert.price, specifier: "%.2f")")
                     }
                 }
-
-                Text("Order Date: \(order.orderDate.formatted())")
                 
             }
             
@@ -63,19 +64,19 @@ struct OrderDetailsView: View {
                             Text("Additional Details")
                     .font(.headline)
                     .fontWeight(.bold)
-                    .padding(.top)
+                    .padding(.leading)
                 ) {
                     
                     if(order.delivery.address != ""){
-                        Text("Delivery Address: \(order.delivery.address)")
+                        Text("Delivery Address: \(order.delivery.address)").padding(.leading)
                     }
                     
                     if(order.notes != ""){
-                        Text("Notes: \(order.notes)")
+                        Text("Notes: \(order.notes)").padding(.leading)
                     }
-                
+                    
                     if(order.allergies != ""){
-                        Text("Notes: \(order.allergies)")
+                        Text("Notes: \(order.allergies)").padding(.leading)
                     }
                     
                 }
@@ -85,19 +86,23 @@ struct OrderDetailsView: View {
                         Text("Order Status")
                 .font(.headline)
                 .fontWeight(.bold)
-                .padding(.top)
+                .padding(.leading)
             ) {
-                Toggle("Completed", isOn: $order.isCompleted)
-//                    .disabled(OrderManager.shared.receiptExists(forOrderID: order.orderID))
+                
+                Toggle("Paid", isOn: $order.isPaid).padding(.leading)
+                    .onChange(of: order.isPaid) { newValue in
+                        OrderManager.shared.updatePaymentStatus(orderID: order.id, isPaid: newValue)
+                    }
+                
+                Toggle("Completed", isOn: $order.isCompleted).padding(.leading)
                     .onChange(of: order.isCompleted) { newValue in
                         if !flag{
-                            
                             OrderManager.shared.updateOrderStatus(orderID: order.id, isCompleted: newValue)
                         }
-
-                }
+                        
+                    }
                 
-                if order.isCompleted {
+                if order.isPaid {
                     Button("Show Receipt Preview") {
                         showReceiptPreview = true
                     }
@@ -106,21 +111,23 @@ struct OrderDetailsView: View {
                             ReceiptView(order: order, isPresented: $showReceiptPreview)
                         }
                     }
+                    .padding(.leading)
                 }
             }
+            
             
             Section(header:
                         Text("Price")
                 .font(.headline)
                 .fontWeight(.bold)
-                .padding(.top)
+                .padding(.leading)
             ) {
                 
                 if(order.delivery.cost != 0){
-                    Text("Delivery Cost: ₪\(order.delivery.cost, specifier: "%.2f")")
+                    Text("Delivery Cost: ₪\(order.delivery.cost, specifier: "%.2f")").padding(.leading)
                 }
                 
-                Text("Total Price: ₪\(order.totalPrice, specifier: "%.2f")")
+                Text("Total Price: ₪\(order.totalPrice, specifier: "%.2f")").padding(.leading)
             }
         }
         .padding()
@@ -130,20 +137,24 @@ struct OrderDetailsView: View {
         }
     }
 }
-
+    
+    
 struct OrderDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        let sampleOrder = DessertOrder(
-            orderID: "123",
-            customer: Customer(name: "John Doe", phoneNumber: 0546768900),
-            desserts: [Dessert(dessertName: "Chocolate Cake", quantity: 2, price: 10.0)],
-            orderDate: Date(),
-            delivery: Delivery(address: "yefe nof 18, peduel", cost: 10) ,
-            notes: "",
-            allergies: "",
-            isCompleted: false
-        )
-        
-        return OrderDetailsView(order: sampleOrder)
+            let sampleOrder = DessertOrder(
+                orderID: "123",
+                customer: Customer(name: "John Doe", phoneNumber: 0546768900),
+                desserts: [Dessert(dessertName: "Chocolate Cake", quantity: 2, price: 10.0)],
+                orderDate: Date(),
+                delivery: Delivery(address: "yefe nof 18, peduel", cost: 10) ,
+                notes: "",
+                allergies: "",
+                isCompleted: false,
+                isPaid: false,
+                receipt: nil
+            )
+            
+    OrderDetailsView(order: sampleOrder)
     }
 }
+

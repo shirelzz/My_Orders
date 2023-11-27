@@ -8,6 +8,7 @@
 import Foundation
 
 struct InventoryItem: Codable, Identifiable, Hashable{
+    
     var id = UUID()
     var name: String
     var itemPrice: Int
@@ -28,22 +29,6 @@ class InventoryManager: ObservableObject {
         items.insert(item)
         saveItems()
     }
-    
-//    func editItem(at index: Set<InventoryItem>.Index, newName: String, newPrice: Double) {
-//        guard items.indices.contains(index) else {
-//            // Handle invalid index
-//            return
-//        }
-//
-//        var editedItem = items[index]
-//        editedItem.name = newName
-//        editedItem.price = newPrice
-//        
-//        items.remove(items[index])
-//        items.insert(editedItem)
-//        
-//        saveItems()
-//    }
     
     func editItem(item: InventoryItem, newName: String, newPrice: Int, newQuantity: Int, newNotes: String) {
         if items.firstIndex(of: item) != nil {

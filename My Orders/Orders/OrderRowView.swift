@@ -19,8 +19,9 @@ struct OrderRowView: View {
     }()
     
     var body: some View {
+        
         VStack(alignment: .leading) {
-            Text("Customer: \(order.customer.name)") // Access the customer's name
+            Text("Customer: \(order.customer.name)")
             Text("Date: \(dateFormatter.string(from: order.orderDate))")
             Text("Total Price: ₪\(order.totalPrice,  specifier: "%.2f")")
             

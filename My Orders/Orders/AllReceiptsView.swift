@@ -12,6 +12,7 @@ struct AllReceiptsView: View {
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())
     
     var body: some View {
+        
         NavigationView {
             
             VStack {
@@ -34,7 +35,7 @@ struct AllReceiptsView: View {
                 List {
                     ForEach(filteredReceipts, id: \.id) { receipt in
                         if let order = orderManager.orders.first(where: { $0.orderID == receipt.orderID }) {
-                            NavigationLink(destination: ReceiptView(order: order, isPresented: .constant(false))) {
+                            NavigationLink(destination: GeneratedReceiptView(order: order, isPresented: .constant(false))) {
                                 ReceiptRowView(order: order, receipt: receipt)
                             }
                         } else {
