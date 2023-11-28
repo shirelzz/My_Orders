@@ -6,17 +6,24 @@
 //
 
 import Foundation
+import UserNotifications
 
-struct InventoryItem: Codable, Identifiable, Hashable{
+struct InventoryItem: Codable, Identifiable, Hashable{ //
     
     var id = UUID()
     var name: String
-    var itemPrice: Int
+    var itemPrice: Double
     var itemQuantity: Int
     var itemNotes: String
     var catalogNumber: String
     
-
+//    func hash(into hasher: inout Hasher) {
+//            hasher.combine(id)
+//        }
+//
+//        static func == (lhs: InventoryItem, rhs: InventoryItem) -> Bool {
+//            return lhs.id == rhs.id
+//        }
 
 }
 
@@ -30,7 +37,7 @@ class InventoryManager: ObservableObject {
         saveItems()
     }
     
-    func editItem(item: InventoryItem, newName: String, newPrice: Int, newQuantity: Int, newNotes: String) {
+    func editItem(item: InventoryItem, newName: String, newPrice: Double, newQuantity: Int, newNotes: String) {
         if items.firstIndex(of: item) != nil {
                 
                 items.remove(item)
@@ -73,6 +80,21 @@ class InventoryManager: ObservableObject {
     init() {
         loadItems()        
     }
+    
+    func scheduleInventoryNotification(item: InventoryItem, notifyWhenQuantityReaches: Int) {
+            let content = UNMutableNotificationContent()
+            content.title = "Inventory Alert"
+            content.body = "\(item.name) is running low. Current quantity: \(item.itemQuantity)"
+
+            let triggerQuantity = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)  // Set to 1 second for testing purposes, adjust as needed
+
+            let request = UNNotificationRequest(identifier: item.id.uuidString, content: content, trigger: triggerQuantity)
+            UNUserNotificationCenter.current().add(request) { error in
+                if let error = error {
+                    print("Error scheduling inventory notification: \(error.localizedDescription)")
+                }
+            }
+        }
   
 
 //    init(catalogNumber: String, name: String, price: Double) {

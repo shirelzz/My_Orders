@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OrderDetailsView: View {
     
-    @State var order: DessertOrder
+    @State var order: Order
     @State private var showReceipt = false
     @State private var showReceiptPreview = false
     
@@ -48,9 +48,9 @@ struct OrderDetailsView: View {
                 
                 Text("Order Date: \(order.orderDate.formatted())").padding(.leading)
                 
-                List(order.desserts, id: \.dessertName) { dessert in
+                List(order.desserts, id: \.inventoryItem.name) { dessert in
                     HStack {
-                        Text("\(dessert.dessertName)")
+                        Text("\(dessert.inventoryItem.name)")
                         Spacer()
                         Text("Q: \(dessert.quantity)")
                         Text(" ₪\(dessert.price, specifier: "%.2f")")
@@ -141,10 +141,19 @@ struct OrderDetailsView: View {
     
 struct OrderDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-            let sampleOrder = DessertOrder(
+        
+        let sampleItem = InventoryItem(name: "Chocolate cake",
+                                       itemPrice: 20,
+                                       itemQuantity: 20,
+                                       itemNotes: "",
+                                       catalogNumber: "456hg")
+        
+            let sampleOrder = Order(
                 orderID: "123",
                 customer: Customer(name: "John Doe", phoneNumber: 0546768900),
-                desserts: [Dessert(dessertName: "Chocolate Cake", quantity: 2, price: 10.0)],
+                
+                desserts: [Dessert(inventoryItem: sampleItem, quantity: 2, price: 10.0)],
+                
                 orderDate: Date(),
                 delivery: Delivery(address: "yefe nof 18, peduel", cost: 10) ,
                 notes: "",

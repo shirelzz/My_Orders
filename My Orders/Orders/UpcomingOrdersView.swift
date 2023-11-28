@@ -12,7 +12,7 @@ struct UpcomingOrdersView: View {
     @ObservedObject var orderManager: OrderManager
     @State private var searchText = ""
 
-    var filteredOrders: [DessertOrder] {
+    var filteredOrders: [Order] {
         if searchText.isEmpty {
             return orderManager.getOrders()
         } else {

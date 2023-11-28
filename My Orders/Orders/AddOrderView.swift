@@ -9,13 +9,33 @@ import SwiftUI
 
 struct AddOrderView: View {
     
+    // to dos:
+    // 1. cant pick a quantity greater than available
+    
+    @ObservedObject var orderManager: OrderManager
+    @ObservedObject var inventoryManager: InventoryManager
+    
+    @Environment(\.presentationMode) var presentationMode
+    
     @State private var customer = Customer(name: "", phoneNumber: Int("") ?? 0)
     
-    @State private var DessertName = ""
+//    @State private var inventoryItem = InventoryItem(name: "", itemPrice: 0.0, itemQuantity: 0, itemNotes: "" , catalogNumber: <#T##String#>)
+    // or array og all items
+    
+//    @State private var DessertName = ""
+//    @State private var selectedInventoryItem: InventoryItem?
+    @State private var selectedInventoryItem: InventoryItem? = nil
+
+    @State private var searchQuery = ""
+    @State private var filteredItems: [InventoryItem] = []
+
     @State private var DessertQuantity = 1
     @State private var DessertPrice = 0
     @State private var isAddingDessert = false
+    
     @State private var Desserts: [Dessert] = []
+
+
     
     @State private var delivery = "No"
     @State private var deliveryAddress = ""
@@ -29,10 +49,7 @@ struct AddOrderView: View {
     @State private var allergies_details = ""
     
     @State private var notes = ""
-    
-    @ObservedObject var orderManager: OrderManager
-    @Environment(\.presentationMode) var presentationMode
-    
+
     
     var body: some View {
         
@@ -49,52 +66,55 @@ struct AddOrderView: View {
                 .keyboardType(.numberPad)
                 
             }
+
             
-            Section(header: Text("Dessert Selection")) {
-                
-                Button(action: {
-                    self.isAddingDessert.toggle()
-                    if !self.isAddingDessert {
-                        if !self.DessertName.isEmpty {
-                            self.Desserts.append(Dessert(
-                                dessertName: self.DessertName,
-                                quantity: self.DessertQuantity,
-                                price: Double(self.DessertPrice)))
-                            self.DessertName = ""
-                            self.DessertQuantity = 1
-                            self.DessertPrice = 0
+            Section(header: Text("Items Selection")) {
+                TextField("Search for item...", text: $searchQuery)
+                    .padding()
+                    .onChange(of: searchQuery) { value in
+                        filteredItems = inventoryManager.items.filter { $0.name.lowercased().contains(value.lowercased()) }
+                        
+                        // Set selectedInventoryItem to the first item in filteredItems if available
+                        if let firstItem = filteredItems.first {
+                            selectedInventoryItem = firstItem
                         }
+                    }
+
+                if !filteredItems.isEmpty {
+                    Picker("Item", selection: $selectedInventoryItem) {
+                        ForEach(filteredItems, id: \.id) { item in
+                            Text(item.name).tag(item)
+
+                        }
+                    }
+                    .onChange(of: selectedInventoryItem) { newValue in
+                        // Print the selected item for debugging
+                        print("Selected Item: \(newValue?.name ?? "nil")")
+                    }
+                }
+
+                Stepper("Quantity: \(DessertQuantity)", value: $DessertQuantity, in: 1...100)
+
+                Button(action: {
+                    // Add selected item to the order
+                    if let selectedItem = selectedInventoryItem {
+                        Desserts.append(Dessert(
+                            inventoryItem: selectedItem,
+                            quantity: DessertQuantity,
+                            price: selectedItem.itemPrice
+                        ))
                     }
                 }) {
-                    Text(self.isAddingDessert ? "Add" : "Add Dessert")
+                    Text("Add Dessert")
                 }
-                if isAddingDessert {
-                    TextField("Dessert", text: $DessertName)
-                    Stepper("Quantity: \(DessertQuantity)", value: $DessertQuantity, in: 1...100)
-                    TextField("Price: \(DessertPrice)", value: $DessertPrice, formatter: NumberFormatter())
-                        .keyboardType(.numberPad)
-                }
-                
-                ForEach(Desserts.indices, id: \.self) { index in
-                    HStack {
-                        Text("\(self.Desserts[index].dessertName) (Quantity: \(self.Desserts[index].quantity))")
-                        Spacer()
-                        
-                        Button(action: {
-                            // Handle deletion action
-                            self.Desserts.remove(at: index)
-                        }) {
-                            Text("Delete")
-                                .foregroundColor(.red)
-                        }
-                    }
-                }
-                
+
                 // Calculate and display the total price
                 let totalPrice = Desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
                 Text("Total Price: ₪\(totalPrice, specifier: "%.2f")")
-                
             }
+
+
+
             
             Section(header: Text("More Information")) {
                 
@@ -154,7 +174,7 @@ struct AddOrderView: View {
             Section {
                 Button(action: {
                     
-                    let newOrder = DessertOrder(
+                    let newOrder = Order(
                         
                         orderID: UUID().uuidString, // Generates a unique ID for the order
                         customer: customer,

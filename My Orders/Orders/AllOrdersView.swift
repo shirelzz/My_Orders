@@ -9,10 +9,10 @@ import SwiftUI
 
 struct AllOrdersView: View {
     
-    @ObservedObject var orderManager: OrderManager    
+    @ObservedObject var orderManager: OrderManager
     @State private var searchText = ""
     
-    var filteredOrders: [DessertOrder] {
+    var filteredOrders: [Order] {
         if searchText.isEmpty {
             return orderManager.getOrders()
         } else {
@@ -27,20 +27,51 @@ struct AllOrdersView: View {
         
         VStack {
             
-            SearchBar(searchText: $searchText)
             
-            
-            
-            List(filteredOrders, id: \.orderID) { order in
-                NavigationLink(destination: OrderDetailsView(order: order)) {
-                    OrderRowView(order: order)
-                }
+            if filteredOrders.isEmpty {
+                
+                Text("No orders yet")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                
+                
             }
-            .listStyle(InsetGroupedListStyle())
+            else
+            {
+                
+                SearchBar(searchText: $searchText)
+                
+                //                List(filteredOrders, id: \.orderID) { order in
+                //                    NavigationLink(destination: OrderDetailsView(order: order)) {
+                //                        OrderRowView(order: order)
+                //                    }
+                //                }
+                
+                List {
+                    ForEach(filteredOrders, id: \.orderID) { order in
+                        NavigationLink(destination: OrderDetailsView(order: order)) {
+                            OrderRowView(order: order)
+                        }
+                        .contextMenu {
+                            Button(action: {
+                                deleteOrder(orderID: order.orderID)
+                            }) {
+                                Text("Delete")
+                                Image(systemName: "trash")
+                            }
+                        }
+                    }
+                }
+                .listStyle(InsetGroupedListStyle())
+            }
         }
         .navigationBarTitle("All Orders")
     }
     
+    private func deleteOrder(orderID: String) {
+        // Remove the order with the specified orderID
+        orderManager.removeOrder(with: orderID)
+    }
     
 }
 

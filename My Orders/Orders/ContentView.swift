@@ -11,18 +11,20 @@ struct ContentView: View {
     
     @StateObject private var appManager = AppManager.shared
     @StateObject private var orderManager = OrderManager.shared
+    @StateObject private var inventoryManager = InventoryManager.shared
 
-    
-//    @StateObject private var inventoryManager = InventoryManager.shared
 
     @State private var showAllOrders = false
     @State private var showAllReceipts = false
     @State private var isAddOrderViewPresented = false
     
-    
+//    @State private var desserts: [Dessert] = []
+
     init() {
         // Load orders from UserDefaults when ContentView is initialized
+        AppManager.shared.loadManagerData()
         OrderManager.shared.loadOrders()
+        InventoryManager.shared.loadItems()
     }
     
     
@@ -54,25 +56,43 @@ struct ContentView: View {
                         Spacer()
                         
                         Button(action: {
-                            isAddOrderViewPresented = true
+                            withAnimation {
+                                // Modifying state with animation
+                                isAddOrderViewPresented = true
+                            }
                         }) {
                             Image(systemName: "plus.circle.fill")
                                 .font(.system(size: 36))
-                                .foregroundColor(.blue)
                                 .padding()
                                 .shadow(radius: 1)
                         }
                         .sheet(isPresented: $isAddOrderViewPresented) {
-                            AddOrderView(orderManager: orderManager)
+                            AddOrderView(
+                                orderManager: orderManager,inventoryManager: inventoryManager)
                         }
+                        
+//                        Button(action: {
+//                            isAddOrderViewPresented = true
+//                        }) {
+//                            Image(systemName: "plus.circle.fill")
+//                                .font(.system(size: 36))
+//                                .padding()
+//                                .shadow(radius: 1)
+//                        }
+//                        .sheet(isPresented: $isAddOrderViewPresented) {
+//                            AddOrderView(
+//                                orderManager: orderManager,inventoryManager: inventoryManager, desserts: $desserts)
+//                        }
                         
 
                     }
                                     
                     if upcomingOrders.isEmpty {
-                        Text("No upcoming orders")
+                        
+                        Text("No upcoming orders yet")
                             .font(.headline)
-                            .padding()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
                             
                     } else {
                         List {
@@ -113,7 +133,8 @@ struct ContentView: View {
                             }
                             
                             HStack {
-                                NavigationLink( destination: InventoryContentView()) {
+                                NavigationLink( destination:
+                                                    InventoryContentView(inventoryManager: inventoryManager)) {
                                      Label("Inventory", systemImage: "cube")
                                 }
                             }
@@ -135,7 +156,7 @@ struct ContentView: View {
         
     }
     
-    var upcomingOrders: [DessertOrder] {
+    var upcomingOrders: [Order] {
         return orderManager.orders.filter { !$0.isCompleted && $0.orderDate > Date()}
     }
 }

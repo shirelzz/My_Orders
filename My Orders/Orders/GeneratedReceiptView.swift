@@ -11,7 +11,7 @@ import UIKit
 
 struct GeneratedReceiptView: View {
     
-    let order: DessertOrder
+    let order: Order
     
     @Binding var isPresented: Bool
     @State private var pdfData: Data?
@@ -65,9 +65,9 @@ struct GeneratedReceiptView: View {
                 .fontWeight(.bold)
                 .padding(.top)
             ) {
-                List(order.desserts, id: \.dessertName) { dessert in
+                List(order.desserts, id: \.inventoryItem.name) { dessert in
                     HStack {
-                        Text("\(dessert.dessertName)")
+                        Text("\(dessert.inventoryItem.name)")
                         Spacer()
                         Text("Q: \(dessert.quantity)")
                         // Text("₪\(dessert.price, specifier: "%.2f")")
@@ -336,7 +336,7 @@ struct GeneratedReceiptView: View {
             
             for dessert in order.desserts {
                 let dessertNameRect = CGRect(x: 262, y: currentY, width: 200, height: 20)
-                dessert.dessertName.draw(in: dessertNameRect, withAttributes: cellAttributes)
+                dessert.inventoryItem.name.draw(in: dessertNameRect, withAttributes: cellAttributes)
                 
                 let quantityRect = CGRect(x: 462, y: currentY, width: 100, height: 20)
                 String(dessert.quantity).draw(in: quantityRect, withAttributes: cellAttributes)
@@ -422,11 +422,23 @@ struct GeneratedReceiptView: View {
 struct GeneratedReceiptView_Previews: PreviewProvider {
     static var previews: some View {
         
-        let sampleOrder = DessertOrder(
+        let sampleItem = InventoryItem(name: "Chocolate cake",
+                                       itemPrice: 20,
+                                       itemQuantity: 20,
+                                       itemNotes: "",
+                                       catalogNumber: "456hg")
+        
+        let sampleItem_ = InventoryItem(name: "Raspberry pie",
+                                       itemPrice: 120,
+                                       itemQuantity: 3,
+                                       itemNotes: "",
+                                       catalogNumber: "789op")
+        
+        let sampleOrder = Order(
             orderID: "1234",
             customer: Customer(name: "John Doe", phoneNumber: 0546768900),
-            desserts: [Dessert(dessertName: "Chocolate Cake", quantity: 2, price: 10.0),
-                       Dessert(dessertName: "raspberry pie", quantity: 1, price: 120.0)],
+            desserts: [Dessert(inventoryItem: sampleItem, quantity: 2,price: sampleItem.itemPrice),
+                       Dessert(inventoryItem: sampleItem_, quantity: 1, price: sampleItem_.itemPrice)],
             orderDate: Date(),
             delivery: Delivery(address: "yefe nof 18, peduel", cost: 10),
             notes: "",

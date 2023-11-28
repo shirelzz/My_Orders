@@ -29,6 +29,13 @@ struct SettingsView: View {
                     }
                 }
                 
+                Section(header: Text("Notification center")) {
+                    
+                    NavigationLink(destination: NotificationSettingsView()) {
+                        Label("Notifications", systemImage: "bell")
+                    }
+                }
+                
 //                Section(header: Text("Display")) {
 //                    
 //                    VStack {

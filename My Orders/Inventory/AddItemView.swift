@@ -14,7 +14,7 @@ struct AddItemView: View {
     // State variables for new item input
     @State private var newName = ""
     @State private var newCatalogNumber = ""
-    @State private var newPrice = 0
+    @State private var newPrice = 0.0
     @State private var newQuantity = 0
     @State private var newNotes = ""
     
@@ -33,7 +33,7 @@ struct AddItemView: View {
 
                     TextField("Price", text: Binding<String>(
                         get: { String(newPrice) },
-                        set: { if let newValue = Int($0) { newPrice = newValue} }
+                        set: { if let newValue = Double($0) { newPrice = newValue} }
                     ))
                     .keyboardType(.numberPad)
                     
@@ -71,8 +71,10 @@ struct AddItemView: View {
 
                         )
                         
-                        // Add the new order to the OrderManager
-                        inventoryManager.addItem(item: newItem)
+                        withAnimation{
+                            // Add the new order to the OrderManager
+                            inventoryManager.addItem(item: newItem)
+                        }
                         
                         // Save orders to UserDefaults
                         if let encodedData = try? JSONEncoder().encode(inventoryManager.items) {

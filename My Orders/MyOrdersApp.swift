@@ -10,12 +10,20 @@ import SwiftUI
 @main
 struct MyOrdersApp: App {
     
+    let appManager = AppManager.shared
     let orderManager = OrderManager.shared
+    let inventoryManager = InventoryManager.shared
+
 
     var body: some Scene {
+        
         WindowGroup {
-            MainView().environmentObject(orderManager)
+            MainView()
+                .environmentObject(appManager)
+                .environmentObject(orderManager)
+                .environmentObject(inventoryManager)
 
         }
+        
     }
 }

@@ -30,6 +30,8 @@
 		D6AF62F02B13FCB10056C973 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62EF2B13FCB10056C973 /* LaunchView.swift */; };
 		D6AF62F22B14059C0056C973 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F12B14059C0056C973 /* MainView.swift */; };
 		D6AF62F42B14A99B0056C973 /* GeneratedReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F32B14A99B0056C973 /* GeneratedReceiptView.swift */; };
+		D6AF62F62B1516B40056C973 /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F52B1516B40056C973 /* NotificationsView.swift */; };
+		D6AF62F82B151CE80056C973 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F72B151CE80056C973 /* NotificationSettingsView.swift */; };
 		D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */; };
 		D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3322AC593F8002ECA81 /* ContentView.swift */; };
 		D6F6A3352AC593FA002ECA81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6F6A3342AC593FA002ECA81 /* Assets.xcassets */; };
@@ -83,6 +85,8 @@
 		D6AF62EF2B13FCB10056C973 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		D6AF62F12B14059C0056C973 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		D6AF62F32B14A99B0056C973 /* GeneratedReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratedReceiptView.swift; sourceTree = "<group>"; };
+		D6AF62F52B1516B40056C973 /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
+		D6AF62F72B151CE80056C973 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 		D6F6A32D2AC593F8002ECA81 /* My Orders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Orders.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersApp.swift; sourceTree = "<group>"; };
 		D6F6A3322AC593F8002ECA81 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -174,6 +178,8 @@
 				D6AF62E32B13724A0056C973 /* SignatureView.swift */,
 				D6AF62E72B1392FD0056C973 /* CustomizedDataView.swift */,
 				D6AF62E92B1395B10056C973 /* ImagePicker.swift */,
+				D6AF62F52B1516B40056C973 /* NotificationsView.swift */,
+				D6AF62F72B151CE80056C973 /* NotificationSettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -358,7 +364,9 @@
 				D6AF62C42B126DCA0056C973 /* Toast.swift in Sources */,
 				D6F6A35B2AC59961002ECA81 /* OrdersManager.swift in Sources */,
 				D6AF62EC2B13A7D20056C973 /* AppManager.swift in Sources */,
+				D6AF62F62B1516B40056C973 /* NotificationsView.swift in Sources */,
 				D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */,
+				D6AF62F82B151CE80056C973 /* NotificationSettingsView.swift in Sources */,
 				D6F6A3632AC59FCE002ECA81 /* AddOrderView.swift in Sources */,
 				D6F6A3612AC59FB6002ECA81 /* OrderRowView.swift in Sources */,
 				D6AF62E22B136A4F0056C973 /* AccountView.swift in Sources */,

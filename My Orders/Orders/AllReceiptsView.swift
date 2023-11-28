@@ -38,9 +38,10 @@ struct AllReceiptsView: View {
                             NavigationLink(destination: GeneratedReceiptView(order: order, isPresented: .constant(false))) {
                                 ReceiptRowView(order: order, receipt: receipt)
                             }
-                        } else {
-                            Text("Order not found for receipt \(receipt.orderID)")
-                        }
+                        } 
+//                        else {
+//                            Text("Order not found for receipt \(receipt.orderID)")
+//                        }
                     }
                 }
                 .listStyle(InsetGroupedListStyle())
@@ -103,9 +104,8 @@ struct AllReceiptsView: View {
     
 }
 
-
 //struct AllReceiptsView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        AllReceiptsView()
+//        AllReceiptsView(orderManager: orderManager)
 //    }
 //}

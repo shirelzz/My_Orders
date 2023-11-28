@@ -7,6 +7,8 @@
 
 import Foundation
 import SwiftUI
+import UserNotifications
+
 
 struct Manager: Codable {
     var logoImgData: Data?
@@ -27,6 +29,7 @@ class AppManager: ObservableObject {
     init() {
         self.manager = Manager()
         loadManagerData()
+        requestNotificationAuthorization()
     }
     
     func saveManager(manager: Manager) {
@@ -48,6 +51,16 @@ class AppManager: ObservableObject {
         }
         else {
             Toast.showToast(message: "Error while saving")
+        }
+    }
+    
+    func requestNotificationAuthorization() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if granted {
+                print("Notification authorization granted")
+            } else if let error = error {
+                print("Error requesting notification authorization: \(error.localizedDescription)")
+            }
         }
     }
     

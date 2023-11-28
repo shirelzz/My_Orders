@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import UserNotifications
 
 
 struct Customer: Codable {
@@ -20,13 +21,16 @@ struct Delivery: Codable {
 }
 
 struct Dessert: Codable {
-    var dessertName: String
+    
+//    var dessertName: String
+    var inventoryItem: InventoryItem
+
     var quantity: Int
     var price: Double
     
 }
 
-struct DessertOrder: Identifiable, Codable {
+struct Order: Identifiable, Codable {
     
     var id: String { orderID }
     
@@ -40,7 +44,7 @@ struct DessertOrder: Identifiable, Codable {
     var isCompleted: Bool
     var isPaid: Bool
     
-    var totalPrice: Double {
+    var totalPrice: Double{
         let dessertsTotal = desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
         return dessertsTotal + delivery.cost
     }
@@ -64,20 +68,27 @@ struct Receipt: Identifiable, Codable {
 class OrderManager: ObservableObject {
     
     static var shared = OrderManager()
-    @Published var orders: [DessertOrder] = []
+    @Published var orders: [Order] = []
     
-    func addOrder(order: DessertOrder) {
+    func addOrder(order: Order) {
         orders.append(order)
         saveOrders()
     }
     
-    func getOrders() -> [DessertOrder] {
+    func getOrders() -> [Order] {
         return orders
     }
     
-    func removeOrder(at index: Int) {
-        orders.remove(at: index)
-        saveOrders()
+//    func removeOrder(at index: Int) {
+//        orders.remove(at: index)
+//        saveOrders()
+//    }
+    
+    func removeOrder(with orderID: String) {
+        if let index = orders.firstIndex(where: { $0.orderID == orderID }) {
+            orders.remove(at: index)
+            saveOrders()
+        }
     }
     
     private func saveOrders() {
@@ -89,7 +100,7 @@ class OrderManager: ObservableObject {
     // Function to load orders from UserDefaults
     func loadOrders() {
         if let savedData = UserDefaults.standard.data(forKey: "orders"),
-           let decodedOrders = try? JSONDecoder().decode([DessertOrder].self, from: savedData) {
+           let decodedOrders = try? JSONDecoder().decode([Order].self, from: savedData) {
             orders = decodedOrders
         }
     }
@@ -178,8 +189,29 @@ class OrderManager: ObservableObject {
     func getLastReceiptID() -> Int {
         // Get the most recently generated receipt by sorting receipts based on dateGenerated
         guard let lastReceipt = receipts.sorted(by: { $0.dateGenerated > $1.dateGenerated }).first else {
-                return 0
+            return 0
+        }
+        return lastReceipt.myID
+    }
+    
+    
+    // notifications
+    
+    func scheduleOrderNotification(order: Order, daysBefore: Int) {
+            let content = UNMutableNotificationContent()
+            content.title = "Order Time is Soon"
+            content.body = "Your order \(order.orderID) is coming up in \(daysBefore) days."
+            content.sound = UNNotificationSound.default
+
+            let triggerDate = Calendar.current.date(byAdding: .day, value: -daysBefore, to: order.orderDate) ?? Date()
+            let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: triggerDate), repeats: false)
+
+            let request = UNNotificationRequest(identifier: order.orderID, content: content, trigger: trigger)
+            UNUserNotificationCenter.current().add(request) { error in
+                if let error = error {
+                    print("Error scheduling notification: \(error.localizedDescription)")
+                }
             }
-        return lastReceipt.myID    }
+    }
 }
 

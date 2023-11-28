@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OrderRowView: View {
     
-    let order: DessertOrder
+    let order: Order
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()

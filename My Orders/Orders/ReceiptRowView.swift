@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReceiptRowView: View {
     
-    let order: DessertOrder
+    let order: Order
     let receipt: Receipt
 
     

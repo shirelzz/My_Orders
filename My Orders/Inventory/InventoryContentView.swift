@@ -11,7 +11,9 @@ import SwiftUI
 
 struct InventoryContentView: View {
     
-    @StateObject private var inventoryManager = InventoryManager.shared
+//    @StateObject private var inventoryManager = InventoryManager.shared
+    @ObservedObject var inventoryManager: InventoryManager
+
     
     @State private var isAddItemViewPresented = false
     @State private var isEditItemViewPresented = false
@@ -20,11 +22,14 @@ struct InventoryContentView: View {
     @State private var searchText = ""
     @State private var showDeleteAlert = false
     
-    init() {
-        // Load items from UserDefaults when InventoryContentView is initialized
-        InventoryManager.shared.loadItems()
-    }
-    
+//    init() {
+//        
+//        self.inventoryManager = inventoryManager
+//
+//        // Load items from UserDefaults when InventoryContentView is initialized
+////        InventoryManager.shared.loadItems()
+//    }
+
     
     var filteredItems: [InventoryItem] {
         if searchText.isEmpty {
@@ -44,80 +49,101 @@ struct InventoryContentView: View {
                 
                 VStack(alignment: .trailing, spacing: 10) {
                     
-                    Button(action: {
-                        isAddItemViewPresented = true
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 36))
-                            .foregroundColor(.blue)
-                            .padding()
-                            .shadow(radius: 2)
-                    }
-                    //                        .padding(.top, -40)
-                    .sheet(isPresented: $isAddItemViewPresented) {
-                        AddItemView()
-                    }
-                    
-                    SearchBar(searchText: $searchText)
-                    
-                    List(filteredItems) { item in
+                    HStack {
                         
-                        VStack(alignment: .leading) {
+                        Spacer()
+
+                        Text("Inventory Items")
+                            .font(.largeTitle)
+                            .bold()
+                        
+                        Spacer()
+                        Spacer()
+                        
+                        Button(action: {
+                            isAddItemViewPresented = true
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.system(size: 36))
+                                .padding()
+                                .shadow(radius: 1)
+                        }
+                        .sheet(isPresented: $isAddItemViewPresented) {
+                            AddItemView()
+                        }
+                        
+
+                    }
+                    
+                    
+                    if filteredItems.isEmpty {
+                        
+                        Text("No inventory items yet")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
                             
-                            Text("Name: \(item.name)")
-                            Text("Price: \(item.itemPrice)")
-                            Text("Q: \(item.itemQuantity)")
+                    }
+                    else
+                    {
+                        List(filteredItems) { item in
                             
-                            if(item.itemNotes != ""){
-                                Text("Notes: \(item.itemNotes)")
-                            }
-                            
-                            Text("Catalog Number: \(item.catalogNumber)")
-                                .contextMenu {
-                                    Button("Copy catalog number") {
-                                        UIPasteboard.general.string = item.catalogNumber
+                            VStack(alignment: .leading) {
+                                
+                                Text("Name: \(item.name)")
+                                Text("Price: \(item.itemPrice)")
+                                Text("Q: \(item.itemQuantity)")
+                                
+                                if(item.itemNotes != ""){
+                                    Text("Notes: \(item.itemNotes)")
+                                }
+                                
+                                Text("Catalog Number: \(item.catalogNumber)")
+                                    .contextMenu {
+                                        Button("Copy catalog number") {
+                                            UIPasteboard.general.string = item.catalogNumber
+                                        }
                                     }
-                                }
-                            
-                            
-                        }
-                        .swipeActions {
-                            
-                            Button("Delete", role: .destructive) {
-                                selectedItem = item
-                                showDeleteAlert = true
+                                
+                                
                             }
-                            
-                            Button("Edit", role: .none) {
-                                selectedItem = item
+                            .swipeActions {
+                                
+                                Button("Delete", role: .destructive) {
+                                    selectedItem = item
+                                    showDeleteAlert = true
+                                }
+                                
+                                Button("Edit", role: .none) {
+                                    selectedItem = item
+                                }
                             }
                         }
-                    }
-                    .alert(isPresented: $showDeleteAlert) {
-                        Alert(
-                            title: Text("Confirm Deletion"),
-                            message: Text("Are you sure you want to delete this item?"),
-                            primaryButton: .destructive(
-                                Text("Delete"),
-                                action: {
-                                    // Perform delete action here
-                                    inventoryManager.removeItem(item: selectedItem!)
-                                    selectedItem = nil
-                                }
-                            ),
-                            secondaryButton: .cancel(Text("Cancel"))
-                        )
-                    }
-                    .sheet(item: $selectedItem) { selectedItem in
-                        EditItemView(item: selectedItem,
-                                     name: selectedItem.name,
-                                     price: selectedItem.itemPrice,
-                                     quantity: selectedItem.itemQuantity,
-                                     notes: selectedItem.itemNotes)
+                        .alert(isPresented: $showDeleteAlert) {
+                            Alert(
+                                title: Text("Confirm Deletion"),
+                                message: Text("Are you sure you want to delete this item?"),
+                                primaryButton: .destructive(
+                                    Text("Delete"),
+                                    action: {
+                                        // Perform delete action here
+                                        inventoryManager.removeItem(item: selectedItem!)
+                                        selectedItem = nil
+                                    }
+                                ),
+                                secondaryButton: .cancel(Text("Cancel"))
+                            )
+                        }
+                        .sheet(item: $selectedItem) { selectedItem in
+                            EditItemView(item: selectedItem,
+                                         name: selectedItem.name,
+                                         price: selectedItem.itemPrice,
+                                         quantity: selectedItem.itemQuantity,
+                                         notes: selectedItem.itemNotes)
+                        }
                     }
                 }
             }
-            .navigationTitle("Inventory Items")
         }
     }
     
@@ -128,8 +154,8 @@ struct InventoryContentView: View {
 }
 
 
-struct InventoryContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        InventoryContentView()
-    }
-}
+//struct InventoryContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        InventoryContentView(inventoryManager: inventoryManager)
+//    }
+//}

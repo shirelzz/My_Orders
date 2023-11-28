@@ -14,7 +14,7 @@ struct EditItemView: View {
 
     @State var item: InventoryItem?
     @State var name: String
-    @State var price: Int
+    @State var price: Double
     @State var quantity: Int
     @State var notes: String
 
@@ -45,8 +45,6 @@ struct EditItemView: View {
                         viewModel.editItem(item: selectedItem, newName: name, newPrice: price, newQuantity: quantity, newNotes: notes)
                     }            }
             .padding()
-//            .background(Color.blue)
-//            .foregroundColor(.white)
             .cornerRadius(10)
         }
         .padding()
