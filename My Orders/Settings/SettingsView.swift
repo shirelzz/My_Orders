@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     
+    @ObservedObject var appManager: AppManager
     @State private var darkModeOn = false
     
     
@@ -24,7 +25,7 @@ struct SettingsView: View {
                         Label("Account", systemImage: "person")
                     }
                     
-                    NavigationLink(destination: CustomizedDataView()) {
+                    NavigationLink(destination: CustomizedDataView(appManager: appManager)) {
                         Label("Customized Data", systemImage: "wand.and.stars")
                     }
                 }
@@ -33,6 +34,13 @@ struct SettingsView: View {
                     
                     NavigationLink(destination: NotificationSettingsView()) {
                         Label("Notifications", systemImage: "bell")
+                    }
+                }
+                
+                Section(header: Text("Receipt center")) {
+                    
+                    NavigationLink(destination: ReceiptSettingsView(appManager: appManager)) {
+                        Label("Receipt", systemImage: "folder")
                     }
                 }
                 
@@ -69,6 +77,6 @@ struct SettingsView: View {
     
 }
 
-#Preview {
-    SettingsView()
-}
+//#Preview {
+//    SettingsView()
+//}

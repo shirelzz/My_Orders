@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AllReceiptsView: View {
+    
     @ObservedObject var orderManager: OrderManager
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())
     
@@ -35,7 +36,7 @@ struct AllReceiptsView: View {
                 List {
                     ForEach(filteredReceipts, id: \.id) { receipt in
                         if let order = orderManager.orders.first(where: { $0.orderID == receipt.orderID }) {
-                            NavigationLink(destination: GeneratedReceiptView(order: order, isPresented: .constant(false))) {
+                            NavigationLink(destination: GeneratedReceiptView(orderManager: orderManager, order: order, isPresented: .constant(false))) {
                                 ReceiptRowView(order: order, receipt: receipt)
                             }
                         } 

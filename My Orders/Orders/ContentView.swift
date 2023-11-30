@@ -21,9 +21,9 @@ struct ContentView: View {
 //    @State private var desserts: [Dessert] = []
 
     init() {
-        // Load orders from UserDefaults when ContentView is initialized
         AppManager.shared.loadManagerData()
         OrderManager.shared.loadOrders()
+        OrderManager.shared.loadReceipts() //
         InventoryManager.shared.loadItems()
     }
     
@@ -97,7 +97,7 @@ struct ContentView: View {
                     } else {
                         List {
                             ForEach(upcomingOrders, id: \.orderID) { order in
-                                NavigationLink(destination: OrderDetailsView(order: order)) {
+                                NavigationLink(destination: OrderDetailsView(orderManager: orderManager, order: order)) {
                                     OrderRowView(order: order)
                                 }
                             }
@@ -140,7 +140,7 @@ struct ContentView: View {
                             }
                             
                             HStack {
-                                NavigationLink(destination: SettingsView()) {
+                                NavigationLink(destination: SettingsView(appManager: appManager)) {
                                     Label("Settings", systemImage: "gear")
                                     }
                             }

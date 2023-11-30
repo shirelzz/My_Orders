@@ -29,7 +29,7 @@ struct UpcomingOrdersView: View {
             SearchBar(searchText: $searchText)
             
             List(filteredOrders, id: \.orderID) { order in
-                NavigationLink(destination: OrderDetailsView(order: order)) {
+                NavigationLink(destination: OrderDetailsView(orderManager: orderManager, order: order)) {
                     OrderRowView(order: order)
                 }
             }

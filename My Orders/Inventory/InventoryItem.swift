@@ -30,7 +30,7 @@ struct InventoryItem: Codable, Identifiable, Hashable{ //
 class InventoryManager: ObservableObject {
     
     static var shared = InventoryManager()
-    @Published var items: Set<InventoryItem> = []
+    @Published var items: Set<InventoryItem> = Set()
     
     func addItem(item: InventoryItem) {
         items.insert(item)
@@ -38,6 +38,7 @@ class InventoryManager: ObservableObject {
     }
     
     func editItem(item: InventoryItem, newName: String, newPrice: Double, newQuantity: Int, newNotes: String) {
+        
         if items.firstIndex(of: item) != nil {
                 
                 items.remove(item)
@@ -51,7 +52,18 @@ class InventoryManager: ObservableObject {
                 items.insert(editedItem)
                 saveItems()
             }
-        }
+    }
+    
+//    func editItem(item: InventoryItem, newQuantity: Int) {
+//        if items.contains(item) {
+//            items.remove(item)
+//            var editedItem = item
+//            editedItem.itemQuantity = newQuantity
+//            items.insert(editedItem)
+//            saveItems()
+//        }
+//    }
+
 
     
     func removeItem(item: InventoryItem) {

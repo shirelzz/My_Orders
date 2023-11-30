@@ -11,7 +11,10 @@ import UIKit
 
 struct ReceiptView: View {
     
-    var order: Order
+    @ObservedObject var orderManager: OrderManager //n
+    @State var order: Order
+    //    var order: Order
+
     
     @Binding var isPresented: Bool
     @State private var pdfData: Data?
@@ -119,8 +122,12 @@ struct ReceiptView: View {
                 DatePicker("", selection: $selectedPaymentDate, displayedComponents: .date)
                     .datePickerStyle(DefaultDatePickerStyle())
                 
-                
+
             }
+            
+            Text("receipt exist: \(OrderManager.shared.receiptExists(forOrderID: order.orderID).description)")
+//            Text("receipt exist: \(OrderManager.shared.receiptExists(forReceipt: order.receipt ?? nil))")
+            
             .environment(\.layoutDirection, .rightToLeft)
             
             
@@ -150,20 +157,42 @@ struct ReceiptView: View {
             
             if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
                 Button("Share PDF Receipt") {
+                    pdfData = drawPDF()
                     guard let pdfData = self.pdfData else {
+                        Toast.showToast(message: "cant find data")
                         return
                     }
                     
                     if let windowScene = UIApplication.shared.connectedScenes
                         .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
-                        
+
                         let pdfShareView = SharePDFView(pdfData: pdfData)
                         let hostingController = UIHostingController(rootView: pdfShareView)
-                        
+
                         if let rootViewController = windowScene.windows.first?.rootViewController {
-                            rootViewController.present(hostingController, animated: true, completion: nil)
+                            // Dismiss any existing presented view controller
+                            if let presentedViewController = rootViewController.presentedViewController {
+                                presentedViewController.dismiss(animated: true) {
+                                    // Present the new view controller
+                                    rootViewController.present(hostingController, animated: true, completion: nil)
+                                }
+                            } else {
+                                // No view controller is currently presented, so present the new one
+                                rootViewController.present(hostingController, animated: true, completion: nil)
+                            }
                         }
                     }
+                    
+//                    if let windowScene = UIApplication.shared.connectedScenes
+//                        .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
+//                        
+//                        let pdfShareView = SharePDFView(pdfData: pdfData)
+//                        let hostingController = UIHostingController(rootView: pdfShareView)
+//                        
+//                        if let rootViewController = windowScene.windows.first?.rootViewController {
+//                            rootViewController.present(hostingController, animated: true, completion: nil)
+//                        }
+//                    }
                 }
                 .padding(.top, 20)
             }
@@ -202,6 +231,7 @@ struct ReceiptView: View {
             
             // Create a Receipt instance
             let receipt = Receipt(
+                id: UUID().uuidString,
                 myID: lastReceipttID + 1,
                 orderID: order.orderID,
                 pdfData: pdfData, //self.pdfData
@@ -210,13 +240,14 @@ struct ReceiptView: View {
                 paymentDate: selectedPaymentDate
             )
             
-            OrderManager.shared.assignReceiptToOrder(receipt: receipt, toOrderWithID: order.orderID)
-            
-//            order.receipt = receipt
-            
-            // Save the receipt and mark the order ID as generated
-            OrderManager.shared.addReceipt(receipt: receipt)
-
+            if let updatedOrder = OrderManager.shared.assignReceiptToOrder(receipt: receipt, toOrderWithID: order.orderID) {
+                // Save the receipt and mark the order ID as generated
+                OrderManager.shared.addReceipt(receipt: receipt)
+                
+                // Print the order
+                print("receiptview")
+                OrderManager.shared.printOrder(order: updatedOrder)
+            }
             
             isPresented = true
             
@@ -258,7 +289,14 @@ struct ReceiptView: View {
             var currentY: CGFloat = 50
             
             // Title
-            let title = "קבלה מספר \(lastReceipttID + 1)"
+            var title = ""
+            if OrderManager.shared.receiptExists(forOrderID: order.orderID){
+                title = "קבלה מספר \(OrderManager.shared.getReceipt(forOrderID: order.orderID).myID)"
+            }
+            else {
+                title = "קבלה מספר \(lastReceipttID + 1)"
+            }
+            
             let titleAttributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: 24, weight: .bold),
                 .paragraphStyle: {
@@ -459,39 +497,39 @@ struct ReceiptView: View {
     
 }
 
-struct ReceiptView_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        
-        let sampleItem = InventoryItem(name: "Chocolate cake",
-                                       itemPrice: 20,
-                                       itemQuantity: 20,
-                                       itemNotes: "",
-                                       catalogNumber: "456hg")
-        
-        let sampleItem_ = InventoryItem(name: "Raspberry pie",
-                                       itemPrice: 120,
-                                       itemQuantity: 3,
-                                       itemNotes: "",
-                                       catalogNumber: "789op")
-        
-        let sampleOrder = Order(
-            orderID: "1234",
-            customer: Customer(name: "John Doe", phoneNumber: 0546768900),
-            desserts: [Dessert(inventoryItem: sampleItem, quantity: 2,price: sampleItem.itemPrice),
-                       Dessert(inventoryItem: sampleItem_, quantity: 1, price: sampleItem_.itemPrice)],
-            orderDate: Date(),
-            delivery: Delivery(address: "yefe nof 18, peduel", cost: 10),
-            notes: "",
-            allergies: "",
-            isCompleted: false,
-            isPaid: false,
-            receipt: nil
-                        
-        )
-        
-        
-        return ReceiptView(order: sampleOrder, isPresented: .constant(false))
-    }
-}
+//struct ReceiptView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        
+//        
+//        let sampleItem = InventoryItem(name: "Chocolate cake",
+//                                       itemPrice: 20,
+//                                       itemQuantity: 20,
+//                                       itemNotes: "",
+//                                       catalogNumber: "456hg")
+//        
+//        let sampleItem_ = InventoryItem(name: "Raspberry pie",
+//                                       itemPrice: 120,
+//                                       itemQuantity: 3,
+//                                       itemNotes: "",
+//                                       catalogNumber: "789op")
+//        
+//        let sampleOrder = Order(
+//            orderID: "1234",
+//            customer: Customer(name: "John Doe", phoneNumber: 0546768900),
+//            desserts: [Dessert(inventoryItem: sampleItem, quantity: 2,price: sampleItem.itemPrice),
+//                       Dessert(inventoryItem: sampleItem_, quantity: 1, price: sampleItem_.itemPrice)],
+//            orderDate: Date(),
+//            delivery: Delivery(address: "yefe nof 18, peduel", cost: 10),
+//            notes: "",
+//            allergies: "",
+//            isCompleted: false,
+//            isPaid: false,
+//            receipt: nil
+//                        
+//        )
+//        
+//        
+//        return ReceiptView(orderManager: orderManager, order: sampleOrder, isPresented: .constant(false))
+//    }
+//}
 

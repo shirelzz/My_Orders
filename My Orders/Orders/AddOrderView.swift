@@ -19,23 +19,24 @@ struct AddOrderView: View {
     
     @State private var customer = Customer(name: "", phoneNumber: Int("") ?? 0)
     
-//    @State private var inventoryItem = InventoryItem(name: "", itemPrice: 0.0, itemQuantity: 0, itemNotes: "" , catalogNumber: <#T##String#>)
+    //    @State private var inventoryItem = InventoryItem(name: "", itemPrice: 0.0, itemQuantity: 0, itemNotes: "" , catalogNumber: <#T##String#>)
     // or array og all items
     
-//    @State private var DessertName = ""
-//    @State private var selectedInventoryItem: InventoryItem?
+    //    @State private var DessertName = ""
+    //    @State private var selectedInventoryItem: InventoryItem?
     @State private var selectedInventoryItem: InventoryItem? = nil
-
+    @State private var selectedInventoryItemIndex = 0
+    
     @State private var searchQuery = ""
     @State private var filteredItems: [InventoryItem] = []
-
+    
     @State private var DessertQuantity = 1
     @State private var DessertPrice = 0
     @State private var isAddingDessert = false
     
     @State private var Desserts: [Dessert] = []
-
-
+    
+    
     
     @State private var delivery = "No"
     @State private var deliveryAddress = ""
@@ -49,7 +50,7 @@ struct AddOrderView: View {
     @State private var allergies_details = ""
     
     @State private var notes = ""
-
+    
     
     var body: some View {
         
@@ -66,7 +67,7 @@ struct AddOrderView: View {
                 .keyboardType(.numberPad)
                 
             }
-
+            
             
             Section(header: Text("Items Selection")) {
                 TextField("Search for item...", text: $searchQuery)
@@ -79,42 +80,58 @@ struct AddOrderView: View {
                             selectedInventoryItem = firstItem
                         }
                     }
-
+                
                 if !filteredItems.isEmpty {
-                    Picker("Item", selection: $selectedInventoryItem) {
-                        ForEach(filteredItems, id: \.id) { item in
-                            Text(item.name).tag(item)
-
+                    Picker("Item", selection: $selectedInventoryItemIndex) {
+                        ForEach(filteredItems.indices, id: \.self) { index in
+                            let item = filteredItems[index]
+                            let displayText = "\(item.name) , Q: \(item.itemQuantity), Price: ₪\(item.itemPrice)"
+                            
+                            Text(displayText)
+                                .tag(index)
                         }
                     }
-                    .onChange(of: selectedInventoryItem) { newValue in
-                        // Print the selected item for debugging
-                        print("Selected Item: \(newValue?.name ?? "nil")")
+                    .onChange(of: selectedInventoryItemIndex) { newIndex in
+                        // Set selectedInventoryItem to the item at the selected index
+                        selectedInventoryItem = filteredItems[newIndex]
                     }
                 }
-
+                
                 Stepper("Quantity: \(DessertQuantity)", value: $DessertQuantity, in: 1...100)
-
+                
                 Button(action: {
-                    // Add selected item to the order
+                    
                     if let selectedItem = selectedInventoryItem {
-                        Desserts.append(Dessert(
-                            inventoryItem: selectedItem,
-                            quantity: DessertQuantity,
-                            price: selectedItem.itemPrice
-                        ))
-                    }
+                            let dessert = Dessert(
+                                inventoryItem: selectedItem,
+                                quantity: DessertQuantity,
+                                price: selectedItem.itemPrice
+                            )
+                            // editItem(item: InventoryItem, newName: String, newPrice: Double, newQuantity: Int, newNotes: String) {
+                            // Deduct the selected quantity from the item's quantity in the InventoryManager
+                            inventoryManager.editItem(
+                                item: selectedItem,
+                                newName: selectedItem.name,
+                                newPrice: selectedItem.itemPrice,
+                                newQuantity: selectedItem.itemQuantity - DessertQuantity,
+                                newNotes: selectedItem.itemNotes
+                            )
+                            
+                            // Append the dessert to the order
+                            Desserts.append(dessert)
+                        }
+                    
                 }) {
                     Text("Add Dessert")
                 }
-
+                
                 // Calculate and display the total price
                 let totalPrice = Desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
                 Text("Total Price: ₪\(totalPrice, specifier: "%.2f")")
             }
-
-
-
+            
+            
+            
             
             Section(header: Text("More Information")) {
                 

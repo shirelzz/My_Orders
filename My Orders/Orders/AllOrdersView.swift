@@ -10,8 +10,8 @@ import SwiftUI
 struct AllOrdersView: View {
     
     @ObservedObject var orderManager: OrderManager
-    @State private var searchText = ""
     
+    @State private var searchText = ""
     var filteredOrders: [Order] {
         if searchText.isEmpty {
             return orderManager.getOrders()
@@ -26,14 +26,12 @@ struct AllOrdersView: View {
     var body: some View {
         
         VStack {
-            
-            
+                        
             if filteredOrders.isEmpty {
                 
                 Text("No orders yet")
                     .font(.headline)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                
                 
             }
             else
@@ -49,7 +47,7 @@ struct AllOrdersView: View {
                 
                 List {
                     ForEach(filteredOrders, id: \.orderID) { order in
-                        NavigationLink(destination: OrderDetailsView(order: order)) {
+                        NavigationLink(destination: OrderDetailsView(orderManager: orderManager, order: order)) {
                             OrderRowView(order: order)
                         }
                         .contextMenu {

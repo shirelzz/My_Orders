@@ -12,13 +12,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>178</string>
+					<string>217</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>177</string>
+					<string>216</string>
 					<key>Timestamp</key>
-					<string>722795985.3902971</string>
+					<string>723042376.709295</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -37,13 +37,13 @@
 				<string>            
 </string>
 				<key>leading</key>
-				<string>            // Log the file path
-            print("PDF file saved to: \(fileURL)")
-</string>
+				<string>//            // Log the file path
+//            print("PDF file saved to: \(fileURL)")
+//</string>
 				<key>trailing</key>
-				<string>            
-            isPresented = true
-            
+				<string>//            let receipt = order.receipt
+//            
+//            isPresented = true
 </string>
 			</dict>
 			<key>type</key>
@@ -57,13 +57,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>243</string>
+					<string>283</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>242</string>
+					<string>282</string>
 					<key>Timestamp</key>
-					<string>722795985.390047</string>
+					<string>723042439.456519</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -79,7 +79,7 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>            let DocumentDateText = "תאריך יצירת המסמך: \(order.receipt?.dateGenerated ?? Date())" // choose different date
+				<string>            let DocumentDateText = "תאריך יצירת המסמך: \(receipt.dateGenerated)" // choose different date
 </string>
 				<key>leading</key>
 				<string>            ]
@@ -102,13 +102,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>69</string>
+					<string>70</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>68</string>
+					<string>69</string>
 					<key>Timestamp</key>
-					<string>722891935.202077</string>
+					<string>722898367.5719399</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -129,7 +129,7 @@
 				<key>leading</key>
 				<string>                
             }
-</string>
+            </string>
 				<key>trailing</key>
 				<string>            
             Section(header: Text("Items Selection")) {

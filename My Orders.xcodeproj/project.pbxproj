@@ -32,6 +32,7 @@
 		D6AF62F42B14A99B0056C973 /* GeneratedReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F32B14A99B0056C973 /* GeneratedReceiptView.swift */; };
 		D6AF62F62B1516B40056C973 /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F52B1516B40056C973 /* NotificationsView.swift */; };
 		D6AF62F82B151CE80056C973 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F72B151CE80056C973 /* NotificationSettingsView.swift */; };
+		D6AF62FA2B1752140056C973 /* ReceiptSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F92B1752130056C973 /* ReceiptSettingsView.swift */; };
 		D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */; };
 		D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3322AC593F8002ECA81 /* ContentView.swift */; };
 		D6F6A3352AC593FA002ECA81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6F6A3342AC593FA002ECA81 /* Assets.xcassets */; };
@@ -87,6 +88,7 @@
 		D6AF62F32B14A99B0056C973 /* GeneratedReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratedReceiptView.swift; sourceTree = "<group>"; };
 		D6AF62F52B1516B40056C973 /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
 		D6AF62F72B151CE80056C973 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
+		D6AF62F92B1752130056C973 /* ReceiptSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptSettingsView.swift; sourceTree = "<group>"; };
 		D6F6A32D2AC593F8002ECA81 /* My Orders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Orders.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersApp.swift; sourceTree = "<group>"; };
 		D6F6A3322AC593F8002ECA81 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				D6AF62E92B1395B10056C973 /* ImagePicker.swift */,
 				D6AF62F52B1516B40056C973 /* NotificationsView.swift */,
 				D6AF62F72B151CE80056C973 /* NotificationSettingsView.swift */,
+				D6AF62F92B1752130056C973 /* ReceiptSettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -377,6 +380,7 @@
 				D6F6A36B2AC5FA1B002ECA81 /* UpcomingOrdersView.swift in Sources */,
 				D6AF62F02B13FCB10056C973 /* LaunchView.swift in Sources */,
 				D6AF62D62B12C1E20056C973 /* AllInventoryItemsView.swift in Sources */,
+				D6AF62FA2B1752140056C973 /* ReceiptSettingsView.swift in Sources */,
 				D6674D052ACBA1B4003DE4BB /* AllReceiptsView.swift in Sources */,
 				D6674D072ACBA629003DE4BB /* ReceiptRowView.swift in Sources */,
 				D6674D012ACB9544003DE4BB /* ReceiptView.swift in Sources */,

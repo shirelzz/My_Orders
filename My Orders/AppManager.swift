@@ -11,6 +11,7 @@ import UserNotifications
 
 
 struct Manager: Codable {
+    
     var logoImgData: Data?
     var signatureImgData: Data?
     

@@ -11,7 +11,13 @@ import UIKit
 
 struct GeneratedReceiptView: View {
     
-    let order: Order
+    @ObservedObject var orderManager: OrderManager //n
+
+    var order: Order //@state
+    //@state
+
+    //    let order: Order
+
     
     @Binding var isPresented: Bool
     @State private var pdfData: Data?
@@ -25,7 +31,10 @@ struct GeneratedReceiptView: View {
         return formatter
     }
     
+    
     var body: some View {
+        
+        var receipt = OrderManager.shared.getReceipt(forOrderID: order.orderID)
                 
         VStack(alignment: .trailing, spacing: 10) {
             
@@ -34,7 +43,12 @@ struct GeneratedReceiptView: View {
                 .bold()
                 .padding(.bottom, 20)
             
-            Text("קבלה מספר \(order.receipt?.myID ?? 0)")
+//            Text("קבלה מספר \(order.receipt?.myID ?? 0)")
+            Text("קבלה מספר \(receipt.myID)")
+            HStack {
+                Text("קבלה מספר \(orderManager.getReceipt(forOrderID: order.orderID).myID)")
+                    }
+
 
             HStack{
                 Text("תאריך יצירת המסמך:")
@@ -42,12 +56,13 @@ struct GeneratedReceiptView: View {
                     .fontWeight(.bold)
                     .padding(.bottom)
                 
-                if let dateGenerated = order.receipt?.dateGenerated {
-                    Text("\(dateFormatter.string(from: dateGenerated))").padding(.bottom)
-                } else {
-                    // Handle the case when dateGenerated is nil
-                    Text("N/A").padding(.bottom)
-                }
+//                if let dateGenerated = order.receipt?.dateGenerated {
+//                    Text("\(dateFormatter.string(from: dateGenerated))").padding(.bottom)
+//                } else {
+//                    // Handle the case when dateGenerated is nil
+//                    Text("N/A").padding(.bottom)
+//                }
+                Text("\(dateFormatter.string(from: receipt.dateGenerated))").padding(.bottom)
                 
             }
             .environment(\.layoutDirection, .rightToLeft)
@@ -87,34 +102,55 @@ struct GeneratedReceiptView: View {
                 
                 Text("אופן התשלום:")
                     .font(.headline)
-                Text("\(order.receipt?.paymentMethod ?? "")")
+//                Text("\(order.receipt?.paymentMethod ?? "")")
+                Text("\(receipt.paymentMethod)")
+
             }
             .environment(\.layoutDirection, .rightToLeft)
             
             HStack(alignment: .center, spacing: 5){
                 Text("מועד התשלום:")
                     .font(.headline)
-                Text("\(dateFormatter.string(from: order.receipt?.paymentDate ?? Date()))")
+//                Text("\(dateFormatter.string(from: order.receipt?.paymentDate ?? Date()))")
+                Text("\(dateFormatter.string(from: receipt.paymentDate))")
+
             }
+            
+            Text("receipt exist: \(OrderManager.shared.receiptExists(forOrderID: order.orderID).description)")
+            
             .environment(\.layoutDirection, .rightToLeft)
             
             
-            if !OrderManager.shared.receiptExists(forOrderID: order.orderID) {
+//            if !OrderManager.shared.receiptExists(forOrderID: order.orderID) {
+//
+//            }
+            
+
+            if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
+                
                 Button("Share PDF Receipt") {
-                    generatePDF()
-                    
+                    pdfData = drawPDF(receipt: receipt)
                     guard let pdfData = self.pdfData else {
                         return
                     }
-                    
+
                     if let windowScene = UIApplication.shared.connectedScenes
                         .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
-                        
+
                         let pdfShareView = SharePDFView(pdfData: pdfData)
                         let hostingController = UIHostingController(rootView: pdfShareView)
-                        
+
                         if let rootViewController = windowScene.windows.first?.rootViewController {
-                            rootViewController.present(hostingController, animated: true, completion: nil)
+                            // Dismiss any existing presented view controller
+                            if let presentedViewController = rootViewController.presentedViewController {
+                                presentedViewController.dismiss(animated: true) {
+                                    // Present the new view controller
+                                    rootViewController.present(hostingController, animated: true, completion: nil)
+                                }
+                            } else {
+                                // No view controller is currently presented, so present the new one
+                                rootViewController.present(hostingController, animated: true, completion: nil)
+                            }
                         }
                     }
                 }
@@ -146,7 +182,10 @@ struct GeneratedReceiptView: View {
             
         }
         .padding()
+        
     }
+    
+    
     
     private func formattedDate(_ date: Date) -> String {
         let dateFormatter = DateFormatter()
@@ -154,51 +193,52 @@ struct GeneratedReceiptView: View {
         return dateFormatter.string(from: date)
     }
     
-    private func generatePDF() {
-        // Check if a receipt with the same order ID already exists
-        if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
-            isPresented = true
-            return
-        }
-        
-        let pdfData = drawPDF()
-        
-        // Specify the file URL where you want to save the PDF
-        guard let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("receipt.pdf") else {
-            return
-        }
-        
-        // Save the PDF to the file URL
-        do {
-            try pdfData.write(to: fileURL)
-            self.pdfData = pdfData
-            
-            // Log the file path
-            print("PDF file saved to: \(fileURL)")
-            
-            
-            isPresented = true
-            
-            if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-                do {
-                    let files = try FileManager.default.contentsOfDirectory(atPath: documentDirectory.path)
-                    print("Files in document directory: \(files)")
-                } catch {
-                    print("Error listing files in document directory: \(error.localizedDescription)")
-                }
-            }
-            
-            showSuccessMessage = true
-            
-            
-        } catch {
-            print("Error saving PDF: \(error.localizedDescription)")
-        }
-    }
+//    private func generatePDF() {
+//        // Check if a receipt with the same order ID already exists
+//        if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
+//            isPresented = true
+//            return
+//        }
+//        
+//        let pdfData = drawPDF()
+//        
+//        // Specify the file URL where you want to save the PDF
+//        guard let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("receipt.pdf") else {
+//            return
+//        }
+//        
+//        // Save the PDF to the file URL
+//        do {
+//            try pdfData.write(to: fileURL)
+//            self.pdfData = pdfData
+//            
+//            // Log the file path
+//            print("PDF file saved to: \(fileURL)")
+//            
+//            let receipt = order.receipt
+//            
+//            isPresented = true
+//            
+//            if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+//                do {
+//                    let files = try FileManager.default.contentsOfDirectory(atPath: documentDirectory.path)
+//                    print("Files in document directory: \(files)")
+//                } catch {
+//                    print("Error listing files in document directory: \(error.localizedDescription)")
+//                }
+//            }
+//            
+//            showSuccessMessage = true
+//            
+//            
+//        } catch {
+//            print("Error saving PDF: \(error.localizedDescription)")
+//        }
+//    }
     
     
     
-    private func drawPDF() -> Data {
+    private func drawPDF(receipt: Receipt) -> Data {
         // Create a PDF context
         let pdfMetaData = [
             kCGPDFContextCreator: "My Orders",
@@ -217,7 +257,7 @@ struct GeneratedReceiptView: View {
             var currentY: CGFloat = 50
             
             // Title
-            let title = "קבלה מספר \(order.receipt?.myID ?? 0)"
+            let title = "קבלה מספר \(receipt.myID)"
             let titleAttributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: 24, weight: .bold),
                 .paragraphStyle: {
@@ -240,7 +280,7 @@ struct GeneratedReceiptView: View {
                 }()
             ]
             _ = CGRect(x: 50, y: currentY, width: 512, height: 20)
-            let DocumentDateText = "תאריך יצירת המסמך: \(order.receipt?.dateGenerated ?? Date())" // choose different date
+            let DocumentDateText = "תאריך יצירת המסמך: \(receipt.dateGenerated)" // choose different date
             DocumentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: DocumentDateAttributes)
             
             currentY += 50
@@ -400,13 +440,13 @@ struct GeneratedReceiptView: View {
             ]
             let paymentDetailsRect = CGRect(x: 50, y: currentY, width: 512, height: 20)
             
-            let paymentMethodText = "שיטת התשלום: \(String(describing: order.receipt?.paymentMethod))"
+            let paymentMethodText = "שיטת התשלום: \(String(describing: receipt.paymentMethod))"
             paymentMethodText.draw(in: paymentDetailsRect, withAttributes: paymentDetailsAttributes)
             
             // Update the Y position for the next detail
             currentY += 20
             
-            let paymentDateText = "מועד התשלום: \(dateFormatter.string(from: order.receipt?.paymentDate ?? Date()))"
+            let paymentDateText = "מועד התשלום: \(dateFormatter.string(from: receipt.paymentDate)))"
             paymentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: paymentDetailsAttributes)
             
             // Digital or image signature
@@ -414,46 +454,47 @@ struct GeneratedReceiptView: View {
         return pdfData
     }
     
+    
    
     
     
 }
 
-struct GeneratedReceiptView_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        let sampleItem = InventoryItem(name: "Chocolate cake",
-                                       itemPrice: 20,
-                                       itemQuantity: 20,
-                                       itemNotes: "",
-                                       catalogNumber: "456hg")
-        
-        let sampleItem_ = InventoryItem(name: "Raspberry pie",
-                                       itemPrice: 120,
-                                       itemQuantity: 3,
-                                       itemNotes: "",
-                                       catalogNumber: "789op")
-        
-        let sampleOrder = Order(
-            orderID: "1234",
-            customer: Customer(name: "John Doe", phoneNumber: 0546768900),
-            desserts: [Dessert(inventoryItem: sampleItem, quantity: 2,price: sampleItem.itemPrice),
-                       Dessert(inventoryItem: sampleItem_, quantity: 1, price: sampleItem_.itemPrice)],
-            orderDate: Date(),
-            delivery: Delivery(address: "yefe nof 18, peduel", cost: 10),
-            notes: "",
-            allergies: "",
-            isCompleted: false,
-            isPaid: false,
-            
-            receipt: Receipt(myID: 101, orderID: "1234", pdfData: Data(), dateGenerated: Date(), paymentMethod: "bit", paymentDate: Date())
-            
-
-            
-        )
-        
-        return GeneratedReceiptView(order: sampleOrder, isPresented: .constant(false))
-            .previewLayout(.sizeThatFits)
-                        .padding()
-    }
-}
+//struct GeneratedReceiptView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        
+//        let sampleItem = InventoryItem(name: "Chocolate cake",
+//                                       itemPrice: 20,
+//                                       itemQuantity: 20,
+//                                       itemNotes: "",
+//                                       catalogNumber: "456hg")
+//        
+//        let sampleItem_ = InventoryItem(name: "Raspberry pie",
+//                                       itemPrice: 120,
+//                                       itemQuantity: 3,
+//                                       itemNotes: "",
+//                                       catalogNumber: "789op")
+//        
+//        let sampleOrder = Order(
+//            orderID: "1234",
+//            customer: Customer(name: "John Doe", phoneNumber: 0546768900),
+//            desserts: [Dessert(inventoryItem: sampleItem, quantity: 2,price: sampleItem.itemPrice),
+//                       Dessert(inventoryItem: sampleItem_, quantity: 1, price: sampleItem_.itemPrice)],
+//            orderDate: Date(),
+//            delivery: Delivery(address: "yefe nof 18, peduel", cost: 10),
+//            notes: "",
+//            allergies: "",
+//            isCompleted: false,
+//            isPaid: false,
+//            
+//            receipt: Receipt(myID: 101, orderID: "1234", pdfData: Data(), dateGenerated: Date(), paymentMethod: "bit", paymentDate: Date())
+//            
+//
+//            
+//        )
+//        
+//        return GeneratedReceiptView(order: sampleOrder, isPresented: .constant(false))
+//            .previewLayout(.sizeThatFits)
+//                        .padding()
+//    }
+//}

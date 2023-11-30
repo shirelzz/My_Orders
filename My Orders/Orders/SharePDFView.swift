@@ -9,6 +9,7 @@ import SwiftUI
 import UIKit
 
 struct SharePDFView: UIViewControllerRepresentable {
+    
     let pdfData: Data
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
@@ -24,6 +25,6 @@ struct SharePDFView: UIViewControllerRepresentable {
 
 //struct SharePDFView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        SharePDFView()
+//        SharePDFView(pdfData: Data())
 //    }
 //}

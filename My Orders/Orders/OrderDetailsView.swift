@@ -8,17 +8,13 @@
 import SwiftUI
 
 struct OrderDetailsView: View {
-    
+    @ObservedObject var orderManager: OrderManager //n
+
     @State var order: Order
     @State private var showReceipt = false
     @State private var showReceiptPreview = false
     
-    var isReceiptExists: Bool {
-        return OrderManager.shared.receiptExists(forOrderID: order.orderID)
-    }
-    
     var flag = false
-    
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -108,7 +104,7 @@ struct OrderDetailsView: View {
                     }
                     .sheet(isPresented: $showReceiptPreview) {
                         NavigationView {
-                            ReceiptView(order: order, isPresented: $showReceiptPreview)
+                            ReceiptView(orderManager: orderManager, order: order, isPresented: $showReceiptPreview)
                         }
                     }
                     .padding(.leading)
@@ -132,38 +128,38 @@ struct OrderDetailsView: View {
         }
         .padding()
         .navigationBarTitle("Order Details")
-        .sheet(isPresented: $showReceipt) {
-            ReceiptView(order: order, isPresented: $showReceipt) // Present receipt view when the state variable is true
-        }
+//        .sheet(isPresented: $showReceipt) {
+//            ReceiptView(order: order, isPresented: $showReceipt) // Present receipt view when the state variable is true
+//        }
     }
 }
     
     
-struct OrderDetailsView_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        let sampleItem = InventoryItem(name: "Chocolate cake",
-                                       itemPrice: 20,
-                                       itemQuantity: 20,
-                                       itemNotes: "",
-                                       catalogNumber: "456hg")
-        
-            let sampleOrder = Order(
-                orderID: "123",
-                customer: Customer(name: "John Doe", phoneNumber: 0546768900),
-                
-                desserts: [Dessert(inventoryItem: sampleItem, quantity: 2, price: 10.0)],
-                
-                orderDate: Date(),
-                delivery: Delivery(address: "yefe nof 18, peduel", cost: 10) ,
-                notes: "",
-                allergies: "",
-                isCompleted: false,
-                isPaid: false,
-                receipt: nil
-            )
-            
-    OrderDetailsView(order: sampleOrder)
-    }
-}
+//struct OrderDetailsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        
+//        let sampleItem = InventoryItem(name: "Chocolate cake",
+//                                       itemPrice: 20,
+//                                       itemQuantity: 20,
+//                                       itemNotes: "",
+//                                       catalogNumber: "456hg")
+//        
+//            let sampleOrder = Order(
+//                orderID: "123",
+//                customer: Customer(name: "John Doe", phoneNumber: 0546768900),
+//                
+//                desserts: [Dessert(inventoryItem: sampleItem, quantity: 2, price: 10.0)],
+//                
+//                orderDate: Date(),
+//                delivery: Delivery(address: "yefe nof 18, peduel", cost: 10) ,
+//                notes: "",
+//                allergies: "",
+//                isCompleted: false,
+//                isPaid: false,
+//                receipt: nil
+//            )
+//            
+//    OrderDetailsView(order: sampleOrder)
+//    }
+//}
 

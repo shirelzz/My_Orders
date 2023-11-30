@@ -15,7 +15,7 @@ struct CustomizedDataView: View {
     @State private var showLogoImgPicker = false
     @State private var showSignatureImgPicker = false
     
-    @StateObject private var appManager = AppManager.shared
+    @ObservedObject var appManager: AppManager
 //    let logoImage = AppManager.shared.logoImg
 //    let signatureImage = AppManager.shared.signatureImg
 
@@ -137,6 +137,6 @@ struct CustomizedDataView: View {
     }
 }
 
-#Preview {
-    CustomizedDataView()
-}
+//#Preview {
+//    CustomizedDataView()
+//}
