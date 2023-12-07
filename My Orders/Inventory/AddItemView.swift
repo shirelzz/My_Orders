@@ -45,7 +45,7 @@ struct AddItemView: View {
                     
                     TextField("Notes", text: $newNotes)
                     
-                    TextField("Catalog Number", text: $newCatalogNumber)
+//                    TextField("Catalog Number", text: $newCatalogNumber)
 
 
 
@@ -95,11 +95,7 @@ struct AddItemView: View {
         }
                 
             }
-    
-//    func saveItem() {
-//            viewModel.addItem(item: item)
-//            // Optionally, you can navigate back to the previous view or perform any other action after saving.
-//        }
+
         }
      
 

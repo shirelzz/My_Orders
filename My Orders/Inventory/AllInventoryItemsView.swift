@@ -31,7 +31,7 @@ struct AllInventoryItemsView: View {
 
                 List(filteredItems) { item in
                         VStack(alignment: .leading) {
-                            Text("Catalog Number: \(item.catalogNumber)")
+//                            Text("Catalog Number: \(item.catalogNumber)")
                             Text("Name: \(item.name)")
                             Text("Price: \(item.itemPrice)")
                         }

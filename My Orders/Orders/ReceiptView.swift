@@ -12,9 +12,10 @@ import UIKit
 struct ReceiptView: View {
     
     @ObservedObject var orderManager: OrderManager //n
+    @ObservedObject var languageManager: LanguageManager //n
+    
     @State var order: Order
     //    var order: Order
-
     
     @Binding var isPresented: Bool
     @State private var pdfData: Data?
@@ -23,9 +24,8 @@ struct ReceiptView: View {
     @State private var selectedPaymentDate: Date = Date()
     @State private var showSuccessMessage = false
     @State private var lastReceipttID = OrderManager.shared.getLastReceiptID()
-
-
-
+    
+    
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
@@ -35,49 +35,37 @@ struct ReceiptView: View {
     
     var body: some View {
         
-        VStack(alignment: .trailing, spacing: 10) {
+        VStack(alignment: .leading, spacing: 10) {
             
-            Text("קבלה")
+            Text("Receipt")
                 .font(.title)
                 .bold()
                 .padding(.bottom, 20)
             
-//            order.receipt?.myID = nextID
-            Text("קבלה מספר \(lastReceipttID + 1)")
-
-            
-//            if let receiptID = order.receipt.myID + 1 {
-//                Text("קבלה מספר \(receiptID)")
-//            } else {
-//                Text("קבלה לא נמצאה")
-//            }
-
-            
-            
             HStack{
-                Text("תאריך יצירת המסמך:")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .padding(.bottom)
-                
-                Text(dateFormatter.string(from: Date()))
-                    .padding(.bottom)
+                Text("Receipt No.")
+                Text(" \(lastReceipttID + 1)")
             }
-            .environment(\.layoutDirection, .rightToLeft)
+            .padding(.leading)
+            
             
             HStack{
-                Text("עבור:")
-                    .bold()
+                Text("Date created:")
+                Text(dateFormatter.string(from: Date()))
+            }
+            .padding(.leading)
+//            .environment(\.layoutDirection, languageManager.currentLanguage.layoutDirection)
+
+            HStack{
+                Text("For: ")
                 Text(order.customer.name)
             }
-            .environment(\.layoutDirection, .rightToLeft)
+            .padding(.leading)
             
-            
-            Section(header:
-                        Text("פרטי הזמנה:")
+            Section(header: Text("Order Details:")
                 .font(.headline)
                 .fontWeight(.bold)
-                .padding(.top)
+                .padding(.leading)
             ) {
                 List(order.desserts, id: \.inventoryItem.name) { dessert in
                     HStack {
@@ -89,47 +77,50 @@ struct ReceiptView: View {
                 }
             }
             
+            
             HStack{
-                Text("₪")
+                Text("Price:").font(.headline)
+                Text("$")
                 Text(String(format: "%.2f", order.totalPrice))
-                Text("מחיר: ")
-                    .font(.headline)
                 
             }
+            .padding(.leading)
+
             
             HStack(alignment: .center, spacing: 160) {
-                Text("אופן התשלום:")
+                Text("Payment method:")
                     .font(.headline)
                 
-                Picker(selection: $selectedPaymentMethod, label: Text("אופן התשלום:")) {
+                Picker(selection: $selectedPaymentMethod, label: Text("Payment Method")) {
                     Text("Paybox").tag("Paybox")
                     Text("Bit").tag("Bit")
-                    //                  Text("Bank transfer").tag("Bank transfer")
-                    //                  Text("Cash").tag("Cash")
-                    Text("העברה בנקאית").tag("העברה בנקאית")
-                    Text("מזומן").tag("מזומן")
+                    Text("Bank transfer").tag("Bank transfer")
+                    Text("Cash").tag("Cash")
                 }
                 .pickerStyle(DefaultPickerStyle())
+                .scaledToFit()
                 
             }
-            .environment(\.layoutDirection, .rightToLeft)
-            
+            .padding(.leading)
+//            .environment(\.layoutDirection, languageManager.currentLanguage.layoutDirection)
+
             HStack(alignment: .center, spacing: 5){
-                Text("מועד התשלום:")
+                Text("Payment date:")
                     .font(.headline)
-                Spacer()
                 
                 DatePicker("", selection: $selectedPaymentDate, displayedComponents: .date)
                     .datePickerStyle(DefaultDatePickerStyle())
-                
+                    .previewLayout(.sizeThatFits)
 
+                
             }
+            .padding(.leading)
             
             Text("receipt exist: \(OrderManager.shared.receiptExists(forOrderID: order.orderID).description)")
-//            Text("receipt exist: \(OrderManager.shared.receiptExists(forReceipt: order.receipt ?? nil))")
+            //            Text("receipt exist: \(OrderManager.shared.receiptExists(forReceipt: order.receipt ?? nil))")
             
-            .environment(\.layoutDirection, .rightToLeft)
-            
+                .environment(\.layoutDirection, languageManager.currentLanguage.layoutDirection)
+
             
             if !OrderManager.shared.receiptExists(forOrderID: order.orderID) {
                 Button("Generate PDF Receipt") {
@@ -143,9 +134,9 @@ struct ReceiptView: View {
                         primaryButton: .default(Text("Generate")) {
                             generatePDF()
                             if showSuccessMessage {
-                                Toast.showToast(message: "Receipt generated successfully.")
+                                Toast.showToast(message: "Receipt generated successfully")
                             }
-
+                            
                         },
                         secondaryButton: .cancel(Text("Cancel")) {
                         }
@@ -165,10 +156,10 @@ struct ReceiptView: View {
                     
                     if let windowScene = UIApplication.shared.connectedScenes
                         .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
-
+                        
                         let pdfShareView = SharePDFView(pdfData: pdfData)
                         let hostingController = UIHostingController(rootView: pdfShareView)
-
+                        
                         if let rootViewController = windowScene.windows.first?.rootViewController {
                             // Dismiss any existing presented view controller
                             if let presentedViewController = rootViewController.presentedViewController {
@@ -183,16 +174,16 @@ struct ReceiptView: View {
                         }
                     }
                     
-//                    if let windowScene = UIApplication.shared.connectedScenes
-//                        .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
-//                        
-//                        let pdfShareView = SharePDFView(pdfData: pdfData)
-//                        let hostingController = UIHostingController(rootView: pdfShareView)
-//                        
-//                        if let rootViewController = windowScene.windows.first?.rootViewController {
-//                            rootViewController.present(hostingController, animated: true, completion: nil)
-//                        }
-//                    }
+                    //                    if let windowScene = UIApplication.shared.connectedScenes
+                    //                        .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
+                    //
+                    //                        let pdfShareView = SharePDFView(pdfData: pdfData)
+                    //                        let hostingController = UIHostingController(rootView: pdfShareView)
+                    //
+                    //                        if let rootViewController = windowScene.windows.first?.rootViewController {
+                    //                            rootViewController.present(hostingController, animated: true, completion: nil)
+                    //                        }
+                    //                    }
                 }
                 .padding(.top, 20)
             }
@@ -245,8 +236,8 @@ struct ReceiptView: View {
                 OrderManager.shared.addReceipt(receipt: receipt)
                 
                 // Print the order
-                print("receiptview")
-                OrderManager.shared.printOrder(order: updatedOrder)
+                //                print("receiptview")
+                //                OrderManager.shared.printOrder(order: updatedOrder)
             }
             
             isPresented = true
@@ -271,6 +262,12 @@ struct ReceiptView: View {
     
     
     private func drawPDF() -> Data {
+        
+        let receipt_ = OrderManager.shared.getReceipt(forOrderID: order.orderID)
+        let en = LanguageManager.shared.getCurrentLanguage() == "english"
+        let he = LanguageManager.shared.getCurrentLanguage() == "hebrew"
+        let receiptExists = OrderManager.shared.receiptExists(forOrderID: order.orderID)
+        
         // Create a PDF context
         let pdfMetaData = [
             kCGPDFContextCreator: "My Orders",
@@ -290,18 +287,37 @@ struct ReceiptView: View {
             
             // Title
             var title = ""
-            if OrderManager.shared.receiptExists(forOrderID: order.orderID){
-                title = "קבלה מספר \(OrderManager.shared.getReceipt(forOrderID: order.orderID).myID)"
+            if (receiptExists){
+                title = "Receipt No. \(receipt_.myID)"
             }
-            else {
-                title = "קבלה מספר \(lastReceipttID + 1)"
+            else{
+                title = "Receipt No. \(lastReceipttID + 1)"
             }
+            //            var title = ""
+            //            if (receiptExists && en){
+            //                title = "Receipt No. \(receipt_.myID)"
+            //
+            //            }
+            //            else if (receiptExists && he ){
+            //                title = "קבלה מספר \(receipt_.myID)"
+            //            }
+            //            else if (!receiptExists && en){
+            //                title = "Receipt No. \(lastReceipttID + 1)"
+            //            }
+            //            else {
+            //                title = "קבלה מספר \(lastReceipttID + 1)"
+            //            }
             
             let titleAttributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: 24, weight: .bold),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
@@ -314,12 +330,37 @@ struct ReceiptView: View {
                 .font: UIFont.systemFont(ofSize: 12),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
             _ = CGRect(x: 50, y: currentY, width: 512, height: 20)
-            let DocumentDateText = "תאריך יצירת המסמך: \(Date().formatted())"
+            
+            var DocumentDateText = ""
+            if (receiptExists){
+                DocumentDateText = "Date created:\(receipt_.dateGenerated.formatted())"
+            }
+            else if (receiptExists){
+                DocumentDateText = "Date created:\(Date().formatted())"
+            }
+            
+            //            if (receiptExists && en){
+            //                DocumentDateText = "Date created: \(receipt_.dateGenerated.formatted())"
+            //            }
+            //            else if (receiptExists && he){
+            //                DocumentDateText = "תאריך יצירת המסמך: \(receipt_.dateGenerated.formatted())"
+            //            }
+            //            else if (!receiptExists && en){
+            //                DocumentDateText = "Date created: \(Date().formatted())"
+            //            }
+            //            else{
+            //                DocumentDateText = "תאריך יצירת המסמך: \(Date().formatted())"
+            //            }
             DocumentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: DocumentDateAttributes)
             
             currentY += 50
@@ -330,13 +371,25 @@ struct ReceiptView: View {
                 .font: UIFont.boldSystemFont(ofSize: 14),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
             let contactHeaderRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
             
-            let contactHeaderText = "פרטי הלקוח"
+            
+            var contactHeaderText = ""
+            if en {
+                contactHeaderText = "Customer Details"
+            }
+            else {
+                contactHeaderText = "פרטי הלקוח"
+            }
             contactHeaderText.draw(in: contactHeaderRect, withAttributes: contactHeaderAttributes)
             
             // Update the Y position
@@ -346,18 +399,35 @@ struct ReceiptView: View {
                 .font: UIFont.systemFont(ofSize: 12),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
             let contactDetailsRect = CGRect(x: 50, y: currentY, width: 512, height: 20)
-            let contactDetailsText =
-            "שם: \(order.customer.name)\n"
+            
+            var contactDetailsText = ""
+            if en {
+                contactDetailsText = "Name: \(order.customer.name)\n"
+            }
+            else {
+                contactDetailsText = "שם: \(order.customer.name)\n"
+            }
             contactDetailsText.draw(in: contactDetailsRect, withAttributes: contactDetailsAttributes)
             
             currentY += 20
             
-            let phoneNumberText = "מס׳ טלפון: \(order.customer.phoneNumber)"
+            var phoneNumberText = ""
+            if en {
+                phoneNumberText = "Phone Number: \(order.customer.phoneNumber)"
+            }
+            else {
+                phoneNumberText = "מס׳ טלפון: \(order.customer.phoneNumber)"
+            }
             phoneNumberText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: contactDetailsAttributes)
             
             currentY += 50
@@ -368,12 +438,24 @@ struct ReceiptView: View {
                 .font: UIFont.boldSystemFont(ofSize: 14),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
             let orderHeaderRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
-            let orderHeaderText = "פרטי הזמנה"
+            
+            var orderHeaderText = ""
+            if en {
+                orderHeaderText = "Order Details"
+            }
+            else {
+                orderHeaderText = "פרטי הזמנה"
+            }
             orderHeaderText.draw(in: orderHeaderRect, withAttributes: orderHeaderAttributes)
             
             // Update the Y position
@@ -384,16 +466,35 @@ struct ReceiptView: View {
                 .font: UIFont.boldSystemFont(ofSize: 12),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
             let columnHeaderRect = CGRect(x: 262, y: currentY, width: 200, height: 20)
-            let columnHeaderText = "מוצר"
+            
+            var columnHeaderText = ""
+            if en {
+                columnHeaderText = "Item"
+            }
+            else {
+                columnHeaderText = "מוצר"
+            }
             columnHeaderText.draw(in: columnHeaderRect, withAttributes: columnHeaderAttributes)
             
             let quantityColumnRect = CGRect(x: 462, y: currentY, width: 100, height: 20)
-            let quantityColumnText = "כמות"
+            
+            var quantityColumnText = ""
+            if en {
+                quantityColumnText = "Quantity"
+            }
+            else {
+                quantityColumnText = "כמות"
+            }
             quantityColumnText.draw(in: quantityColumnRect, withAttributes: columnHeaderAttributes)
             
             //            let priceColumnRect = CGRect(x: 350, y: currentY, width: 150, height: 20)
@@ -408,7 +509,12 @@ struct ReceiptView: View {
                 .font: UIFont.systemFont(ofSize: 12),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
@@ -432,13 +538,26 @@ struct ReceiptView: View {
                 .font: UIFont.boldSystemFont(ofSize: 12),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
             let totalPriceRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
             
-            let totalPriceText = "עלות כוללת: ₪\(order.totalPrice)"
+            
+//            var totalPriceText = ""
+//            if en {
+//                totalPriceText = "Total Cost: $\(order.totalPrice)"
+//            }
+//            else {
+//                totalPriceText = "עלות כוללת: ₪\(order.totalPrice)"
+//            }
+            let totalPriceText = "Total Cost: $\(order.totalPrice)"
             totalPriceText.draw(in: totalPriceRect, withAttributes: totalPriceAttributes)
             
             // Update the Y position
@@ -457,13 +576,24 @@ struct ReceiptView: View {
                 .font: UIFont.boldSystemFont(ofSize: 14),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
             let paymentHeaderRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
             
-            let paymentHeaderText = "פרטי התשלום"
+            var paymentHeaderText = ""
+            if en {
+                paymentHeaderText = "Payment Details"
+            }
+            else {
+                paymentHeaderText = "פרטי התשלום"
+            }
             paymentHeaderText.draw(in: paymentHeaderRect, withAttributes: paymentHeaderAttributes)
             
             // Update the Y position
@@ -473,19 +603,38 @@ struct ReceiptView: View {
                 .font: UIFont.systemFont(ofSize: 12),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
             let paymentDetailsRect = CGRect(x: 50, y: currentY, width: 512, height: 20)
             
-            let paymentMethodText = "שיטת התשלום: \(selectedPaymentMethod)"
+//            var paymentMethodText = ""
+//            if en {
+//                paymentMethodText = "Payment Method \(selectedPaymentMethod)"
+//            }
+//            else {
+//                paymentMethodText = "שיטת התשלום: \(selectedPaymentMethod)"
+//            }
+            let paymentMethodText = "Payment Method \(selectedPaymentMethod)"
             paymentMethodText.draw(in: paymentDetailsRect, withAttributes: paymentDetailsAttributes)
             
             // Update the Y position for the next detail
             currentY += 20
             
-            let paymentDateText = "מועד התשלום: \(dateFormatter.string(from: selectedPaymentDate))"
+//            var paymentDateText = ""
+//            if en {
+//                paymentDateText = "Payment Date: \(dateFormatter.string(from: receipt_.paymentDate))"
+//            }
+//            else {
+//                paymentDateText = "מועד התשלום: \(dateFormatter.string(from: receipt_.paymentDate))"
+//            }
+            let paymentDateText = "Payment Date: \(dateFormatter.string(from: receipt_.paymentDate))"
             paymentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: paymentDetailsAttributes)
             
             // Digital signature
@@ -497,39 +646,42 @@ struct ReceiptView: View {
     
 }
 
-//struct ReceiptView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        
-//        
-//        let sampleItem = InventoryItem(name: "Chocolate cake",
-//                                       itemPrice: 20,
-//                                       itemQuantity: 20,
-//                                       itemNotes: "",
-//                                       catalogNumber: "456hg")
-//        
-//        let sampleItem_ = InventoryItem(name: "Raspberry pie",
-//                                       itemPrice: 120,
-//                                       itemQuantity: 3,
-//                                       itemNotes: "",
-//                                       catalogNumber: "789op")
-//        
-//        let sampleOrder = Order(
-//            orderID: "1234",
-//            customer: Customer(name: "John Doe", phoneNumber: 0546768900),
-//            desserts: [Dessert(inventoryItem: sampleItem, quantity: 2,price: sampleItem.itemPrice),
-//                       Dessert(inventoryItem: sampleItem_, quantity: 1, price: sampleItem_.itemPrice)],
-//            orderDate: Date(),
-//            delivery: Delivery(address: "yefe nof 18, peduel", cost: 10),
-//            notes: "",
-//            allergies: "",
-//            isCompleted: false,
-//            isPaid: false,
-//            receipt: nil
-//                        
-//        )
-//        
-//        
-//        return ReceiptView(orderManager: orderManager, order: sampleOrder, isPresented: .constant(false))
-//    }
-//}
+struct ReceiptView_Previews: PreviewProvider {
+    static var previews: some View {
+        
+        let sampleItem = InventoryItem(name: "Chocolate cake",
+                                       itemPrice: 20,
+                                       itemQuantity: 20,
+                                       itemNotes: "",
+                                       catalogNumber: "456hg")
+        
+        let sampleItem_ = InventoryItem(name: "Raspberry pie",
+                                       itemPrice: 120,
+                                       itemQuantity: 3,
+                                       itemNotes: "",
+                                       catalogNumber: "789op")
+        
+        let sampleOrder = Order(
+            orderID: "1234",
+            customer: Customer(name: "John Doe", phoneNumber: 0546768900),
+            desserts: [Dessert(inventoryItem: sampleItem, quantity: 2,price: sampleItem.itemPrice),
+                       Dessert(inventoryItem: sampleItem_, quantity: 1, price: sampleItem_.itemPrice)],
+            orderDate: Date(),
+            delivery: Delivery(address: "yefe nof 18, peduel", cost: 10),
+            notes: "",
+            allergies: "",
+            isDelivered: false,
+            isPaid: false,
+            
+            receipt: nil
+            
+
+            
+        )
+        
+        return ReceiptView(orderManager: OrderManager.shared, languageManager: LanguageManager.shared, order: sampleOrder, isPresented: .constant(false))
+            .previewLayout(.sizeThatFits)
+                        .padding()
+    }
+}
 

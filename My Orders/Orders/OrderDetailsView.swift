@@ -9,7 +9,8 @@ import SwiftUI
 
 struct OrderDetailsView: View {
     @ObservedObject var orderManager: OrderManager //n
-
+    @ObservedObject var languageManager: LanguageManager
+    
     @State var order: Order
     @State private var showReceipt = false
     @State private var showReceiptPreview = false
@@ -32,8 +33,26 @@ struct OrderDetailsView: View {
                 .fontWeight(.bold)
                 .padding(.leading)
             ) {
-                Text("Name: \(order.customer.name)").padding(.leading)
-                Text("Phone: 0\(String(order.customer.phoneNumber))").padding(.leading)
+                HStack{
+                    Text("Name:")
+                    Text((order.customer.name))
+                }
+                .padding(.leading)
+
+                HStack{
+                    Text("Phone:")
+                    Text((String(order.customer.phoneNumber)))
+//                        .foregroundColor(.blue) // Make the phone number text appear as a link
+//                                .onTapGesture {
+//                                    if let url = URL(string: "https://wa.me/\(order.customer.phoneNumber)") {
+//                                        UIApplication.shared.open(url)
+//                                    }
+//                                }
+                    
+                    WhatsAppChatButton(phoneNumber: order.customer.phoneNumber)
+
+                }
+                .padding(.leading)
             }
             
             Section(header: Text("Order Information")
@@ -42,37 +61,55 @@ struct OrderDetailsView: View {
                 .padding(.leading)
             ) {
                 
-                Text("Order Date: \(order.orderDate.formatted())").padding(.leading)
+                HStack{
+                    Text("Order Date:")
+                    Text(order.orderDate.formatted())
+                }
+                .padding(.leading)
                 
                 List(order.desserts, id: \.inventoryItem.name) { dessert in
                     HStack {
                         Text("\(dessert.inventoryItem.name)")
                         Spacer()
                         Text("Q: \(dessert.quantity)")
-                        Text(" ₪\(dessert.price, specifier: "%.2f")")
+                        Text("$\(dessert.price, specifier: "%.2f")")
                     }
+                    .padding(.leading)
+
                 }
-                
             }
             
             if (order.delivery.address != "" || order.notes != "" || order.allergies != "") {
                 Section(header:
-                            Text("Additional Details")
+                     Text("Additional Details")
                     .font(.headline)
                     .fontWeight(.bold)
                     .padding(.leading)
                 ) {
                     
                     if(order.delivery.address != ""){
-                        Text("Delivery Address: \(order.delivery.address)").padding(.leading)
+                        HStack {
+                            Text("Delivery Address:")
+                            Text(order.delivery.address)
+                        }
+                        .padding(.leading)
+
                     }
                     
                     if(order.notes != ""){
-                        Text("Notes: \(order.notes)").padding(.leading)
+                        HStack {
+                            Text("Notes:")
+                            Text(order.notes)
+                        }
+                        .padding(.leading)
                     }
                     
                     if(order.allergies != ""){
-                        Text("Notes: \(order.allergies)").padding(.leading)
+                        HStack{
+                            Text("Allergies:")
+                            Text(order.allergies)
+                        }
+                        .padding(.leading)
                     }
                     
                 }
@@ -90,21 +127,21 @@ struct OrderDetailsView: View {
                         OrderManager.shared.updatePaymentStatus(orderID: order.id, isPaid: newValue)
                     }
                 
-                Toggle("Completed", isOn: $order.isCompleted).padding(.leading)
-                    .onChange(of: order.isCompleted) { newValue in
+                Toggle("Delivered", isOn: $order.isDelivered).padding(.leading)
+                    .onChange(of: order.isDelivered) { newValue in
                         if !flag{
-                            OrderManager.shared.updateOrderStatus(orderID: order.id, isCompleted: newValue)
+                            OrderManager.shared.updateOrderStatus(orderID: order.id, isDelivered: newValue)
                         }
                         
                     }
                 
                 if order.isPaid {
-                    Button("Show Receipt Preview") {
+                    Button("Show Preview") {
                         showReceiptPreview = true
                     }
                     .sheet(isPresented: $showReceiptPreview) {
                         NavigationView {
-                            ReceiptView(orderManager: orderManager, order: order, isPresented: $showReceiptPreview)
+                            ReceiptView(orderManager: orderManager, languageManager: languageManager, order: order, isPresented: $showReceiptPreview)
                         }
                     }
                     .padding(.leading)
@@ -120,10 +157,19 @@ struct OrderDetailsView: View {
             ) {
                 
                 if(order.delivery.cost != 0){
-                    Text("Delivery Cost: ₪\(order.delivery.cost, specifier: "%.2f")").padding(.leading)
+                    HStack {
+                        Text("Delivery Cost: $")
+                        Text("\(order.delivery.cost, specifier: "%.2f")")
+                    }
+                    .padding(.leading)
+
                 }
                 
-                Text("Total Price: ₪\(order.totalPrice, specifier: "%.2f")").padding(.leading)
+                HStack{
+                    Text("Total Price: $")
+                    Text("\(order.totalPrice, specifier: "%.2f")")
+                }
+                .padding(.leading)
             }
         }
         .padding()
@@ -134,32 +180,32 @@ struct OrderDetailsView: View {
     }
 }
     
-    
-//struct OrderDetailsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        
-//        let sampleItem = InventoryItem(name: "Chocolate cake",
-//                                       itemPrice: 20,
-//                                       itemQuantity: 20,
-//                                       itemNotes: "",
-//                                       catalogNumber: "456hg")
-//        
-//            let sampleOrder = Order(
-//                orderID: "123",
-//                customer: Customer(name: "John Doe", phoneNumber: 0546768900),
-//                
-//                desserts: [Dessert(inventoryItem: sampleItem, quantity: 2, price: 10.0)],
-//                
-//                orderDate: Date(),
-//                delivery: Delivery(address: "yefe nof 18, peduel", cost: 10) ,
-//                notes: "",
-//                allergies: "",
-//                isCompleted: false,
-//                isPaid: false,
-//                receipt: nil
-//            )
-//            
-//    OrderDetailsView(order: sampleOrder)
-//    }
-//}
+
+struct OrderDetailsView_Previews: PreviewProvider {
+    static var previews: some View {
+        
+        let sampleItem = InventoryItem(name: "Chocolate cake",
+                                       itemPrice: 20,
+                                       itemQuantity: 20,
+                                       itemNotes: "",
+                                       catalogNumber: "456hg")
+        
+            let sampleOrder = Order(
+                orderID: "123",
+                customer: Customer(name: "John Doe", phoneNumber: 0546768900),
+                
+                desserts: [Dessert(inventoryItem: sampleItem, quantity: 2, price: 10.0)],
+                
+                orderDate: Date(),
+                delivery: Delivery(address: "yefe nof 18, peduel", cost: 10) ,
+                notes: "",
+                allergies: "",
+                isDelivered: false,
+                isPaid: false,
+                receipt: nil
+            )
+            
+        OrderDetailsView(orderManager: OrderManager.shared, languageManager: LanguageManager.shared, order: sampleOrder)
+    }
+}
 

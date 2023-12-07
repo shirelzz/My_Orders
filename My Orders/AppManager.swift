@@ -27,6 +27,7 @@ class AppManager: ObservableObject {
     static var shared = AppManager()
     @Published var manager: Manager
     
+    
     init() {
         self.manager = Manager()
         loadManagerData()
@@ -63,6 +64,10 @@ class AppManager: ObservableObject {
                 print("Error requesting notification authorization: \(error.localizedDescription)")
             }
         }
+    }
+    
+    func setLanguage() {
+        
     }
     
 }

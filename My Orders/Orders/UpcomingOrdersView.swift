@@ -10,8 +10,9 @@ import SwiftUI
 struct UpcomingOrdersView: View {
     
     @ObservedObject var orderManager: OrderManager
-    @State private var searchText = ""
+    @ObservedObject var languageManager: LanguageManager
 
+    @State private var searchText = ""
     var filteredOrders: [Order] {
         if searchText.isEmpty {
             return orderManager.getOrders()
@@ -29,7 +30,7 @@ struct UpcomingOrdersView: View {
             SearchBar(searchText: $searchText)
             
             List(filteredOrders, id: \.orderID) { order in
-                NavigationLink(destination: OrderDetailsView(orderManager: orderManager, order: order)) {
+                NavigationLink(destination: OrderDetailsView(orderManager: orderManager, languageManager: languageManager,  order: order)) {
                     OrderRowView(order: order)
                 }
             }
@@ -41,7 +42,7 @@ struct UpcomingOrdersView: View {
 
 struct UpcomingOrdersView_Previews: PreviewProvider {
     static var previews: some View {
-        UpcomingOrdersView(orderManager: OrderManager.shared)
+        UpcomingOrdersView(orderManager: OrderManager.shared, languageManager: LanguageManager.shared)
     }
 }
 

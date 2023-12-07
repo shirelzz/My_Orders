@@ -10,6 +10,8 @@ import SwiftUI
 struct AllReceiptsView: View {
     
     @ObservedObject var orderManager: OrderManager
+    @ObservedObject var languageManager: LanguageManager
+
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())
     
     var body: some View {
@@ -19,7 +21,7 @@ struct AllReceiptsView: View {
             VStack {
                 
                 HStack {
-                    Picker("Select Year", selection: $selectedYear) {
+                    Picker("Select Year".localized, selection: $selectedYear) {
                         Text("2023").tag(2023)
                         Text("2024").tag(2023)
                         Text("2025").tag(2023)
@@ -36,8 +38,8 @@ struct AllReceiptsView: View {
                 List {
                     ForEach(filteredReceipts, id: \.id) { receipt in
                         if let order = orderManager.orders.first(where: { $0.orderID == receipt.orderID }) {
-                            NavigationLink(destination: GeneratedReceiptView(orderManager: orderManager, order: order, isPresented: .constant(false))) {
-                                ReceiptRowView(order: order, receipt: receipt)
+                            NavigationLink(destination: GeneratedReceiptView(orderManager: orderManager, languageManager: languageManager, order: order, isPresented: .constant(false))) {
+                                ReceiptRowView(languageManager: languageManager, order: order, receipt: receipt)
                             }
                         } 
 //                        else {
@@ -49,7 +51,9 @@ struct AllReceiptsView: View {
                 
                 
             }
-            .navigationBarTitle("All Receipts")
+//            .background(Color.accentColor)
+//            .opacity(0.2)
+            .navigationBarTitle("All Receipts".localized)
         }
     }
     

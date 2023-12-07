@@ -23,9 +23,9 @@ struct OrderRowView: View {
         VStack(alignment: .leading) {
             Text("Customer: \(order.customer.name)")
             Text("Date: \(dateFormatter.string(from: order.orderDate))")
-            Text("Total Price: ₪\(order.totalPrice,  specifier: "%.2f")")
+            Text("Total Price: $\(order.totalPrice,  specifier: "%.2f")")
             
-            if order.isCompleted == true{
+            if order.isDelivered == true{
                 
             }
         }

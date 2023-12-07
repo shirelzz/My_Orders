@@ -14,6 +14,7 @@ struct AddOrderView: View {
     
     @ObservedObject var orderManager: OrderManager
     @ObservedObject var inventoryManager: InventoryManager
+    @ObservedObject var languageManager: LanguageManager
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -36,7 +37,8 @@ struct AddOrderView: View {
     
     @State private var Desserts: [Dessert] = []
     
-    
+    @State private var deletedInventoryItem: InventoryItem? = nil
+
     
     @State private var delivery = "No"
     @State private var deliveryAddress = ""
@@ -70,7 +72,9 @@ struct AddOrderView: View {
             
             
             Section(header: Text("Items Selection")) {
-                TextField("Search for item...", text: $searchQuery)
+                
+                
+                TextField("Search for item", text: $searchQuery)
                     .padding()
                     .onChange(of: searchQuery) { value in
                         filteredItems = inventoryManager.items.filter { $0.name.lowercased().contains(value.lowercased()) }
@@ -85,7 +89,7 @@ struct AddOrderView: View {
                     Picker("Item", selection: $selectedInventoryItemIndex) {
                         ForEach(filteredItems.indices, id: \.self) { index in
                             let item = filteredItems[index]
-                            let displayText = "\(item.name) , Q: \(item.itemQuantity), Price: ₪\(item.itemPrice)"
+                            let displayText = "\(item.name) , Q: \(item.itemQuantity), Price: $\(item.itemPrice)"
                             
                             Text(displayText)
                                 .tag(index)
@@ -95,42 +99,65 @@ struct AddOrderView: View {
                         // Set selectedInventoryItem to the item at the selected index
                         selectedInventoryItem = filteredItems[newIndex]
                     }
+                    .pickerStyle(.automatic)
                 }
                 
-                Stepper("Quantity: \(DessertQuantity)", value: $DessertQuantity, in: 1...100)
+                Stepper("Quantity: \(DessertQuantity)" , value: $DessertQuantity, in: 1...100)
                 
                 Button(action: {
                     
                     if let selectedItem = selectedInventoryItem {
-                            let dessert = Dessert(
-                                inventoryItem: selectedItem,
-                                quantity: DessertQuantity,
-                                price: selectedItem.itemPrice
-                            )
-                            // editItem(item: InventoryItem, newName: String, newPrice: Double, newQuantity: Int, newNotes: String) {
-                            // Deduct the selected quantity from the item's quantity in the InventoryManager
-                            inventoryManager.editItem(
-                                item: selectedItem,
-                                newName: selectedItem.name,
-                                newPrice: selectedItem.itemPrice,
-                                newQuantity: selectedItem.itemQuantity - DessertQuantity,
-                                newNotes: selectedItem.itemNotes
-                            )
-                            
-                            // Append the dessert to the order
-                            Desserts.append(dessert)
-                        }
+                        let dessert = Dessert(
+                            inventoryItem: selectedItem,
+                            quantity: DessertQuantity,
+                            price: selectedItem.itemPrice
+                        )
+                        
+                        inventoryManager.updateQuantity(item: selectedItem,
+                                                        newQuantity: selectedItem.itemQuantity - DessertQuantity)
+                        
+                        // Append the dessert to the order
+                        Desserts.append(dessert)
+                    }
                     
-                }) {
-                    Text("Add Dessert")
+                }){
+                    Text("Add item")
                 }
                 
-                // Calculate and display the total price
-                let totalPrice = Desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
-                Text("Total Price: ₪\(totalPrice, specifier: "%.2f")")
+                ForEach(Desserts.indices, id: \.self) { index in
+                    HStack {
+                        Text("\(Desserts[index].inventoryItem.name) (Quantity: \(Desserts[index].quantity))")
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            // Get the selected dessert
+                            let deletedDessert = Desserts[index]
+                            
+                            // Delete the dessert from the list
+                            Desserts.remove(at: index)
+                            
+                            // Update the quantity of the selected inventory item
+                            if let selectedItem = inventoryManager.items.first(where: { $0.id == deletedDessert.inventoryItem.id }) {
+                                inventoryManager.updateQuantity(item: selectedItem,
+                                                                newQuantity: selectedItem.itemQuantity + deletedDessert.quantity)
+                            }
+                        }) {
+                            Image(systemName: "trash")
+                                .foregroundColor(.red)
+                        }
+
+                    }
+                }
+
+                HStack{
+                    // Calculate and display the total price
+                    let totalPrice = Desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
+                    
+                    Text("Total Price: $")
+                    Text("\(totalPrice, specifier: "%.2f")")
+                }
             }
-            
-            
             
             
             Section(header: Text("More Information")) {
@@ -149,16 +176,19 @@ struct AddOrderView: View {
                     TextEditor(text: $deliveryAddress)
                         .frame(height: 50)
                     
-                    Picker("Delivery cost: ₪", selection: $selectedDeliveryCost) {
+                    Picker("Delivery cost: $", selection: $selectedDeliveryCost) {
                         ForEach(deliveryCosts, id: \.self) { cost in
-                            Text("₪\(cost)").tag(cost)
+                            Text("$\(cost)").tag(cost)
                         }
                     }
                     .pickerStyle(DefaultPickerStyle())
                     
                 }
                 
-                DatePicker("Pickup Date and Time", selection: $pickupDateTime, in: Date()..., displayedComponents: [.date, .hourAndMinute])
+                DatePicker("Pickup Date and Time",
+                           selection: $pickupDateTime,
+                           in: Date()...,
+                           displayedComponents: [.date, .hourAndMinute])
                 
                 
                 Picker("Allergies", selection: $allergies) {
@@ -184,8 +214,6 @@ struct AddOrderView: View {
                         .frame(height: 100)
                 }
                 
-                
-                
             }
             
             Section {
@@ -200,7 +228,7 @@ struct AddOrderView: View {
                         delivery: Delivery(address: deliveryAddress, cost: Double(selectedDeliveryCost)),
                         notes: notes,
                         allergies: allergies_details,
-                        isCompleted: false,
+                        isDelivered: false,
                         isPaid: false,
                         receipt: nil
                         
@@ -225,4 +253,11 @@ struct AddOrderView: View {
         }
         .navigationBarTitle("New Order")
     }
+}
+
+#Preview {
+    AddOrderView(orderManager: OrderManager.shared,
+                 inventoryManager: InventoryManager.shared,
+                 languageManager: LanguageManager.shared
+    )
 }

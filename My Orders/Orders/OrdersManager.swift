@@ -37,7 +37,7 @@ struct Order: Identifiable, Codable {
     var delivery: Delivery
     var notes: String
     var allergies: String
-    var isCompleted: Bool
+    var isDelivered: Bool
     var isPaid: Bool
     
     var totalPrice: Double{
@@ -119,10 +119,10 @@ class OrderManager: ObservableObject {
     }
     
     
-    func updateOrderStatus(orderID: String, isCompleted: Bool) {
+    func updateOrderStatus(orderID: String, isDelivered: Bool) {
         if let index = orders.firstIndex(where: { $0.id == orderID }) {
             if !receiptExists(forOrderID: orders[index].orderID) {
-                orders[index].isCompleted = isCompleted
+                orders[index].isDelivered = isDelivered
                 saveOrders()
             }
         }
@@ -281,7 +281,15 @@ class OrderManager: ObservableObject {
     
     func receiptExists(forOrderID orderID: String) -> Bool {
 //        return generatedReceiptIDs.contains(orderID)
-        if let receipt = receipts.first(where: { $0.orderID == orderID }) {
+        
+//        if let receipt = receipts.first(where: { $0.orderID == orderID }) {
+//            return true
+//        } else {
+//            return false
+//        } worked
+        
+        
+        if receipts.first(where: { $0.orderID == orderID }) != nil {
             return true
         } else {
             return false

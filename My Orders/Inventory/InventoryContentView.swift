@@ -11,9 +11,9 @@ import SwiftUI
 
 struct InventoryContentView: View {
     
-//    @StateObject private var inventoryManager = InventoryManager.shared
-    @ObservedObject var inventoryManager: InventoryManager
-
+    //    @StateObject private var inventoryManager = InventoryManager.shared
+    @ObservedObject var inventoryManager = InventoryManager.shared
+    
     
     @State private var isAddItemViewPresented = false
     @State private var isEditItemViewPresented = false
@@ -22,14 +22,14 @@ struct InventoryContentView: View {
     @State private var searchText = ""
     @State private var showDeleteAlert = false
     
-//    init() {
-//        
-//        self.inventoryManager = inventoryManager
-//
-//        // Load items from UserDefaults when InventoryContentView is initialized
-////        InventoryManager.shared.loadItems()
-//    }
-
+    //    init() {
+    //
+    //        self.inventoryManager = inventoryManager
+    //
+    //        // Load items from UserDefaults when InventoryContentView is initialized
+    ////        InventoryManager.shared.loadItems()
+    //    }
+    
     
     var filteredItems: [InventoryItem] {
         if searchText.isEmpty {
@@ -52,12 +52,13 @@ struct InventoryContentView: View {
                     HStack {
                         
                         Spacer()
-
+                        
                         Text("Inventory Items")
                             .font(.largeTitle)
                             .bold()
                         
                         Spacer()
+                        
                         Spacer()
                         
                         Button(action: {
@@ -72,7 +73,7 @@ struct InventoryContentView: View {
                             AddItemView()
                         }
                         
-
+                        
                     }
                     
                     
@@ -81,32 +82,33 @@ struct InventoryContentView: View {
                         Text("No inventory items yet")
                             .font(.headline)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-                            
+                        
+                        
                     }
                     else
                     {
+                        SearchBar(searchText: $searchText)
+
                         List(filteredItems) { item in
                             
                             VStack(alignment: .leading) {
                                 
                                 Text("Name: \(item.name)")
-                                Text("Price: \(item.itemPrice)")
-                                Text("Q: \(item.itemQuantity)")
-                                
-                                if(item.itemNotes != ""){
-                                    Text("Notes: \(item.itemNotes)")
-                                }
-                                
-                                Text("Catalog Number: \(item.catalogNumber)")
                                     .contextMenu {
-                                        Button("Copy catalog number") {
-                                            UIPasteboard.general.string = item.catalogNumber
+                                        Button("Copy name") {
+                                            UIPasteboard.general.string = item.name
                                         }
                                     }
                                 
+                                Text("Price: \(item.itemPrice)".localized)
+                                Text("Q: \(item.itemQuantity)")
+                                
+                                if(item.itemNotes != ""){
+                                    Text("Notes: \(item.itemNotes)".localized)
+                                }
                                 
                             }
+                            
                             .swipeActions {
                                 
                                 Button("Delete", role: .destructive) {
@@ -127,11 +129,11 @@ struct InventoryContentView: View {
                                     Text("Delete"),
                                     action: {
                                         // Perform delete action here
-                                        inventoryManager.removeItem(item: selectedItem!)
-                                        selectedItem = nil
+                                        inventoryManager.deleteItem(item: selectedItem!)
+                                        //                                        selectedItem = nil
                                     }
                                 ),
-                                secondaryButton: .cancel(Text("Cancel"))
+                                secondaryButton: .cancel(Text("Cancel".localized))
                             )
                         }
                         .sheet(item: $selectedItem) { selectedItem in
@@ -147,15 +149,15 @@ struct InventoryContentView: View {
         }
     }
     
-    var inventoryItems: Set<InventoryItem> {
+    var inventoryItems: [InventoryItem] {
         return inventoryManager.items
     }
     
 }
 
 
-//struct InventoryContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        InventoryContentView(inventoryManager: inventoryManager)
-//    }
-//}
+struct InventoryContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        InventoryContentView(inventoryManager: InventoryManager.shared)
+    }
+}

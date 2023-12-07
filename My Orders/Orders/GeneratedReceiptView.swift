@@ -12,7 +12,8 @@ import UIKit
 struct GeneratedReceiptView: View {
     
     @ObservedObject var orderManager: OrderManager //n
-
+    @ObservedObject var languageManager: LanguageManager
+    
     var order: Order //@state
     //@state
 
@@ -34,24 +35,25 @@ struct GeneratedReceiptView: View {
     
     var body: some View {
         
-        var receipt = OrderManager.shared.getReceipt(forOrderID: order.orderID)
+        let receipt = OrderManager.shared.getReceipt(forOrderID: order.orderID)
+
                 
-        VStack(alignment: .trailing, spacing: 10) {
+        VStack(alignment: .leading, spacing: 10) { //
             
-            Text("קבלה")
+            Text("Receipt")
                 .font(.title)
                 .bold()
                 .padding(.bottom, 20)
             
 //            Text("קבלה מספר \(order.receipt?.myID ?? 0)")
-            Text("קבלה מספר \(receipt.myID)")
-            HStack {
-                Text("קבלה מספר \(orderManager.getReceipt(forOrderID: order.orderID).myID)")
-                    }
+            Text("Receipt No. \(receipt.myID)")
+//            HStack {
+//                Text("Receipt No.\(orderManager.getReceipt(forOrderID: order.orderID).myID)")
+//                    }
 
 
             HStack{
-                Text("תאריך יצירת המסמך:")
+                Text("Date Generated:")
                     .font(.headline)
                     .fontWeight(.bold)
                     .padding(.bottom)
@@ -65,17 +67,17 @@ struct GeneratedReceiptView: View {
                 Text("\(dateFormatter.string(from: receipt.dateGenerated))").padding(.bottom)
                 
             }
-            .environment(\.layoutDirection, .rightToLeft)
-            
+//            .environment(\.layoutDirection, languageManager.currentLanguage.layoutDirection)
+
             HStack{
-                Text("עבור:")
+                Text("For")
                     .bold()
                 Text(order.customer.name)
             }
-            .environment(\.layoutDirection, .rightToLeft)
-            
+//            .environment(\.layoutDirection, languageManager.currentLanguage.layoutDirection)
+
             Section(header:
-                        Text("פרטי הזמנה:")
+                        Text("Order Details")
                 .font(.headline)
                 .fontWeight(.bold)
                 .padding(.top)
@@ -91,25 +93,24 @@ struct GeneratedReceiptView: View {
             }
             
             HStack{
-                Text("₪")
+                Text("Price:").font(.headline)
+                Text("$")
                 Text(String(format: "%.2f", order.totalPrice))
-                Text("מחיר: ")
-                    .font(.headline)
                 
             }
             
             HStack(alignment: .center, spacing: 5) {
                 
-                Text("אופן התשלום:")
+                Text("Payment Method:")
                     .font(.headline)
 //                Text("\(order.receipt?.paymentMethod ?? "")")
                 Text("\(receipt.paymentMethod)")
 
             }
-            .environment(\.layoutDirection, .rightToLeft)
-            
+//            .environment(\.layoutDirection, languageManager.currentLanguage.layoutDirection)
+
             HStack(alignment: .center, spacing: 5){
-                Text("מועד התשלום:")
+                Text("Payment Date:")
                     .font(.headline)
 //                Text("\(dateFormatter.string(from: order.receipt?.paymentDate ?? Date()))")
                 Text("\(dateFormatter.string(from: receipt.paymentDate))")
@@ -117,9 +118,8 @@ struct GeneratedReceiptView: View {
             }
             
             Text("receipt exist: \(OrderManager.shared.receiptExists(forOrderID: order.orderID).description)")
-            
-            .environment(\.layoutDirection, .rightToLeft)
-            
+//                .environment(\.layoutDirection, languageManager.currentLanguage.layoutDirection)
+
             
 //            if !OrderManager.shared.receiptExists(forOrderID: order.orderID) {
 //
@@ -239,6 +239,9 @@ struct GeneratedReceiptView: View {
     
     
     private func drawPDF(receipt: Receipt) -> Data {
+        
+        let en = LanguageManager.shared.getCurrentLanguage() == "english"
+
         // Create a PDF context
         let pdfMetaData = [
             kCGPDFContextCreator: "My Orders",
@@ -257,12 +260,17 @@ struct GeneratedReceiptView: View {
             var currentY: CGFloat = 50
             
             // Title
-            let title = "קבלה מספר \(receipt.myID)"
+            let title = "Receipt No.\(receipt.myID)"
             let titleAttributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: 24, weight: .bold),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
@@ -275,12 +283,17 @@ struct GeneratedReceiptView: View {
                 .font: UIFont.systemFont(ofSize: 12),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
             _ = CGRect(x: 50, y: currentY, width: 512, height: 20)
-            let DocumentDateText = "תאריך יצירת המסמך: \(receipt.dateGenerated)" // choose different date
+            let DocumentDateText = "Date Generated:\(receipt.dateGenerated)" // choose different date
             DocumentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: DocumentDateAttributes)
             
             currentY += 50
@@ -291,13 +304,18 @@ struct GeneratedReceiptView: View {
                 .font: UIFont.boldSystemFont(ofSize: 14),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
             let contactHeaderRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
             
-            let contactHeaderText = "פרטי הלקוח"
+            let contactHeaderText = "Customer Details"
             contactHeaderText.draw(in: contactHeaderRect, withAttributes: contactHeaderAttributes)
             
             // Update the Y position
@@ -307,7 +325,12 @@ struct GeneratedReceiptView: View {
                 .font: UIFont.systemFont(ofSize: 12),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
@@ -329,12 +352,17 @@ struct GeneratedReceiptView: View {
                 .font: UIFont.boldSystemFont(ofSize: 14),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
             let orderHeaderRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
-            let orderHeaderText = "פרטי הזמנה"
+            let orderHeaderText = "Order Details"
             orderHeaderText.draw(in: orderHeaderRect, withAttributes: orderHeaderAttributes)
             
             // Update the Y position
@@ -345,16 +373,21 @@ struct GeneratedReceiptView: View {
                 .font: UIFont.boldSystemFont(ofSize: 12),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
             let columnHeaderRect = CGRect(x: 262, y: currentY, width: 200, height: 20)
-            let columnHeaderText = "מוצר"
+            let columnHeaderText = "Item"
             columnHeaderText.draw(in: columnHeaderRect, withAttributes: columnHeaderAttributes)
             
             let quantityColumnRect = CGRect(x: 462, y: currentY, width: 100, height: 20)
-            let quantityColumnText = "כמות"
+            let quantityColumnText = "Quantity"
             quantityColumnText.draw(in: quantityColumnRect, withAttributes: columnHeaderAttributes)
             
             //            let priceColumnRect = CGRect(x: 350, y: currentY, width: 150, height: 20)
@@ -369,7 +402,12 @@ struct GeneratedReceiptView: View {
                 .font: UIFont.systemFont(ofSize: 12),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
@@ -393,13 +431,18 @@ struct GeneratedReceiptView: View {
                 .font: UIFont.boldSystemFont(ofSize: 12),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
             let totalPriceRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
             
-            let totalPriceText = "עלות כוללת: ₪\(order.totalPrice)"
+            let totalPriceText = "Total price: $\(order.totalPrice)"
             totalPriceText.draw(in: totalPriceRect, withAttributes: totalPriceAttributes)
             
             // Update the Y position
@@ -418,13 +461,18 @@ struct GeneratedReceiptView: View {
                 .font: UIFont.boldSystemFont(ofSize: 14),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
             let paymentHeaderRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
             
-            let paymentHeaderText = "פרטי התשלום"
+            let paymentHeaderText = "Payment Details"
             paymentHeaderText.draw(in: paymentHeaderRect, withAttributes: paymentHeaderAttributes)
             
             // Update the Y position
@@ -434,19 +482,24 @@ struct GeneratedReceiptView: View {
                 .font: UIFont.systemFont(ofSize: 12),
                 .paragraphStyle: {
                     let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .right
+                    if en {
+                        paragraphStyle.alignment = .left
+                    }
+                    else {
+                        paragraphStyle.alignment = .right
+                    }
                     return paragraphStyle
                 }()
             ]
             let paymentDetailsRect = CGRect(x: 50, y: currentY, width: 512, height: 20)
             
-            let paymentMethodText = "שיטת התשלום: \(String(describing: receipt.paymentMethod))"
+            let paymentMethodText = "Payment Method: \(String(describing: receipt.paymentMethod))"
             paymentMethodText.draw(in: paymentDetailsRect, withAttributes: paymentDetailsAttributes)
             
             // Update the Y position for the next detail
             currentY += 20
             
-            let paymentDateText = "מועד התשלום: \(dateFormatter.string(from: receipt.paymentDate)))"
+            let paymentDateText = "Payment Date: \(dateFormatter.string(from: receipt.paymentDate)))"
             paymentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: paymentDetailsAttributes)
             
             // Digital or image signature
@@ -460,41 +513,41 @@ struct GeneratedReceiptView: View {
     
 }
 
-//struct GeneratedReceiptView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        
-//        let sampleItem = InventoryItem(name: "Chocolate cake",
-//                                       itemPrice: 20,
-//                                       itemQuantity: 20,
-//                                       itemNotes: "",
-//                                       catalogNumber: "456hg")
-//        
-//        let sampleItem_ = InventoryItem(name: "Raspberry pie",
-//                                       itemPrice: 120,
-//                                       itemQuantity: 3,
-//                                       itemNotes: "",
-//                                       catalogNumber: "789op")
-//        
-//        let sampleOrder = Order(
-//            orderID: "1234",
-//            customer: Customer(name: "John Doe", phoneNumber: 0546768900),
-//            desserts: [Dessert(inventoryItem: sampleItem, quantity: 2,price: sampleItem.itemPrice),
-//                       Dessert(inventoryItem: sampleItem_, quantity: 1, price: sampleItem_.itemPrice)],
-//            orderDate: Date(),
-//            delivery: Delivery(address: "yefe nof 18, peduel", cost: 10),
-//            notes: "",
-//            allergies: "",
-//            isCompleted: false,
-//            isPaid: false,
-//            
-//            receipt: Receipt(myID: 101, orderID: "1234", pdfData: Data(), dateGenerated: Date(), paymentMethod: "bit", paymentDate: Date())
-//            
-//
-//            
-//        )
-//        
-//        return GeneratedReceiptView(order: sampleOrder, isPresented: .constant(false))
-//            .previewLayout(.sizeThatFits)
-//                        .padding()
-//    }
-//}
+struct GeneratedReceiptView_Previews: PreviewProvider {
+    static var previews: some View {
+        
+        let sampleItem = InventoryItem(name: "Chocolate cake",
+                                       itemPrice: 20,
+                                       itemQuantity: 20,
+                                       itemNotes: "",
+                                       catalogNumber: "456hg")
+        
+        let sampleItem_ = InventoryItem(name: "Raspberry pie",
+                                       itemPrice: 120,
+                                       itemQuantity: 3,
+                                       itemNotes: "",
+                                       catalogNumber: "789op")
+        
+        let sampleOrder = Order(
+            orderID: "1234",
+            customer: Customer(name: "John Doe", phoneNumber: 0546768900),
+            desserts: [Dessert(inventoryItem: sampleItem, quantity: 2,price: sampleItem.itemPrice),
+                       Dessert(inventoryItem: sampleItem_, quantity: 1, price: sampleItem_.itemPrice)],
+            orderDate: Date(),
+            delivery: Delivery(address: "yefe nof 18, peduel", cost: 10),
+            notes: "",
+            allergies: "",
+            isDelivered: false,
+            isPaid: false,
+            
+            receipt: Receipt(id: UUID().uuidString, myID: 101, orderID: "1234", pdfData: Data(), dateGenerated: Date(), paymentMethod: "bit", paymentDate: Date())
+            
+
+            
+        )
+        
+        return GeneratedReceiptView(orderManager: OrderManager.shared, languageManager: LanguageManager.shared, order: sampleOrder, isPresented: .constant(false))
+            .previewLayout(.sizeThatFits)
+                        .padding()
+    }
+}

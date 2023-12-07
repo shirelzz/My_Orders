@@ -10,60 +10,67 @@ import SwiftUI
 
 struct EditItemView: View {
     
-    @ObservedObject var viewModel = InventoryManager()
-
+    @ObservedObject var inventoryManager = InventoryManager()
+    
     @State var item: InventoryItem?
     @State var name: String
     @State var price: Double
     @State var quantity: Int
     @State var notes: String
-
-
+    
+    
     var body: some View {
         
-        VStack(alignment: .leading, spacing: 10)
+        NavigationStack
         {
+            Form
+            {
+                
+                Section(header: Text("Change Name") ) {
+                    TextField("Name", text: $name)
+                        .padding(.vertical)
+                }
+                
+                Section(header: Text("Change Price") ) {
+                    TextField("Price", value: $price, formatter: NumberFormatter())
+                        .padding(.vertical)
+                }
+                
+                Section(header: Text("Change Quantity") ) {
+                    TextField("Quantity", value: $quantity, formatter: NumberFormatter())
+                        .padding(.vertical)
+                }
+                
+                Section(header: Text("Change Notes") ) {
+                    TextField("Notes", text: $notes)
+                        .padding(.vertical)
+                }
+                
+            }
+            .navigationBarTitle("Edit Item")
+            .padding(.top)
             
-            TextField("Name", text: $name)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-
-            TextField("Price", value: $price, formatter: NumberFormatter())
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            TextField("Quantity", value: $quantity, formatter: NumberFormatter())
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            TextField("Notes", text: $notes)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-
             Button("Save Changes") {
                 if let selectedItem = item {
-                        viewModel.editItem(item: selectedItem, newName: name, newPrice: price, newQuantity: quantity, newNotes: notes)
-                    }            }
+                    inventoryManager.editItem(item: selectedItem, newName: name, newPrice: price, newQuantity: quantity, newNotes: notes)
+                }
+            }
             .padding()
             .cornerRadius(10)
+            .buttonStyle(.borderedProminent)
         }
-        .padding()
-        .navigationBarTitle("Edit Item")
     }
 }
 
 
 
-//struct EditItemView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        // Assuming you have some state variables in your parent view
-//        @State var isEditing = false
-//        @State var itemName = "Example Item"
-//        @State var itemPrice = 10.0
-//
-//        return EditItemView(viewModel: InventoryItemModel(), item: Binding<InventoryItem?>, name: <#T##Binding<String>#>, price: <#T##Binding<Double>#>, name: $itemName, price: $itemPrice) {
-//            // Handle save action in your parent view
-//            print("Save action")
-//        }
-//    }
-//}
+struct EditItemView_Previews: PreviewProvider {
+    static var previews: some View {
+        
+        let itemName = "Cupcake"
+        let itemPrice = 10.0
+        let itemQuantity = 5
+        
+        EditItemView(name: itemName, price: itemPrice, quantity: itemQuantity, notes: "")
+    }
+}
