@@ -6,8 +6,8 @@
 //
 
 import Foundation
-//import GoogleMobileAds
-//
+import GoogleMobileAds
+
 //struct AdBannerView: UIViewRepresentable {
 //    func makeUIView(context: Context) -> GADBannerView {
 //        let bannerView = GADBannerView(adSize: kGADAdSizeBanner)
@@ -19,3 +19,6 @@ import Foundation
 //
 //    func updateUIView(_ uiView: GADBannerView, context: Context) {}
 //}
+
+
+

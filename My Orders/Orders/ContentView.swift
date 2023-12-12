@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import GoogleMobileAds
 
 struct ContentView: View {
     
@@ -110,11 +111,19 @@ struct ContentView: View {
 //                            .listRowBackground(Color.orange.opacity(0.2))
                         }
                         .listStyle(.plain)
+                        
+//                        Spacer()
+//                        
+//                        AdBannerView(adUnitID: "ca-app-pub-1213016211458907/1549825745")
+//                            .frame(height: 50)
                     }
                     
-                    //                    AdBannerView()
-                    //                                       .frame(width: UIScreen.main.bounds.width, height: 50)
-                    //                                       .background(Color.gray) // Optional background color
+                    Spacer()
+                    
+                    AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716") //"ca-app-pub-1213016211458907/1549825745"
+                        .frame(height: 50)
+//                        .frame(width: UIScreen.main.bounds.width, height: 50)
+                        .background(Color.white) // Optional background color
                 }                
             }
             
@@ -177,6 +186,21 @@ struct ContentView: View {
     var upcomingOrders: [Order] {
         return orderManager.orders.filter { !$0.isDelivered && $0.orderDate > Date()}
     }
+}
+
+// UIViewRepresentable wrapper for AdMob banner view
+struct AdBannerView: UIViewRepresentable {
+    let adUnitID: String
+
+    func makeUIView(context: Context) -> GADBannerView {
+        let bannerView = GADBannerView(adSize: GADAdSizeFromCGSize(CGSize(width: 320, height: 50))) // Set your desired banner ad size
+        bannerView.adUnitID = adUnitID
+        bannerView.rootViewController = UIApplication.shared.windows.first?.rootViewController
+        bannerView.load(GADRequest())
+        return bannerView
+    }
+    
+    func updateUIView(_ uiView: GADBannerView, context: Context) {}
 }
 
 struct ContentView_Previews: PreviewProvider {

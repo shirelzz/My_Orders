@@ -35,6 +35,7 @@
 		D66A37112B28A5F000A921CF /* AppleButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A37102B28A5F000A921CF /* AppleButtonView.swift */; };
 		D66A37132B28A79F00A921CF /* AppleButtonLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A37122B28A79E00A921CF /* AppleButtonLogic.swift */; };
 		D66A37152B28ABD200A921CF /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A37142B28ABD200A921CF /* AuthService.swift */; };
+		D66A371A2B28F34000A921CF /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = D66A37192B28F34000A921CF /* GoogleMobileAds */; };
 		D68867E02ACA247A00BCE734 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68867DF2ACA247900BCE734 /* SearchBar.swift */; };
 		D6AF62C42B126DCA0056C973 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62C32B126DCA0056C973 /* Toast.swift */; };
 		D6AF62D02B12BCB90056C973 /* InventoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62CF2B12BCB90056C973 /* InventoryItem.swift */; };
@@ -155,6 +156,7 @@
 				D66A37012B27364100A921CF /* FirebaseAuth in Frameworks */,
 				D64DD75E2B22743D0066BB7E /* SwiftUICharts in Frameworks */,
 				D66A36FD2B27364100A921CF /* FirebaseAnalytics in Frameworks */,
+				D66A371A2B28F34000A921CF /* GoogleMobileAds in Frameworks */,
 				D66A36E22B2636A800A921CF /* GoogleSignIn in Frameworks */,
 				D66A37032B27364100A921CF /* FirebaseAuthCombine-Community in Frameworks */,
 				D66A36FF2B27364100A921CF /* FirebaseAnalyticsSwift in Frameworks */,
@@ -201,11 +203,12 @@
 			path = SignIn;
 			sourceTree = "<group>";
 		};
-		D66A37162B28ECAE00A921CF /* New Group */ = {
+		D66A37172B28EF9D00A921CF /* Ads */ = {
 			isa = PBXGroup;
 			children = (
+				D6AF62ED2B13CBD80056C973 /* AdBanner.swift */,
 			);
-			path = "New Group";
+			path = Ads;
 			sourceTree = "<group>";
 		};
 		D6AF62CE2B12BC9F0056C973 /* Inventory */ = {
@@ -245,11 +248,10 @@
 		D6AF62DD2B12F6220056C973 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				D66A37162B28ECAE00A921CF /* New Group */,
+				D66A37172B28EF9D00A921CF /* Ads */,
 				D66A36ED2B26F85900A921CF /* SignIn */,
 				D6AF62C32B126DCA0056C973 /* Toast.swift */,
 				D68867DF2ACA247900BCE734 /* SearchBar.swift */,
-				D6AF62ED2B13CBD80056C973 /* AdBanner.swift */,
 				D64DD74F2B1B8C910066BB7E /* Whatsapp.swift */,
 			);
 			path = Utils;
@@ -345,6 +347,7 @@
 				D66A36FE2B27364100A921CF /* FirebaseAnalyticsSwift */,
 				D66A37002B27364100A921CF /* FirebaseAuth */,
 				D66A37022B27364100A921CF /* FirebaseAuthCombine-Community */,
+				D66A37192B28F34000A921CF /* GoogleMobileAds */,
 			);
 			productName = "My Orders";
 			productReference = D6F6A32D2AC593F8002ECA81 /* My Orders.app */;
@@ -423,6 +426,7 @@
 				D64DD75C2B22743D0066BB7E /* XCRemoteSwiftPackageReference "ChartView" */,
 				D66A36E02B2636A800A921CF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				D66A36E52B26EDE900A921CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				D66A37182B28F34000A921CF /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = D6F6A32E2AC593F8002ECA81 /* Products */;
 			projectDirPath = "";
@@ -686,6 +690,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "";
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.My-Orders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -716,6 +722,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "";
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.My-Orders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -862,6 +870,14 @@
 				minimumVersion = 10.19.0;
 			};
 		};
+		D66A37182B28F34000A921CF /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.14.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -899,6 +915,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D66A36E52B26EDE900A921CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseAuthCombine-Community";
+		};
+		D66A37192B28F34000A921CF /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D66A37182B28F34000A921CF /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
