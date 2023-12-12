@@ -11,7 +11,7 @@ struct SideMenu: View {
     
     @Binding var isShowing: Bool
     
-    var content: AnyView
+    var content = ContentView()
     var edgeTransition: AnyTransition = .move(edge: .leading)
     
     var body: some View {
@@ -26,7 +26,7 @@ struct SideMenu: View {
                 content
                     .transition(edgeTransition)
                     .background(
-                        Color.clear
+                        Color.white
                     )
             }
         }
@@ -37,5 +37,5 @@ struct SideMenu: View {
 }
 
 //#Preview {
-//    SideMenu(isShowing: <#Binding<Bool>#>, content: <#AnyView#>)
+//    SideMenu(isShowing: isShowing)
 //}

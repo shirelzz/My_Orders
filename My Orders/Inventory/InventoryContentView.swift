@@ -11,9 +11,7 @@ import SwiftUI
 
 struct InventoryContentView: View {
     
-    //    @StateObject private var inventoryManager = InventoryManager.shared
-    @ObservedObject var inventoryManager = InventoryManager.shared
-    
+    @ObservedObject var inventoryManager: InventoryManager
     
     @State private var isAddItemViewPresented = false
     @State private var isEditItemViewPresented = false
@@ -22,25 +20,59 @@ struct InventoryContentView: View {
     @State private var searchText = ""
     @State private var showDeleteAlert = false
     
-    //    init() {
-    //
-    //        self.inventoryManager = inventoryManager
-    //
-    //        // Load items from UserDefaults when InventoryContentView is initialized
-    ////        InventoryManager.shared.loadItems()
-    //    }
+    let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .short
+        return formatter
+    }()
     
+    @State private var sortOption: SortOption = .name
+
+        
+    enum SortOption: String, CaseIterable {
+        case name = "Name"
+        case date_new = "Date Added (newest first)"
+        case date_old = "Date Added (oldest first)"
+        case quantity_high = "Quantity (highest first)"
+        case quantity_low = "Quantity (lowest first)"
+
+    }
     
-    var filteredItems: [InventoryItem] {
-        if searchText.isEmpty {
-            return Array(inventoryManager.items)
-        } else {
-            return Array(inventoryManager.items.filter { $0.name.lowercased().contains(searchText.lowercased()) })
+    var sortedItems: [InventoryItem] {
+        switch sortOption {
+            case .name:
+                return filteredItems.sorted { $0.name < $1.name }
+            
+            case .date_new:
+                return filteredItems.sorted { (item1: InventoryItem, item2: InventoryItem) -> Bool in
+                        return item1.AdditionDate > item2.AdditionDate
+                }
+            
+            case .date_old:
+                return filteredItems.sorted { (item1: InventoryItem, item2: InventoryItem) -> Bool in
+                    return item1.AdditionDate < item2.AdditionDate
+                }
+            
+            case .quantity_high:
+                return filteredItems.sorted { $0.itemQuantity > $1.itemQuantity }
+            
+            case .quantity_low:
+            return filteredItems.sorted { $0.itemQuantity < $1.itemQuantity }
+ 
         }
     }
     
     
+    var filteredItems: [InventoryItem] {
+        if searchText.isEmpty {
+            return Array(inventoryManager.getItems())
+        } else {
+            return Array(inventoryManager.getItems().filter { $0.name.lowercased().contains(searchText.lowercased()) })
+        }
+    }
     
+
     var body: some View {
         
         NavigationStack {
@@ -70,15 +102,31 @@ struct InventoryContentView: View {
                                 .shadow(radius: 1)
                         }
                         .sheet(isPresented: $isAddItemViewPresented) {
-                            AddItemView()
+                            AddItemView(inventoryManager: inventoryManager)
                         }
                         
                         
                     }
                     
-                    
-                    if filteredItems.isEmpty {
+                    HStack{
+                        SearchBar(searchText: $searchText)
+                        Menu {
+
                         
+                        Picker("Sort By", selection: $sortOption) {
+                            ForEach(SortOption.allCases, id: \.self) { option in
+                                Text(option.rawValue.localized)
+                            }
+                        }
+                        } label: {
+                            Label("Sort By", systemImage: "") // "line.horizontal.3.decrease.circle"
+                                .font(.system(size: 18))
+                    }
+                    .padding(.horizontal)
+                    }
+                    
+                    
+                    if inventoryItems.isEmpty {
                         Text("No inventory items yet")
                             .font(.headline)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -87,9 +135,9 @@ struct InventoryContentView: View {
                     }
                     else
                     {
-                        SearchBar(searchText: $searchText)
+                        
 
-                        List(filteredItems) { item in
+                        List(sortedItems) { item in
                             
                             VStack(alignment: .leading) {
                                 
@@ -100,11 +148,13 @@ struct InventoryContentView: View {
                                         }
                                     }
                                 
-                                Text("Price: \(item.itemPrice)".localized)
+                                Text("Price: \(item.itemPrice)")
                                 Text("Q: \(item.itemQuantity)")
+                                Text("Date added: \(item.AdditionDate.formatted())")
+
                                 
                                 if(item.itemNotes != ""){
-                                    Text("Notes: \(item.itemNotes)".localized)
+                                    Text("Notes: \(item.itemNotes)")
                                 }
                                 
                             }

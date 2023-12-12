@@ -19,7 +19,7 @@ struct WhatsAppChatButton: View {
         }) {
             HStack {
                 Image(systemName: "message")
-                Text("Chat on WhatsApp")
+//                Text("WhatsApp")
             }
         }
     }

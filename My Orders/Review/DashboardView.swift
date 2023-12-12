@@ -12,63 +12,78 @@ struct DashboardView: View {
     
     @ObservedObject var orderManager: OrderManager
     @ObservedObject var inventoryManager: InventoryManager
-
     
-//    var filteredOrders: [Order] {
-//        return orderManager.orders.filter { order in
-//            let receiptYear = Calendar.current.component(.year, from: receipt.dateGenerated)
-//            return receiptYear == selectedYear
-//        }
-//    }
+    @State var mostOrderedPeriod = "Week"
     
     var body: some View {
+        
             ScrollView {
+                
                 VStack(alignment: .leading, spacing: 10) {
                     // Income Review
-                    VStack(alignment: .leading) {
-                        Text("Income Review")
-                            .font(.title)
-                            .fontWeight(.bold)
+                    Section(header: Text("Income Review")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .padding(.leading)
+                    ) {
 
                         let thisWeekIncome = calculateThisWeekIncome()
-                        Text("This Week's Income: $\(thisWeekIncome, specifier: "%.2f")")
-                            .font(.headline)
-                    }
-                    .padding()
-                    
-                    // Yearly Income Graph (Bar Chart)
-                    VStack(alignment: .leading) {
-                        Text("Yearly Income Graph")
-                            .font(.title)
-                            .fontWeight(.bold)
-                        
-                        Spacer()
-                        
-                        let yearlyIncomeData = calculateYearlyIncome()
-                        BarChartView(data: ChartData(values: yearlyIncomeData), title: "Monthly Income", legend: "Monthly", style: Styles.barChartStyleOrangeLight)
-                            .frame(height: 200)
-                    }
-                    .padding()
-                    
-                    // Most Ordered Inventory Items (Bar Chart)
-                    VStack(alignment: .leading) {
-                        Text("Most Ordered This Week")
-                            .font(.title)
-                            .fontWeight(.bold)
-                        
-                        Spacer()
-                        
-                        let mostOrderedItems = calculateMostOrderedItems()
-                        BarChartView(data: ChartData(values: mostOrderedItems.map { ($0.0, Double($0.1)) }), title: "Most Ordered", legend: "Items", style: Styles.barChartStyleOrangeLight)
-                            .frame(height: 200)
+                        let numOrders = getThisWeekOrders().count
 
-//                        BarChartView(data: ChartData(values: mostOrderedItems.map { Double($0.1) }), title: "Most Ordered", legend: "Items", style: Styles.barChartStyleNeonBlueLight)
-//                            .frame(height: 200)
+                        Text("This Week's Income: $\(thisWeekIncome, specifier: "%.2f")")                .padding(.leading)
+
+                        Text("Number of Orders This Week: \(numOrders, specifier: "%.2f")")                .padding(.leading)
+
                     }
-                    .padding()
+                    .padding(.trailing)
+
+                    Section(header: Text("Yearly Income Graph")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .padding(.leading)
+                    ) {
+                        let yearlyIncomeData = calculateYearlyIncome()
+                        BarChartView(data: ChartData(values: yearlyIncomeData),
+                                     title: "Monthly Income", legend: "Monthly",
+                                     style: Styles.barChartStyleOrangeLight,
+                                     form: ChartForm.extraLarge)
+                        .padding()
+                    }
+                    .padding(.trailing)
+
+                    Section(header: Text("Most Ordered")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .padding(.leading)
+                    ) {
+                        Picker("", selection: $mostOrderedPeriod) {
+                            Text("Month").tag("Month").cornerRadius(10.0)
+                            Text("Week").tag("Week").cornerRadius(10.0)
+                        }
+                        .pickerStyle(SegmentedPickerStyle())
+                        .background(Color.accentColor.opacity(0.3))
+                        .cornerRadius(10.0)
+                        .padding()
+                        
+                        let mostOrderedItems = calculateMostOrderedItems(period: mostOrderedPeriod)
+                        BarChartView(data: ChartData(values: mostOrderedItems.map { ($0.0, Double($0.1)) }),
+                                     title: "Most Ordered",
+                                     legend: "Items",
+                                     style: Styles.barChartStyleOrangeLight,
+                                     form: ChartForm.extraLarge)
+                        .padding()
+                    }
+                    .padding(.trailing)
+                    
+                    
                 }
-            }
+                .padding(.leading)
+
+                }
             .navigationBarTitle("Dashboard")
+
+            
+//            .background(Color.accentColor.opacity(0.2))
         }
     
     // Helper functions to calculate data
@@ -92,14 +107,24 @@ struct DashboardView: View {
 //            
 //            return mostOrderedItems
 //    }
-    private func calculateMostOrderedItems() -> [(String, Double)] {
-        let thisWeekOrders = getThisWeekOrders()
+    
+    private func calculateMostOrderedItems(period: String) -> [(String, Double)] {
+        var orders: [Order]
+        if period == "month"{
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM"
+            let currentMonth = dateFormatter.string(from: Date())
+            orders = getMonthlyOrders(month: currentMonth)
+        }
+        else {
+            orders = getThisWeekOrders()
+        }
         
         // Create a dictionary to store the count of each item
         var itemCounts: [String: Double] = [:]
         
         // Iterate over each order and update the item count
-        for order in thisWeekOrders {
+        for order in orders {
             for dessert in order.desserts {
                 let itemName = dessert.inventoryItem.name
                 itemCounts[itemName, default: 0.0] += Double(dessert.quantity)

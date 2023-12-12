@@ -54,7 +54,8 @@ struct AllOrdersView: View {
                                     }
                                 }
                             } label: {
-                                Label("", systemImage: "line.horizontal.3.decrease.circle")
+                                Label("Filter by", systemImage: "line.horizontal.3.decrease.circle")
+                                    .font(.system(size: 24))
                             }
                     .padding(.trailing)
             }

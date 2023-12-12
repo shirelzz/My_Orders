@@ -55,14 +55,15 @@ struct ReceiptRowView_Previews: PreviewProvider {
         let sampleItem = InventoryItem(name: "Chocolate cake",
                                        itemPrice: 20,
                                        itemQuantity: 20,
-                                       itemNotes: "",
-                                       catalogNumber: "456hg")
+                                       AdditionDate: Date(),
+                                       itemNotes: ""
+                                       )
         
         let sampleItem_ = InventoryItem(name: "Raspberry pie",
                                        itemPrice: 120,
                                        itemQuantity: 3,
-                                       itemNotes: "",
-                                       catalogNumber: "789op")
+                                        AdditionDate: Date(),
+                                       itemNotes: "")
         
         let sampleOrder = Order(
             orderID: "1234",

@@ -67,7 +67,9 @@ class OrderManager: ObservableObject {
     @Published var orders: [Order] = []
     @Published var receipts: Set<Receipt> = Set()
     private var generatedReceiptIDs: Set<String> = Set()
-    
+    private var receiptNumber = 0
+    private var receiptNumberReset = 0 // 0 = false, 1 = true
+
     init() {
         loadOrders()
         loadReceipts()
@@ -312,11 +314,23 @@ class OrderManager: ObservableObject {
     }
     
     func getLastReceiptID() -> Int {
-        // Get the most recently generated receipt by sorting receipts based on dateGenerated
-        guard let lastReceipt = receipts.sorted(by: { $0.dateGenerated > $1.dateGenerated }).first else {
-            return 0
+        
+        if (receiptNumberReset == 0) {
+            // Get the most recently generated receipt by sorting receipts based on dateGenerated
+            guard let lastReceipt = receipts.sorted(by: { $0.dateGenerated > $1.dateGenerated }).first else {
+                return 0
+            }
+            return lastReceipt.myID
         }
-        return lastReceipt.myID
+        else {
+            receiptNumberReset = 0
+            return receiptNumber - 1
+        }
+    }
+    
+    func setStartingReceiptNumber(_ newNumber: Int) {
+        receiptNumber = newNumber
+        receiptNumberReset = 1
     }
     
     func printReceipt(receipt: Receipt){

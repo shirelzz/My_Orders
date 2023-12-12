@@ -52,6 +52,7 @@ struct AddOrderView: View {
     @State private var allergies_details = ""
     
     @State private var notes = ""
+    @State private var isAddItemViewPresented = false
     
     
     var body: some View {
@@ -73,7 +74,6 @@ struct AddOrderView: View {
             
             Section(header: Text("Items Selection")) {
                 
-                
                 TextField("Search for item", text: $searchQuery)
                     .padding()
                     .onChange(of: searchQuery) { value in
@@ -85,22 +85,37 @@ struct AddOrderView: View {
                         }
                     }
                 
-                if !filteredItems.isEmpty {
-                    Picker("Item", selection: $selectedInventoryItemIndex) {
-                        ForEach(filteredItems.indices, id: \.self) { index in
-                            let item = filteredItems[index]
-                            let displayText = "\(item.name) , Q: \(item.itemQuantity), Price: $\(item.itemPrice)"
-                            
-                            Text(displayText)
-                                .tag(index)
+                
+                if filteredItems.isEmpty {
+                        Button(action: {
+                            isAddItemViewPresented = true
+                        }) {
+                            Text("Create new item")
+                        }
+                        .sheet(isPresented: $isAddItemViewPresented) {
+                            NavigationView{
+                                AddItemView(inventoryManager: inventoryManager)
+                            }
                         }
                     }
-                    .onChange(of: selectedInventoryItemIndex) { newIndex in
-                        // Set selectedInventoryItem to the item at the selected index
-                        selectedInventoryItem = filteredItems[newIndex]
+                else {
+                        Picker("item", selection: $selectedInventoryItemIndex) {
+                            ForEach( filteredItems.indices, id: \.self) { index in
+                                let item = filteredItems[index]
+                                let displayText = "\(item.name) , Q: \(item.itemQuantity), Price: $\(item.itemPrice)"
+                                
+                                Text(displayText)
+                                    .tag(index)
+                            }
+                        }
+                        .onChange(of: selectedInventoryItemIndex) { newIndex in
+                            // Set selectedInventoryItem to the item at the selected index
+                            selectedInventoryItem = filteredItems[newIndex]
+                        }
+                        .pickerStyle(.inline)
+                        .labelsHidden()
                     }
-                    .pickerStyle(.automatic)
-                }
+                
                 
                 Stepper("Quantity: \(DessertQuantity)" , value: $DessertQuantity, in: 1...100)
                 
@@ -113,8 +128,8 @@ struct AddOrderView: View {
                             price: selectedItem.itemPrice
                         )
                         
-                        inventoryManager.updateQuantity(item: selectedItem,
-                                                        newQuantity: selectedItem.itemQuantity - DessertQuantity)
+//                        inventoryManager.updateQuantity(item: selectedItem,
+//                                                        newQuantity: selectedItem.itemQuantity - DessertQuantity)
                         
                         // Append the dessert to the order
                         Desserts.append(dessert)
@@ -137,11 +152,11 @@ struct AddOrderView: View {
                             // Delete the dessert from the list
                             Desserts.remove(at: index)
                             
-                            // Update the quantity of the selected inventory item
-                            if let selectedItem = inventoryManager.items.first(where: { $0.id == deletedDessert.inventoryItem.id }) {
-                                inventoryManager.updateQuantity(item: selectedItem,
-                                                                newQuantity: selectedItem.itemQuantity + deletedDessert.quantity)
-                            }
+//                            // Update the quantity of the selected inventory item
+//                            if let selectedItem = inventoryManager.items.first(where: { $0.id == deletedDessert.inventoryItem.id }) {
+//                                inventoryManager.updateQuantity(item: selectedItem,
+//                                                                newQuantity: selectedItem.itemQuantity + deletedDessert.quantity)
+//                            }
                         }) {
                             Image(systemName: "trash")
                                 .foregroundColor(.red)
@@ -218,6 +233,14 @@ struct AddOrderView: View {
             
             Section {
                 Button(action: {
+                    
+                    for dessert in Desserts {
+                            // Update the quantity of the selected inventory item
+                            if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.id }) {
+                                inventoryManager.updateQuantity(item: selectedItem,
+                                                                newQuantity: selectedItem.itemQuantity - dessert.quantity)
+                            }
+                        }
                     
                     let newOrder = Order(
                         

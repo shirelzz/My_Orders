@@ -11,8 +11,8 @@ import UIKit
 
 struct ReceiptView: View {
     
-    @ObservedObject var orderManager: OrderManager //n
-    @ObservedObject var languageManager: LanguageManager //n
+    @ObservedObject var orderManager: OrderManager
+    @ObservedObject var languageManager: LanguageManager
     
     @State var order: Order
     //    var order: Order
@@ -54,7 +54,6 @@ struct ReceiptView: View {
                 Text(dateFormatter.string(from: Date()))
             }
             .padding(.leading)
-//            .environment(\.layoutDirection, languageManager.currentLanguage.layoutDirection)
 
             HStack{
                 Text("For: ")
@@ -72,7 +71,7 @@ struct ReceiptView: View {
                         Text("\(dessert.inventoryItem.name)")
                         Spacer()
                         Text("Q: \(dessert.quantity)")
-                        //                    Text("₪\(dessert.price, specifier: "%.2f")")
+                        // Text("₪\(dessert.price, specifier: "%.2f")")
                     }
                 }
             }
@@ -102,7 +101,6 @@ struct ReceiptView: View {
                 
             }
             .padding(.leading)
-//            .environment(\.layoutDirection, languageManager.currentLanguage.layoutDirection)
 
             HStack(alignment: .center, spacing: 5){
                 Text("Payment date:")
@@ -116,11 +114,7 @@ struct ReceiptView: View {
             }
             .padding(.leading)
             
-            Text("receipt exist: \(OrderManager.shared.receiptExists(forOrderID: order.orderID).description)")
-            //            Text("receipt exist: \(OrderManager.shared.receiptExists(forReceipt: order.receipt ?? nil))")
-            
-                .environment(\.layoutDirection, languageManager.currentLanguage.layoutDirection)
-
+//            Text("receipt exist: \(OrderManager.shared.receiptExists(forOrderID: order.orderID).description)")
             
             if !OrderManager.shared.receiptExists(forOrderID: order.orderID) {
                 Button("Generate PDF Receipt") {
@@ -286,27 +280,27 @@ struct ReceiptView: View {
             var currentY: CGFloat = 50
             
             // Title
-            var title = ""
-            if (receiptExists){
-                title = "Receipt No. \(receipt_.myID)"
-            }
-            else{
-                title = "Receipt No. \(lastReceipttID + 1)"
-            }
-            //            var title = ""
-            //            if (receiptExists && en){
-            //                title = "Receipt No. \(receipt_.myID)"
-            //
-            //            }
-            //            else if (receiptExists && he ){
-            //                title = "קבלה מספר \(receipt_.myID)"
-            //            }
-            //            else if (!receiptExists && en){
-            //                title = "Receipt No. \(lastReceipttID + 1)"
-            //            }
-            //            else {
-            //                title = "קבלה מספר \(lastReceipttID + 1)"
-            //            }
+//            var title = ""
+//            if (receiptExists){
+//                title = "Receipt No. \(receipt_.myID)"
+//            }
+//            else{
+//                title = "Receipt No. \(lastReceipttID + 1)"
+//            }
+                        var title = ""
+                        if (receiptExists && en){
+                            title = "Receipt No. \(receipt_.myID)"
+            
+                        }
+                        else if (receiptExists && he ){
+                            title = "קבלה מספר \(receipt_.myID)"
+                        }
+                        else if (!receiptExists && en){
+                            title = "Receipt No. \(lastReceipttID + 1)"
+                        }
+                        else {
+                            title = "קבלה מספר \(lastReceipttID + 1)"
+                        }
             
             let titleAttributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: 24, weight: .bold),
@@ -342,25 +336,25 @@ struct ReceiptView: View {
             _ = CGRect(x: 50, y: currentY, width: 512, height: 20)
             
             var DocumentDateText = ""
-            if (receiptExists){
-                DocumentDateText = "Date created:\(receipt_.dateGenerated.formatted())"
-            }
-            else if (receiptExists){
-                DocumentDateText = "Date created:\(Date().formatted())"
-            }
+//            if (receiptExists){
+//                DocumentDateText = "Date created:\(receipt_.dateGenerated.formatted())"
+//            }
+//            else if (receiptExists){
+//                DocumentDateText = "Date created:\(Date().formatted())"
+//            }
             
-            //            if (receiptExists && en){
-            //                DocumentDateText = "Date created: \(receipt_.dateGenerated.formatted())"
-            //            }
-            //            else if (receiptExists && he){
-            //                DocumentDateText = "תאריך יצירת המסמך: \(receipt_.dateGenerated.formatted())"
-            //            }
-            //            else if (!receiptExists && en){
-            //                DocumentDateText = "Date created: \(Date().formatted())"
-            //            }
-            //            else{
-            //                DocumentDateText = "תאריך יצירת המסמך: \(Date().formatted())"
-            //            }
+                        if (receiptExists && en){
+                            DocumentDateText = "Date created: \(receipt_.dateGenerated.formatted())"
+                        }
+                        else if (receiptExists && he){
+                            DocumentDateText = "תאריך יצירת המסמך: \(receipt_.dateGenerated.formatted())"
+                        }
+                        else if (!receiptExists && en){
+                            DocumentDateText = "Date created: \(Date().formatted())"
+                        }
+                        else{
+                            DocumentDateText = "תאריך יצירת המסמך: \(Date().formatted())"
+                        }
             DocumentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: DocumentDateAttributes)
             
             currentY += 50
@@ -550,14 +544,14 @@ struct ReceiptView: View {
             let totalPriceRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
             
             
-//            var totalPriceText = ""
-//            if en {
-//                totalPriceText = "Total Cost: $\(order.totalPrice)"
-//            }
-//            else {
-//                totalPriceText = "עלות כוללת: ₪\(order.totalPrice)"
-//            }
-            let totalPriceText = "Total Cost: $\(order.totalPrice)"
+            var totalPriceText = ""
+            if en {
+                totalPriceText = "Total Cost: $\(order.totalPrice)"
+            }
+            else {
+                totalPriceText = "עלות כוללת: ₪\(order.totalPrice)"
+            }
+//            let totalPriceText = "Total Cost: $\(order.totalPrice)"
             totalPriceText.draw(in: totalPriceRect, withAttributes: totalPriceAttributes)
             
             // Update the Y position
@@ -614,27 +608,27 @@ struct ReceiptView: View {
             ]
             let paymentDetailsRect = CGRect(x: 50, y: currentY, width: 512, height: 20)
             
-//            var paymentMethodText = ""
-//            if en {
-//                paymentMethodText = "Payment Method \(selectedPaymentMethod)"
-//            }
-//            else {
-//                paymentMethodText = "שיטת התשלום: \(selectedPaymentMethod)"
-//            }
-            let paymentMethodText = "Payment Method \(selectedPaymentMethod)"
+            var paymentMethodText = ""
+            if en {
+                paymentMethodText = "Payment Method \(selectedPaymentMethod)"
+            }
+            else {
+                paymentMethodText = "שיטת התשלום: \(selectedPaymentMethod)"
+            }
+//            let paymentMethodText = "Payment Method \(selectedPaymentMethod)"
             paymentMethodText.draw(in: paymentDetailsRect, withAttributes: paymentDetailsAttributes)
             
             // Update the Y position for the next detail
             currentY += 20
             
-//            var paymentDateText = ""
-//            if en {
-//                paymentDateText = "Payment Date: \(dateFormatter.string(from: receipt_.paymentDate))"
-//            }
-//            else {
-//                paymentDateText = "מועד התשלום: \(dateFormatter.string(from: receipt_.paymentDate))"
-//            }
-            let paymentDateText = "Payment Date: \(dateFormatter.string(from: receipt_.paymentDate))"
+            var paymentDateText = ""
+            if en {
+                paymentDateText = "Payment Date: \(dateFormatter.string(from: receipt_.paymentDate))"
+            }
+            else {
+                paymentDateText = "מועד התשלום: \(dateFormatter.string(from: receipt_.paymentDate))"
+            }
+//            let paymentDateText = "Payment Date: \(dateFormatter.string(from: receipt_.paymentDate))"
             paymentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: paymentDetailsAttributes)
             
             // Digital signature
@@ -652,14 +646,16 @@ struct ReceiptView_Previews: PreviewProvider {
         let sampleItem = InventoryItem(name: "Chocolate cake",
                                        itemPrice: 20,
                                        itemQuantity: 20,
-                                       itemNotes: "",
-                                       catalogNumber: "456hg")
+                                       AdditionDate: Date(),
+                                       itemNotes: ""
+                                       )
         
         let sampleItem_ = InventoryItem(name: "Raspberry pie",
                                        itemPrice: 120,
                                        itemQuantity: 3,
-                                       itemNotes: "",
-                                       catalogNumber: "789op")
+                                        AdditionDate: Date(),
+                                       itemNotes: ""
+                                       )
         
         let sampleOrder = Order(
             orderID: "1234",

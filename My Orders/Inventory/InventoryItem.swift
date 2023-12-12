@@ -14,8 +14,9 @@ struct InventoryItem: Codable, Identifiable, Hashable{ //
     var name: String
     var itemPrice: Double
     var itemQuantity: Int
+//    var catalogNumber: String
+    var AdditionDate: Date
     var itemNotes: String
-    var catalogNumber: String
     
     //    func hash(into hasher: inout Hasher) {
     //            hasher.combine(id)
@@ -30,7 +31,6 @@ struct InventoryItem: Codable, Identifiable, Hashable{ //
 class InventoryManager: ObservableObject {
     
     static var shared = InventoryManager()
-    //    @Published var items: Set<InventoryItem> = Set()
     @Published var items: [InventoryItem] = []
     
     func addItem(item: InventoryItem) {
@@ -83,6 +83,10 @@ class InventoryManager: ObservableObject {
     private func saveItems() {
         if let encodedData = try? JSONEncoder().encode(Array(items)) {
             UserDefaults.standard.set(encodedData, forKey: "items")
+            print("success decoding items! save")
+        }
+        else{
+            print("Error decoding items save")
         }
     }
     
@@ -91,6 +95,10 @@ class InventoryManager: ObservableObject {
         if let savedData = UserDefaults.standard.data(forKey: "items"),
            let decodedItems = try? JSONDecoder().decode([InventoryItem].self, from: savedData) {
             items = decodedItems
+            print("success decoding items! load")
+        }
+        else{
+            print("Error decoding items load")
         }
     }
     
@@ -112,11 +120,4 @@ class InventoryManager: ObservableObject {
             }
         }
     }
-    
-    
-    //    init(catalogNumber: String, name: String, price: Double) {
-    //        self.catalogNumber = catalogNumber
-    //        self.name = name
-    //        self.price = price
-    //    }
 }

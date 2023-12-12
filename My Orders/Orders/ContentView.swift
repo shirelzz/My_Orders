@@ -18,16 +18,13 @@ struct ContentView: View {
     @State private var showAllOrders = false
     @State private var showAllReceipts = false
     @State private var isAddOrderViewPresented = false
-    
     @State private var isSideMenuOpen = false
     @State private var showSideMenu = false
-    
-    //    @State private var desserts: [Dessert] = []
-    
+        
     init() {
         AppManager.shared.loadManagerData()
         OrderManager.shared.loadOrders()
-        OrderManager.shared.loadReceipts() //
+        OrderManager.shared.loadReceipts()
         InventoryManager.shared.loadItems()
     }
     
@@ -36,35 +33,35 @@ struct ContentView: View {
         
         NavigationStack{
             
-            
-            //            Image(uiImage: UIImage(data: appManager.manager.logoImgData ?? Data()) ?? UIImage())
-            //                .resizable(capInsets: EdgeInsets())
-            //                .frame(width: 50, height: 50)
-            //                .cornerRadius(10)
-            //                .padding(.leading, 150.0)
-            
-            
             ZStack(alignment: .topTrailing) {
                 
-                // Side Menu
-                SideMenuView(isSideMenuOpen: $isSideMenuOpen)
-                    .frame(width: UIScreen.main.bounds.width,
-                           alignment: .leading)
-                    .offset(x: isSideMenuOpen ? 0 : -UIScreen.main.bounds.width)
-                    .animation(Animation.easeInOut.speed(2), value: showSideMenu)
+//                // Side Menu
+//                SideMenuView(isSideMenuOpen: $isSideMenuOpen)
+//                    .frame(width: UIScreen.main.bounds.width,
+//                           alignment: .leading)
+//                    .offset(x: isSideMenuOpen ? 0 : -UIScreen.main.bounds.width)
+//                    .animation(Animation.easeInOut.speed(2), value: showSideMenu)
+//                    .contentShape(Rectangle()) // Enable tap gesture on entire content area
+//                    .onTapGesture {
+//                    if isSideMenuOpen {
+//                            withAnimation {
+//                                isSideMenuOpen = false
+//                            }
+//                    }
+//                }
         
                                 
                 VStack (alignment: .leading, spacing: 10) {
                     
-                    Button(action: {
-                        withAnimation {
-                            isSideMenuOpen.toggle()
-                        }
-                    }) {
-                        Image(systemName: "line.horizontal.3")
-                            .padding()
-                            .foregroundColor(.black)
-                    }
+//                    Button(action: {
+//                        withAnimation {
+//                            isSideMenuOpen.toggle()
+//                        }
+//                    }) {
+//                        Image(systemName: "line.horizontal.3")
+//                            .padding()
+//                            .foregroundColor(.black)
+//                    }
                     
                     HStack {
                         
@@ -74,12 +71,10 @@ struct ContentView: View {
                             .font(.largeTitle)
                             .bold()
                         
-                        Spacer()
-                        Spacer()
+                        Spacer(minLength: 10)
                         
                         Button(action: {
                             withAnimation {
-                                // Modifying state with animation
                                 isAddOrderViewPresented = true
                             }
                         }) {
@@ -105,11 +100,14 @@ struct ContentView: View {
                     } else {
                         List {
                             ForEach(upcomingOrders, id: \.orderID) { order in
-                                NavigationLink(destination: OrderDetailsView(orderManager: orderManager, languageManager: languageManager, order: order)) {
+                                NavigationLink(destination: OrderDetailsView(orderManager: orderManager, languageManager: languageManager, order: order)
+                                    .onAppear {
+                                        isSideMenuOpen = false
+                                    }) {
                                     OrderRowView(order: order)
                                 }
                             }
-                            .listRowBackground(Color.clear)
+//                            .listRowBackground(Color.orange.opacity(0.2))
                         }
                         .listStyle(.plain)
                     }
@@ -117,50 +115,63 @@ struct ContentView: View {
                     //                    AdBannerView()
                     //                                       .frame(width: UIScreen.main.bounds.width, height: 50)
                     //                                       .background(Color.gray) // Optional background color
-                }
-                
+                }                
             }
             
             
-//            .toolbar {
-//                
-//                ToolbarItem(placement: .navigationBarLeading) {
-//                    
-//                    Menu {
-//                        
-//                        HStack {
-//                            NavigationLink(destination: AllOrdersView(orderManager: orderManager, languageManager: languageManager)) {
-//                                Label("All orders".localized, systemImage: "rectangle.stack")
-//                            }
-//                        }
-//                        
-//                        HStack {
-//                            NavigationLink(destination: AllReceiptsView(orderManager: orderManager, languageManager: languageManager)) {
-//                                Label("All receipts".localized, systemImage: "tray.full")
-//                            }
-//                        }
-//                        
-//                        HStack {
-//                            NavigationLink( destination:
-//                                                InventoryContentView(inventoryManager: inventoryManager)) {
-//                                Label("Inventory".localized, systemImage: "cube")
-//                            }
-//                        }
-//                        
-//                        HStack {
-//                            NavigationLink(destination: SettingsView(appManager: appManager, languageManager: languageManager)) {
-//                                Label("Settings".localized, systemImage: "gear")
-//                            }
-//                        }
-//                        
-//                        
-//                    } label: {
-//                        Image(systemName: "line.horizontal.3")
-//                    }
-//                }
-//            }
+            .toolbar {
+                
+                ToolbarItem(placement: .navigationBarLeading) {
+                    
+                    Menu {
+                        
+                        HStack {
+                            NavigationLink(destination: DashboardView(orderManager: orderManager, inventoryManager: inventoryManager)) {
+                                Label("Dashboard", systemImage: "chart.pie")
+                            }
+                        }
+                        
+                        HStack {
+                            NavigationLink(destination: AllOrdersView(orderManager: orderManager, languageManager: languageManager)) {
+                                    if #available(iOS 17.0, *) {
+                                        Label("All orders", systemImage: "rectangle.stack")
+//                                        .symbolEffect(.variableColor.iterative, value: true)
+//                                            .symbolEffect(.variableColor.cumulative, value: true)
+                                            .symbolEffect(.bounce, value: 1)
+
+
+                                    } else {
+                                        Label("All orders", systemImage: "rectangle.stack")
+                                }
+                            }
+                        }
+                        
+                        HStack {
+                            NavigationLink(destination: AllReceiptsView(orderManager: orderManager, languageManager: languageManager)) {
+                                Label("All receipts", systemImage: "tray.full")
+                            }
+                        }
+                        
+                        HStack {
+                            NavigationLink( destination:
+                                                InventoryContentView(inventoryManager: inventoryManager)) {
+                                Label("Inventory", systemImage: "cube")
+                            }
+                        }
+                        
+                        HStack {
+                            NavigationLink(destination: SettingsView(appManager: appManager, languageManager: languageManager, orderManager: orderManager)) {
+                                Label("Settings", systemImage: "gear")
+                            }
+                        }
+                        
+                        
+                    } label: {
+                        Image(systemName: "line.horizontal.3")
+                    }
+                }
+            }
         }
-        
     }
     
     var upcomingOrders: [Order] {
@@ -174,7 +185,3 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-
-//#Preview {
-//    ContentView2()
-//}

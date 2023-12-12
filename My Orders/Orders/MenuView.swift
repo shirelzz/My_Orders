@@ -34,7 +34,7 @@ struct MenuView: View {
             }
             .padding()
 
-            NavigationLink(destination: SettingsView(appManager: appManager, languageManager: languageManager)) {
+            NavigationLink(destination: SettingsView(appManager: appManager, languageManager: languageManager, orderManager: orderManager)) {
                 Label("Settings", systemImage: "gear")
             }
             .padding()

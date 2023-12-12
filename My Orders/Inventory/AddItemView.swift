@@ -9,14 +9,17 @@ import SwiftUI
 
 struct AddItemView: View {
     
-    @ObservedObject var inventoryManager = InventoryManager()
+    @ObservedObject var inventoryManager: InventoryManager
 
     // State variables for new item input
     @State private var newName = ""
     @State private var newCatalogNumber = ""
     @State private var newPrice = 0.0
     @State private var newQuantity = 0
+    @State private var additionDate = Date()
     @State private var newNotes = ""
+    @State private var refreshView = false
+
     
     @Environment(\.presentationMode) var presentationMode
 
@@ -43,10 +46,14 @@ struct AddItemView: View {
                     ))
                     .keyboardType(.numberPad)
                     
-                    TextField("Notes", text: $newNotes)
-                    
 //                    TextField("Catalog Number", text: $newCatalogNumber)
 
+                    DatePicker("Date Added",
+                               selection: $additionDate,
+                               in: Date()...,
+                               displayedComponents: [.date])
+                    
+                    TextField("Notes", text: $newNotes)
 
 
                 }
@@ -66,20 +73,24 @@ struct AddItemView: View {
                             name: newName,
                             itemPrice: newPrice,
                             itemQuantity: newQuantity,
-                            itemNotes: newNotes,
-                            catalogNumber: newCatalogNumber
+                            AdditionDate: additionDate,
+                            itemNotes: newNotes
+//                            catalogNumber: newCatalogNumber
 
                         )
                         
-                        withAnimation{
-                            // Add the new order to the OrderManager
+//                        withAnimation{
+//                            // Add the new order to the OrderManager
                             inventoryManager.addItem(item: newItem)
-                        }
+//                        }
                         
-                        // Save orders to UserDefaults
+                        // Save items to UserDefaults
                         if let encodedData = try? JSONEncoder().encode(inventoryManager.items) {
                             UserDefaults.standard.set(encodedData, forKey: "items")
                         }
+                        
+//                        refreshView.toggle()
+
                         
                         // Clear the form or navigate to a different view as needed
                         // For example, you can navigate back to the previous view:
@@ -100,5 +111,5 @@ struct AddItemView: View {
      
 
 #Preview {
-    AddItemView()
+    AddItemView(inventoryManager: InventoryManager.shared)
 }

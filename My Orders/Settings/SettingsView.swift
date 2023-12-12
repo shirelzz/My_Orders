@@ -12,6 +12,8 @@ struct SettingsView: View {
     @ObservedObject var appManager: AppManager
 //    @ObservedObject var languageManager: LanguageManager
     @ObservedObject var languageManager = LanguageManager.shared
+    @ObservedObject var orderManager: OrderManager
+
 
     @State private var darkModeOn = false
     //    @State var selectedLanguage: String
@@ -45,7 +47,7 @@ struct SettingsView: View {
                 
                 Section(header: Text("Receipt center".localized)) {
                     
-                    NavigationLink(destination: ReceiptSettingsView(appManager: appManager)) {
+                    NavigationLink(destination: ReceiptSettingsView(appManager: appManager, orderManager: orderManager)) {
                         Label("Receipt".localized, systemImage: "folder")
                     }
                 }
@@ -101,8 +103,9 @@ struct SettingsView: View {
                             Text(language.rawValue)
                         }
                     }
-                    
                     .pickerStyle(SegmentedPickerStyle())
+                    .background(Color.accentColor.opacity(0.3).cornerRadius(13.0))
+                    .cornerRadius(3.0)
                     .onChange(of: selectedLanguage) { newLanguage in
                         if let language = AppLanguage(rawValue: newLanguage.rawValue) {
                             languageManager.currentLanguage = language

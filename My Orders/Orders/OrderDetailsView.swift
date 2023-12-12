@@ -187,8 +187,10 @@ struct OrderDetailsView_Previews: PreviewProvider {
         let sampleItem = InventoryItem(name: "Chocolate cake",
                                        itemPrice: 20,
                                        itemQuantity: 20,
-                                       itemNotes: "",
-                                       catalogNumber: "456hg")
+                                       AdditionDate: Date(),
+                                       itemNotes: ""
+                                       )
+                                       
         
             let sampleOrder = Order(
                 orderID: "123",
