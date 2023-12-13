@@ -14,6 +14,7 @@ struct InventoryItem: Codable, Identifiable, Hashable{ //
     var name: String
     var itemPrice: Double
     var itemQuantity: Int
+    var size: String
 //    var catalogNumber: String
     var AdditionDate: Date
     var itemNotes: String
@@ -45,12 +46,13 @@ class InventoryManager: ObservableObject {
         }
     }
     
-    func editItem(item: InventoryItem, newName: String, newPrice: Double, newQuantity: Int, newNotes: String) {
+    func editItem(item: InventoryItem, newName: String, newPrice: Double, newQuantity: Int, newSize: String, newNotes: String) {
         if let index = items.firstIndex(of: item) {
             var editedItem = item
             editedItem.name = newName
             editedItem.itemPrice = newPrice
             editedItem.itemQuantity = newQuantity
+            editedItem.size = newSize
             editedItem.itemNotes = newNotes
             
             items[index] = editedItem

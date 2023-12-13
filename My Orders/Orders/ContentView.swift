@@ -101,21 +101,25 @@ struct ContentView: View {
                     } else {
                         List {
                             ForEach(upcomingOrders, id: \.orderID) { order in
-                                NavigationLink(destination: OrderDetailsView(orderManager: orderManager, languageManager: languageManager, order: order)
+                                NavigationLink(destination: OrderDetailsView(orderManager: orderManager, inventoryManager: inventoryManager, languageManager: languageManager, order: order)
                                     .onAppear {
                                         isSideMenuOpen = false
                                     }) {
                                     OrderRowView(order: order)
                                 }
+                                    .contextMenu {
+                                        Button(action: {
+                                            deleteOrder(orderID: order.orderID)
+                                        }) {
+                                            Text("Delete")
+                                            Image(systemName: "trash")
+                                        }
+                                    }
                             }
+                            
 //                            .listRowBackground(Color.orange.opacity(0.2))
                         }
                         .listStyle(.plain)
-                        
-//                        Spacer()
-//                        
-//                        AdBannerView(adUnitID: "ca-app-pub-1213016211458907/1549825745")
-//                            .frame(height: 50)
                     }
                     
                     Spacer()
@@ -123,8 +127,8 @@ struct ContentView: View {
                     AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716") //"ca-app-pub-1213016211458907/1549825745"
                         .frame(height: 50)
 //                        .frame(width: UIScreen.main.bounds.width, height: 50)
-                        .background(Color.white) // Optional background color
-                }                
+                        .background(Color.white)
+                }
             }
             
             
@@ -141,7 +145,7 @@ struct ContentView: View {
                         }
                         
                         HStack {
-                            NavigationLink(destination: AllOrdersView(orderManager: orderManager, languageManager: languageManager)) {
+                            NavigationLink(destination: AllOrdersView(orderManager: orderManager, inventoryManager: inventoryManager, languageManager: languageManager)) {
                                     if #available(iOS 17.0, *) {
                                         Label("All orders", systemImage: "rectangle.stack")
 //                                        .symbolEffect(.variableColor.iterative, value: true)
@@ -181,6 +185,10 @@ struct ContentView: View {
                 }
             }
         }
+    }
+    
+    private func deleteOrder(orderID: String) {
+        orderManager.removeOrder(with: orderID)
     }
     
     var upcomingOrders: [Order] {

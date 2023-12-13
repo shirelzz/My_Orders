@@ -646,6 +646,7 @@ struct ReceiptView_Previews: PreviewProvider {
         let sampleItem = InventoryItem(name: "Chocolate cake",
                                        itemPrice: 20,
                                        itemQuantity: 20,
+                                       size: "",
                                        AdditionDate: Date(),
                                        itemNotes: ""
                                        )
@@ -653,13 +654,14 @@ struct ReceiptView_Previews: PreviewProvider {
         let sampleItem_ = InventoryItem(name: "Raspberry pie",
                                        itemPrice: 120,
                                        itemQuantity: 3,
+                                        size: "",
                                         AdditionDate: Date(),
                                        itemNotes: ""
                                        )
         
         let sampleOrder = Order(
             orderID: "1234",
-            customer: Customer(name: "John Doe", phoneNumber: 0546768900),
+            customer: Customer(name: "John Doe", phoneNumber: "0546768900"),
             desserts: [Dessert(inventoryItem: sampleItem, quantity: 2,price: sampleItem.itemPrice),
                        Dessert(inventoryItem: sampleItem_, quantity: 1, price: sampleItem_.itemPrice)],
             orderDate: Date(),

@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseCore
 import FirebaseAuth
+import Firebase
 import CryptoKit
 import AuthenticationServices
 import GoogleSignIn
@@ -148,7 +149,7 @@ class AuthService: NSObject, ObservableObject, ASAuthorizationControllerDelegate
     //from the same creator of applesignin but had to fix some problems
     func googleSignIn() {
         
-          guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
 

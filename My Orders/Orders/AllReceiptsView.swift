@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import GoogleMobileAds
 
 struct AllReceiptsView: View {
     
@@ -21,7 +22,7 @@ struct AllReceiptsView: View {
             VStack {
                 
                 HStack {
-                    Picker("Select Year".localized, selection: $selectedYear) {
+                    Picker("Select Year", selection: $selectedYear) {
                         Text("2023").tag(2023)
                         Text("2024").tag(2023)
                         Text("2025").tag(2023)
@@ -49,11 +50,14 @@ struct AllReceiptsView: View {
                 }
                 .listStyle(InsetGroupedListStyle())
                 
-                
+                AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716") //"ca-app-pub-1213016211458907/1549825745"
+                    .frame(height: 50)
+//                        .frame(width: UIScreen.main.bounds.width, height: 50)
+                    .background(Color.white)
             }
 //            .background(Color.accentColor)
 //            .opacity(0.2)
-            .navigationBarTitle("All Receipts".localized)
+            .navigationBarTitle("All Receipts")
         }
     }
     

@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct WhatsAppChatButton: View {
-    var phoneNumber: Int
+    var phoneNumber: String
 
     var body: some View {
         Button(action: {

@@ -6,8 +6,7 @@
 //
 
 import SwiftUI
-
-
+import GoogleMobileAds
 
 struct InventoryContentView: View {
     
@@ -19,6 +18,8 @@ struct InventoryContentView: View {
     
     @State private var searchText = ""
     @State private var showDeleteAlert = false
+    @State private var isItemDetailsViewPresented = false
+
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -90,9 +91,7 @@ struct InventoryContentView: View {
                             .bold()
                         
                         Spacer()
-                        
-                        Spacer()
-                        
+                                                
                         Button(action: {
                             isAddItemViewPresented = true
                         }) {
@@ -104,14 +103,12 @@ struct InventoryContentView: View {
                         .sheet(isPresented: $isAddItemViewPresented) {
                             AddItemView(inventoryManager: inventoryManager)
                         }
-                        
-                        
                     }
                     
                     HStack{
                         SearchBar(searchText: $searchText)
+                        
                         Menu {
-
                         
                         Picker("Sort By", selection: $sortOption) {
                             ForEach(SortOption.allCases, id: \.self) { option in
@@ -130,12 +127,9 @@ struct InventoryContentView: View {
                         Text("No inventory items yet")
                             .font(.headline)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        
-                        
                     }
                     else
                     {
-                        
 
                         List(sortedItems) { item in
                             
@@ -146,6 +140,11 @@ struct InventoryContentView: View {
                                         Button("Copy name") {
                                             UIPasteboard.general.string = item.name
                                         }
+                                        
+                                        NavigationLink(destination: ItemDetailsView(inventoryManager: inventoryManager, item: item)) {
+                                            Label("See item details", systemImage: "blank")
+                                        }
+                                        
                                     }
                                 
                                 Text("Price: \(item.itemPrice)")
@@ -183,7 +182,7 @@ struct InventoryContentView: View {
                                         //                                        selectedItem = nil
                                     }
                                 ),
-                                secondaryButton: .cancel(Text("Cancel".localized))
+                                secondaryButton: .cancel(Text("Cancel"))
                             )
                         }
                         .sheet(item: $selectedItem) { selectedItem in
@@ -191,11 +190,19 @@ struct InventoryContentView: View {
                                          name: selectedItem.name,
                                          price: selectedItem.itemPrice,
                                          quantity: selectedItem.itemQuantity,
+                                         size: selectedItem.size,
                                          notes: selectedItem.itemNotes)
                         }
                     }
                 }
             }
+            
+            Spacer()
+            
+            AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716") //"ca-app-pub-1213016211458907/1549825745"
+                .frame(height: 50)
+//                        .frame(width: UIScreen.main.bounds.width, height: 50)
+                .background(Color.white)
         }
     }
     

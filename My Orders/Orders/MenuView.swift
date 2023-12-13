@@ -19,7 +19,7 @@ struct MenuView: View {
 
     var body: some View {
         VStack {
-            NavigationLink(destination: AllOrdersView(orderManager: orderManager, languageManager: languageManager)) {
+            NavigationLink(destination: AllOrdersView(orderManager: orderManager, inventoryManager: inventoryManager, languageManager: languageManager)) {
                 Label("All orders", systemImage: "rectangle.stack")
             }
             .padding()

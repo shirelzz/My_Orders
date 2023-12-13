@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import GoogleMobileAds
 
 struct AllOrdersView: View {
     
     @ObservedObject var orderManager: OrderManager
+    @ObservedObject var inventoryManager: InventoryManager
     @ObservedObject var languageManager: LanguageManager
     @State private var showPaidOrders = true
 
@@ -55,7 +57,7 @@ struct AllOrdersView: View {
                                 }
                             } label: {
                                 Label("Filter by", systemImage: "line.horizontal.3.decrease.circle")
-                                    .font(.system(size: 24))
+                                    .font(.system(size: 18))
                             }
                     .padding(.trailing)
             }
@@ -72,7 +74,7 @@ struct AllOrdersView: View {
 
                 List {
                     ForEach(filteredOrders, id: \.orderID) { order in
-                        NavigationLink(destination: OrderDetailsView(orderManager: orderManager, languageManager: languageManager, order: order)) {
+                        NavigationLink(destination: OrderDetailsView(orderManager: orderManager, inventoryManager: inventoryManager, languageManager: languageManager, order: order)) {
                             OrderRowView(order: order)
                         }
                         .contextMenu {
@@ -87,6 +89,11 @@ struct AllOrdersView: View {
                 }
                 .listStyle(InsetGroupedListStyle())
             }
+            
+            AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716") //"ca-app-pub-1213016211458907/1549825745"
+                .frame(height: 50)
+//                        .frame(width: UIScreen.main.bounds.width, height: 50)
+                .background(Color.white)
         }
         .navigationBarTitle("All Orders")
     }
@@ -100,6 +107,6 @@ struct AllOrdersView: View {
 struct AllOrdersView_Previews: PreviewProvider {
     static var previews: some View {
         
-        return AllOrdersView(orderManager: OrderManager.shared, languageManager: LanguageManager.shared)
+        return AllOrdersView(orderManager: OrderManager.shared, inventoryManager: InventoryManager.shared, languageManager: LanguageManager.shared)
     }
 }

@@ -18,27 +18,19 @@ struct AddOrderView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
-    @State private var customer = Customer(name: "", phoneNumber: Int("") ?? 0)
-    
-    //    @State private var inventoryItem = InventoryItem(name: "", itemPrice: 0.0, itemQuantity: 0, itemNotes: "" , catalogNumber: <#T##String#>)
-    // or array og all items
-    
-    //    @State private var DessertName = ""
-    //    @State private var selectedInventoryItem: InventoryItem?
+    @State private var customer = Customer(name: "", phoneNumber: "")
     @State private var selectedInventoryItem: InventoryItem? = nil
     @State private var selectedInventoryItemIndex = 0
-    
+
     @State private var searchQuery = ""
     @State private var filteredItems: [InventoryItem] = []
     
-    @State private var DessertQuantity = 1
+    @State private var DessertQuantity = ""
     @State private var DessertPrice = 0
     @State private var isAddingDessert = false
     
     @State private var Desserts: [Dessert] = []
-    
     @State private var deletedInventoryItem: InventoryItem? = nil
-
     
     @State private var delivery = "No"
     @State private var deliveryAddress = ""
@@ -63,11 +55,10 @@ struct AddOrderView: View {
                 
                 TextField("Customer Name", text: $customer.name)
                 
-                TextField("Phone Number", text: Binding<String>(
-                    get: { String(customer.phoneNumber) },
-                    set: { if let newValue = Int($0) { customer.phoneNumber = newValue } }
-                ))
-                .keyboardType(.numberPad)
+                TextField("Phone Number", text: $customer.phoneNumber)
+                    .keyboardType(.numberPad)
+                
+                
                 
             }
             
@@ -116,15 +107,23 @@ struct AddOrderView: View {
                         .labelsHidden()
                     }
                 
+//                TextField("Quantity", text: Binding<String>(
+//                    get: { String(DessertQuantity) },
+//                    set: { if let newValue = Int($0) { DessertQuantity = newValue } }
+//                ))
+//                .keyboardType(.numberPad)
                 
-                Stepper("Quantity: \(DessertQuantity)" , value: $DessertQuantity, in: 1...100)
+                TextField("Quantity", text: $DessertQuantity)
+                    .keyboardType(.numberPad)
+                
+//                Stepper("Quantity: \(DessertQuantity)" , value: $DessertQuantity, in: 1...100)
                 
                 Button(action: {
                     
                     if let selectedItem = selectedInventoryItem {
                         let dessert = Dessert(
                             inventoryItem: selectedItem,
-                            quantity: DessertQuantity,
+                            quantity: Int(DessertQuantity) ?? 0,
                             price: selectedItem.itemPrice
                         )
                         
@@ -224,10 +223,9 @@ struct AddOrderView: View {
                         .frame(height: 50)
                 }
                 
-                Section(header: Text("Notes")) {
-                    TextEditor(text: $notes)
-                        .frame(height: 100)
-                }
+                TextField("Notes", text: $notes)
+                   .frame(height: 100)
+
                 
             }
             

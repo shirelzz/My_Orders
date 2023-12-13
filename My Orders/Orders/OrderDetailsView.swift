@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct OrderDetailsView: View {
-    @ObservedObject var orderManager: OrderManager //n
+    @ObservedObject var orderManager: OrderManager
+    @ObservedObject var inventoryManager: InventoryManager
     @ObservedObject var languageManager: LanguageManager
     
     @State var order: Order
     @State private var showReceipt = false
     @State private var showReceiptPreview = false
+    @State private var isEditing = false
     
     var flag = false
     
@@ -40,14 +42,7 @@ struct OrderDetailsView: View {
                 .padding(.leading)
 
                 HStack{
-                    Text("Phone:")
-                    Text((String(order.customer.phoneNumber)))
-//                        .foregroundColor(.blue) // Make the phone number text appear as a link
-//                                .onTapGesture {
-//                                    if let url = URL(string: "https://wa.me/\(order.customer.phoneNumber)") {
-//                                        UIApplication.shared.open(url)
-//                                    }
-//                                }
+                    Text("Phone: \(order.customer.phoneNumber)")
                     
                     WhatsAppChatButton(phoneNumber: order.customer.phoneNumber)
 
@@ -174,6 +169,17 @@ struct OrderDetailsView: View {
         }
         .padding()
         .navigationBarTitle("Order Details")
+        .navigationBarItems(trailing:
+                        Button(action: {
+                            isEditing.toggle()
+                        }) {
+                            Text(isEditing ? "Done" : "Edit")
+                        }
+                    )
+                    .sheet(isPresented: $isEditing) {
+                        EditOrderView(orderManager: orderManager, inventoryManager: inventoryManager, order: $order, editedOrder: order)
+                        // ^ Create a new view for editing and pass the order binding
+                    }
 //        .sheet(isPresented: $showReceipt) {
 //            ReceiptView(order: order, isPresented: $showReceipt) // Present receipt view when the state variable is true
 //        }
@@ -187,6 +193,7 @@ struct OrderDetailsView_Previews: PreviewProvider {
         let sampleItem = InventoryItem(name: "Chocolate cake",
                                        itemPrice: 20,
                                        itemQuantity: 20,
+                                       size: "",
                                        AdditionDate: Date(),
                                        itemNotes: ""
                                        )
@@ -194,7 +201,7 @@ struct OrderDetailsView_Previews: PreviewProvider {
         
             let sampleOrder = Order(
                 orderID: "123",
-                customer: Customer(name: "John Doe", phoneNumber: 0546768900),
+                customer: Customer(name: "John Doe", phoneNumber: "0546768900"),
                 
                 desserts: [Dessert(inventoryItem: sampleItem, quantity: 2, price: 10.0)],
                 
@@ -207,7 +214,7 @@ struct OrderDetailsView_Previews: PreviewProvider {
                 receipt: nil
             )
             
-        OrderDetailsView(orderManager: OrderManager.shared, languageManager: LanguageManager.shared, order: sampleOrder)
+        OrderDetailsView(orderManager: OrderManager.shared, inventoryManager: InventoryManager.shared, languageManager: LanguageManager.shared, order: sampleOrder)
     }
 }
 

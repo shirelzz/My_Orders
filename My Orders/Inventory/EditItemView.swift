@@ -11,11 +11,13 @@ import SwiftUI
 struct EditItemView: View {
     
     @ObservedObject var inventoryManager = InventoryManager()
+    @Environment(\.presentationMode) var presentationMode
     
     @State var item: InventoryItem?
     @State var name: String
     @State var price: Double
     @State var quantity: Int
+    @State var size: String
     @State var notes: String
     
     
@@ -29,21 +31,31 @@ struct EditItemView: View {
                 Section(header: Text("Change Name") ) {
                     TextField("Name", text: $name)
                         .padding(.vertical)
+                        .frame(height: 30)
                 }
                 
                 Section(header: Text("Change Price") ) {
                     TextField("Price", value: $price, formatter: NumberFormatter())
                         .padding(.vertical)
+                        .frame(height: 30)
                 }
                 
                 Section(header: Text("Change Quantity") ) {
                     TextField("Quantity", value: $quantity, formatter: NumberFormatter())
                         .padding(.vertical)
+                        .frame(height: 30)
+                }
+                
+                Section(header: Text("Change Size") ) {
+                    TextField("Size", text: $size)
+                        .padding(.vertical)
+                        .frame(height: 30)
                 }
                 
                 Section(header: Text("Change Notes") ) {
                     TextField("Notes", text: $notes)
                         .padding(.vertical)
+                        .frame(height: 40)
                 }
                 
             }
@@ -52,8 +64,11 @@ struct EditItemView: View {
             
             Button("Save Changes") {
                 if let selectedItem = item {
-                    inventoryManager.editItem(item: selectedItem, newName: name, newPrice: price, newQuantity: quantity, newNotes: notes)
+                    inventoryManager.editItem(item: selectedItem, newName: name, newPrice: price, newQuantity: quantity, newSize: size, newNotes: notes)
                 }
+                
+                presentationMode.wrappedValue.dismiss()
+
             }
             .padding()
             .cornerRadius(10)
@@ -71,6 +86,6 @@ struct EditItemView_Previews: PreviewProvider {
         let itemPrice = 10.0
         let itemQuantity = 5
         
-        EditItemView(name: itemName, price: itemPrice, quantity: itemQuantity, notes: "")
+        EditItemView(name: itemName, price: itemPrice, quantity: itemQuantity, size: "", notes: "")
     }
 }

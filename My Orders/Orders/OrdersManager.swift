@@ -12,7 +12,7 @@ import UserNotifications
 
 struct Customer: Codable {
     var name: String
-    var phoneNumber: Int
+    var phoneNumber: String
 }
 
 struct Delivery: Codable {
@@ -91,6 +91,14 @@ class OrderManager: ObservableObject {
     
     func removeOrder(with orderID: String) {
         if let index = orders.firstIndex(where: { $0.id == orderID }) {
+            
+            for dessert in orders[index].desserts {
+                InventoryManager.shared.updateQuantity(
+                    item: dessert.inventoryItem,
+                    newQuantity: dessert.inventoryItem.itemQuantity + dessert.quantity
+                )
+            }
+            
             orders.remove(at: index)
             saveOrders()
         }
@@ -120,6 +128,13 @@ class OrderManager: ObservableObject {
         
     }
     
+    func updateOrder(order: Order) {
+        if let index = orders.firstIndex(where: { $0.id == order.id }) {
+            orders[index] = order
+            saveOrders()
+        }
+    }
+    
     
     func updateOrderStatus(orderID: String, isDelivered: Bool) {
         if let index = orders.firstIndex(where: { $0.id == orderID }) {
@@ -138,7 +153,7 @@ class OrderManager: ObservableObject {
             }
         }
     }
-    
+        
     func printOrder(order: Order) -> Bool {
         print("orderID: \(order.orderID)")
         print("ispaid: \(order.isPaid.description)")

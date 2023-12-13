@@ -6,10 +6,10 @@
 //
 
 import Foundation
-import FirebaseAuth
-import GoogleSignIn
-import Firebase
 import SwiftUI
+import FirebaseAuth
+import Firebase
+import GoogleSignIn
 
 struct FirebAuth {
     

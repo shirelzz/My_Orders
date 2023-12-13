@@ -101,7 +101,7 @@ struct SideMenuView: View {
                 }
                
                 
-                NavigationLink(destination: AllOrdersView(orderManager: orderManager, languageManager: languageManager)
+                NavigationLink(destination: AllOrdersView(orderManager: orderManager, inventoryManager: inventoryManager, languageManager: languageManager)
                     .onAppear {
                         isSideMenuOpen = false
                     }) {

@@ -14,8 +14,9 @@ struct AddItemView: View {
     // State variables for new item input
     @State private var newName = ""
     @State private var newCatalogNumber = ""
-    @State private var newPrice = 0.0
-    @State private var newQuantity = 0
+    @State private var newPrice = ""
+    @State private var newQuantity = ""
+    @State private var newSize = ""
     @State private var additionDate = Date()
     @State private var newNotes = ""
     @State private var refreshView = false
@@ -34,19 +35,13 @@ struct AddItemView: View {
                     
                     TextField("Name", text: $newName)
 
-                    TextField("Price", text: Binding<String>(
-                        get: { String(newPrice) },
-                        set: { if let newValue = Double($0) { newPrice = newValue} }
-                    ))
+                    TextField("Price", text: $newPrice)
                     .keyboardType(.numberPad)
                     
-                    TextField("Quantity", text: Binding<String>(
-                        get: { String(newQuantity) },
-                        set: { if let newValue = Int($0) { newQuantity = newValue} }
-                    ))
+                    TextField("Quantity", text: $newQuantity)
                     .keyboardType(.numberPad)
                     
-//                    TextField("Catalog Number", text: $newCatalogNumber)
+                    TextField("Size", text: $newSize)
 
                     DatePicker("Date Added",
                                selection: $additionDate,
@@ -71,8 +66,9 @@ struct AddItemView: View {
                             
                             id: UUID(),
                             name: newName,
-                            itemPrice: newPrice,
-                            itemQuantity: newQuantity,
+                            itemPrice: Double(newPrice) ?? 0.0,
+                            itemQuantity: Int(newQuantity) ?? 0,
+                            size: newSize,
                             AdditionDate: additionDate,
                             itemNotes: newNotes
 //                            catalogNumber: newCatalogNumber
