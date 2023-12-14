@@ -10,7 +10,7 @@ import SwiftUI
 
 struct EditItemView: View {
     
-    @ObservedObject var inventoryManager = InventoryManager()
+    @ObservedObject var inventoryManager: InventoryManager
     @Environment(\.presentationMode) var presentationMode
     
     @State var item: InventoryItem?
@@ -86,6 +86,6 @@ struct EditItemView_Previews: PreviewProvider {
         let itemPrice = 10.0
         let itemQuantity = 5
         
-        EditItemView(name: itemName, price: itemPrice, quantity: itemQuantity, size: "", notes: "")
+        EditItemView(inventoryManager: InventoryManager.shared, name: itemName, price: itemPrice, quantity: itemQuantity, size: "", notes: "")
     }
 }

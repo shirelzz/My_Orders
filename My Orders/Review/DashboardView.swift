@@ -48,6 +48,8 @@ struct DashboardView: View {
                                      style: Styles.barChartStyleOrangeLight,
                                      form: ChartForm.extraLarge)
                         .padding()
+                        .frame(width: UIScreen.main.bounds.width)
+                        .frame(maxWidth: .infinity)
                     }
                     .padding(.trailing)
 
@@ -64,6 +66,7 @@ struct DashboardView: View {
                         .background(Color.accentColor.opacity(0.3))
                         .cornerRadius(10.0)
                         .padding()
+                        .frame(width: UIScreen.main.bounds.width / 3)
                         
                         let mostOrderedItems = calculateMostOrderedItems(period: mostOrderedPeriod)
                         BarChartView(data: ChartData(values: mostOrderedItems.map { ($0.0, Double($0.1)) }),
@@ -72,6 +75,7 @@ struct DashboardView: View {
                                      style: Styles.barChartStyleOrangeLight,
                                      form: ChartForm.extraLarge)
                         .padding()
+                        .frame(width: UIScreen.main.bounds.width)
                     }
                     .padding(.trailing)
                     

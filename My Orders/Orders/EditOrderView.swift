@@ -174,23 +174,46 @@ struct EditOrderView: View {
     }
     
     private func validateQuantity() {
-        isQuantityValid = Int(newDessertQuantity) == nil && Int(newDessertQuantity) ?? 0 > 0
+        isQuantityValid = Int(newDessertQuantity) != nil && Int(newDessertQuantity) ?? 0 > 0
     }
     
     private func addDessert() {
-           // Check if a valid inventory item is selected
-           guard let selectedInventoryItem = selectedInventoryItem else { return }
+        
+        // Check if a valid inventory item is selected
+            guard let selectedInventoryItem = selectedInventoryItem else { return }
 
-           // Create a new dessert with the selected inventory item and quantity
-           let newDessert = Dessert(
-               inventoryItem: selectedInventoryItem,
-               quantity: Int(newDessertQuantity) ?? 0,
-               price: selectedInventoryItem.itemPrice
-           )
+            // Check if there is already a dessert with the same item
+        if let existingDessertIndex = editedOrder.desserts.firstIndex(where: { $0.inventoryItem.id == selectedInventoryItem.id }) {
+                // Update the quantity of the existing dessert
+                editedOrder.desserts[existingDessertIndex].quantity += Int(newDessertQuantity) ?? 0
+            
+            // Create a new dessert and add it to the addedDesserts so the item's quantity will be updated
+            let existDessert = Dessert(
+                inventoryItem: selectedInventoryItem,
+                quantity: Int(newDessertQuantity) ?? 0,
+                price: selectedInventoryItem.itemPrice
+            )
+            addedDesserts.append(existDessert)
+                        
+//            if let selectedItem = inventoryManager.items.first(where: { $0.id == editedOrder.desserts[existingDessertIndex].inventoryItem.id }) {
+//                inventoryManager.updateQuantity(item: selectedItem,
+//                                                newQuantity: selectedItem.itemQuantity - (Int(newDessertQuantity) ?? 0))
+//            }
+            
+            } else {
+                // Create a new dessert and add it to the edited order
+                let newDessert = Dessert(
+                    inventoryItem: selectedInventoryItem,
+                    quantity: Int(newDessertQuantity) ?? 0,
+                    price: selectedInventoryItem.itemPrice
+                )
+                editedOrder.desserts.append(newDessert)
+                addedDesserts.append(newDessert)
+            }
 
-           // Add the new dessert to the edited order
-           editedOrder.desserts.append(newDessert)
-           addedDesserts.append(newDessert)
+            // Reset the input fields and validation
+            newDessertQuantity = ""
+//            isQuantityValid = false
        }
     
     private func deleteDesserts(at indices: IndexSet) {

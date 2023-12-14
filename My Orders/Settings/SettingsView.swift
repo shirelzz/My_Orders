@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     
     @ObservedObject var appManager: AppManager
-    @ObservedObject var languageManager = LanguageManager.shared
+    @ObservedObject var languageManager: LanguageManager //.shared
     @ObservedObject var orderManager: OrderManager
 
 
@@ -109,5 +109,5 @@ extension String {
 }
 
 #Preview {
-    SettingsView(appManager: AppManager.shared, orderManager: OrderManager.shared)
+    SettingsView(appManager: AppManager.shared, languageManager: LanguageManager.shared, orderManager: OrderManager.shared)
 }

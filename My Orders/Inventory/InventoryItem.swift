@@ -15,17 +15,8 @@ struct InventoryItem: Codable, Identifiable, Hashable{ //
     var itemPrice: Double
     var itemQuantity: Int
     var size: String
-//    var catalogNumber: String
     var AdditionDate: Date
     var itemNotes: String
-    
-    //    func hash(into hasher: inout Hasher) {
-    //            hasher.combine(id)
-    //        }
-    //
-    //        static func == (lhs: InventoryItem, rhs: InventoryItem) -> Bool {
-    //            return lhs.id == rhs.id
-    //        }
     
 }
 
@@ -66,17 +57,6 @@ class InventoryManager: ObservableObject {
             saveItems()
         }
     }
-    
-    //    func editItem(item: InventoryItem, newQuantity: Int) {
-    //        if items.contains(item) {
-    //            items.remove(item)
-    //            var editedItem = item
-    //            editedItem.itemQuantity = newQuantity
-    //            items.insert(editedItem)
-    //            saveItems()
-    //        }
-    //    }
-    
     
     func getItems() -> [InventoryItem] {
         return items

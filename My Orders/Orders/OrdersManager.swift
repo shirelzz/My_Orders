@@ -26,6 +26,10 @@ struct Dessert: Codable {
     var price: Double
 }
 
+//enum DiscountType {
+//    case amount
+//    case percentage
+//}
 struct Order: Identifiable, Codable {
     
     var id: String { orderID }
@@ -39,13 +43,34 @@ struct Order: Identifiable, Codable {
     var allergies: String
     var isDelivered: Bool
     var isPaid: Bool
+
     
     var totalPrice: Double{
         let dessertsTotal = desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
-        return dessertsTotal + delivery.cost
+        return dessertsTotal + delivery.cost // - discount
     }
     
-    var receipt: Receipt? // maybe i should do it ?
+//       var discountAmount: Double // Discount amount in dollars
+//       var discountPercentage: Double // Discount percentage
+//       var discountType: DiscountType
+    
+
+//    var totalPrice: Double {
+//        let dessertsTotal = desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
+//        let totalBeforeDiscount = dessertsTotal + delivery.cost
+//        var totalWithDiscount = totalBeforeDiscount
+//
+//        switch discountType {
+//        case .amount:
+//            totalWithDiscount -= discountAmount
+//        case .percentage:
+//            totalWithDiscount -= totalBeforeDiscount * (discountPercentage / 100)
+//        }
+//
+//        return max(0, totalWithDiscount) // Ensure the total is not negative
+//    }
+    
+    var receipt: Receipt?
     
 }
 
@@ -58,7 +83,6 @@ struct Receipt: Identifiable, Codable, Hashable {
     var paymentMethod: String
     var paymentDate: Date
 }
-
 
 
 class OrderManager: ObservableObject {
@@ -83,11 +107,6 @@ class OrderManager: ObservableObject {
     func getOrders() -> [Order] {
         return orders
     }
-    
-    //    func removeOrder(at index: Int) {
-    //        orders.remove(at: index)
-    //        saveOrders()
-    //    }
     
     func removeOrder(with orderID: String) {
         if let index = orders.firstIndex(where: { $0.id == orderID }) {
@@ -174,24 +193,6 @@ class OrderManager: ObservableObject {
         return false
     }
     
-    
-    
-    //    var receipts: [Receipt] {
-    //        get {
-    //            if let savedData = UserDefaults.standard.data(forKey: "receipts"),
-    //               let decodedReceipts = try? JSONDecoder().decode([Receipt].self, from: savedData) {
-    //                return decodedReceipts
-    //            }
-    //            return []
-    //        }
-    //        set {
-    //            if let encodedReceipts = try? JSONEncoder().encode(newValue) {
-    //                UserDefaults.standard.set(encodedReceipts, forKey: "receipts")
-    //            }
-    //        }
-    //    }
-    
-    
     // Function to add and save a receipt
     func addReceipt(receipt: Receipt) {
         if !generatedReceiptIDs.contains(receipt.orderID) {
@@ -203,19 +204,6 @@ class OrderManager: ObservableObject {
         }
     }
     
-//    func assignReceiptToOrder(receipt: Receipt, toOrderWithID orderID: String) {
-//        if let index = orders.firstIndex(where: { $0.id == orderID }) { //{ $0.id == orderID }
-//            orders[index].receipt = receipt
-//        }
-//    }
-    
-//    func assignReceiptToOrder(receipt: Receipt, toOrderWithID orderID: String, completion: @escaping () -> Void) {
-//        if let index = orders.firstIndex(where: { $0.orderID == orderID }) {
-//            orders[index].receipt = receipt
-//            completion() // Call the completion handler
-//        }
-//    }
-    
     func assignReceiptToOrder(receipt: Receipt, toOrderWithID orderID: String) -> Order? {
         if let index = orders.firstIndex(where: { $0.orderID == orderID }) {
             orders[index].receipt = receipt
@@ -223,18 +211,6 @@ class OrderManager: ObservableObject {
         }
         return nil
     }
-    
-//    func getReceipt(forOrderID orderID: String) -> Receipt? {
-//            if let order = orders.first(where: { $0.id == orderID }),
-//               let receipt = order.receipt {
-//                return receipt
-//            }
-//            return nil
-//        }
-    
-//    func getReceipt(forOrderID orderID: String) -> Receipt? {
-//        return receipts.first(where: { $0.orderID == orderID })
-//    }
     
     func getReceipt(forOrderID orderID: String) -> Receipt {
         if let receipt = receipts.first(where: { $0.orderID == orderID }) {
@@ -252,24 +228,6 @@ class OrderManager: ObservableObject {
             )
         }
     }
-
-
-
-    
-    //    // Function to save receipts to UserDefaults
-    //    private func saveReceipts() {
-    //        if let encodedData = try? JSONEncoder().encode(receipts) {
-    //            UserDefaults.standard.set(encodedData, forKey: "receipts")
-    //        }
-    //    }
-    //
-    //    // Function to load receipts from UserDefaults
-    //    func loadReceipts() {
-    //        if let savedData = UserDefaults.standard.data(forKey: "receipts"),
-    //           let decodedReceipts = try? JSONDecoder().decode([Receipt].self, from: savedData) {
-    //            receipts = decodedReceipts
-    //        }
-    //    }
     
     private func saveReceipts() {
         do {
@@ -289,7 +247,7 @@ class OrderManager: ObservableObject {
                 //                receipts = decodedReceipts
                 receipts = Set(decodedReceipts)
                 
-                print("load success decoding receipts!")
+                print("success decoding receipts! load")
             } catch {
                 print("load Error decoding receipts: \(error)")
             }
@@ -297,14 +255,6 @@ class OrderManager: ObservableObject {
     }
     
     func receiptExists(forOrderID orderID: String) -> Bool {
-//        return generatedReceiptIDs.contains(orderID)
-        
-//        if let receipt = receipts.first(where: { $0.orderID == orderID }) {
-//            return true
-//        } else {
-//            return false
-//        } worked
-        
         
         if receipts.first(where: { $0.orderID == orderID }) != nil {
             return true
@@ -312,10 +262,6 @@ class OrderManager: ObservableObject {
             return false
         }
     }
-    
-    //    func receiptExists(forReceipt receipt: Receipt) -> Bool {
-    //        return receipts.contains(receipt)
-    //    }
     
     func getLastReceipt() -> Receipt? {
         // Get the most recently generated receipt by sorting receipts based on dateGenerated
@@ -358,17 +304,7 @@ class OrderManager: ObservableObject {
         print("paymentDate: \(receipt.paymentDate)")
     }
     
-    //    func getLastReceiptID() -> Int {
-    //        // Get the most recently generated receipt by sorting receipts based on dateGenerated
-    //        guard let lastReceipt = receipts.sorted(by: { $0.myID > $1.myID }).first else {
-    //            return 0
-    //        }
-    //        return lastReceipt.myID
-    //    }
-    
-    
     // notifications
-    
     func scheduleOrderNotification(order: Order, daysBefore: Int) {
         let content = UNMutableNotificationContent()
         content.title = "Order Time is Soon"

@@ -186,7 +186,8 @@ struct InventoryContentView: View {
                             )
                         }
                         .sheet(item: $selectedItem) { selectedItem in
-                            EditItemView(item: selectedItem,
+                            EditItemView(inventoryManager: inventoryManager,
+                                         item: selectedItem,
                                          name: selectedItem.name,
                                          price: selectedItem.itemPrice,
                                          quantity: selectedItem.itemQuantity,

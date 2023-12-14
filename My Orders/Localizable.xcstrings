@@ -265,6 +265,9 @@
         }
       }
     },
+    "Added Items" : {
+
+    },
     "Additional Details" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1508,6 +1511,9 @@
         }
       }
     },
+    "Logo" : {
+
+    },
     "Month" : {
       "localizations" : {
         "en" : {
@@ -2628,6 +2634,9 @@
         }
       }
     },
+    "Select image" : {
+
+    },
     "Select Language" : {
       "localizations" : {
         "en" : {
@@ -2645,6 +2654,7 @@
       }
     },
     "Select logo image" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2661,6 +2671,7 @@
       }
     },
     "Select signature image" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2773,6 +2784,9 @@
           }
         }
       }
+    },
+    "Signature" : {
+
     },
     "Size" : {
       "localizations" : {

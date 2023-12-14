@@ -6,19 +6,32 @@
 //
 
 import SwiftUI
+import Firebase
 import FirebaseCore
+import FirebaseMessaging
+import UserNotifications
 import GoogleSignIn
 import UIKit
-import Firebase
 import GoogleMobileAds
 
-class AppDelegate: NSObject, UIApplicationDelegate {
+class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         // Initializetion code for firebase
         FirebaseApp.configure()
         
         // Initialize the Mobile Ads SDK
         GADMobileAds.sharedInstance().start(completionHandler: nil)
+        
+        // for push notifications
+        Messaging.messaging().delegate = self
+        UNUserNotificationCenter.current().delegate = self
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { success, error in
+            guard success else { return }
+            print("success (notifications)")
+        }
+        
+        application.registerForRemoteNotifications()
 
         return true
     }
@@ -28,6 +41,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                      options: [UIApplication.OpenURLOptionsKey: Any])
       -> Bool {
       return GIDSignIn.sharedInstance.handle(url)
+    }
+    
+    // for push notifications
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        messaging.token { token , error in
+            guard let token = token else { return }
+            print("token \(token)")
+        }
     }
 }
 

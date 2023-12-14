@@ -135,7 +135,7 @@ struct SideMenuView: View {
 //                    .padding(.leading)
                 }
                 
-                NavigationLink(destination: SettingsView(appManager: appManager, orderManager: orderManager)
+                NavigationLink(destination: SettingsView(appManager: appManager, languageManager: languageManager, orderManager: orderManager)
                     .onAppear {
                         isSideMenuOpen = false
                     }) {

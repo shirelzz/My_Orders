@@ -30,6 +30,7 @@ struct AddOrderView: View {
     @State private var isAddingDessert = false
     
     @State private var Desserts: [Dessert] = []
+    @State private var existedDesserts: [Dessert] = []
     @State private var deletedInventoryItem: InventoryItem? = nil
     
     @State private var delivery = "No"
@@ -45,6 +46,7 @@ struct AddOrderView: View {
     
     @State private var notes = ""
     @State private var isAddItemViewPresented = false
+    @State private var isQuantityValid = true
     
     
     var body: some View {
@@ -107,37 +109,56 @@ struct AddOrderView: View {
                         .labelsHidden()
                     }
                 
-//                TextField("Quantity", text: Binding<String>(
-//                    get: { String(DessertQuantity) },
-//                    set: { if let newValue = Int($0) { DessertQuantity = newValue } }
-//                ))
-//                .keyboardType(.numberPad)
-                
                 TextField("Quantity", text: $DessertQuantity)
                     .keyboardType(.numberPad)
-                
-//                Stepper("Quantity: \(DessertQuantity)" , value: $DessertQuantity, in: 1...100)
-                
+                    .onSubmit {
+                        validateQuantity()
+                    }
+
+                if !isQuantityValid {
+                    Text("Please enter a valid quantity.")
+                        .foregroundColor(.red)
+                }
+                                
                 Button(action: {
                     
-                    if let selectedItem = selectedInventoryItem {
-                        let dessert = Dessert(
-                            inventoryItem: selectedItem,
-                            quantity: Int(DessertQuantity) ?? 0,
-                            price: selectedItem.itemPrice
-                        )
+//                    if let selectedInventoryItem = selectedInventoryItem {
+                    // Check if a valid inventory item is selected
+                        guard let selectedInventoryItem = selectedInventoryItem else { return }
                         
-//                        inventoryManager.updateQuantity(item: selectedItem,
-//                                                        newQuantity: selectedItem.itemQuantity - DessertQuantity)
-                        
-                        // Append the dessert to the order
-                        Desserts.append(dessert)
-                    }
+                        // Check if there is already a dessert with the same item
+                        if let existingDessertIndex = Desserts.firstIndex(where: { $0.inventoryItem.id == selectedInventoryItem.id }) {
+                            // Update the quantity of the existing dessert
+                            Desserts[existingDessertIndex].quantity += Int(DessertQuantity) ?? 0
+                            
+                            // Create a new dessert and add it to the addedDesserts so the item's quantity will be updated
+                            let existDessert = Dessert(
+                                inventoryItem: selectedInventoryItem,
+                                quantity: Int(DessertQuantity) ?? 0,
+                                price: selectedInventoryItem.itemPrice
+                            )
+                            existedDesserts.append(existDessert)
+                        }
+                        else {
+                            let dessert = Dessert(
+                                inventoryItem: selectedInventoryItem,
+                                quantity: Int(DessertQuantity) ?? 0,
+                                price: selectedInventoryItem.itemPrice
+                            )
+                            
+                            // Append the dessert to the order
+                            Desserts.append(dessert)
+                        }
+
+//                    }
                     
                 }){
                     Text("Add item")
                 }
-                
+                .disabled(!isQuantityValid)
+            }
+            
+            Section(header: Text("Added Items")){
                 ForEach(Desserts.indices, id: \.self) { index in
                     HStack {
                         Text("\(Desserts[index].inventoryItem.name) (Quantity: \(Desserts[index].quantity))")
@@ -163,7 +184,7 @@ struct AddOrderView: View {
 
                     }
                 }
-
+                
                 HStack{
                     // Calculate and display the total price
                     let totalPrice = Desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
@@ -240,6 +261,14 @@ struct AddOrderView: View {
                             }
                         }
                     
+                    for dessert in existedDesserts {
+                            // Update the quantity of the selected inventory item
+                            if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.id }) {
+                                inventoryManager.updateQuantity(item: selectedItem,
+                                                                newQuantity: selectedItem.itemQuantity - dessert.quantity)
+                            }
+                        }
+                    
                     let newOrder = Order(
                         
                         orderID: UUID().uuidString, // Generates a unique ID for the order
@@ -251,6 +280,9 @@ struct AddOrderView: View {
                         allergies: allergies_details,
                         isDelivered: false,
                         isPaid: false,
+//                        discountAmount: amount,
+//                        discountPercentage: percentage,
+//                        discountType: selectedDiscountType,
                         receipt: nil
                         
                     )
@@ -273,6 +305,13 @@ struct AddOrderView: View {
             }
         }
         .navigationBarTitle("New Order")
+        .onChange(of: DessertQuantity) { _ in
+                validateQuantity()
+        }
+    }
+    
+    private func validateQuantity() {
+        isQuantityValid = Int(DessertQuantity) != nil && Int(DessertQuantity) ?? 0 > 0
     }
 }
 

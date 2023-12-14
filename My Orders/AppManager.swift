@@ -25,13 +25,12 @@ struct Manager: Codable {
 class AppManager: ObservableObject {
     
     static var shared = AppManager()
-    @Published var manager: Manager
-    
+    @Published var manager = Manager()
     
     init() {
-        self.manager = Manager()
+//        self.manager = Manager()
         loadManagerData()
-        requestNotificationAuthorization()
+//        requestNotificationAuthorization()
     }
     
     func saveManager(manager: Manager) {
@@ -56,18 +55,38 @@ class AppManager: ObservableObject {
         }
     }
     
-    func requestNotificationAuthorization() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if granted {
-                print("Notification authorization granted")
-            } else if let error = error {
-                print("Error requesting notification authorization: \(error.localizedDescription)")
-            }
-        }
-    }
+//    func requestNotificationAuthorization() {
+//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+//            if granted {
+//                print("Notification authorization granted")
+//            } else if let error = error {
+//                print("Error requesting notification authorization: \(error.localizedDescription)")
+//            }
+//        }
+//    }
     
     func setLanguage() {
         
+    }
+    
+    func getLogoImage() -> Data {
+        if let logoImg = manager.logoImgData {
+            return logoImg
+        }
+        else {
+            print("error getting logo")
+            return Data()
+        }
+    }
+    
+    func getSignatureImage() -> Data {
+        if let signatureImg = manager.signatureImgData {
+            return signatureImg
+        }
+        else {
+            print("error getting signature")
+            return Data()
+        }
     }
     
 }

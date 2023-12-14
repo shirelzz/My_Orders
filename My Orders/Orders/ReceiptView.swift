@@ -15,8 +15,6 @@ struct ReceiptView: View {
     @ObservedObject var languageManager: LanguageManager
     
     @State var order: Order
-    //    var order: Order
-    
     @Binding var isPresented: Bool
     @State private var pdfData: Data?
     @State private var showConfirmationAlert = false
@@ -24,7 +22,6 @@ struct ReceiptView: View {
     @State private var selectedPaymentDate: Date = Date()
     @State private var showSuccessMessage = false
     @State private var lastReceipttID = OrderManager.shared.getLastReceiptID()
-    
     
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -114,8 +111,6 @@ struct ReceiptView: View {
             }
             .padding(.leading)
             
-//            Text("receipt exist: \(OrderManager.shared.receiptExists(forOrderID: order.orderID).description)")
-            
             if !OrderManager.shared.receiptExists(forOrderID: order.orderID) {
                 Button("Generate PDF Receipt") {
                     showConfirmationAlert = true
@@ -136,9 +131,7 @@ struct ReceiptView: View {
                         }
                     )
                 }
-                
             }
-            
             
             if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
                 Button("Share PDF Receipt") {
@@ -278,6 +271,10 @@ struct ReceiptView: View {
             
             // Define the starting position for the content
             var currentY: CGFloat = 50
+            
+            let logoImage = UIImage(data: AppManager.shared.getLogoImage())
+            let logoRect = CGRect(x: 50, y: 50, width: 50, height: 50)  // Adjust the size and position as needed
+            logoImage?.draw(in: logoRect)
             
             // Title
 //            var title = ""
@@ -631,7 +628,11 @@ struct ReceiptView: View {
 //            let paymentDateText = "Payment Date: \(dateFormatter.string(from: receipt_.paymentDate))"
             paymentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: paymentDetailsAttributes)
             
-            // Digital signature
+            //  signature
+            
+            let signatureImage = UIImage(data: AppManager.shared.getSignatureImage())
+               let signatureRect = CGRect(x: pageRect.width - 150, y: pageRect.height - 150, width: 50, height: 50)  // Adjust the size and position as needed
+               signatureImage?.draw(in: signatureRect)
         }
         
         return pdfData
