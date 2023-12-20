@@ -204,7 +204,8 @@ struct OrderDetailsView: View {
 struct OrderDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         
-        let sampleItem = InventoryItem(name: "Chocolate cake",
+        let sampleItem = InventoryItem(itemID: "1234",
+                                       name: "Chocolate cake",
                                        itemPrice: 20,
                                        itemQuantity: 20,
                                        size: "",

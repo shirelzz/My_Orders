@@ -56,11 +56,23 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
 struct MyOrdersApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
-    let orderManager = OrderManager.shared
+//    let orderManager = OrderManager.shared
 
     var body: some Scene {
         WindowGroup {
-            MainView().environmentObject(orderManager)
+            MainView()
+                .environmentObject(OrderManager.shared)
+                .onAppear {
+                                   // Ensure Firebase is configured only once
+                                   if FirebaseApp.app() == nil {
+                                       FirebaseApp.configure()
+                                   }
+                               }
+//                .onAppear {
+//                    // Ensure Firebase is configured before creating OrderManager
+//                    FirebaseApp.configure()
+//                }
+//            .environmentObject(orderManager)
 
         }
     }

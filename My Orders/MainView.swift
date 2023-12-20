@@ -25,7 +25,7 @@ struct MainView: View {
                 LaunchView()
                     .onAppear {
                         // Add any additional setup code if needed
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             withAnimation {
                                 showLogo = false
                             }
@@ -41,7 +41,7 @@ struct MainView: View {
                         }
                         .onOpenURL { url in
                                   GIDSignIn.sharedInstance.handle(url)
-                                }
+                        }
                 }
             } else {
                 ContentView()

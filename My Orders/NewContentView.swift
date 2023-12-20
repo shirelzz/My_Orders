@@ -19,7 +19,7 @@ struct NewContentView: View {
         AppManager.shared.loadManagerData()
         OrderManager.shared.loadOrders()
         OrderManager.shared.loadReceipts()
-        InventoryManager.shared.loadItems()
+        InventoryManager.shared.loadItemsFromUD()
     }
 
     var body: some View {

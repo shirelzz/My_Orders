@@ -83,7 +83,7 @@ struct AddItemView: View {
                             
                             let newItem = InventoryItem(
                                 
-                                id: UUID(),
+                                itemID: UUID().uuidString,
                                 name: newName,
                                 itemPrice: Double(newPrice) ?? 0.0,
                                 itemQuantity: newQuantity,

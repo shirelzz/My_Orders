@@ -460,14 +460,15 @@ class ReceiptUtils {
         // Create a PDF for each receipt and save it in the temporary directory
         for (index, receipt) in filteredReceipts.enumerated() {
             let order = orderManager.getOrder(orderID: receipt.orderID)
-            
+            let receipt_ = OrderManager.shared.getReceipt(forOrderID: order.orderID)
+
             if order.orderID != "" {
-                    let pdfData = ReceiptUtils.drawPDF(for: order)
+                let pdfData = receipt_.pdfData // ReceiptUtils.drawPDF(for: order)
                     let pdfFileName = "Receipt-\(index + 1).pdf"
                     let pdfFileURL = tempDirectory.appendingPathComponent(pdfFileName)
                     
                     do {
-                        try pdfData.write(to: pdfFileURL)
+                        try pdfData?.write(to: pdfFileURL)
                     } catch {
                         print("Error saving PDF: \(error.localizedDescription)")
                     }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import GoogleMobileAds
+import FirebaseAuth
 
 struct ContentView: View {
     
@@ -24,12 +25,21 @@ struct ContentView: View {
     @State private var isSideMenuOpen = false
     @State private var showSideMenu = false
     @State private var isEditOrderViewPresented = false
+    @State private var isUserSignedIn = Auth.auth().currentUser != nil
         
     init() {
         AppManager.shared.loadManagerData()
-        OrderManager.shared.loadOrders()
-        OrderManager.shared.loadReceipts()
-        InventoryManager.shared.loadItems()
+
+        if isUserSignedIn {
+            OrderManager.shared.fetchOrders()
+            OrderManager.shared.fetchReceipts()
+            InventoryManager.shared.fetchItemsFromDB()
+        }
+        else {
+            OrderManager.shared.loadOrders()
+            OrderManager.shared.loadReceipts()
+            InventoryManager.shared.loadItemsFromUD()
+        }
     }
     
     

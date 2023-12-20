@@ -142,7 +142,7 @@ struct AddOrderView: View {
                         guard let selectedInventoryItem = selectedInventoryItem else { return }
                         
                         // Check if there is already a dessert with the same item
-                        if let existingDessertIndex = Desserts.firstIndex(where: { $0.inventoryItem.id == selectedInventoryItem.id }) {
+                        if let existingDessertIndex = Desserts.firstIndex(where: { $0.inventoryItem.itemID == selectedInventoryItem.itemID }) {
                             // Update the quantity of the existing dessert
                             Desserts[existingDessertIndex].quantity += Int(DessertQuantity) ?? 0
                             
@@ -268,7 +268,7 @@ struct AddOrderView: View {
                     
                     for dessert in Desserts {
                             // Update the quantity of the selected inventory item
-                            if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.id }) {
+                            if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
                                 inventoryManager.updateQuantity(item: selectedItem,
                                                                 newQuantity: selectedItem.itemQuantity - dessert.quantity)
                             }
@@ -276,7 +276,7 @@ struct AddOrderView: View {
                     
                     for dessert in existedDesserts {
                             // Update the quantity of the selected inventory item
-                            if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.id }) {
+                            if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
                                 inventoryManager.updateQuantity(item: selectedItem,
                                                                 newQuantity: selectedItem.itemQuantity - dessert.quantity)
                             }

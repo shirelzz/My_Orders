@@ -184,7 +184,7 @@ struct EditOrderView: View {
                         
                         for dessert in addedDesserts {
                             // Update the quantity of the selected inventory item
-                            if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.id }) {
+                            if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
                                 inventoryManager.updateQuantity(item: selectedItem,
                                                                 newQuantity: selectedItem.itemQuantity - dessert.quantity)
                             }
@@ -192,7 +192,7 @@ struct EditOrderView: View {
                         
                         for dessert in deletedDesserts {
                             // Update the quantity of the selected inventory item
-                            if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.id }) {
+                            if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
                                 inventoryManager.updateQuantity(item: selectedItem,
                                                                 newQuantity: selectedItem.itemQuantity + dessert.quantity)
                             }
@@ -219,7 +219,7 @@ struct EditOrderView: View {
         guard let selectedInventoryItem = selectedInventoryItem else { return }
         
         // Check if there is already a dessert with the same item
-        if let existingDessertIndex = editedOrder.desserts.firstIndex(where: { $0.inventoryItem.id == selectedInventoryItem.id }) {
+        if let existingDessertIndex = editedOrder.desserts.firstIndex(where: { $0.inventoryItem.itemID == selectedInventoryItem.itemID }) {
             // Update the quantity of the existing dessert
             editedOrder.desserts[existingDessertIndex].quantity += Int(newDessertQuantity) ?? 0
             
@@ -231,7 +231,7 @@ struct EditOrderView: View {
             )
             addedDesserts.append(existDessert)
             
-            //            if let selectedItem = inventoryManager.items.first(where: { $0.id == editedOrder.desserts[existingDessertIndex].inventoryItem.id }) {
+            //            if let selectedItem = inventoryManager.items.first(where: { $0.id == editedOrder.desserts[existingDessertIndex].inventoryItem.itemID }) {
             //                inventoryManager.updateQuantity(item: selectedItem,
             //                                                newQuantity: selectedItem.itemQuantity - (Int(newDessertQuantity) ?? 0))
             //            }

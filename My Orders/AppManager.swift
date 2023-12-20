@@ -26,6 +26,7 @@ class AppManager: ObservableObject {
     
     static var shared = AppManager()
     @Published var manager = Manager()
+    @Published var isUserSignedIn = false
     
     init() {
 //        self.manager = Manager()

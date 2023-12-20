@@ -52,7 +52,8 @@ struct ReceiptRowView: View {
 struct ReceiptRowView_Previews: PreviewProvider {
     static var previews: some View {
         
-        let sampleItem = InventoryItem(name: "Chocolate cake",
+        let sampleItem = InventoryItem(itemID: "1234",
+                                       name: "Chocolate cake",
                                        itemPrice: 20,
                                        itemQuantity: 20,
                                        size: "",
@@ -60,7 +61,8 @@ struct ReceiptRowView_Previews: PreviewProvider {
                                        itemNotes: ""
                                        )
         
-        let sampleItem_ = InventoryItem(name: "Raspberry pie",
+        let sampleItem_ = InventoryItem(itemID: "4321",
+                                        name: "Raspberry pie",
                                        itemPrice: 120,
                                        itemQuantity: 3,
                                         size: "",

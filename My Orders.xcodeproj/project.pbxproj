@@ -23,7 +23,6 @@
 		D66A36DF2B26275C00A921CF /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A36DE2B26275C00A921CF /* WelcomeView.swift */; };
 		D66A36E22B2636A800A921CF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = D66A36E12B2636A800A921CF /* GoogleSignIn */; };
 		D66A36E42B2636A800A921CF /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D66A36E32B2636A800A921CF /* GoogleSignInSwift */; };
-		D66A36FB2B26FCCD00A921CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D66A36FA2B26FCCD00A921CF /* GoogleService-Info.plist */; };
 		D66A36FD2B27364100A921CF /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = D66A36FC2B27364100A921CF /* FirebaseAnalytics */; };
 		D66A36FF2B27364100A921CF /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D66A36FE2B27364100A921CF /* FirebaseAnalyticsSwift */; };
 		D66A37012B27364100A921CF /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D66A37002B27364100A921CF /* FirebaseAuth */; };
@@ -74,6 +73,8 @@
 		D6F8CA652B2F55050031A7A2 /* ReceiptsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F8CA642B2F55050031A7A2 /* ReceiptsUtils.swift */; };
 		D6F8CA672B2F7F870031A7A2 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = D6F8CA662B2F7F870031A7A2 /* FirebaseDatabase */; };
 		D6F8CA692B2F7F870031A7A2 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D6F8CA682B2F7F870031A7A2 /* FirebaseDatabaseSwift */; };
+		D6F8CA732B31C40E0031A7A2 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F8CA722B31C40E0031A7A2 /* DatabaseManager.swift */; };
+		D6F8CA752B32C62F0031A7A2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D6F8CA742B32C62F0031A7A2 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,7 +109,6 @@
 		D6674D0A2ACBB2B0003DE4BB /* SignaturePadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SignaturePadView.swift; path = ../Orders/SignaturePadView.swift; sourceTree = "<group>"; };
 		D66A36DE2B26275C00A921CF /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		D66A36E62B26F0DE00A921CF /* My-Orders-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "My-Orders-Info.plist"; sourceTree = SOURCE_ROOT; };
-		D66A36FA2B26FCCD00A921CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D66A37082B28801200A921CF /* FirebAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FirebAuth.swift; path = ../../FirebAuth.swift; sourceTree = "<group>"; };
 		D66A370A2B28803300A921CF /* +View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "+View.swift"; path = "../../+View.swift"; sourceTree = "<group>"; };
 		D66A370C2B2880BF00A921CF /* GoogleSiginBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GoogleSiginBtn.swift; path = ../../GoogleSiginBtn.swift; sourceTree = "<group>"; };
@@ -153,6 +153,8 @@
 		D6F6A3622AC59FCE002ECA81 /* AddOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOrderView.swift; sourceTree = "<group>"; };
 		D6F6A3642AC5B058002ECA81 /* AllOrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllOrdersView.swift; sourceTree = "<group>"; };
 		D6F8CA642B2F55050031A7A2 /* ReceiptsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptsUtils.swift; sourceTree = "<group>"; };
+		D6F8CA722B31C40E0031A7A2 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		D6F8CA742B32C62F0031A7A2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,6 +304,8 @@
 		D6F6A32F2AC593F8002ECA81 /* My Orders */ = {
 			isa = PBXGroup;
 			children = (
+				D6F8CA742B32C62F0031A7A2 /* GoogleService-Info.plist */,
+				D6F8CA6A2B31B94A0031A7A2 /* Database */,
 				D66A36E62B26F0DE00A921CF /* My-Orders-Info.plist */,
 				D64DD7532B1BD7CF0066BB7E /* SideMenu.swift */,
 				D64DD7552B1BD9D20066BB7E /* NewContentView.swift */,
@@ -319,7 +323,6 @@
 				D6F6A3342AC593FA002ECA81 /* Assets.xcassets */,
 				D6F6A3362AC593FA002ECA81 /* Preview Content */,
 				D6AF63092B1972620056C973 /* Localizable.xcstrings */,
-				D66A36FA2B26FCCD00A921CF /* GoogleService-Info.plist */,
 			);
 			path = "My Orders";
 			sourceTree = "<group>";
@@ -343,6 +346,14 @@
 				D6F8CA642B2F55050031A7A2 /* ReceiptsUtils.swift */,
 			);
 			path = Receipts;
+			sourceTree = "<group>";
+		};
+		D6F8CA6A2B31B94A0031A7A2 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				D6F8CA722B31C40E0031A7A2 /* DatabaseManager.swift */,
+			);
+			path = Database;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -472,7 +483,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6F6A3382AC593FA002ECA81 /* Preview Assets.xcassets in Resources */,
-				D66A36FB2B26FCCD00A921CF /* GoogleService-Info.plist in Resources */,
+				D6F8CA752B32C62F0031A7A2 /* GoogleService-Info.plist in Resources */,
 				D6F6A3352AC593FA002ECA81 /* Assets.xcassets in Resources */,
 				D6AF630A2B1972620056C973 /* Localizable.xcstrings in Resources */,
 			);
@@ -524,6 +535,7 @@
 				D6AF62E22B136A4F0056C973 /* AccountView.swift in Sources */,
 				D64DD7542B1BD7CF0066BB7E /* SideMenu.swift in Sources */,
 				D6674D0B2ACBB2B0003DE4BB /* SignaturePadView.swift in Sources */,
+				D6F8CA732B31C40E0031A7A2 /* DatabaseManager.swift in Sources */,
 				D6F6A35F2AC59CEF002ECA81 /* OrderDetailsView.swift in Sources */,
 				D6AF62F22B14059C0056C973 /* MainView.swift in Sources */,
 				D6AF62F42B14A99B0056C973 /* GeneratedReceiptView.swift in Sources */,
