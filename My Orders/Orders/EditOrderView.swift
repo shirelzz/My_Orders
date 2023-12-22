@@ -18,8 +18,8 @@ struct EditOrderView: View {
     @State var showDeleteOrderAlert = false
     
     @State private var newDessertQuantity = ""
-    @State private var addedDesserts: [OrderItem] = []
-    @State private var deletedDesserts: [OrderItem] = []
+    @State private var addedOrderItems: [OrderItem] = []
+    @State private var deletedOrderItems: [OrderItem] = []
     
     @State private var isAddItemViewPresented = false
     @State private var selectedInventoryItem: InventoryItem? = nil
@@ -41,16 +41,16 @@ struct EditOrderView: View {
                 
                 Section(header: Text("Order Details")) {
                     //                            List {
-                    ForEach(0..<editedOrder.desserts.count, id: \.self) { index in
-                        DessertEditRow(dessert: $editedOrder.desserts[index])
+                    ForEach(0..<editedOrder.orderItems.count, id: \.self) { index in
+                        DessertEditRow(dessert: $editedOrder.orderItems[index])
                     }
                     .onDelete { indices in
-                        deleteDesserts(at: indices)
+                        deleteOrderItems(at: indices)
                     }
                     //                            }
                     HStack{
                         // Calculate and display the total price
-                        let totalPrice = editedOrder.desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
+                        let totalPrice = editedOrder.orderItems.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
                         
                         Text("Total Price: $")
                         Text("\(totalPrice, specifier: "%.2f")")
@@ -182,7 +182,7 @@ struct EditOrderView: View {
                         order = editedOrder
                         orderManager.updateOrder(order: order)
                         
-                        for dessert in addedDesserts {
+                        for dessert in addedOrderItems {
                             // Update the quantity of the selected inventory item
                             if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
                                 inventoryManager.updateQuantity(item: selectedItem,
@@ -190,7 +190,7 @@ struct EditOrderView: View {
                             }
                         }
                         
-                        for dessert in deletedDesserts {
+                        for dessert in deletedOrderItems {
                             // Update the quantity of the selected inventory item
                             if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
                                 inventoryManager.updateQuantity(item: selectedItem,
@@ -219,9 +219,9 @@ struct EditOrderView: View {
         guard let selectedInventoryItem = selectedInventoryItem else { return }
         
         // Check if there is already a dessert with the same item
-        if let existingDessertIndex = editedOrder.desserts.firstIndex(where: { $0.inventoryItem.itemID == selectedInventoryItem.itemID }) {
+        if let existingDessertIndex = editedOrder.orderItems.firstIndex(where: { $0.inventoryItem.itemID == selectedInventoryItem.itemID }) {
             // Update the quantity of the existing dessert
-            editedOrder.desserts[existingDessertIndex].quantity += Int(newDessertQuantity) ?? 0
+            editedOrder.orderItems[existingDessertIndex].quantity += Int(newDessertQuantity) ?? 0
             
             // Create a new dessert and add it to the addedDesserts so the item's quantity will be updated
             let existDessert = OrderItem(
@@ -229,7 +229,7 @@ struct EditOrderView: View {
                 quantity: Int(newDessertQuantity) ?? 0,
                 price: selectedInventoryItem.itemPrice
             )
-            addedDesserts.append(existDessert)
+            addedOrderItems.append(existDessert)
             
             //            if let selectedItem = inventoryManager.items.first(where: { $0.id == editedOrder.desserts[existingDessertIndex].inventoryItem.itemID }) {
             //                inventoryManager.updateQuantity(item: selectedItem,
@@ -243,8 +243,8 @@ struct EditOrderView: View {
                 quantity: Int(newDessertQuantity) ?? 0,
                 price: selectedInventoryItem.itemPrice
             )
-            editedOrder.desserts.append(newDessert)
-            addedDesserts.append(newDessert)
+            editedOrder.orderItems.append(newDessert)
+            addedOrderItems.append(newDessert)
         }
         
         // Reset the input fields and validation
@@ -253,14 +253,14 @@ struct EditOrderView: View {
         //            isQuantityValid = false
     }
     
-    private func deleteDesserts(at indices: IndexSet) {
-        let deletedDessertsBatch = indices.compactMap { index in
-            return editedOrder.desserts[index]
+    private func deleteOrderItems(at indices: IndexSet) {
+        let deletedOrderItemsBatch = indices.compactMap { index in
+            return editedOrder.orderItems[index]
         }
         
-        editedOrder.desserts.remove(atOffsets: indices)
-        addedDesserts.remove(atOffsets: indices)
-        deletedDesserts.append(contentsOf: deletedDessertsBatch)
+        editedOrder.orderItems.remove(atOffsets: indices)
+        addedOrderItems.remove(atOffsets: indices)
+        deletedOrderItems.append(contentsOf: deletedOrderItemsBatch)
     }
     
     private func deleteOrder(orderID: String) {

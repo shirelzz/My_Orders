@@ -30,13 +30,36 @@ struct InventoryItem: Codable, Identifiable, Hashable{ //
         self.itemNotes = itemNotes
     }
     
+    func dictionaryRepresentation() -> [String: Any] {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+
+        let itemDict: [String: Any] = [
+            
+            "itemID": itemID,
+            "name": name,
+            "itemPrice": itemPrice,
+            "itemQuantity": itemQuantity,
+            "size": size,
+            "AdditionDate": dateFormatter.string(from: AdditionDate),
+            "itemNotes": itemNotes,
+
+        ]
+        return itemDict
+    }
+    
     init?(dictionary: [String: Any]) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
         guard let itemID = dictionary["itemID"] as? String,
               let name = dictionary["name"] as? String,
               let price = dictionary["itemPrice"] as? Double,
               let quantity = dictionary["itemQuantity"] as? Int,
               let size = dictionary["size"] as? String,
               let additionDate = dictionary["AdditionDate"] as? Date,
+//              let dateString = dictionary["AdditionDate"] as? String,
+//              let additionDate = dateFormatter.date(from: dateString),
               let notes = dictionary["itemNotes"] as? String
         else {
             return nil
@@ -52,26 +75,26 @@ struct InventoryItem: Codable, Identifiable, Hashable{ //
     }
 }
 
-extension InventoryItem {
-    
-    func dictionaryRepresentation() -> [String: Any] {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-
-        var itemDict: [String: Any] = [
-            
-            "itemID": itemID,
-            "name": name,
-            "itemPrice": itemPrice,
-            "itemQuantity": itemQuantity,
-            "size": size,
-            "AdditionDate": dateFormatter.string(from: AdditionDate),
-            "itemNotes": itemNotes,
-
-        ]
-        return itemDict
-    }
-}
+//extension InventoryItem {
+//    
+//    func dictionaryRepresentation() -> [String: Any] {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd"
+//
+//        var itemDict: [String: Any] = [
+//            
+//            "itemID": itemID,
+//            "name": name,
+//            "itemPrice": itemPrice,
+//            "itemQuantity": itemQuantity,
+//            "size": size,
+//            "AdditionDate": dateFormatter.string(from: AdditionDate),
+//            "itemNotes": itemNotes,
+//
+//        ]
+//        return itemDict
+//    }
+//}
 
 class InventoryManager: ObservableObject {
     
@@ -93,10 +116,16 @@ class InventoryManager: ObservableObject {
     func fetchItemsFromDB() {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
+            print("Current UserID: \(userID)")
             let path = "users/\(userID)/items"
-            
+
             DatabaseManager.shared.fetchItems_gpt(path: path, completion: { fetchedItems in
-                self.items = fetchedItems
+//                self.items = fetchedItems
+//                print("Success fetching items")
+                DispatchQueue.main.async {
+                    self.items = fetchedItems
+                    print("Success fetching items")
+                }
             })
         }
     }

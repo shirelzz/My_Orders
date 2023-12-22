@@ -9,12 +9,16 @@ import SwiftUI
 import Firebase
 import FirebaseCore
 import FirebaseMessaging
+//import FirebaseDatabase
+//import FirebaseDatabaseSwift
 import UserNotifications
 import GoogleSignIn
 import UIKit
 import GoogleMobileAds
 
 class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNotificationCenterDelegate {
+    
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         // Initializetion code for firebase
         FirebaseApp.configure()

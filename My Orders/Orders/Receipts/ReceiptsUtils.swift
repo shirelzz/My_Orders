@@ -305,7 +305,7 @@ class ReceiptUtils {
                     }()
                 ]
                 
-                for dessert in order.desserts {
+                for dessert in order.orderItems {
                     let dessertNameRect = CGRect(x: 262, y: currentY, width: 200, height: 20)
                     dessert.inventoryItem.name.draw(in: dessertNameRect, withAttributes: cellAttributes)
                     

@@ -10,9 +10,8 @@ import GoogleMobileAds
 import FirebaseAuth
 
 struct ContentView: View {
-    
+    //    @StateObject private var languageManager = LanguageManager.shared
     @StateObject private var appManager = AppManager.shared
-//    @StateObject private var languageManager = LanguageManager.shared
     @StateObject private var orderManager = OrderManager.shared
     @StateObject private var inventoryManager = InventoryManager.shared
     
@@ -30,16 +29,16 @@ struct ContentView: View {
     init() {
         AppManager.shared.loadManagerData()
 
-        if isUserSignedIn {
-            OrderManager.shared.fetchOrders()
-            OrderManager.shared.fetchReceipts()
-            InventoryManager.shared.fetchItemsFromDB()
-        }
-        else {
-            OrderManager.shared.loadOrders()
-            OrderManager.shared.loadReceipts()
-            InventoryManager.shared.loadItemsFromUD()
-        }
+//        if isUserSignedIn {
+//            OrderManager.shared .fetchOrders()
+//            OrderManager.shared.fetchReceipts()
+//            InventoryManager.shared.fetchItemsFromDB()
+//        }
+//        else {
+//            OrderManager.shared.loadOrders()
+//            OrderManager.shared.loadReceipts()
+//            InventoryManager.shared.loadItemsFromUD()
+//        }
     }
     
     

@@ -11,7 +11,7 @@ struct NewContentView: View {
     @State private var showAllReceipts = false
     @State private var isAddOrderViewPresented = false
     
-    @State private var desserts: [OrderItem] = []
+    @State private var orderItems: [OrderItem] = []
     @State private var isSideMenuOpen = false
     @State private var showSideMenu = false
 

@@ -17,17 +17,39 @@ struct Customer: Codable {
     var name: String
     var phoneNumber: String
     
+    init(name: String, phoneNumber: String) {
+        self.name = name
+        self.phoneNumber = phoneNumber
+    }
+    
     func dictionaryRepresentation() -> [String: Any] {
            return [
                "name": name,
                "phoneNumber": phoneNumber
            ]
        }
+    
+        init?(dictionary: [String: Any]) {
+    
+            guard let name = dictionary["name"] as? String,
+                  let phoneNumber = dictionary["phoneNumber"] as? String
+            else {
+                return nil
+            }
+            self.name = name
+            self.phoneNumber = phoneNumber
+        }
 }
 
 struct Delivery: Codable {
     var address: String
     var cost: Double
+    
+    
+    init(address: String, cost: Double) {
+        self.address = address
+        self.cost = cost
+    }
     
     func dictionaryRepresentation() -> [String: Any] {
           return [
@@ -35,6 +57,17 @@ struct Delivery: Codable {
               "cost": cost
           ]
       }
+    
+    init?(dictionary: [String: Any]) {
+
+        guard let address = dictionary["address"] as? String,
+              let cost = dictionary["cost"] as? Double
+        else {
+            return nil
+        }
+        self.address = address
+        self.cost = cost
+    }
 }
 
 struct OrderItem: Codable {
@@ -42,14 +75,36 @@ struct OrderItem: Codable {
     var quantity: Int
     var price: Double
     
-    func dictionaryRepresentation() -> [String: Any] {
-            return [
-                "inventoryItem": inventoryItem.dictionaryRepresentation(),
-                "quantity": quantity,
-                "price": price
-            ]
+    init(inventoryItem: InventoryItem, quantity: Int, price: Double) {
+            self.inventoryItem = inventoryItem
+            self.quantity = quantity
+            self.price = price
         }
+    
+    init?(dictionary: [String: Any]) {
+         guard let inventoryItemDict = dictionary["inventoryItem"] as? [String: Any],
+               let inventoryItem = InventoryItem(dictionary: inventoryItemDict),
+               let quantity = dictionary["quantity"] as? Int,
+               let price = dictionary["price"] as? Double
+         else {
+             return nil
+         }
+
+         self.inventoryItem = inventoryItem
+         self.quantity = quantity
+         self.price = price
+     }
+    
+    func dictionaryRepresentation() -> [String: Any] {
+        return [
+            "inventoryItem": inventoryItem.dictionaryRepresentation(),
+            "quantity": quantity,
+            "price": price
+        ]
+    }
 }
+
+
 
 //enum DiscountType {
 //    case amount
@@ -60,7 +115,7 @@ struct Order: Identifiable, Codable {
     var id: String { orderID }
     var orderID: String
     var customer: Customer
-    var desserts: [OrderItem]
+    var orderItems: [OrderItem]
     var orderDate: Date
     var delivery: Delivery
     var notes: String
@@ -70,8 +125,8 @@ struct Order: Identifiable, Codable {
 
     
     var totalPrice: Double{
-        let dessertsTotal = desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
-        return dessertsTotal + delivery.cost // - discount
+        let orderItemsTotal = orderItems.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
+        return orderItemsTotal + delivery.cost // - discount
     }
     
 //       var discountAmount: Double // Discount amount in dollars
@@ -97,10 +152,16 @@ struct Order: Identifiable, Codable {
     var receipt: Receipt?
     
     // Default constructor
-    init(orderID: String = "", customer: Customer = Customer(name: "No Name", phoneNumber: "0000000"), desserts: [OrderItem] = [], orderDate: Date = Date(), delivery: Delivery = Delivery(address: "No where", cost: 1000.0), notes: String = "", allergies: String = "", isDelivered: Bool = false, isPaid: Bool = false) {
+    init(orderID: String = "",
+         customer: Customer = Customer(name: "No Name", phoneNumber: "0000000"),
+         orderItems: [OrderItem] = [],
+         orderDate: Date = Date(),
+         delivery: Delivery = Delivery(address: "No where", cost: 1000.0),
+         notes: String = "", allergies: String = "", isDelivered: Bool = false, isPaid: Bool = false)
+    {
         self.orderID = orderID
         self.customer = customer
-        self.desserts = desserts
+        self.orderItems = orderItems
         self.orderDate = orderDate
         self.delivery = delivery
         self.notes = notes
@@ -109,44 +170,108 @@ struct Order: Identifiable, Codable {
         self.isPaid = isPaid
     }
     
-}
-
-extension Order {
-    
     func dictionaryRepresentation() -> [String: Any] {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.dateFormat = "yyyy-MM-dd"
 
         var orderDict: [String: Any] = [
             
             "orderID": orderID,
             "customer": customer.dictionaryRepresentation(), // Convert to dictionary
-            "desserts": desserts.map { $0.dictionaryRepresentation() }, // Convert each OrderItem to dictionary
+//            "orderItems": orderItems.map { $0.dictionaryRepresentation() }, // Convert each OrderItem to dictionary
             "orderDate": dateFormatter.string(from: orderDate),
              "delivery": delivery.dictionaryRepresentation(), // Convert to dictionary
              "notes": notes,
              "allergies": allergies,
-              "isDelivered": isDelivered,
+             "isDelivered": isDelivered,
              "isPaid": isPaid,
-                      "totalPrice": totalPrice,
-                      "receipt": receipt?.dictionaryRepresentation() ?? [:] // Convert to dictionary or empty dictionary if nil
-                  
-            
-//            "orderID": orderID,
-//            "orderCustomer": customer,
-//            "orderDesserts": desserts,
-//            "orderDate": dateFormatter.string(from: orderDate),
-//            "ordreDelivery": delivery,
-//            "orderNotes": notes,
-//            "orderAllergies": allergies,
-//            "orderDelivered": isDelivered,
-//            "orderPaid": isPaid,
-//            "orderTotalPrice": totalPrice,
-//            "orderReceipt": receipt ?? Receipt()
+             "totalPrice": totalPrice,
+             "receipt": receipt?.dictionaryRepresentation() ?? [:] // Convert to dictionary or empty dictionary if nil
 
         ]
+        // Convert each OrderItem to dictionary representation
+          let orderItemsDictArray = orderItems.map { $0.dictionaryRepresentation() }
+          orderDict["orderItems"] = orderItemsDictArray
         return orderDict
     }
+    
+    init?(dictionary: [String: Any]) {
+            guard
+                let orderID = dictionary["orderID"] as? String,
+                let customerDict = dictionary["customer"] as? [String: Any],
+                let orderItemsData = dictionary["orderItems"] as? [String: [String: Any]],
+                let orderDate = dictionary["orderDate"] as? Date,
+                let deliveryDict = dictionary["delivery"] as? [String: Any],
+                let notes = dictionary["notes"] as? String,
+                let allergies = dictionary["allergies"] as? String,
+                let isDelivered = dictionary["isDelivered"] as? Bool,
+                let isPaid = dictionary["isPaid"] as? Bool
+        else {
+                return nil
+            }
+
+            // Parse customer and delivery
+            guard
+                let customer = Customer(dictionary: customerDict),
+                let delivery = Delivery(dictionary: deliveryDict)
+            else {
+                return nil
+            }
+
+            // Parse orderItems
+            var orderItems = [OrderItem]()
+            for (_, orderItemData) in orderItemsData {
+                guard
+                    let inventoryItemDict = orderItemData["inventoryItem"] as? [String: Any],
+                    let quantity = orderItemData["quantity"] as? Int,
+                    let price = orderItemData["price"] as? Double,
+                    let inventoryItem = InventoryItem(dictionary: inventoryItemDict)
+                else {
+                    return nil
+                }
+
+                let orderItem = OrderItem(inventoryItem: inventoryItem, quantity: quantity, price: price)
+                orderItems.append(orderItem)
+            }
+
+            // Initialize the Order object
+            self.init(
+                orderID: orderID,
+                customer: customer,
+                orderItems: orderItems,
+                orderDate: orderDate,
+                delivery: delivery,
+                notes: notes,
+                allergies: allergies,
+                isDelivered: isDelivered,
+                isPaid: isPaid
+            )
+        }
+}
+
+extension Order {
+    
+//    func dictionaryRepresentation() -> [String: Any] {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd"
+//
+//        var orderDict: [String: Any] = [
+//            
+//            "orderID": orderID,
+//            "customer": customer.dictionaryRepresentation(), // Convert to dictionary
+//            "orderItems": orderItems.map { $0.dictionaryRepresentation() }, // Convert each OrderItem to dictionary
+//            "orderDate": dateFormatter.string(from: orderDate),
+//             "delivery": delivery.dictionaryRepresentation(), // Convert to dictionary
+//             "notes": notes,
+//             "allergies": allergies,
+//             "isDelivered": isDelivered,
+//             "isPaid": isPaid,
+//             "totalPrice": totalPrice,
+//             "receipt": receipt?.dictionaryRepresentation() ?? [:] // Convert to dictionary or empty dictionary if nil
+//
+//        ]
+//        return orderDict
+//    }
 }
 
 
@@ -182,7 +307,7 @@ extension Receipt {
             
             "receipMyID": myID,
             "receipOrderID": orderID,
-            "receiptPdfData": pdfData ?? Data(),
+//            "receiptPdfData": pdfData ?? Data(),
             "receiptDateGenerated": dateFormatter.string(from: dateGenerated),
             "receiptPaymentMethod": paymentMethod,
             "receiptPaymentDate": dateFormatter.string(from: paymentDate)
@@ -220,10 +345,18 @@ class OrderManager: ObservableObject {
     func fetchOrders() {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
+            print("Current UserID: \(userID)")
             let path = "users/\(userID)/orders"
-            
+
             DatabaseManager.shared.fetchOrders_gpt(path: path, completion: { fetchedOrders in
-                self.orders = fetchedOrders
+//                self.orders = fetchedOrders
+//                print("Success fetching orders")
+                DispatchQueue.main.async {
+                    self.orders = fetchedOrders
+                    print("Success fetching orders")
+                }
+
+
             })
         }
     }
@@ -231,10 +364,16 @@ class OrderManager: ObservableObject {
     func fetchReceipts() {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
-            let path = "users/\(userID)/receipts"
-            
+            print("Current UserID: \(userID)")
+            let path = "receipts/users/\(userID)/receipts"
+
             DatabaseManager.shared.fetchReceipts_gpt(path: path, completion: { fetchedReceipts in
-                self.receipts = Set(fetchedReceipts)
+//                self.receipts = Set(fetchedReceipts)
+//                print("Success fetching receipts")
+                DispatchQueue.main.async {
+                    self.receipts = Set(fetchedReceipts)
+                    print("Success fetching receipts")
+                }
             })
         }
     }
@@ -399,7 +538,10 @@ class OrderManager: ObservableObject {
         }
     }
     
-
+    // Function to clear orders from UserDefaults (optional)
+//       func clearOrders() {
+//           UserDefaults.standard.removeObject(forKey: ordersKey)
+//       }
     
 
     
@@ -434,7 +576,7 @@ class OrderManager: ObservableObject {
     func removeOrder(with orderID: String) {
         if let index = orders.firstIndex(where: { $0.id == orderID }) {
             
-            for dessert in orders[index].desserts {
+            for dessert in orders[index].orderItems {
                 InventoryManager.shared.updateQuantity(
                     item: dessert.inventoryItem,
                     newQuantity: dessert.inventoryItem.itemQuantity + dessert.quantity
@@ -528,7 +670,7 @@ class OrderManager: ObservableObject {
         }
     }
         
-    func printOrder(order: Order) -> Bool {
+    func printOrder(order: Order) -> Void {
         print("orderID: \(order.orderID)")
         print("ispaid: \(order.isPaid.description)")
         
@@ -545,7 +687,7 @@ class OrderManager: ObservableObject {
             print("Receipt is nil")
         }
         
-        return false
+//        return false
     }
     
     

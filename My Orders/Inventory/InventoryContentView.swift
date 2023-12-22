@@ -31,7 +31,6 @@ struct InventoryContentView: View {
     }()
     
     @State private var sortOption: SortOption = .name
-
         
     enum SortOption: String, CaseIterable {
         case name = "Name"
@@ -143,8 +142,6 @@ struct InventoryContentView: View {
                                     Text("Name: \(item.name)")
                                     Text("Price: \(item.itemPrice, specifier: "%.2f")")
                                     Text("Q: \(item.itemQuantity)")
-//                                    Text("Date added: \(item.AdditionDate.formatted())")
-                                        
                                 }
                             }
                             .contextMenu {

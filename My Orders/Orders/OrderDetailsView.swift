@@ -75,7 +75,7 @@ struct OrderDetailsView: View {
                 }
                 .padding(.leading)
                 
-                List(order.desserts, id: \.inventoryItem.name) { dessert in
+                List(order.orderItems, id: \.inventoryItem.name) { dessert in
                     HStack {
                         Text("\(dessert.inventoryItem.name)")
                         Spacer()
@@ -218,7 +218,7 @@ struct OrderDetailsView_Previews: PreviewProvider {
                 orderID: "123",
                 customer: Customer(name: "John Doe", phoneNumber: "0546768900"),
                 
-                desserts: [OrderItem(inventoryItem: sampleItem, quantity: 2, price: 10.0)],
+                orderItems: [OrderItem(inventoryItem: sampleItem, quantity: 2, price: 10.0)],
                 
                 orderDate: Date(),
                 delivery: Delivery(address: "yefe nof 18, peduel", cost: 10) ,

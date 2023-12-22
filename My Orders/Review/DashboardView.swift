@@ -129,7 +129,7 @@ struct DashboardView: View {
         
         // Iterate over each order and update the item count
         for order in orders {
-            for dessert in order.desserts {
+            for dessert in order.orderItems {
                 let itemName = dessert.inventoryItem.name
                 itemCounts[itemName, default: 0.0] += Double(dessert.quantity)
             }

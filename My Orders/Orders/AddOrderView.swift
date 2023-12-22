@@ -30,8 +30,8 @@ struct AddOrderView: View {
     @State private var DessertPrice = 0
     @State private var isAddingDessert = false
     
-    @State private var Desserts: [OrderItem] = []
-    @State private var existedDesserts: [OrderItem] = []
+    @State private var orderItems: [OrderItem] = []
+    @State private var existedOrderItems: [OrderItem] = []
     @State private var deletedInventoryItem: InventoryItem? = nil
     
     @State private var delivery = "No"
@@ -142,9 +142,9 @@ struct AddOrderView: View {
                         guard let selectedInventoryItem = selectedInventoryItem else { return }
                         
                         // Check if there is already a dessert with the same item
-                        if let existingDessertIndex = Desserts.firstIndex(where: { $0.inventoryItem.itemID == selectedInventoryItem.itemID }) {
+                        if let existingDessertIndex = orderItems.firstIndex(where: { $0.inventoryItem.itemID == selectedInventoryItem.itemID }) {
                             // Update the quantity of the existing dessert
-                            Desserts[existingDessertIndex].quantity += Int(DessertQuantity) ?? 0
+                            orderItems[existingDessertIndex].quantity += Int(DessertQuantity) ?? 0
                             
                             // Create a new dessert and add it to the addedDesserts so the item's quantity will be updated
                             let existDessert = OrderItem(
@@ -152,7 +152,7 @@ struct AddOrderView: View {
                                 quantity: Int(DessertQuantity) ?? 0,
                                 price: selectedInventoryItem.itemPrice
                             )
-                            existedDesserts.append(existDessert)
+                            existedOrderItems.append(existDessert)
                         }
                         else {
                             let dessert = OrderItem(
@@ -162,7 +162,7 @@ struct AddOrderView: View {
                             )
                             
                             // Append the dessert to the order
-                            Desserts.append(dessert)
+                            orderItems.append(dessert)
                             
                             searchQuery = ""
                             DessertQuantity = ""
@@ -177,18 +177,18 @@ struct AddOrderView: View {
             }
             
             Section(header: Text("Added Items")){
-                ForEach(Desserts.indices, id: \.self) { index in
+                ForEach(orderItems.indices, id: \.self) { index in
                     HStack {
-                        Text("\(Desserts[index].inventoryItem.name) (Quantity: \(Desserts[index].quantity))")
+                        Text("\(orderItems[index].inventoryItem.name) (Quantity: \(orderItems[index].quantity))")
                         
                         Spacer()
                         
                         Button(action: {
                             // Get the selected dessert
-                            let deletedDessert = Desserts[index]
+                            let deletedDessert = orderItems[index]
                             
                             // Delete the dessert from the list
-                            Desserts.remove(at: index)
+                            orderItems.remove(at: index)
 
                         }) {
                             Image(systemName: "trash")
@@ -200,7 +200,7 @@ struct AddOrderView: View {
                 
                 HStack{
                     // Calculate and display the total price
-                    let totalPrice = Desserts.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
+                    let totalPrice = orderItems.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
                     
                     Text("Total Price: $")
                     Text("\(totalPrice, specifier: "%.2f")")
@@ -266,7 +266,7 @@ struct AddOrderView: View {
             Section {
                 Button(action: {
                     
-                    for dessert in Desserts {
+                    for dessert in orderItems {
                             // Update the quantity of the selected inventory item
                             if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
                                 inventoryManager.updateQuantity(item: selectedItem,
@@ -274,7 +274,7 @@ struct AddOrderView: View {
                             }
                         }
                     
-                    for dessert in existedDesserts {
+                    for dessert in existedOrderItems {
                             // Update the quantity of the selected inventory item
                             if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
                                 inventoryManager.updateQuantity(item: selectedItem,
@@ -286,7 +286,7 @@ struct AddOrderView: View {
                         
                         orderID: UUID().uuidString, // Generates a unique ID for the order
                         customer: customer,
-                        desserts: Desserts,
+                        orderItems: orderItems,
                         orderDate: pickupDateTime,
                         delivery: Delivery(address: deliveryAddress, cost: Double(selectedDeliveryCost)),
                         notes: notes,
