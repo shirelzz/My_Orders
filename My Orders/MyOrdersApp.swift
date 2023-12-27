@@ -67,16 +67,11 @@ struct MyOrdersApp: App {
             MainView()
                 .environmentObject(OrderManager.shared)
                 .onAppear {
-                                   // Ensure Firebase is configured only once
-                                   if FirebaseApp.app() == nil {
-                                       FirebaseApp.configure()
-                                   }
-                               }
-//                .onAppear {
-//                    // Ensure Firebase is configured before creating OrderManager
-//                    FirebaseApp.configure()
-//                }
-//            .environmentObject(orderManager)
+                    // Ensure Firebase is configured only once
+                    if FirebaseApp.app() == nil {
+                        FirebaseApp.configure()
+                    }
+                }
 
         }
     }

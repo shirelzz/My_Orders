@@ -463,12 +463,12 @@ class ReceiptUtils {
             let receipt_ = OrderManager.shared.getReceipt(forOrderID: order.orderID)
 
             if order.orderID != "" {
-                let pdfData = receipt_.pdfData // ReceiptUtils.drawPDF(for: order)
+                let pdfData = ReceiptUtils.drawPDF(for: order)
                     let pdfFileName = "Receipt-\(index + 1).pdf"
                     let pdfFileURL = tempDirectory.appendingPathComponent(pdfFileName)
                     
                     do {
-                        try pdfData?.write(to: pdfFileURL)
+                        try pdfData.write(to: pdfFileURL)
                     } catch {
                         print("Error saving PDF: \(error.localizedDescription)")
                     }

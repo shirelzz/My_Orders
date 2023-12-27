@@ -23,8 +23,16 @@ struct ReceiptView: View {
     @State private var showSuccessMessage = false
     @State private var lastReceipttID = OrderManager.shared.getLastReceiptID()
     
+    @State private var isRewardedAdPresented = false
+//    @State private var rewardedAdView = AdMobRewardedAdView()
+//    @State private var rewardedAdView: RewardedAdHelper = RewardedAdHelper()
+//    var rewardedAdHelper: RewardedAdHelper
+
+    
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
+//        formatter.dateFormat = "yyyy-MM-dd"
+
         formatter.dateStyle = .short
         formatter.timeStyle = .short
         return formatter
@@ -110,6 +118,7 @@ struct ReceiptView: View {
             .padding(.leading)
             
             if !OrderManager.shared.receiptExists(forOrderID: order.orderID) {
+               
                 Button("Generate PDF Receipt") {
                     showConfirmationAlert = true
                 }
@@ -119,6 +128,20 @@ struct ReceiptView: View {
                         title: Text("Generate Receipt"),
                         message: Text("Are you sure you want to generate this receipt?"),
                         primaryButton: .default(Text("Generate")) {
+//                            rewardedAdView.showRewardedAd() // Use the instance to show the rewarded ad
+                            
+//                            if let windowScene = UIApplication.shared.connectedScenes
+//                                .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
+//                                if let rootViewController = windowScene.windows.first?.rootViewController {
+//                                    rewardedAdView.showRewardedAd(viewController: rootViewController)
+//                                    
+//                                }
+//                            }
+                            isRewardedAdPresented = true
+
+//                            RewardedAdView(adUnitID: "ca-app-pub-3940256099942544/1712485313", isPresented: Binding<Bool>)
+                        
+                            
                             generatePDF()
                             if showSuccessMessage {
                                 Toast.showToast(message: "Receipt generated successfully")
@@ -129,6 +152,12 @@ struct ReceiptView: View {
                         }
                     )
                 }
+//                .sheet(isPresented: $isRewardedAdPresented) {
+//                    RewardedAdView(adUnitID: "ca-app-pub-3940256099942544/1712485313", isPresented: $isRewardedAdPresented)
+//                }
+                
+                RewardedAdView(adUnitID: "ca-app-pub-3940256099942544/1712485313", isPresented: $isRewardedAdPresented)
+
             }
             
             if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
@@ -179,13 +208,14 @@ struct ReceiptView: View {
     
     private func formattedDate(_ date: Date) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .long
+        dateFormatter.dateStyle = .short
         return dateFormatter.string(from: date)
     }
     
     private func generatePDF() {
         // Check if a receipt with the same order ID already exists
         if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
+            Toast.showToast(message: "Receipt already exists")
             isPresented = true
             return
         }
@@ -195,7 +225,7 @@ struct ReceiptView: View {
             id: UUID().uuidString,
             myID: lastReceipttID + 1,
             orderID: order.orderID,
-            pdfData: pdfData, //self.pdfData
+//            pdfData: pdfData,
             dateGenerated: Date(),
             paymentMethod: selectedPaymentMethod ,
             paymentDate: selectedPaymentDate

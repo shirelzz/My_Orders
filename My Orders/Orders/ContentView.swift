@@ -15,7 +15,7 @@ struct ContentView: View {
     @StateObject private var orderManager = OrderManager.shared
     @StateObject private var inventoryManager = InventoryManager.shared
     
-    @State private var selectedOrder: Order?
+    @State private var selectedOrder: Order = Order()
     @State private var showDeleteAlert = false
     
     @State private var showAllOrders = false
@@ -25,6 +25,9 @@ struct ContentView: View {
     @State private var showSideMenu = false
     @State private var isEditOrderViewPresented = false
     @State private var isUserSignedIn = Auth.auth().currentUser != nil
+    
+    @State private var showEditOrderView = false
+
         
     init() {
         AppManager.shared.loadManagerData()
@@ -75,32 +78,45 @@ struct ContentView: View {
 //                            .padding()
 //                            .foregroundColor(.black)
 //                    }
-                    
-                    HStack {
+                    VStack{
                         
-                        Spacer()
+                        Image("Desk2")
+                            .resizable()
+                            .scaledToFill()
+                            .edgesIgnoringSafeArea(.top)
+                            .opacity(0.2)
+                            .frame(height: 20)
                         
-                        Text("Upcoming Orders")
-                            .font(.largeTitle)
-                            .bold()
-                        
-                        Spacer(minLength: 10)
-                        
-                        Button(action: {
-                            withAnimation {
-                                isAddOrderViewPresented = true
+                        HStack {
+                            
+                            Spacer()
+                            
+                            Text("Upcoming Orders")
+                                .font(.largeTitle)
+                                .bold()
+                            
+                            Spacer(minLength: 10)
+                            
+                            Button(action: {
+                                withAnimation {
+                                    isAddOrderViewPresented = true
+                                }
+                            }) {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.system(size: 36))
+                                    .padding()
+                                    .shadow(color: .black.opacity(0.6), radius: 6, x: 0, y: 2)
+
+//                                    .shadow(radius: 2)
                             }
-                        }) {
-                            Image(systemName: "plus.circle.fill")
-                                .font(.system(size: 36))
-                                .padding()
-                                .shadow(radius: 1)
+                            .sheet(isPresented: $isAddOrderViewPresented) {
+                                AddOrderView(
+                                    orderManager: orderManager,inventoryManager: inventoryManager)
+                            }
+                            
                         }
-                        .sheet(isPresented: $isAddOrderViewPresented) {
-                            AddOrderView(
-                                orderManager: orderManager,inventoryManager: inventoryManager)
-                        }
-                        
+                        .padding(.top, 45)
+
                     }
                     
                     if upcomingOrders.isEmpty {
@@ -117,36 +133,69 @@ struct ContentView: View {
                                     .onAppear {
                                         isSideMenuOpen = false
                                     }) {
-                                    OrderRowView(order: order)
-                                }
+                                        OrderRowView(order: order)
+                                    }
                                     .swipeActions {
-                                        Button("Edit") {
-                                            // Handle edit action
-                                            selectedOrder = order
-                                            isEditOrderViewPresented = true
-                                        }
-                                        .tint(.blue)
                                         
                                         Button("Delete") {
                                             // Handle delete action
                                             selectedOrder = order
+                                            print("delete pressed")
                                             showDeleteAlert = true
                                         }
                                         .tint(.red)
+                                        
+                                        
+                                        Button("Edit") {
+                                            // Handle edit action
+                                            selectedOrder = order
+                                            if selectedOrder.orderID != ""{
+                                                isEditOrderViewPresented = true
+                                            }
+                                        }
+                                        .tint(.gray.opacity(0.4))
                                     }
-//                                    .contextMenu {
-//                                        Button(action: {
-//                                            deleteOrder(orderID: order.orderID)
-//                                        }) {
-//                                            Text("Delete")
-//                                            Image(systemName: "trash")
-//                                        }
-//                                    }
-//
+                                //
                             }
-//                            .listRowBackground(Color.orange.opacity(0.2))
+                            //                            .listRowBackground(Color.orange.opacity(0.2))
                         }
                         .listStyle(.plain)
+                        .alert(isPresented: $showDeleteAlert) {
+                            Alert(
+                                title: Text("Delete Order"),
+                                message: Text("Are you sure you want to delete this order?"),
+                                primaryButton: .default(Text("Delete")) {
+                                    print("delete pressed 1")
+                                    if selectedOrder.orderID != ""{
+                                        print("delete pressed 2")
+                                        
+                                        if !selectedOrder.isDelivered && !selectedOrder.orderItems.isEmpty{
+                                            print("---> entered 1st if")
+
+                                            for orderItem in selectedOrder.orderItems {
+                                                // Update the quantity of the selected inventory item
+                                                print("---> Updating quantity for order item: \(orderItem.inventoryItem.name)")
+
+                                                if let selectedItem = inventoryManager.items.first(where: { $0.id == orderItem.inventoryItem.itemID }) {
+                                                    inventoryManager.updateQuantity(item: selectedItem,
+                                                                                    newQuantity: selectedItem.itemQuantity + orderItem.quantity)
+                                                    print("---> update 1")
+
+                                                }
+                                            }
+                                            
+                                        }
+                                        
+                                        deleteOrder(orderID: selectedOrder.orderID)
+                                    }
+                                },
+                                secondaryButton: .cancel(Text("Cancel")) {
+                                }
+                            )
+                        }
+                        .sheet(isPresented: $isEditOrderViewPresented) {
+                            EditOrderView(orderManager: orderManager, inventoryManager: inventoryManager, order: $selectedOrder, editedOrder: selectedOrder )
+                        }
                     }
                     
                     Spacer()
@@ -212,6 +261,7 @@ struct ContentView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
     
     private func deleteOrder(orderID: String) {
@@ -224,19 +274,20 @@ struct ContentView: View {
 }
 
 // UIViewRepresentable wrapper for AdMob banner view
-struct AdBannerView: UIViewRepresentable {
-    let adUnitID: String
+//struct AdBannerView: UIViewRepresentable {
+//    let adUnitID: String
+//
+//    func makeUIView(context: Context) -> GADBannerView {
+//        let bannerView = GADBannerView(adSize: GADAdSizeFromCGSize(CGSize(width: 320, height: 50))) // Set your desired banner ad size
+//        bannerView.adUnitID = adUnitID
+//        bannerView.rootViewController = UIApplication.shared.windows.first?.rootViewController
+//        bannerView.load(GADRequest())
+//        return bannerView
+//    }
+//    
+//    func updateUIView(_ uiView: GADBannerView, context: Context) {}
+//}
 
-    func makeUIView(context: Context) -> GADBannerView {
-        let bannerView = GADBannerView(adSize: GADAdSizeFromCGSize(CGSize(width: 320, height: 50))) // Set your desired banner ad size
-        bannerView.adUnitID = adUnitID
-        bannerView.rootViewController = UIApplication.shared.windows.first?.rootViewController
-        bannerView.load(GADRequest())
-        return bannerView
-    }
-    
-    func updateUIView(_ uiView: GADBannerView, context: Context) {}
-}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

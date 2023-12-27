@@ -83,31 +83,41 @@ struct InventoryContentView: View {
                 
                 VStack(alignment: .trailing, spacing: 10) {
                     
-                    HStack {
+                    VStack{
                         
-                        Spacer()
+                        Image("boxes")
+                            .resizable()
+                            .scaledToFill()
+                            .edgesIgnoringSafeArea(.top)
+                            .opacity(0.2)
+                            .frame(height: 20)
                         
-                        Text("Inventory Items")
-                            .font(.largeTitle)
-                            .bold()
-                        
-                        Spacer()
-                                                
-                        Button(action: {
-                            isAddItemViewPresented = true
-                        }) {
-                            Image(systemName: "plus.circle.fill")
-                                .font(.system(size: 36))
-                                .padding()
-                                .shadow(radius: 1)
+                        HStack {
+                            
+                            Spacer()
+                            
+                            Text("Inventory Items")
+                                .font(.largeTitle)
+                                .bold()
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                isAddItemViewPresented = true
+                            }) {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.system(size: 36))
+                                    .padding()
+                                    .shadow(radius: 1)
+                            }
+                            .sheet(isPresented: $isAddItemViewPresented) {
+                                AddItemView(inventoryManager: inventoryManager)
+                            }
                         }
-                        .sheet(isPresented: $isAddItemViewPresented) {
-                            AddItemView(inventoryManager: inventoryManager)
-                        }
+                        .padding(.top, 45)
                     }
                     
                     HStack{
-                        SearchBar(searchText: $searchText)
                         
                         Menu {
                         
@@ -118,12 +128,19 @@ struct InventoryContentView: View {
                             }
                         } 
                         label: {
+                            Image(systemName: "arrow.up.arrow.down")
+                                .resizable()
+                                .frame(width: 24, height: 24)
 //                          Label("Sort By", systemImage: "") // "line.horizontal.3.decrease.circle"
 //                              .font(.system(size: 18))
-                            Text("Sort By")
+//                            Text("Sort By")
                         }
-                    .padding(.horizontal)
+//                    .padding(.horizontal)
+                        
+                        SearchBar(searchText: $searchText)
+
                     }
+                    .padding()
                     
                     
                     if inventoryItems.isEmpty {

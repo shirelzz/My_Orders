@@ -35,6 +35,21 @@ struct SettingsView: View {
                     }
                 }
                 
+//                Section(header: Text("Data Management")) {
+//                    
+//                    Button("Clear Delivered Orders") {
+//                        orderManager.clearDeliveredOrders()
+//                    }
+//
+//                    Button("Clear Out-of-Stock Items") {
+//                        InventoryManager.shared.clearOutOfStockItems()
+//                    }
+////                    NavigationLink(destination: ManageDataView()) {
+////                        Label("Manage Data", systemImage: "folder")
+////                    }
+//                }
+
+                
                 Section(header: Text("Notification center")) {
                     
                     NavigationLink(destination: NotificationSettingsView()) {
@@ -47,6 +62,17 @@ struct SettingsView: View {
                     NavigationLink(destination: ReceiptSettingsView(appManager: appManager, orderManager: orderManager)) {
                         Label("Receipt", systemImage: "folder")
                     }
+                }
+                
+                Section(header: Text("Feedback")) {
+                    Button(action: {
+                        rateApp()
+                    }) {
+                        Text("Rate Us  🤍")
+                    }
+                    
+                    NavigationLink("Send Suggestions", destination: FeedbackView())
+
                 }
                 
 //                Section(header: Text("Language")) {
@@ -88,6 +114,18 @@ struct SettingsView: View {
         }
         
     }
+    
+    func rateApp() {
+            guard let appURL = URL(string: "https://apps.apple.com/il/app/candy-crush-soda-saga/id850417475") else { return }
+            
+            if UIApplication.shared.canOpenURL(appURL) {
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(appURL, options: [:], completionHandler: nil)
+                } else {
+                    UIApplication.shared.openURL(appURL)
+                }
+            }
+        }
     
     private func updateAppearance() {
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene

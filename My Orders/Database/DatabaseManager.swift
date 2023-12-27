@@ -24,101 +24,10 @@ class DatabaseManager {
     
     // MARK: - Reading data
     
-    func fetchOrders_gpt1(path: String, completion: @escaping ([Order]) -> ()) {
+    func fetchOrders(path: String, completion: @escaping ([Order]) -> ()) {
         let ordersRef = databaseRef.child(path)
 
         ordersRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let value = snapshot.value as? [String: [String: Any]] else {
-                print("No orders data found")
-                completion([])
-                return
-            }
-
-            var orders = [Order]()
-            for (orderID, orderData) in value {
-                guard
-                    let allergies = orderData["allergies"] as? String,
-                    let customerData = orderData["customer"] as? [String: Any],
-                    let deliveryData = orderData["delivery"] as? [String: Any],
-                    let isDelivered = orderData["isDelivered"] as? Bool,
-                    let isPaid = orderData["isPaid"] as? Bool,
-                    let notes = orderData["notes"] as? String,
-                    let orderDateStr = orderData["orderDate"] as? String,
-                    let orderItemsData = orderData["orderItems"] as? [String: [String: Any]]
-                else {
-                    continue
-                }
-
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd"
-                guard let orderDate = dateFormatter.date(from: orderDateStr) else {
-                    continue
-                }
-
-                let customer = Customer(
-                    name: customerData["name"] as? String ?? "",
-                    phoneNumber: customerData["phoneNumber"] as? String ?? ""
-                )
-
-                let delivery = Delivery(
-                    address: deliveryData["address"] as? String ?? "",
-                    cost: deliveryData["cost"] as? Double ?? 0.0
-                )
-
-                var orderItems = [OrderItem]()
-                for (_, orderItemData) in orderItemsData {
-                    guard
-                        let inventoryItemData = orderItemData["inventoryItem"] as? [String: Any],
-                        let quantity = orderItemData["quantity"] as? Int,
-                        let price = orderItemData["price"] as? Double
-                    else {
-                        continue
-                    }
-
-                    let inventoryItem = InventoryItem(
-                        itemID: inventoryItemData["itemID"] as? String ?? "",
-                        name: inventoryItemData["name"] as? String ?? "",
-                        itemPrice: inventoryItemData["itemPrice"] as? Double ?? 0.0,
-                        itemQuantity: inventoryItemData["itemQuantity"] as? Int ?? 0,
-                        size: inventoryItemData["size"] as? String ?? "",
-                        AdditionDate: dateFormatter.date(from: inventoryItemData["AdditionDate"] as? String ?? "") ?? Date(),
-                        itemNotes: inventoryItemData["itemNotes"] as? String ?? ""
-                    )
-
-                    let orderItem = OrderItem(
-                        inventoryItem: inventoryItem,
-                        quantity: quantity,
-                        price: price
-                    )
-
-                    orderItems.append(orderItem)
-                }
-
-                let order = Order(
-                    orderID: orderID,
-                    customer: customer,
-                    orderItems: orderItems,
-                    orderDate: orderDate,
-                    delivery: delivery,
-                    notes: notes,
-                    allergies: allergies,
-                    isDelivered: isDelivered,
-                    isPaid: isPaid
-                )
-
-                orders.append(order)
-            }
-
-            completion(orders)
-        })
-    }
-
-    
-    func fetchOrders_gpt(path: String, completion: @escaping ([Order]) -> ()) {
-        let ordersRef = databaseRef.child(path)
-
-        ordersRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            print("---> Snapshot: \(snapshot)")
 
             guard let value = snapshot.value as? [String: Any] else {
                 print("No orders data found")
@@ -126,21 +35,14 @@ class DatabaseManager {
                 return
             }
 
-            print("---> before orders:")
-
             var orders = [Order]()
             for (_, orderData) in value {
                 guard let orderDict = orderData as? [String: Any],
                       let orderID = orderDict["orderID"] as? String,
                       let customerDict = orderDict["customer"] as? [String: Any],
-//                      let customer = Customer(dictionary: customerData),
                       let orderItemsData = orderDict["orderItems"] as? [[String: Any]],
-//                        let orderItemsData = orderDict["orderItems"] as? [String: [String: Any]],
-
                       let orderDateStr = orderDict["orderDate"] as? String,
-//                      let orderDate = dateFormatter.date(from: orderDateStr),
                       let deliveryDict = orderDict["delivery"] as? [String: Any],
-//                      let delivery = Delivery(dictionary: deliveryData),
                       let notes = orderDict["notes"] as? String,
                       let allergies = orderDict["allergies"] as? String,
                       let isDelivered = orderDict["isDelivered"] as? Bool,
@@ -150,49 +52,18 @@ class DatabaseManager {
                     continue
                 }
                 
-                print("im here")
                 let customer = Customer(name: customerDict["name"] as? String ?? "",
                                         phoneNumber: customerDict["phoneNumber"] as? String ?? "")
-                print("im here1 \(customer)")
 
                 let delivery = Delivery(
                     address: deliveryDict["address"] as? String ?? "",
                     cost: deliveryDict["cost"] as? Double ?? 0.0
                 )
-                print("im here2 \(delivery)")
-
-//  n
                 
-                let orderDate = self.convertStringToDate(orderDateStr)
-                print("im here3 \(orderDate)")
+                let orderDate = self.convertStringToDateAndTime(orderDateStr)
+                print("order date str: \(orderDateStr)")
+                print("order date: \(orderDate)")
 
-                
-                print("---> before order items:")
-//                                var orderItems = [OrderItem]()
-//                                for orderItemData in orderItemsData {
-//                                    guard let orderItem = OrderItem(dictionary: orderItemData)
-//                                    else {
-//                                        print("---> stopped while creating order items")
-//                                        continue
-//                                    }
-//                                    orderItems.append(orderItem)
-//                                }
-                // Parse orderItems
-//                var orderItems = [OrderItem]()
-//                for orderItemData in orderItemsData {
-//                    guard
-//                        let inventoryItemDict = orderItemData["inventoryItem"] as? [String: Any],
-//                        let inventoryItem = InventoryItem(dictionary: inventoryItemDict),
-//                        let quantity = orderItemData["quantity"] as? Int,
-//                        let price = orderItemData["price"] as? Double
-//                    else {
-//                        print("Error parsing order item data")
-//                        continue
-//                    }
-//                    
-//                    let orderItem = OrderItem(inventoryItem: inventoryItem, quantity: quantity, price: price)
-//                    orderItems.append(orderItem)
-//                }
 
                 var orderItems = [OrderItem]()
                 for orderItemData in orderItemsData {
@@ -216,12 +87,6 @@ class DatabaseManager {
                          
                          // Parse inventoryItem
                     print("---> before parse inventoryItem:")
-
-//                         guard let inventoryItem = InventoryItem(dictionary: inventoryItemDict) else {
-//                             print("Failed to parse inventoryItem")
-//                             continue
-//                         }
-                  
                     
                     let additionDate = self.convertStringToDate(additionDateStr)
 
@@ -241,17 +106,14 @@ class DatabaseManager {
                         price: price
                     )
                          
-//                         let orderItem = OrderItem(inventoryItem: inventoryItem, quantity: quantity, price: price)
-                         orderItems.append(orderItem)
-                     }
-                print("---> order items: \(orderItems)")
-
+                    orderItems.append(orderItem)
+                }
 
                 let order = Order(
                     orderID: orderID,
                     customer: customer,
                     orderItems: orderItems,
-                    orderDate: orderDate,
+                    orderDate: orderDate ?? Date(),
                     delivery: delivery,
                     notes: notes,
                     allergies: allergies,
@@ -259,130 +121,13 @@ class DatabaseManager {
                     isPaid: isPaid
                 )
             
-                print("---> order appended: \(order)")
                 orders.append(order)
             }
-            print("---> orders: \(orders)")
             completion(orders)
         })
     }
-
     
-
-
-
-//    func fetchOrders_gpt(path: String, completion: @escaping ([Order]) -> ()) {
-//        let ordersRef = databaseRef.child(path)
-//        
-//        ordersRef.observeSingleEvent(of: .value, with: { (snapshot) in
-//            guard let value = snapshot.value as? [String: Any] else {
-//                print("No orders data found")
-//                completion([])
-//                return
-//            }
-//            
-//            var orders = [Order]()
-//            
-//            for (_, orderData) in value {
-//                guard let orderDict = orderData as? [String: Any],
-//                      let orderID = orderDict["orderID"] as? String,
-//                      let customerDict = orderDict["customer"] as? [String: Any],
-////                      let orderItemsArray = orderDict["orderItems"] as? [[String: Any]],
-//                      let orderItemsNode = orderDict["orderItems"] as? [String: [String: Any]],
-//
-//                      let orderDateTimestamp = orderDict["orderDate"] as? String,
-//                      let deliveryDict = orderDict["delivery"] as? [String: Any],
-//                      let notes = orderDict["notes"] as? String,
-//                      let allergies = orderDict["allergies"] as? String,
-//                      let isDelivered = orderDict["isDelivered"] as? Bool,
-//                      let isPaid = orderDict["isPaid"] as? Bool
-//                else {
-//                    continue
-//                }
-//                
-//                let dateFormatter = DateFormatter()
-//                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-//                guard let orderDate = dateFormatter.date(from: orderDateTimestamp) else {
-//                    continue
-//                }
-//                
-//                let customer = Customer(name: customerDict["name"] as? String ?? "",
-//                                        phoneNumber: customerDict["phoneNumber"] as? String ?? "")
-//                
-////                var orderItems = [OrderItem]()
-////                for (_, orderItemData) in orderItemsNode {
-////                    guard let orderItem = OrderItem(dictionary: orderItemData) else {
-////                        continue
-////                    }
-////                    orderItems.append(orderItem)
-////                }
-//                
-//                // Fetch order items
-//                var orderItems = [OrderItem]()
-//                for orderItemData in orderItemsNode {
-//                    guard let orderItem = OrderItem(from: orderItemData) else {
-//                          continue
-//                    }
-//                    orderItems.append(orderItem)
-//                }
-////                        for orderItemData in orderItemsArray {
-////                            if let orderItem = OrderItem(from: orderItemData) {
-////                                orderItems.append(orderItem)
-////                            }
-////                        }
-//                
-////                for orderItemData in orderItemsNode {
-////                    guard let inventoryItemDict = orderItemData["inventoryItem"] as? [String: Any],
-////                          let inventoryItem = InventoryItem(dictionary: inventoryItemDict),
-////                          let quantity = orderItemData["quantity"] as? Int,
-////                          let price = orderItemData["price"] as? Double
-////                    else {
-////                        continue
-////                    }
-////                    let orderItem = OrderItem(inventoryItem: inventoryItem, quantity: quantity, price: price)
-////                    orderItems.append(orderItem)
-////                }
-//                
-//                let delivery = Delivery(address: deliveryDict["address"] as? String ?? "",
-//                                        cost: deliveryDict["cost"] as? Double ?? 0.0)
-//                
-//                let order = Order(orderID: orderID,
-//                                  customer: customer,
-//                                  orderItems: orderItems,
-//                                  orderDate: orderDate,
-//                                  delivery: delivery,
-//                                  notes: notes,
-//                                  allergies: allergies,
-//                                  isDelivered: isDelivered,
-//                                  isPaid: isPaid)
-//                
-//                orders.append(order)
-//            }
-//            print("---> orders: \(orders)")
-//            completion(orders)
-//        })
-//    }
-
-    
-    func convertStringToDate(_ dateString: String) -> Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        // You may need to set the locale to "en_US_POSIX" to ensure the date format works consistently across devices.
-        // dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-
-//        guard let date = dateFormatter.date(from: dateString) else {
-//            throw "error converting date"
-//        }
-        
-//        do {
-//            return try dateFormatter.date(from: dateString)!
-//        } catch {
-//            print("Error converting date: \(error.localizedDescription)")
-//        }
-        return dateFormatter.date(from: dateString) ?? Date()
-    }
-    
-    func fetchItems_gpt(path: String, completion: @escaping ([InventoryItem]) -> ()) {
+    func fetchItems(path: String, completion: @escaping ([InventoryItem]) -> ()) {
       
         let itemsRef = databaseRef.child(path)
         
@@ -423,16 +168,14 @@ class DatabaseManager {
                 
                 items.append(item)
             }
-            print("---> items: \(items)")
             completion(items)
         })
     }
     
-    func fetchReceipts_gpt(path: String, completion: @escaping (Set<Receipt>) -> ()) {
+    func fetchReceipts(path: String, completion: @escaping ([Receipt]) -> ()) { // Set<Receipt>
         let receiptsRef = databaseRef.child(path)
         
         receiptsRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            //        receiptsRef().observeSingleEvent(of: .value, with: { (snapshot) in
             guard let value = snapshot.value as? [String: Any] else {
                 print("No receipts data found")
                 completion([])
@@ -442,26 +185,28 @@ class DatabaseManager {
             var receipts = [Receipt]()
             for (_, receiptData) in value {
                 guard let receiptDict = receiptData as? [String: Any],
+                      let id = receiptDict["id"] as? String,
                       let myID = receiptDict["myID"] as? Int,
                       let orderID = receiptDict["orderID"] as? String,
                       //                      let pdfData = receiptDict["pdfData"] as? Data,
-                      let dateGeneratedTimestamp = receiptDict["dateGenerated"] as? Double,
+                      let dateGeneratedStr = receiptDict["dateGenerated"] as? String,
                       let paymentMethod = receiptDict["paymentMethod"] as? String,
-                      let paymentDateTimestamp = receiptDict["paymentDate"] as? Double
+                      let paymentDateStr = receiptDict["paymentDate"] as? String
                         
                 else {
                     print("receipt else called")
                     continue
                 }
                 
-                let dateGenerated = Date(timeIntervalSince1970: dateGeneratedTimestamp)
-                let paymentDate = Date(timeIntervalSince1970: paymentDateTimestamp)
+                let dateGenerate = self.convertStringToDate(dateGeneratedStr)
+                let paymentDate =  self.convertStringToDate(paymentDateStr)
                 
                 let receipt = Receipt(
+                    id: id,
                     myID: myID,
                     orderID: orderID,
                     //                    pdfData: pdfData,
-                    dateGenerated: dateGenerated,
+                    dateGenerated: dateGenerate,
                     paymentMethod: paymentMethod,
                     paymentDate: paymentDate
                 )
@@ -469,7 +214,7 @@ class DatabaseManager {
                 receipts.append(receipt)
             }
             
-            completion(Set(receipts))
+            completion(receipts) // Set(receipts)
         })
     }
     
@@ -507,6 +252,38 @@ class DatabaseManager {
         let receiptRef = databaseRef.child(path).child(orderID)
         receiptRef.removeValue()
     }
+
+    func clearOutOfStockItemsFromDB(path: String, completion: @escaping () -> Void) {
+        let itemsRef = databaseRef.child(path)
+        
+        itemsRef.observeSingleEvent(of: .value) { snapshot in
+            guard var items = snapshot.value as? [String: [String: Any]] else {
+                print("error clearing items")
+                completion()
+                return
+            }
+            
+            // Remove out-of-stock items
+            items = items.filter { (_, itemData) in
+                guard let quantity = itemData["itemQuantity"] as? Int else {
+                    return true // Keep if quantity information is not available
+                }
+                return quantity > 0
+            }
+            
+            // Save the updated items back to the database
+            itemsRef.setValue(items) { error, _ in
+                if let error = error {
+                    print("Error clearing out-of-stock items: \(error.localizedDescription)")
+                } else {
+                    print("Out-of-stock items cleared successfully from database.")
+                }
+                completion()
+            }
+        }
+    }
+
+
     
     // MARK: - Updating data
     
@@ -518,12 +295,34 @@ class DatabaseManager {
     }
     
     func updateItemInDB(_ item: InventoryItem, path: String, completion: @escaping (Bool) -> Void) {
-        let itemRef = databaseRef.child(path).child(item.itemID)
+        let itemRef = databaseRef.child(path)
         itemRef.updateChildValues(item.dictionaryRepresentation()) { error, _ in
             completion(error == nil)
         }
     }
     
+    // MARK: - Helper Functions
+    
+    func convertStringToDate(_ dateString: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.date(from: dateString) ?? Date()
+    }
+    
+//    func convertStringToDateAndTime(_ dateString: String) -> Date {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+//        return dateFormatter.date(from: dateString) ?? Date()
+//    }
+    
+    func convertStringToDateAndTime(_ dateString: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" //HH:mm
+        return dateFormatter.date(from: dateString)
+    }
+
+    //i dont understand why the items quantity doesnt update when i delete an order
+
 }
 
 //    func deleteOrder(orderID: String) {

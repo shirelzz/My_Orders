@@ -87,6 +87,6 @@ struct ReceiptRowView_Previews: PreviewProvider {
         
         ReceiptRowView(order: sampleOrder,
                        receipt:
-                       Receipt(id: "000", myID: 000, orderID: "000", pdfData: Data(), dateGenerated: Date(), paymentMethod: "N/A", paymentDate: Date()))
+                       Receipt(id: "000", myID: 000, orderID: "000", dateGenerated: Date(), paymentMethod: "N/A", paymentDate: Date())) //, pdfData: Data()
     }
 }

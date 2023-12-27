@@ -23,18 +23,65 @@ struct AllReceiptsView: View {
             
             VStack {
                 
-                HStack {
-                    Picker("Select Year", selection: $selectedYear) {
-                        Text("2023").tag(2023)
-                        Text("2024").tag(2023)
-                        Text("2025").tag(2023)
-                        Text("2026").tag(2023)
-                    }
-                    .pickerStyle(DefaultPickerStyle())
-                    .padding()
+                VStack{
                     
-                    Button("Export Receipts") {
-                        exportReceiptsZip()                    }
+                    Image("receipts")
+                        .resizable()
+                        .scaledToFill()
+                        .edgesIgnoringSafeArea(.top)
+                        .opacity(0.2)
+                        .frame(height: 20)
+                    
+                    Text("All Receipts")
+                        .font(.largeTitle)
+                        .bold()
+                        .padding(.leading)
+                    
+                    
+                    
+                    HStack {
+                        
+                        Picker("Select Year", selection: $selectedYear) {
+                            Text("2023").tag(2023)
+                            Text("2024").tag(2024)
+                            Text("2025").tag(2025)
+                            Text("2026").tag(2026)
+                        }
+                        .pickerStyle(.menu)
+                        .padding()
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.6), radius: 6, x: 0, y: 2)
+
+                        
+//                        Picker(selection: $selectedYear) {
+//                            Text("2023").tag(2023).foregroundColor(.white)
+//                            Text("2024").tag(2024).foregroundColor(.white)
+//                            Text("2025").tag(2025).foregroundColor(.white)
+//                            Text("2026").tag(2026).foregroundColor(.white)
+//                        } label: {
+//                            Text("Select Year").foregroundColor(.white)
+//                        }
+//                        .buttonStyle(.bordered)
+//                        .background(Color.accentColor.opacity(0.8))
+//                        .foregroundColor(.white)
+//                        .cornerRadius(10)
+//                        .frame(height: 20)
+//                        .pickerStyle(DefaultPickerStyle())
+//                        .shadow(color: .black.opacity(0.6), radius: 6, x: 0, y: 2)
+////                        .padding()
+                        
+                        Button("Export Receipts") {
+                            exportReceiptsZip()
+                        }
+                        .buttonStyle(.bordered)
+                        .background(Color.accentColor.opacity(0.8))
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .frame(height: 20)
+                        .shadow(color: .black.opacity(0.6), radius: 6, x: 0, y: 2)
+
+
+                    }
                 }
                 
                 List {
@@ -58,7 +105,7 @@ struct AllReceiptsView: View {
             }
 //            .background(Color.accentColor)
 //            .opacity(0.2)
-            .navigationBarTitle("All Receipts")
+//            .navigationBarTitle("All Receipts")
         }
     }
     

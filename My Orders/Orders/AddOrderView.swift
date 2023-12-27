@@ -268,23 +268,23 @@ struct AddOrderView: View {
                     
                     for dessert in orderItems {
                             // Update the quantity of the selected inventory item
-                            if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
-                                inventoryManager.updateQuantity(item: selectedItem,
-                                                                newQuantity: selectedItem.itemQuantity - dessert.quantity)
+                        if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
+                            inventoryManager.updateQuantity(item: selectedItem,
+                                                            newQuantity: selectedItem.itemQuantity - dessert.quantity)
                             }
                         }
                     
                     for dessert in existedOrderItems {
                             // Update the quantity of the selected inventory item
-                            if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
-                                inventoryManager.updateQuantity(item: selectedItem,
-                                                                newQuantity: selectedItem.itemQuantity - dessert.quantity)
+                        if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
+                            inventoryManager.updateQuantity(item: selectedItem,
+                                                            newQuantity: selectedItem.itemQuantity - dessert.quantity)
                             }
                         }
                     
                     let newOrder = Order(
                         
-                        orderID: UUID().uuidString, // Generates a unique ID for the order
+                        orderID: UUID().uuidString,
                         customer: customer,
                         orderItems: orderItems,
                         orderDate: pickupDateTime,

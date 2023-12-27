@@ -13,6 +13,7 @@ struct AllOrdersView: View {
     @ObservedObject var orderManager: OrderManager
     @ObservedObject var inventoryManager: InventoryManager
 //    @ObservedObject var languageManager: LanguageManager
+
     @State private var showPaidOrders = true
 
     @State private var searchText = ""
@@ -47,20 +48,27 @@ struct AllOrdersView: View {
         VStack {
             
             HStack {
-                SearchBar(searchText: $searchText)
                 
                 Menu {
-                                Picker("Filter", selection: $filterType) {
-                                    ForEach(FilterType.allCases, id: \.self) { type in
-                                        Text(type.rawValue).tag(type)
-                                    }
-                                }
-                            } label: {
-                                Label("Filter by", systemImage: "line.horizontal.3.decrease.circle")
-                                    .font(.system(size: 18))
-                            }
-                    .padding(.trailing)
+                    Picker("Filter", selection: $filterType) {
+                        ForEach(FilterType.allCases, id: \.self) { type in
+                            Text(type.rawValue).tag(type)
+                        }
+                    }
+                } label: {
+                    Image(systemName: "line.horizontal.3.decrease")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+//                    Image("line.horizontal.3.decrease.circle")
+                    //                                Label("Filter by", systemImage: "line.horizontal.3.decrease.circle")
+                    //                                    .font(.system(size: 18))
+                }
+//                .padding()
+                
+                SearchBar(searchText: $searchText)
+
             }
+            .padding()
                         
             if filteredOrders.isEmpty {
                 

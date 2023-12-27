@@ -172,7 +172,7 @@ struct Order: Identifiable, Codable {
     
     func dictionaryRepresentation() -> [String: Any] {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
         var orderDict: [String: Any] = [
             
@@ -249,68 +249,73 @@ struct Order: Identifiable, Codable {
         }
 }
 
-extension Order {
-    
-//    func dictionaryRepresentation() -> [String: Any] {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "yyyy-MM-dd"
-//
-//        var orderDict: [String: Any] = [
-//            
-//            "orderID": orderID,
-//            "customer": customer.dictionaryRepresentation(), // Convert to dictionary
-//            "orderItems": orderItems.map { $0.dictionaryRepresentation() }, // Convert each OrderItem to dictionary
-//            "orderDate": dateFormatter.string(from: orderDate),
-//             "delivery": delivery.dictionaryRepresentation(), // Convert to dictionary
-//             "notes": notes,
-//             "allergies": allergies,
-//             "isDelivered": isDelivered,
-//             "isPaid": isPaid,
-//             "totalPrice": totalPrice,
-//             "receipt": receipt?.dictionaryRepresentation() ?? [:] // Convert to dictionary or empty dictionary if nil
-//
-//        ]
-//        return orderDict
-//    }
-}
-
-
 struct Receipt: Identifiable, Codable, Hashable {
     var id: String //UUID()
     var myID: Int
     var orderID: String
-    var pdfData: Data?
+//    var pdfData: Data?
     var dateGenerated: Date
     var paymentMethod: String
     var paymentDate: Date
     
+//    init(id: String, myID: Int, orderID: String, pdfData: Data?, dateGenerated: Date, paymentMethod: String, paymentDate: Date) {
+//        self.id = id
+//        self.myID = myID
+//        self.orderID = orderID
+//        self.pdfData = pdfData
+//        self.dateGenerated = dateGenerated
+//        self.paymentMethod = paymentMethod
+//        self.paymentDate = paymentDate
+//    }
+    
     // Default constructor
-    init(id: String = "", myID: Int = 0, orderID: String = "", pdfData: Data? = nil, dateGenerated: Date = Date(), paymentMethod: String = "", paymentDate: Date = Date()) {
+    init(id: String = "", myID: Int = 0, orderID: String = "",
+         dateGenerated: Date = Date(), paymentMethod: String = "", paymentDate: Date = Date()) //, pdfData: Data? = nil
+    {
         self.id = id
         self.myID = myID
         self.orderID = orderID
-        self.pdfData = pdfData
+//        self.pdfData = pdfData
         self.dateGenerated = dateGenerated
         self.paymentMethod = paymentMethod
         self.paymentDate = paymentDate
     }
-}
+    
+    init?(dictionary: [String: Any]) {
 
+        guard let id = dictionary["id"] as? String,
+              let myID = dictionary["myID"] as? Int,
+              let orderID = dictionary["orderID"] as? String,
+//              let pdfData = dictionary["pdfData"] as? Data,
+              let dateGenerated = dictionary["dateGenerated"] as? Date,
+              let paymentMethod = dictionary["paymentMethod"] as? String,
+              let paymentDate = dictionary["paymentDate"] as? Date
 
-extension Receipt {
+        else {
+            return nil
+        }
+        self.id = id
+        self.myID = myID
+        self.orderID = orderID
+//        self.pdfData = Data() // TO DO
+        self.dateGenerated = dateGenerated
+        self.paymentMethod = paymentMethod
+        self.paymentDate = paymentDate
+    }
     
     func dictionaryRepresentation() -> [String: Any] {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.dateFormat = "yyyy-MM-dd"
 
-        var receiptDict: [String: Any] = [
+        let receiptDict: [String: Any] = [
             
-            "receipMyID": myID,
-            "receipOrderID": orderID,
+            "id": id, // new
+            "myID": myID,
+            "orderID": orderID,
 //            "receiptPdfData": pdfData ?? Data(),
-            "receiptDateGenerated": dateFormatter.string(from: dateGenerated),
-            "receiptPaymentMethod": paymentMethod,
-            "receiptPaymentDate": dateFormatter.string(from: paymentDate)
+            "dateGenerated": dateFormatter.string(from: dateGenerated),
+            "paymentMethod": paymentMethod,
+            "paymentDate": dateFormatter.string(from: paymentDate)
 
         ]
         return receiptDict
@@ -322,7 +327,7 @@ class OrderManager: ObservableObject {
     
     static var shared = OrderManager()
     @Published var orders: [Order] = []
-    @Published var receipts: Set<Receipt> = Set()
+    @Published var receipts: [Receipt] = [] // Set<Receipt> = Set()
 //    private var generatedReceiptIDs: Set<String> = Set()
     private var receiptNumber = 0
     private var receiptNumberReset = 0 // 0 = false, 1 = true
@@ -348,7 +353,7 @@ class OrderManager: ObservableObject {
             print("Current UserID: \(userID)")
             let path = "users/\(userID)/orders"
 
-            DatabaseManager.shared.fetchOrders_gpt(path: path, completion: { fetchedOrders in
+            DatabaseManager.shared.fetchOrders(path: path, completion: { fetchedOrders in
 //                self.orders = fetchedOrders
 //                print("Success fetching orders")
                 DispatchQueue.main.async {
@@ -365,13 +370,13 @@ class OrderManager: ObservableObject {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
             print("Current UserID: \(userID)")
-            let path = "receipts/users/\(userID)/receipts"
+            let path = "users/\(userID)/receipts"
 
-            DatabaseManager.shared.fetchReceipts_gpt(path: path, completion: { fetchedReceipts in
+            DatabaseManager.shared.fetchReceipts(path: path, completion: { fetchedReceipts in
 //                self.receipts = Set(fetchedReceipts)
 //                print("Success fetching receipts")
                 DispatchQueue.main.async {
-                    self.receipts = Set(fetchedReceipts)
+                    self.receipts = fetchedReceipts // Set(fetchedReceipts)
                     print("Success fetching receipts")
                 }
             })
@@ -508,7 +513,7 @@ class OrderManager: ObservableObject {
             do {
                 let decodedReceipts = try JSONDecoder().decode([Receipt].self, from: savedData)
                 //                receipts = decodedReceipts
-                receipts = Set(decodedReceipts)
+                receipts = decodedReceipts // Set(decodedReceipts)
                 
                 print("success decoding receipts! load")
             } catch {
@@ -576,12 +581,12 @@ class OrderManager: ObservableObject {
     func removeOrder(with orderID: String) {
         if let index = orders.firstIndex(where: { $0.id == orderID }) {
             
-            for dessert in orders[index].orderItems {
-                InventoryManager.shared.updateQuantity(
-                    item: dessert.inventoryItem,
-                    newQuantity: dessert.inventoryItem.itemQuantity + dessert.quantity
-                )
-            }
+//            for orderItem in orders[index].orderItems {
+//                InventoryManager.shared.updateQuantity(
+//                    item: orderItem.inventoryItem,
+//                    newQuantity: orderItem.inventoryItem.itemQuantity + orderItem.quantity
+//                )
+//            }
             
             orders.remove(at: index)
             
@@ -593,13 +598,6 @@ class OrderManager: ObservableObject {
             }
         }
     }
-    
-//    func updateOrder(order: Order) {
-//        if let index = orders.firstIndex(where: { $0.id == order.id }) {
-//            orders[index] = order
-//            saveOrders2UD()
-//        }
-//    }
     
     func updateOrder(order: Order) {
         if let index = orders.firstIndex(where: { $0.id == order.id }) {
@@ -669,7 +667,18 @@ class OrderManager: ObservableObject {
             }
         }
     }
-        
+    
+    func clearDeliveredOrders() {
+        orders.removeAll { $0.isDelivered }
+        if isUserSignedIn {
+            // Clear data from the database
+            // Implement the logic to remove delivered orders from the database
+        } else {
+            // Clear data from UserDefaults
+            UserDefaults.standard.removeObject(forKey: "user_orders_key")
+        }
+    }
+
     func printOrder(order: Order) -> Void {
         print("orderID: \(order.orderID)")
         print("ispaid: \(order.isPaid.description)")
@@ -711,7 +720,7 @@ class OrderManager: ObservableObject {
     
     func addReceipt(receipt: Receipt) {
         if !receipts.contains(receipt) {
-            receipts.insert(receipt)
+            receipts.append(receipt) // .insert(receipt)
             
             if isUserSignedIn {
                 saveReceipt2DB(receipt)

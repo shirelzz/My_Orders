@@ -479,6 +479,9 @@
         }
       }
     },
+    "Back" : {
+
+    },
     "Bank transfer" : {
       "localizations" : {
         "en" : {
@@ -719,6 +722,9 @@
           }
         }
       }
+    },
+    "Copy order details" : {
+
     },
     "Copy Phone Number" : {
 
@@ -1012,6 +1018,9 @@
         }
       }
     },
+    "Delete Order" : {
+
+    },
     "Delivered" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1241,6 +1250,9 @@
         }
       }
     },
+    "Feedback" : {
+
+    },
     "Filter" : {
       "localizations" : {
         "en" : {
@@ -1258,6 +1270,7 @@
       }
     },
     "Filter by" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2478,6 +2491,9 @@
         }
       }
     },
+    "Rate Us  🤍" : {
+
+    },
     "Receipt" : {
       "localizations" : {
         "en" : {
@@ -2818,6 +2834,9 @@
         }
       }
     },
+    "Send Suggestions" : {
+
+    },
     "Settings" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2893,6 +2912,9 @@
           }
         }
       }
+    },
+    "Sign in With Google" : {
+
     },
     "Sign Out" : {
       "localizations" : {
@@ -3059,6 +3081,9 @@
           }
         }
       }
+    },
+    "We are so happy to see you 🥳" : {
+
     },
     "Week" : {
       "localizations" : {

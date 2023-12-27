@@ -15,6 +15,7 @@ struct NewContentView: View {
     @State private var isSideMenuOpen = false
     @State private var showSideMenu = false
 
+
     init() {
         AppManager.shared.loadManagerData()
         OrderManager.shared.loadOrders()

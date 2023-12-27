@@ -9,7 +9,7 @@ import Foundation
 import UserNotifications
 import FirebaseAuth
 
-struct InventoryItem: Codable, Identifiable, Hashable{ //
+struct InventoryItem: Codable, Identifiable, Hashable{ 
     
     var id: String { itemID }
     var itemID: String
@@ -58,8 +58,6 @@ struct InventoryItem: Codable, Identifiable, Hashable{ //
               let quantity = dictionary["itemQuantity"] as? Int,
               let size = dictionary["size"] as? String,
               let additionDate = dictionary["AdditionDate"] as? Date,
-//              let dateString = dictionary["AdditionDate"] as? String,
-//              let additionDate = dateFormatter.date(from: dateString),
               let notes = dictionary["itemNotes"] as? String
         else {
             return nil
@@ -74,27 +72,6 @@ struct InventoryItem: Codable, Identifiable, Hashable{ //
         
     }
 }
-
-//extension InventoryItem {
-//    
-//    func dictionaryRepresentation() -> [String: Any] {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "yyyy-MM-dd"
-//
-//        var itemDict: [String: Any] = [
-//            
-//            "itemID": itemID,
-//            "name": name,
-//            "itemPrice": itemPrice,
-//            "itemQuantity": itemQuantity,
-//            "size": size,
-//            "AdditionDate": dateFormatter.string(from: AdditionDate),
-//            "itemNotes": itemNotes,
-//
-//        ]
-//        return itemDict
-//    }
-//}
 
 class InventoryManager: ObservableObject {
     
@@ -119,7 +96,7 @@ class InventoryManager: ObservableObject {
             print("Current UserID: \(userID)")
             let path = "users/\(userID)/items"
 
-            DatabaseManager.shared.fetchItems_gpt(path: path, completion: { fetchedItems in
+            DatabaseManager.shared.fetchItems(path: path, completion: { fetchedItems in
 //                self.items = fetchedItems
 //                print("Success fetching items")
                 DispatchQueue.main.async {
@@ -210,7 +187,7 @@ class InventoryManager: ObservableObject {
             if isUserSignedIn {
                 if let currentUser = Auth.auth().currentUser {
                     let userID = currentUser.uid
-                    let path = "users/\(userID)/items"
+                    let path = "users/\(userID)/items/\(editedItem.itemID)"
                     
                     DatabaseManager.shared.updateItemInDB(editedItem, path: path) { success in
                         if !success {
@@ -231,7 +208,7 @@ class InventoryManager: ObservableObject {
             if isUserSignedIn {
                 if let currentUser = Auth.auth().currentUser {
                     let userID = currentUser.uid
-                    let path = "users/\(userID)/items"
+                    let path = "users/\(userID)/items/\(items[index].itemID)"
                     
                     DatabaseManager.shared.updateItemInDB(items[index], path: path) { success in
                         if !success {
@@ -247,6 +224,23 @@ class InventoryManager: ObservableObject {
     
     func getItems() -> [InventoryItem] {
         return items
+    }
+    
+    func clearOutOfStockItems() {
+        items.removeAll { $0.itemQuantity <= 0 }
+        
+        if isUserSignedIn {
+            if let currentUser = Auth.auth().currentUser {
+                let userID = currentUser.uid
+                let path = "users/\(userID)/items"
+                DatabaseManager.shared.clearOutOfStockItemsFromDB(path: path, completion: {
+                    
+                })
+            }
+        } else {
+            // Clear data from UserDefaults
+            UserDefaults.standard.removeObject(forKey: "items")
+        }
     }
     
     

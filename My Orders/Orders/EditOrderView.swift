@@ -14,6 +14,7 @@ struct EditOrderView: View {
     
     @Binding var order: Order
     @State var editedOrder: Order
+
     @State var showDeleteConfirmation = false
     @State var showDeleteOrderAlert = false
     
@@ -27,6 +28,8 @@ struct EditOrderView: View {
     @State private var searchQuery = ""
     @State private var filteredItems: [InventoryItem] = []
     @State private var isQuantityValid = true
+    @State private var navigateToContentView = false
+
     @Environment(\.presentationMode) var presentationMode
     
     
@@ -36,7 +39,7 @@ struct EditOrderView: View {
             Form {
                 
                 Section(header: Text("Order Information")) {
-                    DatePicker("Order Date", selection: $editedOrder.orderDate, in: ...Date(), displayedComponents: [.date, .hourAndMinute])
+                    DatePicker("Order Date", selection: $editedOrder.orderDate, in: Date(timeIntervalSince1970: 0)..., displayedComponents: [.date, .hourAndMinute])
                 }
                 
                 Section(header: Text("Order Details")) {
@@ -158,14 +161,67 @@ struct EditOrderView: View {
                                 Text("Delete"),
                                 action: {
                                     order = editedOrder
-                                    deleteOrder(orderID: order.orderID)
                                     
-                                    presentationMode.wrappedValue.dismiss()
+                                    if !order.isDelivered && !order.orderItems.isEmpty{
+                                        print("---> entered 1st if")
+
+                                        for orderItem in order.orderItems {
+                                            // Update the quantity of the selected inventory item
+                                            print("---> Updating quantity for order item: \(orderItem.inventoryItem.name)")
+
+                                            if let selectedItem = inventoryManager.items.first(where: { $0.id == orderItem.inventoryItem.itemID }) {
+                                                inventoryManager.updateQuantity(item: selectedItem,
+                                                                                newQuantity: selectedItem.itemQuantity + orderItem.quantity)
+                                                print("---> update 1")
+
+                                            }
+                                        }
+                                        
+                                    }
+                                    
+                                    if !addedOrderItems.isEmpty{
+                                        print("---> entered 2nd if")
+
+                                        for orderItem in addedOrderItems {
+                                            // Update the quantity of the selected inventory item
+                                            if let selectedItem = inventoryManager.items.first(where: { $0.id == orderItem.inventoryItem.itemID }) {
+                                                inventoryManager.updateQuantity(item: selectedItem,
+                                                                                newQuantity: selectedItem.itemQuantity - orderItem.quantity)
+                                                print("---> update 2")
+                                            }
+                                        }
+                                    }
+                                    
+                                    if !deletedOrderItems.isEmpty{
+                                        print("---> entered 3rd if")
+
+                                        for orderItem in deletedOrderItems {
+                                            // Update the quantity of the selected inventory item
+                                            if let selectedItem = inventoryManager.items.first(where: { $0.id == orderItem.inventoryItem.itemID }) {
+                                                inventoryManager.updateQuantity(item: selectedItem,
+                                                                                newQuantity: selectedItem.itemQuantity + orderItem.quantity)
+                                                print("---> update 3")
+                                            }
+                                        }
+                                    }
+                                    
+                                    deleteOrder(order: order)
+                                    navigateToContentView = true
+                                    print("---> deleteOrder")
+
+//                                    presentationMode.wrappedValue.dismiss()
                                 }
                             ),
                             secondaryButton: .cancel(Text("Cancel"))
                         )
                     }
+                    
+                    NavigationLink(
+                               destination: ContentView(),
+                               isActive: $navigateToContentView,
+                               label: { EmptyView() }
+                           )
+                           .hidden()
                 }
                 
             }
@@ -182,24 +238,25 @@ struct EditOrderView: View {
                         order = editedOrder
                         orderManager.updateOrder(order: order)
                         
-                        for dessert in addedOrderItems {
+                        for orderItem in addedOrderItems {
                             // Update the quantity of the selected inventory item
-                            if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
+                            if let selectedItem = inventoryManager.items.first(where: { $0.id == orderItem.inventoryItem.itemID }) {
                                 inventoryManager.updateQuantity(item: selectedItem,
-                                                                newQuantity: selectedItem.itemQuantity - dessert.quantity)
+                                                                newQuantity: selectedItem.itemQuantity - orderItem.quantity)
                             }
                         }
                         
-                        for dessert in deletedOrderItems {
+                        for orderItem in deletedOrderItems {
                             // Update the quantity of the selected inventory item
-                            if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
+                            if let selectedItem = inventoryManager.items.first(where: { $0.id == orderItem.inventoryItem.itemID }) {
                                 inventoryManager.updateQuantity(item: selectedItem,
-                                                                newQuantity: selectedItem.itemQuantity + dessert.quantity)
+                                                                newQuantity: selectedItem.itemQuantity + orderItem.quantity)
                             }
                         }
                         
-                        
+//                        dismiss(2)
                         presentationMode.wrappedValue.dismiss()
+
                     }
                 }
             )
@@ -207,6 +264,28 @@ struct EditOrderView: View {
         .onChange(of: newDessertQuantity) { _ in
             validateQuantity()
         }
+    }
+    
+    private func dismiss(_ n: Int) {
+        let rootViewController = UIApplication.shared.connectedScenes
+            .filter { $0.activationState == .foregroundActive }
+            .map {$0 as? UIWindowScene }
+            .compactMap { $0 }
+            .first?.windows
+            .filter({ $0.isKeyWindow }).first?.rootViewController
+        guard let rootViewController = rootViewController else { return }
+
+        var leafFlound = false
+        var viewStack: [UIViewController] = [rootViewController]
+        while(!leafFlound) {
+            if let presentedViewController = viewStack.last?.presentedViewController {
+                viewStack.append(presentedViewController)
+            } else {
+                leafFlound = true
+            }
+        }
+        let presentingViewController = viewStack[max(0, viewStack.count - n - 1)]
+        presentingViewController.dismiss(animated: true)
     }
     
     private func validateQuantity() {
@@ -230,11 +309,6 @@ struct EditOrderView: View {
                 price: selectedInventoryItem.itemPrice
             )
             addedOrderItems.append(existDessert)
-            
-            //            if let selectedItem = inventoryManager.items.first(where: { $0.id == editedOrder.desserts[existingDessertIndex].inventoryItem.itemID }) {
-            //                inventoryManager.updateQuantity(item: selectedItem,
-            //                                                newQuantity: selectedItem.itemQuantity - (Int(newDessertQuantity) ?? 0))
-            //            }
             
         } else {
             // Create a new dessert and add it to the edited order
@@ -263,8 +337,21 @@ struct EditOrderView: View {
         deletedOrderItems.append(contentsOf: deletedOrderItemsBatch)
     }
     
-    private func deleteOrder(orderID: String) {
-        orderManager.removeOrder(with: orderID)
+    private func deleteOrder(order: Order) {
+        
+//        if !order.isDelivered{
+//            
+//            for orderItem in order.orderItems {
+//                // Update the quantity of the selected inventory item
+//                if let selectedItem = inventoryManager.items.first(where: { $0.id == orderItem.inventoryItem.itemID }) {
+//                    inventoryManager.updateQuantity(item: selectedItem,
+//                                                    newQuantity: selectedItem.itemQuantity + orderItem.quantity)
+//                }
+//            }
+//            
+//        }
+        
+        orderManager.removeOrder(with: order.orderID)
     }
     
 }

@@ -13,12 +13,16 @@ struct OrderDetailsView: View {
 //    @ObservedObject var languageManager: LanguageManager
     
     @State var order: Order
+
     @State private var showReceipt = false
     @State private var showReceiptPreview = false
     @State private var isEditing = false
     
     @State private var phoneNumberCopied = false
     @State private var phoneNumberToCopy = ""
+        
+    @Environment(\.presentationMode) var presentationMode
+
     
 //    var flag = false
     
@@ -75,16 +79,42 @@ struct OrderDetailsView: View {
                 }
                 .padding(.leading)
                 
-                List(order.orderItems, id: \.inventoryItem.name) { dessert in
+                List(order.orderItems, id: \.inventoryItem.name) { orderItem in
                     HStack {
-                        Text("\(dessert.inventoryItem.name)")
+                        Text("\(orderItem.inventoryItem.name)")
                         Spacer()
-                        Text("Q: \(dessert.quantity)")
-                        Text("$\(dessert.price, specifier: "%.2f")")
+                        Text("Q: \(orderItem.quantity)")
+                        Text("$\(orderItem.price, specifier: "%.2f")")
                     }
                     .padding(.leading)
-
                 }
+                
+                Button {
+                    var orderDetailsText: String = "Date: " + order.orderDate.formatted().description + "\r\n"
+                    for orderItem in order.orderItems {
+                        orderDetailsText += "\r\n" +
+                                            orderItem.quantity.description + " " +
+                                            orderItem.inventoryItem.name + " " +
+                                            orderItem.price.description + " "
+                    }
+                    
+                    if order.delivery.address != "" {
+                        orderDetailsText += "\r\n" + "Delivery address: " + order.delivery.address + "\r\n" +
+                        "Delivery cost" + order.delivery.cost.description
+                    }
+                    
+                    orderDetailsText += "\r\n" + "Total: " + order.totalPrice.description
+                    
+                    if order.allergies != "" {
+                        orderDetailsText += "\r\n" + "Allergies: " + order.allergies
+                    }
+                    
+                    UIPasteboard.general.string = orderDetailsText
+                    Toast.showToast(message: "Order details copied")
+                } label: {
+                    Text("Copy order details")
+                }
+
             }
             
             if (order.delivery.address != "" || order.notes != "" || order.allergies != "") {
@@ -183,15 +213,25 @@ struct OrderDetailsView: View {
         }
         .padding()
         .navigationBarTitle("Order Details")
-        .navigationBarItems(trailing:
-                        Button(action: {
-                            isEditing.toggle()
-                        }) {
-                            Text(isEditing ? "Done" : "Edit")
-                        }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: Button("Back") {
+            presentationMode.wrappedValue.dismiss()
+                        },
+                            
+                        trailing: 
+                                
+                            Button(action: {
+                                isEditing.toggle()
+                            }) {
+                                Text(isEditing ? "Done" : "Edit")
+                            }
                     )
                     .sheet(isPresented: $isEditing) {
                         EditOrderView(orderManager: orderManager, inventoryManager: inventoryManager, order: $order, editedOrder: order)
+                        
+
+//                            .presentation(isModal ? .modal : .push)
+
                         // ^ Create a new view for editing and pass the order binding
                     }
 //        .sheet(isPresented: $showReceipt) {
@@ -201,35 +241,37 @@ struct OrderDetailsView: View {
 }
     
 
-struct OrderDetailsView_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        let sampleItem = InventoryItem(itemID: "1234",
-                                       name: "Chocolate cake",
-                                       itemPrice: 20,
-                                       itemQuantity: 20,
-                                       size: "",
-                                       AdditionDate: Date(),
-                                       itemNotes: ""
-                                       )
-                                       
-        
-            let sampleOrder = Order(
-                orderID: "123",
-                customer: Customer(name: "John Doe", phoneNumber: "0546768900"),
-                
-                orderItems: [OrderItem(inventoryItem: sampleItem, quantity: 2, price: 10.0)],
-                
-                orderDate: Date(),
-                delivery: Delivery(address: "yefe nof 18, peduel", cost: 10) ,
-                notes: "",
-                allergies: "",
-                isDelivered: false,
-                isPaid: false
-//                receipt: nil
-            )
-            
-        OrderDetailsView(orderManager: OrderManager.shared, inventoryManager: InventoryManager.shared, order: sampleOrder)
-    }
-}
+//struct OrderDetailsView_Previews: PreviewProvider {
+//
+//
+//    static var previews: some View {
+//
+//        let sampleItem = InventoryItem(itemID: "1234",
+//                                       name: "Chocolate cake",
+//                                       itemPrice: 20,
+//                                       itemQuantity: 20,
+//                                       size: "",
+//                                       AdditionDate: Date(),
+//                                       itemNotes: ""
+//                                       )
+//                                       
+//        
+//            let sampleOrder = Order(
+//                orderID: "123",
+//                customer: Customer(name: "John Doe", phoneNumber: "0546768900"),
+//                
+//                orderItems: [OrderItem(inventoryItem: sampleItem, quantity: 2, price: 10.0)],
+//                
+//                orderDate: Date(),
+//                delivery: Delivery(address: "yefe nof 18, peduel", cost: 10) ,
+//                notes: "",
+//                allergies: "",
+//                isDelivered: false,
+//                isPaid: false
+////                receipt: nil
+//            )
+//            
+//        OrderDetailsView(orderManager: OrderManager.shared, inventoryManager: InventoryManager.shared, order: sampleOrder)
+//    }
+//}
 
