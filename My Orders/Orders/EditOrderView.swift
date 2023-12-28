@@ -206,22 +206,22 @@ struct EditOrderView: View {
                                     }
                                     
                                     deleteOrder(order: order)
-                                    navigateToContentView = true
+//                                    navigateToContentView = true
                                     print("---> deleteOrder")
 
-//                                    presentationMode.wrappedValue.dismiss()
+                                    presentationMode.wrappedValue.dismiss()
                                 }
                             ),
                             secondaryButton: .cancel(Text("Cancel"))
                         )
                     }
                     
-                    NavigationLink(
-                               destination: ContentView(),
-                               isActive: $navigateToContentView,
-                               label: { EmptyView() }
-                           )
-                           .hidden()
+//                    NavigationLink(
+//                               destination: ContentView(),
+//                               isActive: $navigateToContentView,
+//                               label: { EmptyView() }
+//                           )
+//                           .hidden()
                 }
                 
             }

@@ -44,66 +44,94 @@ struct AllOrdersView: View {
     
     
     var body: some View {
-        
-        VStack {
+        NavigationStack{
             
-            HStack {
+            
+            ZStack(alignment: .center) {
                 
-                Menu {
-                    Picker("Filter", selection: $filterType) {
-                        ForEach(FilterType.allCases, id: \.self) { type in
-                            Text(type.rawValue).tag(type)
-                        }
-                    }
-                } label: {
-                    Image(systemName: "line.horizontal.3.decrease")
-                        .resizable()
-                        .frame(width: 24, height: 24)
-//                    Image("line.horizontal.3.decrease.circle")
-                    //                                Label("Filter by", systemImage: "line.horizontal.3.decrease.circle")
-                    //                                    .font(.system(size: 18))
-                }
-//                .padding()
                 
-                SearchBar(searchText: $searchText)
-
-            }
-            .padding()
+                VStack (alignment: .trailing, spacing: 10) {
+                    
+                    VStack {
                         
-            if filteredOrders.isEmpty {
-                
-                Text("No orders yet")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                
-            }
-            else
-            {
+                        Image("aesthetic")
+                            .resizable()
+                            .scaledToFill()
+                            .edgesIgnoringSafeArea(.top)
+                            .opacity(0.15)
+                            .frame( height: 20)
+//                            .padding(.bottom)
+                            
+//                            .frame(maxHeight: 20)
+//                            .clipped()
+                    }
+    
+                        HStack {
+                            
+                            Menu {
+                                Picker("Filter", selection: $filterType) {
+                                    ForEach(FilterType.allCases, id: \.self) { type in
+                                        Text(type.rawValue).tag(type)
+                                    }
+                                }
+                            } label: {
+                                Image(systemName: "line.horizontal.3.decrease")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
 
-                List {
-                    ForEach(filteredOrders, id: \.orderID) { order in
-                        NavigationLink(destination: OrderDetailsView(orderManager: orderManager, inventoryManager: inventoryManager, order: order)) {
-                            OrderRowView(order: order)
+                                //                    Image("line.horizontal.3.decrease.circle")
+                                //                                Label("Filter by", systemImage: "line.horizontal.3.decrease.circle")
+                                //                                    .font(.system(size: 18))
+                            }
+                            //                .padding()
+                            
+                            SearchBar(searchText: $searchText)
+
+                            
                         }
-                        .contextMenu {
-                            Button(action: {
-                                deleteOrder(orderID: order.orderID)
-                            }) {
-                                Text("Delete")
-                                Image(systemName: "trash")
+//                        .padding(.top, 45)
+                        .padding()
+//                        .frame(height: 100)
+                    
+                    
+                    if filteredOrders.isEmpty {
+                        
+                        Text("No orders yet")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        
+                    }
+                    else
+                    {
+                        
+                        List {
+                            ForEach(filteredOrders, id: \.orderID) { order in
+                                NavigationLink(destination: OrderDetailsView(orderManager: orderManager, inventoryManager: inventoryManager, order: order)) {
+                                    OrderRowView(order: order)
+                                }
+                                .contextMenu {
+                                    Button(action: {
+                                        deleteOrder(orderID: order.orderID)
+                                    }) {
+                                        Text("Delete")
+                                        Image(systemName: "trash")
+                                    }
+                                }
                             }
                         }
+                        .listStyle(InsetGroupedListStyle())
                     }
+                    
+                    AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716") //"ca-app-pub-1213016211458907/1549825745"
+                        .frame(height: 50)
+                    //                        .frame(width: UIScreen.main.bounds.width, height: 50)
+                        .background(Color.white)
                 }
-                .listStyle(InsetGroupedListStyle())
             }
-            
-            AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716") //"ca-app-pub-1213016211458907/1549825745"
-                .frame(height: 50)
-//                        .frame(width: UIScreen.main.bounds.width, height: 50)
-                .background(Color.white)
+            .navigationBarTitle("All Orders")
+
         }
-        .navigationBarTitle("All Orders")
+
     }
     
     private func deleteOrder(orderID: String) {

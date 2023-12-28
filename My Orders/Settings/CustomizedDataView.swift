@@ -19,98 +19,177 @@ struct CustomizedDataView: View {
 
     @State private var logoImage: UIImage?
     @State private var signatureImage: UIImage?
+//    @State private var logoImageData: UIImage?
+//    @State private var signatureImageData: UIImage?
+
+    
     
     @State private var showLogoImgPicker = false
     @State private var showSignatureImgPicker = false
+    
     
     @Environment(\.presentationMode) var presentationMode
     
 //    let logoImage = AppManager.shared.logoImg
 //    let signatureImage = AppManager.shared.signatureImg
 
+//    init(appManager: AppManager) {
+//          self.appManager = appManager
+//          _logoImage = State(initialValue: appManager.getLogoImage())
+//          _signatureImage = State(initialValue: appManager.getSignatureImage())
+//      }
     
     var body: some View {
         
         Form{
             List{
+                
+//                Section(header: Text("Logo")) {
+//                                    
+//                    HStack{
+//                                        
+//                        if let logoImageData = appManager.manager.logoImgData,
+//                           let logoImage = UIImage(data: logoImageData) {
+//                            Image(uiImage: logoImage)
+//                                .resizable()
+//                                .aspectRatio(contentMode: .fit)
+//                                .frame(width: 100, height: 100)
+//                        } else {
+//                            Image(systemName: "photo.on.rectangle")
+//                                .resizable()
+//                                .frame(width: 50, height: 50)
+//                        }
+//                        
+//                        Spacer()
+//                        
+//                        Button{
+//                            showLogoImgPicker = true
+//                            
+//                        } label: {
+//                            Text("Select image")
+//                        }
+//                        .sheet(isPresented: $showLogoImgPicker) {
+//                            ImagePicker(selectedImage: $logoImage, isPickerShowing: $showLogoImgPicker)
+//                        }
+//                    }
+//                }
+//                                
+//                Section(header: Text("Signature")) {
+//                    HStack {
+//                                                
+//                        if let signatureImageData = appManager.manager.signatureImgData,
+//                           let signatureImage = UIImage(data: signatureImageData) {
+//                            Image(uiImage: signatureImage)
+//                                .resizable()
+//                                .aspectRatio(contentMode: .fit)
+//                                .frame(width: 100, height: 100)
+//                        } else {
+//                            
+//                            Image(systemName: "photo.on.rectangle")
+//                                .resizable()
+//                                .frame(width: 50, height: 50)
+//                            //                                       Text("Error loading signature image")
+//                        }
+//                        
+//                        Spacer()
+//                        
+//                        Button{
+//                            showSignatureImgPicker = true
+//                        } label: {
+//                            Text("Select image")
+//                        }
+//                        .sheet(isPresented: $showSignatureImgPicker, content: {
+//                            ImagePicker(selectedImage: $signatureImage, isPickerShowing: $showSignatureImgPicker)
+//                        })
+//                    }
+//                }
+                
                 Section(header: Text("Logo")) {
-                                    
-                    HStack{
-                                        
-                        if let logoImageData = appManager.manager.logoImgData,
-                           let logoImage = UIImage(data: logoImageData) {
-                            Image(uiImage: logoImage)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 100, height: 100)
-                        } else {
-                            Image(systemName: "photo.on.rectangle")
-                                .resizable()
-                                .frame(width: 50, height: 50)
-                        }
-                        
+                    HStack {
+                        appManager.getLogoImage()
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 100, height: 100)
                         Spacer()
-                        
-                        Button{
+                        Button {
                             showLogoImgPicker = true
-                            
                         } label: {
                             Text("Select image")
                         }
                         .sheet(isPresented: $showLogoImgPicker) {
                             ImagePicker(selectedImage: $logoImage, isPickerShowing: $showLogoImgPicker)
+                                .onDisappear {
+                                        // This block will be executed when the ImagePicker is dismissed
+                                        appManager.manager.logoImgData = logoImage?.pngData()
+                                    }
                         }
                     }
                 }
-                                
+
                 Section(header: Text("Signature")) {
                     HStack {
-                                                
-                        if let signatureImageData = appManager.manager.signatureImgData,
-                           let signatureImage = UIImage(data: signatureImageData) {
-                            Image(uiImage: signatureImage)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 100, height: 100)
-                        } else {
-                            
-                            Image(systemName: "photo.on.rectangle")
-                                .resizable()
-                                .frame(width: 50, height: 50)
-                            //                                       Text("Error loading signature image")
-                        }
-                        
+                        appManager.getSignatureImage()
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 100, height: 100)
                         Spacer()
-                        
-                        Button{
+                        Button {
                             showSignatureImgPicker = true
                         } label: {
                             Text("Select image")
                         }
-                        .sheet(isPresented: $showSignatureImgPicker, content: {
+                        .sheet(isPresented: $showSignatureImgPicker) {
                             ImagePicker(selectedImage: $signatureImage, isPickerShowing: $showSignatureImgPicker)
-                        })
+                                .onDisappear {
+                                        // This block will be executed when the ImagePicker is dismissed
+                                        appManager.manager.signatureImgData = signatureImage?.pngData()
+                                    }
+                        }
                     }
                 }
+
                                 
                 HStack {
-                                        
-                    Button("Save images"){
-                        
-                        if let logoImageData = logoImage?.pngData(),
-                           let signatureImageData = signatureImage?.pngData() {
-                            
-                            let manager = Manager(
-                                
-                                logoImgData: logoImageData,
-                                signatureImgData: signatureImageData
+                    
+                    Button("Save images") {
+                        if appManager.manager.logoImgData == nil && appManager.manager.signatureImgData == nil {
+                            // First time uploading images
+                            appManager.saveManager(manager: Manager(
+                                logoImgData: logoImage?.pngData(),
+                                signatureImgData: signatureImage?.pngData()
+                            ))
+                        } else {
+                            // Replace existing images
+                            appManager.updateManager(
+                                logoImageData: logoImage?.pngData(),
+                                signatureImageData: signatureImage?.pngData()
                             )
-                            AppManager.shared.saveManager(manager: manager)
                         }
-                        
                         presentationMode.wrappedValue.dismiss()
-
                     }
+
+                                        
+//                    Button("Save images"){
+//                        
+//                        if let logoImageData = logoImage?.pngData(),
+//                           let signatureImageData = signatureImage?.pngData() {
+//                            
+//                            if appManager.manager.logoImgData == nil || appManager.manager.signatureImgData == nil {
+//                                let manager = Manager(
+//                                    
+//                                    logoImgData: logoImageData,
+//                                    signatureImgData: signatureImageData
+//                                )
+//                                appManager.saveManager(manager: manager)
+//                            }
+//                            else{
+//                                appManager.updateManager(logoImageData: logoImageData, signatureImageData: signatureImageData)
+//                            }
+//                        }
+//                        
+//                        presentationMode.wrappedValue.dismiss()
+//
+//                    }
                 }
             }
         }

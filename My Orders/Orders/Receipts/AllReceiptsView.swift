@@ -23,7 +23,7 @@ struct AllReceiptsView: View {
             
             VStack {
                 
-                VStack{
+                VStack (alignment: .leading, spacing: 10) {
                     
                     Image("receipts")
                         .resizable()
@@ -36,52 +36,44 @@ struct AllReceiptsView: View {
                         .font(.largeTitle)
                         .bold()
                         .padding(.leading)
-                    
-                    
-                    
+
                     HStack {
                         
-                        Picker("Select Year", selection: $selectedYear) {
+                        Spacer()
+                        
+                        Picker(selection: $selectedYear,
+                               label: Text("Selected Year")) {
                             Text("2023").tag(2023)
                             Text("2024").tag(2024)
                             Text("2025").tag(2025)
                             Text("2026").tag(2026)
                         }
+                        .buttonStyle(.borderedProminent)
+                        .cornerRadius(10)
                         .pickerStyle(.menu)
-                        .padding()
-                        .foregroundColor(.white)
-                        .shadow(color: .black.opacity(0.6), radius: 6, x: 0, y: 2)
-
-                        
-//                        Picker(selection: $selectedYear) {
-//                            Text("2023").tag(2023).foregroundColor(.white)
-//                            Text("2024").tag(2024).foregroundColor(.white)
-//                            Text("2025").tag(2025).foregroundColor(.white)
-//                            Text("2026").tag(2026).foregroundColor(.white)
-//                        } label: {
-//                            Text("Select Year").foregroundColor(.white)
-//                        }
-//                        .buttonStyle(.bordered)
-//                        .background(Color.accentColor.opacity(0.8))
 //                        .foregroundColor(.white)
-//                        .cornerRadius(10)
-//                        .frame(height: 20)
-//                        .pickerStyle(DefaultPickerStyle())
-//                        .shadow(color: .black.opacity(0.6), radius: 6, x: 0, y: 2)
-////                        .padding()
+                        .shadow(color: .black.opacity(0.6), radius: 6, x: 0, y: 2)
+                        .padding()
+
                         
                         Button("Export Receipts") {
                             exportReceiptsZip()
                         }
-                        .buttonStyle(.bordered)
-                        .background(Color.accentColor.opacity(0.8))
+                        .buttonStyle(.borderedProminent)
+//                        .background(Color.accentColor.opacity(0.8))
                         .foregroundColor(.white)
                         .cornerRadius(10)
                         .frame(height: 20)
                         .shadow(color: .black.opacity(0.6), radius: 6, x: 0, y: 2)
+                        .padding()
+                        
+                        Spacer()
 
 
                     }
+                    .padding(.top, 10)
+//                    .padding(.top, 45)
+
                 }
                 
                 List {
@@ -209,8 +201,20 @@ struct AllReceiptsView: View {
     
 }
 
-//struct AllReceiptsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AllReceiptsView(orderManager: orderManager)
-//    }
-//}
+struct CustomButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .buttonBorderShape(.roundedRectangle(radius: 10))
+            .foregroundColor(.white) // Set text color
+            .padding() // Adjust padding
+            .background(Color.accentColor) // Set background color
+//            .cornerRadius(10)
+            .shadow(color: .black.opacity(0.6), radius: 6, x: 0, y: 2)
+    }
+}
+
+struct AllReceiptsView_Previews: PreviewProvider {
+    static var previews: some View {
+        AllReceiptsView(orderManager: OrderManager.shared)
+    }
+}

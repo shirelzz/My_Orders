@@ -26,7 +26,7 @@ struct AddOrderView: View {
     @State private var searchQuery = ""
     @State private var filteredItems: [InventoryItem] = []
     
-    @State private var DessertQuantity = ""
+    @State private var orderItemQuantity = ""
     @State private var DessertPrice = 0
     @State private var isAddingDessert = false
     
@@ -37,7 +37,7 @@ struct AddOrderView: View {
     @State private var delivery = "No"
     @State private var deliveryAddress = ""
     @State private var selectedDeliveryCost = 0
-    let deliveryCosts = [0, 10, 15, 20, 25, 30, 40, 50, 60]
+    let deliveryCosts = [0, 5, 10, 15, 20, 25, 30, 40, 50, 60]
     
     
     @State private var pickupDateTime = Date()
@@ -48,6 +48,10 @@ struct AddOrderView: View {
     @State private var notes = ""
     @State private var isAddItemViewPresented = false
     @State private var isQuantityValid = true
+    
+    @State private var isItemDetailsPopoverPresented = false
+    @State private var selectedItemForDetails: InventoryItem?
+    @State private var showItemDetails = false
     
     
     var body: some View {
@@ -66,71 +70,171 @@ struct AddOrderView: View {
             
             Section(header: Text("Items Selection")) {
                 
-//                TextField("Search for item", text: $searchQuery)
-//                    .padding()
-                TextField("Search for item", text: $searchQuery)
-                    .padding()
-//                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(height: 40)
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(10.0)
-                    .overlay(
-                        HStack {
-                            Spacer()
-                            Image(systemName: "magnifyingglass")
-                                .foregroundColor(.gray)
-                        }
-                        .padding(.horizontal, 18)
-                    )
-                    .onChange(of: searchQuery) { value in
-                        filteredItems = inventoryManager.items.filter { $0.name.lowercased().contains(value.lowercased()) }
-                        
-                        // Set selectedInventoryItem to the first item in filteredItems if available
-                        if let firstItem = filteredItems.first {
-                            selectedInventoryItem = firstItem
-                        }
-                    }
+//            VStack{
                 
-                if filteredItems.isEmpty {
-                        Button(action: {
-                            isAddItemViewPresented = true
-                        }) {
-                            Text("Create new item")
-                        }
-                        .sheet(isPresented: $isAddItemViewPresented) {
-                            NavigationView{
-                                AddItemView(inventoryManager: inventoryManager)
+                //                TextField("Search for item", text: $searchQuery)
+                //                    .padding()
+                
+                
+                HStack {
+                    TextField("Search for item", text: $searchQuery)
+//                        .padding()
+                    //                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(height: 40)
+                        .padding(.leading)
+                        .background(Color.gray.opacity(0.1))
+                        .cornerRadius(10.0)
+                        .overlay(
+                            HStack {
+                                Spacer()
+                                Image(systemName: "magnifyingglass")
+                                    .foregroundColor(.gray)
+                            }
+                                .padding(.horizontal, 18)
+                        )
+                        .onChange(of: searchQuery) { value in
+                            filteredItems = inventoryManager.items
+                                .filter { $0.name.lowercased().contains(value.lowercased()) }
+                                .sorted { $0.name < $1.name }
+                            
+                            // Set selectedInventoryItem to the first item in filteredItems if available
+                            if let firstItem = filteredItems.first {
+                                selectedInventoryItem = firstItem
                             }
                         }
-                    }
+                    
+                    Spacer(minLength: 15)
+                    
+                        Button {
+                            isAddItemViewPresented = true
+                        } label: {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.system(size: 24))
+                                .tint(.accentColor)
+                                .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 2)
+                        }
+                        .foregroundColor(.accentColor) // Set desired text color
+                        .tint(.clear)
+                        .popover(isPresented: $isAddItemViewPresented) {
+                            AddItemView(inventoryManager: inventoryManager)
+                        }
+                        .buttonStyle(.bordered)
+                        .frame(width: 20, height: 20)
+                        .padding(5)
+
+
+                    
+                }
+//                .padding()
+                
+                if searchQuery.isEmpty {
+                    
+//                    Picker("All items", selection: $selectedInventoryItemIndex) {
+//                        ForEach(inventoryManager.items.indices, id: \.self) { index in
+//                            let item = inventoryManager.items[index]
+//                            let displayText = "\(item.name) , Q: \(item.itemQuantity) , Price: $\(item.itemPrice)"
+//                            
+//                            Text(displayText).tag(index)
+
+//                            let width = UIScreen.main.bounds.width * 0.85
+//                            HStack {
+//
+//                                Text(displayText).tag(index)
+//                                    .contextMenu {
+//                                                    Button {
+//                                                        selectedItemForDetails = item
+//                                                        isItemDetailsPopoverPresented = true
+//                                                    } label: {
+//                                                        Text("item details")
+////                                                        Image(systemName: "info.circle")
+//                                                    }
+//                                                }
+//                                    .overlay(
+//                                                        Button {
+//                                                            selectedItemForDetails = item
+//                                                            isItemDetailsPopoverPresented = true
+//                                                        } label: {
+//                                                            Image(systemName: "info.circle")
+//                                                                .font(.system(size: 20))
+//                                                                .padding(.trailing, 8) // Adjust spacing as needed
+//                                                        }
+//                                                    )
+                                
+//                                Button {
+//                                    selectedItemForDetails = item
+//                                    isItemDetailsPopoverPresented = true
+//                                } label: {
+//                                    Image(systemName: "info.circle")
+//                                        .font(.system(size: 18))
+//                                }
+//                            }
+//                            .frame(width: width)
+
+                            
+
+//                        }
+//                        .pickerStyle(.inline)
+//                        .frame(height: 4)
+//                        .lineLimit(4)
+//                        .clipped()
+//                        .labelsHidden()
+//                    }
+//                    .onChange(of: selectedInventoryItemIndex) { newIndex in
+//                        // Set selectedInventoryItem to the item at the selected index
+//                        selectedInventoryItem = inventoryManager.items[newIndex]
+//                    }
+//                    .onAppear(perform: {
+//                        if inventoryManager.items.count > 0 {
+//                            selectedInventoryItem = inventoryManager.items[0]
+//                        }
+//                    })
+//                    .popover(isPresented: $isItemDetailsPopoverPresented) {
+//                        if let selectedItem = selectedItemForDetails {
+//                                VStack(alignment: .leading) {
+//                                    Text("Name: \(selectedItem.name)")
+//                                    Text("Quantity: \(selectedItem.itemQuantity)")
+//                                    Text("Price: $\(selectedItem.itemPrice)")
+//                                    Text("Size: \(selectedItem.size)")
+//                                    Text("Date added: \(selectedItem.AdditionDate)")
+//                                    Text("Notes: \(selectedItem.itemNotes)")
+//                                }
+//                                .padding()
+//                                // Adjust styling as needed
+//                            }
+//                    }
+                    
+                  
+                }
                 else {
+
                         Picker("item", selection: $selectedInventoryItemIndex) {
-                            ForEach( filteredItems.indices, id: \.self) { index in
+                            ForEach( filteredItems.indices.sorted(by: { filteredItems[$0].name < filteredItems[$1].name }), id: \.self) { index in
                                 let item = filteredItems[index]
                                 let displayText = "\(item.name) , Q: \(item.itemQuantity), Price: $\(item.itemPrice)"
                                 
-                                Text(displayText)
-                                    .tag(index)
+                                Text(displayText).tag(index)
                             }
                         }
                         .onChange(of: selectedInventoryItemIndex) { newIndex in
                             // Set selectedInventoryItem to the item at the selected index
+                            print("---> newIndex: \(newIndex)")
                             selectedInventoryItem = filteredItems[newIndex]
                         }
                         .pickerStyle(.inline)
                         .labelsHidden()
                     }
+//                }
                 
-                TextField("Quantity", text: $DessertQuantity)
+                TextField("Quantity", text: $orderItemQuantity)
                     .keyboardType(.numberPad)
-                    .onSubmit {
-                        validateQuantity()
+//                    .onSubmit {
+//                        validateQuantity()
+//                    }
+                    .onChange(of: orderItemQuantity) { _ in
+                            validateQuantity()
                     }
-//                    .onChange(of: DessertQuantity) { _ in
-//                            validateQuantity()
-//                        }
 
-                if !isQuantityValid {
+                if !isQuantityValid && orderItemQuantity != "" {
                     Text("Please enter a valid quantity.")
                         .foregroundColor(.red)
                 }
@@ -144,12 +248,12 @@ struct AddOrderView: View {
                         // Check if there is already a dessert with the same item
                         if let existingDessertIndex = orderItems.firstIndex(where: { $0.inventoryItem.itemID == selectedInventoryItem.itemID }) {
                             // Update the quantity of the existing dessert
-                            orderItems[existingDessertIndex].quantity += Int(DessertQuantity) ?? 0
+                            orderItems[existingDessertIndex].quantity += Int(orderItemQuantity) ?? 0
                             
                             // Create a new dessert and add it to the addedDesserts so the item's quantity will be updated
                             let existDessert = OrderItem(
                                 inventoryItem: selectedInventoryItem,
-                                quantity: Int(DessertQuantity) ?? 0,
+                                quantity: Int(orderItemQuantity) ?? 0,
                                 price: selectedInventoryItem.itemPrice
                             )
                             existedOrderItems.append(existDessert)
@@ -157,23 +261,25 @@ struct AddOrderView: View {
                         else {
                             let dessert = OrderItem(
                                 inventoryItem: selectedInventoryItem,
-                                quantity: Int(DessertQuantity) ?? 0,
+                                quantity: Int(orderItemQuantity) ?? 0,
                                 price: selectedInventoryItem.itemPrice
                             )
                             
                             // Append the dessert to the order
                             orderItems.append(dessert)
                             
+                            self.selectedInventoryItem = nil
                             searchQuery = ""
-                            DessertQuantity = ""
+                            orderItemQuantity = ""
                         }
 
 //                    }
                     
                 }){
-                    Text("Add item")
+                    Text("Add item to order")
+//                        .tint(Color.accentColor)
                 }
-                .disabled(!isQuantityValid || selectedInventoryItem == nil)
+                .disabled(!isQuantityValid || selectedInventoryItem == nil || orderItemQuantity == "")
             }
             
             Section(header: Text("Added Items")){
@@ -325,8 +431,8 @@ struct AddOrderView: View {
     
     private func validateQuantity() {
         isQuantityValid =
-        Int(DessertQuantity) ?? 0 > 0 &&
-        (Int(selectedInventoryItem?.itemQuantity ?? 0) - (Int(DessertQuantity) ?? 0)) >= 0
+        Int(orderItemQuantity) ?? 0 > 0 &&
+        (Int(selectedInventoryItem?.itemQuantity ?? 0) - (Int(orderItemQuantity) ?? 0)) >= 0
         // Int(DessertQuantity) != nil &&
     }
 }

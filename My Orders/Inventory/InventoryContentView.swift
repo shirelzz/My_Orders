@@ -114,8 +114,10 @@ struct InventoryContentView: View {
                                 AddItemView(inventoryManager: inventoryManager)
                             }
                         }
-                        .padding(.top, 45)
+                        .padding(.top, 30)
                     }
+//                    .frame(height: 50)
+
                     
                     HStack{
                         
@@ -226,6 +228,7 @@ struct InventoryContentView: View {
 
 struct InventoryContentView_Previews: PreviewProvider {
     static var previews: some View {
+        
         InventoryContentView(inventoryManager: InventoryManager.shared)
     }
 }

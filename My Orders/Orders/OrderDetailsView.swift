@@ -213,10 +213,8 @@ struct OrderDetailsView: View {
         }
         .padding()
         .navigationBarTitle("Order Details")
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: Button("Back") {
-            presentationMode.wrappedValue.dismiss()
-                        },
+//        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(
                             
                         trailing: 
                                 

@@ -245,8 +245,18 @@
         }
       }
     },
-    "Add New Dessert" : {
+    "Add item to order" : {
 
+    },
+    "Add New Dessert" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add New Dessert"
+          }
+        }
+      }
     },
     "Add Order" : {
       "extractionState" : "manual",
@@ -294,6 +304,12 @@
     },
     "Address" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -455,6 +471,12 @@
     },
     "Are you sure you want to delete this order?" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete this order?"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -480,7 +502,21 @@
       }
     },
     "Back" : {
-
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "חזור"
+          }
+        }
+      }
     },
     "Bank transfer" : {
       "localizations" : {
@@ -724,10 +760,36 @@
       }
     },
     "Copy order details" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy order details"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "העתק פרטי הזמנה"
+          }
+        }
+      }
     },
     "Copy Phone Number" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy Phone Number"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "האתר מספר טלפון"
+          }
+        }
+      }
     },
     "Create new item" : {
       "localizations" : {
@@ -1019,7 +1081,20 @@
       }
     },
     "Delete Order" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Order"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מחק הזמנה"
+          }
+        }
+      }
     },
     "Delivered" : {
       "extractionState" : "manual",
@@ -1251,7 +1326,20 @@
       }
     },
     "Feedback" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feedback"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פידבק"
+          }
+        }
+      }
     },
     "Filter" : {
       "localizations" : {
@@ -1448,6 +1536,7 @@
       }
     },
     "isPaid: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2321,6 +2410,12 @@
     },
     "Please enter a valid quantity." : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please enter a valid quantity."
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2364,6 +2459,12 @@
     },
     "Price: %.2f" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Price: %.2f"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2423,6 +2524,12 @@
     },
     "Quantity is less or equal to zero." : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quantity is less or equal to zero."
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2467,6 +2574,12 @@
     },
     "Quantity: %@" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quantity: %@"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2492,7 +2605,20 @@
       }
     },
     "Rate Us  🤍" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rate Us  🤍"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "דרג.י אותנו  🤍"
+          }
+        }
+      }
     },
     "Receipt" : {
       "localizations" : {
@@ -2759,6 +2885,12 @@
     },
     "Select image" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select image"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2819,6 +2951,7 @@
       }
     },
     "Select Year" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2834,8 +2967,37 @@
         }
       }
     },
+    "Selected Year" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected Year"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שנה שנבחרה"
+          }
+        }
+      }
+    },
     "Send Suggestions" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send Suggestions"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שלח.י הצעה"
+          }
+        }
+      }
     },
     "Settings" : {
       "extractionState" : "manual",
@@ -2914,7 +3076,20 @@
       }
     },
     "Sign in With Google" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in With Google"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "היכנס.י עם Google"
+          }
+        }
+      }
     },
     "Sign Out" : {
       "localizations" : {
@@ -2977,6 +3152,12 @@
     },
     "Size: %@" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Size: %@"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3083,7 +3264,14 @@
       }
     },
     "We are so happy to see you 🥳" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "איזה כיף לראות אותך 🥳"
+          }
+        }
+      }
     },
     "Week" : {
       "localizations" : {

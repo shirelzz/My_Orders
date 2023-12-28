@@ -770,8 +770,7 @@ class OrderManager: ObservableObject {
     func getLastReceiptID() -> Int {
         
         if (receiptNumberReset == 0) {
-            // Get the most recently generated receipt by sorting receipts based on dateGenerated
-            guard let lastReceipt = receipts.sorted(by: { $0.dateGenerated > $1.dateGenerated }).first else {
+            guard let lastReceipt = receipts.max(by: { $0.myID < $1.myID }) else {
                 return 0
             }
             return lastReceipt.myID

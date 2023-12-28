@@ -46,7 +46,7 @@ class AppManager: ObservableObject {
         }
     }
     
-    private func saveManagerData() {
+    func saveManagerData() {
         if let encodedData = try? JSONEncoder().encode(manager) {
             UserDefaults.standard.set(encodedData, forKey: "manager")
             Toast.showToast(message: "Saved successfully")
@@ -55,6 +55,18 @@ class AppManager: ObservableObject {
             Toast.showToast(message: "Error while saving")
         }
     }
+    
+    func updateManager(logoImageData: Data? = nil, signatureImageData: Data? = nil) {
+            if let logoImageData = logoImageData {
+                manager.logoImgData = logoImageData
+            }
+            
+            if let signatureImageData = signatureImageData {
+                manager.signatureImgData = signatureImageData
+            }
+            
+            saveManagerData()
+        }
     
 //    func requestNotificationAuthorization() {
 //        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
@@ -69,6 +81,23 @@ class AppManager: ObservableObject {
 //    func setLanguage() {
 //        
 //    }
+    func getLogoImage() -> Image {
+            if let logoImgData = manager.logoImgData,
+               let logoImage = UIImage(data: logoImgData) {
+                return Image(uiImage: logoImage)
+            } else {
+                return Image(systemName: "photo.on.rectangle")
+            }
+        }
+
+        func getSignatureImage() -> Image {
+            if let signatureImgData = manager.signatureImgData,
+               let signatureImage = UIImage(data: signatureImgData) {
+                return Image(uiImage: signatureImage)
+            } else {
+                return Image(systemName: "photo.on.rectangle")
+            }
+        }
     
     func getLogoImage() -> Data {
         if let logoImg = manager.logoImgData {

@@ -33,7 +33,7 @@ struct ReceiptRowView: View {
                 Text("\(order.totalPrice,  specifier: "%.2f")")
 
             }
-            Text("isPaid: \(order.isPaid.description)")
+//            Text("isPaid: \(order.isPaid.description)")
 
             
 //            if order.isCompleted {
