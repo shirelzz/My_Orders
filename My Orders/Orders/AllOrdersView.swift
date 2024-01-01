@@ -12,10 +12,8 @@ struct AllOrdersView: View {
     
     @ObservedObject var orderManager: OrderManager
     @ObservedObject var inventoryManager: InventoryManager
-//    @ObservedObject var languageManager: LanguageManager
 
     @State private var showPaidOrders = true
-
     @State private var searchText = ""
     @State private var filterType: FilterType = .all
     
@@ -60,10 +58,7 @@ struct AllOrdersView: View {
                             .edgesIgnoringSafeArea(.top)
                             .opacity(0.15)
                             .frame( height: 20)
-//                            .padding(.bottom)
-                            
-//                            .frame(maxHeight: 20)
-//                            .clipped()
+
                     }
     
                         HStack {
@@ -78,22 +73,14 @@ struct AllOrdersView: View {
                                 Image(systemName: "line.horizontal.3.decrease")
                                     .resizable()
                                     .frame(width: 16, height: 16)
-//                                    .font(.system(size: 2))
-
-
-                                //                    Image("line.horizontal.3.decrease.circle")
-                                //                                Label("Filter by", systemImage: "line.horizontal.3.decrease.circle")
-                                //                                    .font(.system(size: 18))
+                                    .font(.system(size: 18))
                             }
-                            //                .padding()
                             
                             SearchBar(searchText: $searchText)
 
                             
                         }
-//                        .padding(.top, 45)
                         .padding()
-//                        .frame(height: 100)
                     
                     
                     if filteredOrders.isEmpty {
@@ -126,7 +113,6 @@ struct AllOrdersView: View {
                     
                     AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716") //"ca-app-pub-1213016211458907/1549825745"
                         .frame(height: 50)
-                    //                        .frame(width: UIScreen.main.bounds.width, height: 50)
                         .background(Color.white)
                 }
             }

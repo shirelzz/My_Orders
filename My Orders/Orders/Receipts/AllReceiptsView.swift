@@ -7,13 +7,11 @@
 
 import SwiftUI
 import GoogleMobileAds
-//import SSZipArchive
 import ZipArchive
 
 struct AllReceiptsView: View {
     
     @ObservedObject var orderManager: OrderManager
-//    @ObservedObject var languageManager: LanguageManager
 
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())
     
@@ -52,7 +50,6 @@ struct AllReceiptsView: View {
                         .buttonStyle(.borderedProminent)
                         .cornerRadius(10)
                         .pickerStyle(.menu)
-//                        .foregroundColor(.white)
                         .shadow(color: .black.opacity(0.6), radius: 6, x: 0, y: 2)
                         .padding()
 
@@ -61,7 +58,6 @@ struct AllReceiptsView: View {
                             exportReceiptsZip()
                         }
                         .buttonStyle(.borderedProminent)
-//                        .background(Color.accentColor.opacity(0.8))
                         .foregroundColor(.white)
                         .cornerRadius(10)
                         .frame(height: 20)
@@ -73,7 +69,6 @@ struct AllReceiptsView: View {
 
                     }
                     .padding(.top, 10)
-//                    .padding(.top, 45)
 
                 }
                 
@@ -83,22 +78,15 @@ struct AllReceiptsView: View {
                             NavigationLink(destination: GeneratedReceiptView(orderManager: orderManager, order: order, isPresented: .constant(false))) {
                                 ReceiptRowView(order: order, receipt: receipt)
                             }
-                        } 
-//                        else {
-//                            Text("Order not found for receipt \(receipt.orderID)")
-//                        }
+                        }
                     }
                 }
                 .listStyle(InsetGroupedListStyle())
                 
                 AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716") //"ca-app-pub-1213016211458907/1549825745"
                     .frame(height: 50)
-//                        .frame(width: UIScreen.main.bounds.width, height: 50)
                     .background(Color.white)
             }
-//            .background(Color.accentColor)
-//            .opacity(0.2)
-//            .navigationBarTitle("All Receipts")
         }
     }
     
@@ -200,18 +188,6 @@ struct AllReceiptsView: View {
     }
     
     
-}
-
-struct CustomButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .buttonBorderShape(.roundedRectangle(radius: 10))
-            .foregroundColor(.white) // Set text color
-            .padding() // Adjust padding
-            .background(Color.accentColor) // Set background color
-//            .cornerRadius(10)
-            .shadow(color: .black.opacity(0.6), radius: 6, x: 0, y: 2)
-    }
 }
 
 struct AllReceiptsView_Previews: PreviewProvider {

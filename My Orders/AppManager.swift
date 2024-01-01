@@ -29,9 +29,7 @@ class AppManager: ObservableObject {
     @Published var isUserSignedIn = false
     
     init() {
-//        self.manager = Manager()
         loadManagerData()
-//        requestNotificationAuthorization()
     }
     
     func saveManager(manager: Manager) {
@@ -68,19 +66,6 @@ class AppManager: ObservableObject {
             saveManagerData()
         }
     
-//    func requestNotificationAuthorization() {
-//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-//            if granted {
-//                print("Notification authorization granted")
-//            } else if let error = error {
-//                print("Error requesting notification authorization: \(error.localizedDescription)")
-//            }
-//        }
-//    }
-    
-//    func setLanguage() {
-//        
-//    }
     func getLogoImage() -> Image {
             if let logoImgData = manager.logoImgData,
                let logoImage = UIImage(data: logoImgData) {

@@ -116,7 +116,6 @@ struct InventoryContentView: View {
                         }
                         .padding(.top, 30)
                     }
-//                    .frame(height: 50)
 
                     
                     HStack{
@@ -133,11 +132,7 @@ struct InventoryContentView: View {
                             Image(systemName: "arrow.up.arrow.down")
                                 .resizable()
                                 .frame(width: 16, height: 16)
-//                          Label("Sort By", systemImage: "") // "line.horizontal.3.decrease.circle"
-//                              .font(.system(size: 18))
-//                            Text("Sort By")
                         }
-//                    .padding(.horizontal)
                         
                         SearchBar(searchText: $searchText)
 
@@ -191,7 +186,6 @@ struct InventoryContentView: View {
                                     action: {
                                         // Perform delete action here
                                         inventoryManager.deleteItem(item: selectedItem!)
-                                        //                                        selectedItem = nil
                                     }
                                 ),
                                 secondaryButton: .cancel(Text("Cancel"))
@@ -214,7 +208,6 @@ struct InventoryContentView: View {
             
             AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716") //"ca-app-pub-1213016211458907/1549825745"
                 .frame(height: 50)
-//                        .frame(width: UIScreen.main.bounds.width, height: 50)
                 .background(Color.white)
         }
     }

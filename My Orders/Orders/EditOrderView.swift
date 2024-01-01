@@ -124,14 +124,6 @@ struct EditOrderView: View {
                                 .foregroundColor(.red)
                         }
                         
-                        //                                TextField("Quantity", text: Binding<String>(
-                        //                                    get: { String(newDessertQuantity) },
-                        //                                    set: { if let newValue = Int($0) { newDessertQuantity = newValue } }
-                        //                                ))
-                        //                                .keyboardType(.numberPad)
-                        
-                        
-                        
                         Button("Add New Item") {
                             addDessert()
                         }
@@ -206,8 +198,6 @@ struct EditOrderView: View {
                                     }
                                     
                                     deleteOrder(order: order)
-//                                    navigateToContentView = true
-                                    print("---> deleteOrder")
 
                                     presentationMode.wrappedValue.dismiss()
                                 }
@@ -216,12 +206,6 @@ struct EditOrderView: View {
                         )
                     }
                     
-//                    NavigationLink(
-//                               destination: ContentView(),
-//                               isActive: $navigateToContentView,
-//                               label: { EmptyView() }
-//                           )
-//                           .hidden()
                 }
                 
             }
@@ -254,7 +238,6 @@ struct EditOrderView: View {
                             }
                         }
                         
-//                        dismiss(2)
                         presentationMode.wrappedValue.dismiss()
 
                     }
@@ -324,7 +307,6 @@ struct EditOrderView: View {
         // Reset the input fields and validation
         newDessertQuantity = ""
         searchQuery = ""
-        //            isQuantityValid = false
     }
     
     private func deleteOrderItems(at indices: IndexSet) {
@@ -338,19 +320,6 @@ struct EditOrderView: View {
     }
     
     private func deleteOrder(order: Order) {
-        
-//        if !order.isDelivered{
-//            
-//            for orderItem in order.orderItems {
-//                // Update the quantity of the selected inventory item
-//                if let selectedItem = inventoryManager.items.first(where: { $0.id == orderItem.inventoryItem.itemID }) {
-//                    inventoryManager.updateQuantity(item: selectedItem,
-//                                                    newQuantity: selectedItem.itemQuantity + orderItem.quantity)
-//                }
-//            }
-//            
-//        }
-        
         orderManager.removeOrder(with: order.orderID)
     }
     

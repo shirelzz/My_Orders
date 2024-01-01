@@ -35,88 +35,33 @@ struct MainView: View {
                             }
                         }
                     }
-
-//                if !hasLaunchedBefore {
-//                    WelcomeView()
-//                        .onAppear {
-//                            print("hasLaunchedBefore1: \(hasLaunchedBefore)")
-//                            hasLaunchedBefore = true
-//                            print("hasLaunchedBefore2: \(hasLaunchedBefore)")
-//                            // Check if `user` exists; otherwise, do something with `error`
-//                            GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-//                            }
-//                        }
-//                        .onOpenURL { url in
-//                            GIDSignIn.sharedInstance.handle(url)
-//                        }
-//                }
-//                else {
-//                    AppOpenAdView(adUnitID: "ca-app-pub-3940256099942544/5575463023")
-//                        .onAppear{
-//                            print("hasLaunchedBefore3: \(hasLaunchedBefore)")
-//                        }
-//                    ContentView()
-//                }
                 
             }
             else {
-//                AppOpenAdView(adUnitID: "ca-app-pub-3940256099942544/5575463023")
-//                    .onAppear{
-//                        print("hasLaunchedBefore4: \(hasLaunchedBefore)")
-//                    }
-//                ContentView()
                 
                 NavigationView {
-                                   if !hasLaunchedBefore {
-                                       WelcomeView()
-                                           .onAppear {
-                                               GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-                                               }
-                                           }
-                                           .onOpenURL { url in
-                                               GIDSignIn.sharedInstance.handle(url)
-                                           }
-                                           .navigationBarHidden(true)
-                                   } else {
-                                       ContentView()
-                                           .navigationBarHidden(true)
-                                   }
-                               }
-                               .onAppear {
-                                   if hasLaunchedBefore {
-                                       DispatchQueue.main.async {
-                                           showContentView = true
-                                       }
-                                   }
-                               }
-                
-//                if !hasLaunchedBefore {
-//                    
-//                    WelcomeView()
-//                        .onAppear {
-//                            print("hasLaunchedBefore1: \(hasLaunchedBefore)")
-//                            
-//                            // Check if `user` exists; otherwise, do something with `error`
-//                            GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-//                            }
-//                            
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//                                hasLaunchedBefore = true
-//                            }
-//                            print("hasLaunchedBefore2: \(hasLaunchedBefore)")
-//                        }
-//                        .onOpenURL { url in
-//                            GIDSignIn.sharedInstance.handle(url)
-//                        }
-//                        
-//                }
-//                else {
-//                    AppOpenAdView(adUnitID: "ca-app-pub-3940256099942544/5575463023")
-//                        .onAppear{
-//                            print("hasLaunchedBefore3: \(hasLaunchedBefore)")
-//                        }
-//                    ContentView()
-//                }
+                    if !hasLaunchedBefore {
+                        WelcomeView()
+                            .onAppear {
+                                GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+                                }
+                            }
+                            .onOpenURL { url in
+                                GIDSignIn.sharedInstance.handle(url)
+                            }
+                            .navigationBarHidden(true)
+                    } else {
+                        ContentView()
+                            .navigationBarHidden(true)
+                    }
+                }
+                .onAppear {
+                    if hasLaunchedBefore {
+                        DispatchQueue.main.async {
+                            showContentView = true
+                        }
+                    }
+                }
             }
         }
         .onReceive(Just(hasLaunchedBefore)) { _ in

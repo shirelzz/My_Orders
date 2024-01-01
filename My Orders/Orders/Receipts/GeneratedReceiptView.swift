@@ -193,61 +193,14 @@ struct GeneratedReceiptView: View {
         return dateFormatter.string(from: date)
     }
     
-//    private func generatePDF() {
-//        // Check if a receipt with the same order ID already exists
-//        if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
-//            isPresented = true
-//            return
-//        }
-//        
-//        let pdfData = drawPDF()
-//        
-//        // Specify the file URL where you want to save the PDF
-//        guard let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("receipt.pdf") else {
-//            return
-//        }
-//        
-//        // Save the PDF to the file URL
-//        do {
-//            try pdfData.write(to: fileURL)
-//            self.pdfData = pdfData
-//            
-//            // Log the file path
-//            print("PDF file saved to: \(fileURL)")
-//            
-//            let receipt = order.receipt
-//            
-//            isPresented = true
-//            
-//            if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-//                do {
-//                    let files = try FileManager.default.contentsOfDirectory(atPath: documentDirectory.path)
-//                    print("Files in document directory: \(files)")
-//                } catch {
-//                    print("Error listing files in document directory: \(error.localizedDescription)")
-//                }
-//            }
-//            
-//            showSuccessMessage = true
-//            
-//            
-//        } catch {
-//            print("Error saving PDF: \(error.localizedDescription)")
-//        }
-//    }
-    
-    
     
     private func drawPDF(receipt: Receipt) -> Data {
-        
-//        let en = LanguageManager.shared.getCurrentLanguage() == "english"
-        
+                
         // Fetch the preferred localization
         let preferredLanguage = Bundle.main.preferredLocalizations.first ?? "en"
         
         // Check the language and set your conditions accordingly
         let en = preferredLanguage == "en"
-        let he = preferredLanguage == "he"
 
         // Create a PDF context
         let pdfMetaData = [
@@ -267,10 +220,9 @@ struct GeneratedReceiptView: View {
             var currentY: CGFloat = 50
             
             var x_logo: CGFloat = 50
-            var y_logo: CGFloat = 50
+            let y_logo: CGFloat = 50
             if en {
                 x_logo = pageRect.width - 100
-//                y_logo =
             }
             
             let logoImage = UIImage(data: AppManager.shared.getLogoImage())
@@ -466,14 +418,6 @@ struct GeneratedReceiptView: View {
             // Update the Y position
             currentY += 50
             
-            
-            //            if order.delivery.cost != 0 {
-            //                let deliveryCostText = "Delivery Cost: \(order.delivery.cost)"
-            //                deliveryCostText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: contactDetailsAttributes)
-            //
-            //                currentY += 20
-            //            }
-            
             // Draw the payment details
             let paymentHeaderAttributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.boldSystemFont(ofSize: 14),
@@ -522,10 +466,9 @@ struct GeneratedReceiptView: View {
             
             // Digital or image signature
             var x_sign = pageRect.width - 150
-            var y_sign = pageRect.height - 150
+            let y_sign = pageRect.height - 150
             if en {
                 x_sign = 50
-//                y_sign =
             }
             let signatureImage = UIImage(data: AppManager.shared.getSignatureImage())
                let signatureRect = CGRect(x: x_sign, y: y_sign, width: 50, height: 50)
@@ -568,10 +511,6 @@ struct GeneratedReceiptView_Previews: PreviewProvider {
             allergies: "",
             isDelivered: false,
             isPaid: false
-            
-//            receipt: Receipt(id: UUID().uuidString, myID: 101, orderID: "1234", pdfData: Data(), dateGenerated: Date(), paymentMethod: "bit", paymentDate: Date())
-            
-
             
         )
         

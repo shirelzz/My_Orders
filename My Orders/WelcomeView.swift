@@ -19,8 +19,6 @@ struct WelcomeView: View {
     @State private var isAppleSignInSuccessful = false
 
     
-//    @ObservedObject var authService: AuthService
-    
     var body: some View {
         
         let guestWidth = UIScreen.main.bounds.width - 32
@@ -30,8 +28,6 @@ struct WelcomeView: View {
                 
                 Image("Desk2")
                     .resizable()
-//                    .presentationCornerRadius(10)
-//                    .scaledToFill()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.top)
                 
@@ -122,17 +118,6 @@ struct WelcomeView: View {
                            ContentView()
                        })
                        .padding(.bottom, 40)
-                
-//                NavigationLink(destination: ContentView()) {
-//                    Text("Continue as Guest")
-//                        .frame(minWidth: 0, maxWidth: .infinity)
-//                        .frame(width: guestWidth, height: 50)
-//                        .foregroundColor(.white)
-//                        .background(Color.accentColor.opacity(0.9))
-//                        .cornerRadius(30)
-//                        .padding(.horizontal)
-//                }
-//                .padding(.bottom, 40)
 
                 Spacer(minLength: 60)
             }

@@ -61,8 +61,8 @@ class DatabaseManager {
                 )
                 
                 let orderDate = self.convertStringToDateAndTime(orderDateStr)
-                print("order date str: \(orderDateStr)")
-                print("order date: \(orderDate)")
+//                print("order date str: \(orderDateStr)")
+//                print("order date: \(orderDate)")
 
 
                 var orderItems = [OrderItem]()

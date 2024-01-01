@@ -9,8 +9,6 @@ import SwiftUI
 import Firebase
 import FirebaseCore
 import FirebaseMessaging
-//import FirebaseDatabase
-//import FirebaseDatabaseSwift
 import UserNotifications
 import GoogleSignIn
 import UIKit
@@ -59,8 +57,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
 @main
 struct MyOrdersApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-
-//    let orderManager = OrderManager.shared
 
     var body: some Scene {
         WindowGroup {

@@ -17,7 +17,14 @@ struct AdBannerView: UIViewRepresentable {
     func makeUIView(context: Context) -> GADBannerView {
         let bannerView = GADBannerView(adSize: GADAdSizeFromCGSize(CGSize(width: 320, height: 50))) // Set your desired banner ad size
         bannerView.adUnitID = adUnitID
-        bannerView.rootViewController = UIApplication.shared.windows.first?.rootViewController
+        
+        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        let window = windowScene?.windows.first
+        if let topViewController = window?.rootViewController {
+            bannerView.rootViewController = topViewController
+        }
+        
+// old:        bannerView.rootViewController = UIApplication.shared.windows.first?.rootViewController
         bannerView.load(GADRequest())
         return bannerView
     }
@@ -33,11 +40,14 @@ struct AppOpenAdView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
         let adViewController = UIViewController()
         
+        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        let window = windowScene?.windows.first
+        
         // Load the app open ad
         GADAppOpenAd.load(
             withAdUnitID: "ca-app-pub-3940256099942544/5575463023",
             request: GADRequest(),
-            orientation: UIApplication.shared.windows.first?.windowScene?.interfaceOrientation ?? .unknown
+            orientation: window?.windowScene?.interfaceOrientation ?? .unknown
         ) { (ad, error) in
             if let error = error {
                 print("Failed to load app open ad with error: \(error.localizedDescription)")
@@ -50,9 +60,7 @@ struct AppOpenAdView: UIViewControllerRepresentable {
                 appOpenAd.fullScreenContentDelegate = context.coordinator
                 
                 do {
-                    try appOpenAd.present(fromRootViewController: adViewController)
-                } catch {
-                    print("Failed to present app open ad with error: \(error.localizedDescription)")
+                    appOpenAd.present(fromRootViewController: adViewController)
                 }
             }
         }
@@ -76,50 +84,6 @@ struct AppOpenAdView: UIViewControllerRepresentable {
     }
     
 }
-
-
-//struct RewardedAdView: UIViewControllerRepresentable {
-//    typealias UIViewControllerType = UIViewController
-//    
-//    let adUnitID: String
-//    let rewardedAd: GADRewardedAd?
-//    let onAdDismissed: () -> Void
-//    
-//    init(adUnitID: String, onAdDismissed: @escaping () -> Void) {
-//        self.adUnitID = adUnitID
-//        self.rewardedAd = GADRewardedAd(adUnitID: adUnitID)
-//        self.onAdDismissed = onAdDismissed
-//        loadRewardedAd()
-//    }
-//    
-//    private func loadRewardedAd() {
-//        rewardedAd?.load(GADRequest()) { error in
-//            if let error = error {
-//                print("Failed to load rewarded ad with error: \(error.localizedDescription)")
-//            }
-//        }
-//    }
-//    
-//    func makeUIViewController(context: Context) -> UIViewController {
-//        let adViewController = UIViewController()
-//        
-//        if let rewardedAd = rewardedAd {
-//            rewardedAd.present(fromRootViewController: adViewController) {
-//                self.onAdDismissed()
-//            }
-//        }
-//        
-//        return adViewController
-//    }
-//    
-//    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-//        // No need to implement anything here
-//    }
-//}
-
-
-import GoogleMobileAds
-import SwiftUI
 
 struct RewardedAdView: UIViewControllerRepresentable {
     typealias UIViewControllerType = UIViewController
@@ -180,3 +144,28 @@ struct RewardedAdView: UIViewControllerRepresentable {
         }
     }
 }
+
+//public extension UIApplication {
+//    func currentUIWindow() -> UIWindow? {
+//        let connectedScenes = UIApplication.shared.connectedScenes
+//            .filter { $0.activationState == .foregroundActive }
+//            .compactMap { $0 as? UIWindowScene }
+//        
+//        let window = connectedScenes.first?
+//            .windows
+//            .first { $0.isKeyWindow }
+//
+//        return window
+//        
+//    }
+//}
+
+//struct SceneConstants {
+//    
+//    func currentUIWindow() -> UIWindow? {
+//        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+//        let window = self.windowScene?.windows.first
+//        return window
+//    }
+//    
+//}

@@ -19,7 +19,7 @@ struct LaunchView: View {
         Image(imageName)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 300, height: 300)
+                .frame(width: 350, height: 350)
     }
 }
 

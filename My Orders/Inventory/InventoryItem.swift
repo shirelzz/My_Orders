@@ -97,8 +97,6 @@ class InventoryManager: ObservableObject {
             let path = "users/\(userID)/items"
 
             DatabaseManager.shared.fetchItems(path: path, completion: { fetchedItems in
-//                self.items = fetchedItems
-//                print("Success fetching items")
                 DispatchQueue.main.async {
                     self.items = fetchedItems
                     print("Success fetching items")

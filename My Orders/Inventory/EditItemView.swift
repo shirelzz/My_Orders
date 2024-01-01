@@ -49,9 +49,7 @@ struct EditItemView: View {
                         .onChange(of: quantity) { _ in
                             validateQuantity()
                         }
-//                        .onSubmit {
-//                            validateQuantity()
-//                        }
+
                     if !isQuantityValid {
                         Text("Please enter a valid quantity.")
                             .foregroundColor(.red)

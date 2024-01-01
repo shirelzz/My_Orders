@@ -17,44 +17,46 @@ struct DashboardView: View {
     
     var body: some View {
         
-            ScrollView {
+        ScrollView {
+            
+            VStack(alignment: .leading, spacing: 10) {
+                // Income Review
+                Section(header: Text("Income Review")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .padding(.leading)
+                ) {
+                    
+                    let thisWeekIncome = calculateThisWeekIncome()
+                    let numOrders = getThisWeekOrders().count
+                    
+                    VStack (alignment: .leading) {
+                        Text("This Week's Income: $\(thisWeekIncome, specifier: "%.2f")")                .padding()
+                        
+                        Text("Number of Orders This Week: \(numOrders)") //, specifier: "%.2f"
+                            .padding()
+                    }
+                    
+                }
+                .padding()
                 
-                VStack(alignment: .leading, spacing: 10) {
-                    // Income Review
-                    Section(header: Text("Income Review")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .padding(.leading)
-                    ) {
-
-                        let thisWeekIncome = calculateThisWeekIncome()
-                        let numOrders = getThisWeekOrders().count
-
-                        Text("This Week's Income: $\(thisWeekIncome, specifier: "%.2f")")                .padding(.leading)
-
-                        Text("Number of Orders This Week: \(numOrders, specifier: "%.2f")")                .padding(.leading)
-
-                    }
+                Section(header: Text("Yearly Income Graph")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .padding(.leading)
+                ) {
+                    let yearlyIncomeData = calculateYearlyIncome()
+                    BarChartView(data: ChartData(values: yearlyIncomeData),
+                                 title: "Monthly Income", legend: "Monthly",
+                                 style: Styles.barChartStyleOrangeLight,
+                                 form: ChartForm.extraLarge)
+                    .padding()
+                    .frame(width: UIScreen.main.bounds.width)
+                    .frame(maxWidth: .infinity)
                     .padding(.trailing)
-
-                    Section(header: Text("Yearly Income Graph")
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .padding(.leading)
-                    ) {
-                        let yearlyIncomeData = calculateYearlyIncome()
-                        BarChartView(data: ChartData(values: yearlyIncomeData),
-                                     title: "Monthly Income", legend: "Monthly",
-                                     style: Styles.barChartStyleOrangeLight,
-                                     form: ChartForm.extraLarge)
-                        .padding()
-                        .frame(width: UIScreen.main.bounds.width)
-                        .frame(maxWidth: .infinity)
-                    }
-                    .padding(.trailing)
-
+                    
                     Section(header: Text("Most Ordered")
-                        .font(.title)
+                        .font(.title2)
                         .fontWeight(.bold)
                         .padding(.leading)
                     ) {
@@ -85,39 +87,15 @@ struct DashboardView: View {
                 
                 AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716") //"ca-app-pub-1213016211458907/1549825745"
                     .frame(height: 50)
-        //                        .frame(width: UIScreen.main.bounds.width, height: 50)
                     .background(Color.white)
-
+                
             }
             .navigationBarTitle("Dashboard")
-        
-
-
             
-//            .background(Color.accentColor.opacity(0.2))
         }
+    }
     
     // Helper functions to calculate data
-    
-//    private func calculateMostOrderedItems() -> [(String, Int)] {
-//        let thisWeekOrders = getThisWeekOrders()
-//            
-//            // Create a dictionary to store the count of each item
-//            var itemCounts: [String: Int] = [:]
-//            
-//            // Iterate over each order and update the item count
-//            for order in thisWeekOrders {
-//                for dessert in order.desserts {
-//                    let itemName = dessert.inventoryItem.name
-//                    itemCounts[itemName, default: 0] += dessert.quantity
-//                }
-//            }
-//            
-//            // Convert the dictionary to an array of tuples and sort by order count
-//            let mostOrderedItems = itemCounts.sorted { $0.value > $1.value }
-//            
-//            return mostOrderedItems
-//    }
     
     private func calculateMostOrderedItems(period: String) -> [(String, Double)] {
         var orders: [Order]
@@ -208,6 +186,8 @@ struct DashboardView: View {
             return filteredOrders
     }
 }
+    
+    
 
 struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {

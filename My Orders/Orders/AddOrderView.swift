@@ -10,12 +10,8 @@ import Combine
 
 struct AddOrderView: View {
     
-    // to dos:
-    // 1. cant pick a quantity greater than available
-    
     @ObservedObject var orderManager: OrderManager
     @ObservedObject var inventoryManager: InventoryManager
-//    @ObservedObject var languageManager: LanguageManager
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -53,9 +49,6 @@ struct AddOrderView: View {
     @State private var selectedItemForDetails: InventoryItem?
     @State private var showItemDetails = false
     
-    @State private var focusedItem = false
-
-    
     var body: some View {
         
         Form {
@@ -71,17 +64,9 @@ struct AddOrderView: View {
             
             
             Section(header: Text("Items Selection")) {
-                
-//            VStack{
-                
-                //                TextField("Search for item", text: $searchQuery)
-                //                    .padding()
-                
-                
+    
                 HStack {
                     TextField("Search for item", text: $searchQuery)
-//                        .padding()
-                    //                    .textFieldStyle(RoundedBorderTextFieldStyle())
                         .frame(height: 40)
                         .padding(.leading)
                         .background(Color.gray.opacity(0.1))
@@ -124,129 +109,21 @@ struct AddOrderView: View {
                         .frame(width: 20, height: 20)
                         .padding(5)
 
-
-                    
                 }
-//                .padding()
-                
-                if searchQuery.isEmpty {
-                    
-//                    Picker("All items", selection: $selectedInventoryItemIndex) {
-//                        ForEach(inventoryManager.items.indices, id: \.self) { index in
-//                            let item = inventoryManager.items[index]
-//                            let displayText = "\(item.name) , Q: \(item.itemQuantity) , Price: $\(item.itemPrice)"
-//                            
-//                            Text(displayText).tag(index)
 
-//                            let width = UIScreen.main.bounds.width * 0.85
-//                            HStack {
-//
-//                                Text(displayText).tag(index)
-//                                    .contextMenu {
-//                                                    Button {
-//                                                        selectedItemForDetails = item
-//                                                        isItemDetailsPopoverPresented = true
-//                                                    } label: {
-//                                                        Text("item details")
-////                                                        Image(systemName: "info.circle")
-//                                                    }
-//                                                }
-//                                    .overlay(
-//                                                        Button {
-//                                                            selectedItemForDetails = item
-//                                                            isItemDetailsPopoverPresented = true
-//                                                        } label: {
-//                                                            Image(systemName: "info.circle")
-//                                                                .font(.system(size: 20))
-//                                                                .padding(.trailing, 8) // Adjust spacing as needed
-//                                                        }
-//                                                    )
-                                
-//                                Button {
-//                                    selectedItemForDetails = item
-//                                    isItemDetailsPopoverPresented = true
-//                                } label: {
-//                                    Image(systemName: "info.circle")
-//                                        .font(.system(size: 18))
-//                                }
-//                            }
-//                            .frame(width: width)
-
-                            
-
-//                        }
-//                        .pickerStyle(.inline)
-//                        .frame(height: 4)
-//                        .lineLimit(4)
-//                        .clipped()
-//                        .labelsHidden()
-//                    }
-//                    .onChange(of: selectedInventoryItemIndex) { newIndex in
-//                        // Set selectedInventoryItem to the item at the selected index
-//                        selectedInventoryItem = inventoryManager.items[newIndex]
-//                    }
-//                    .onAppear(perform: {
-//                        if inventoryManager.items.count > 0 {
-//                            selectedInventoryItem = inventoryManager.items[0]
-//                        }
-//                    })
-//                    .popover(isPresented: $isItemDetailsPopoverPresented) {
-//                        if let selectedItem = selectedItemForDetails {
-//                                VStack(alignment: .leading) {
-//                                    Text("Name: \(selectedItem.name)")
-//                                    Text("Quantity: \(selectedItem.itemQuantity)")
-//                                    Text("Price: $\(selectedItem.itemPrice)")
-//                                    Text("Size: \(selectedItem.size)")
-//                                    Text("Date added: \(selectedItem.AdditionDate)")
-//                                    Text("Notes: \(selectedItem.itemNotes)")
-//                                }
-//                                .padding()
-//                                // Adjust styling as needed
-//                            }
-//                    }
-                    
-                  
-                }
-                else {
-                    
-                    // Fetch the preferred localization
-                    let preferredLanguage = Bundle.main.preferredLocalizations.first ?? "en"
-                    
-                    // Check the language and set your conditions accordingly
-                    let en = preferredLanguage == "en"
-                    let he = preferredLanguage == "he"
-                    
+                if !searchQuery.isEmpty {
 
                         Picker("item", selection: $selectedInventoryItemIndex) {
                             ForEach( filteredItems.indices.sorted(by: { filteredItems[$0].name < filteredItems[$1].name }), id: \.self) { index in
                                 let item = filteredItems[index]
                                 
-//                                let  displayText = "\(item.name) , " +
-//                                "Q: " + "\(item.itemQuantity)" +
-//                                                                    ", " +
-//                                ("Price: $") + "\(item.itemPrice)"
-//                                var displayText = ""
-//                                if en {
-//                                    displayText = "\(item.name) , " +
-//                                    "Q: " + "\(item.itemQuantity)" +
-//                                    ", " +
-//                                    "Price: $" + "\(item.itemPrice)"
-//                                }
-//                                else {
-//                                    displayText = "\(item.name) , " +
-//                                                        "כמות: " + "\(item.itemQuantity)" +
-//                                                        ", " +
-//                                                        "עלות: ₪" + "\(item.itemPrice)"
-//                                }
                                 HStack{
-                                    Text("\(item.name)").font(.system(size: 14)) //.tag(index)
+                                    Text("\(item.name)").font(.system(size: 14))
                                     Text(",").font(.system(size: 14))
-                                    Text("Q: \(item.itemQuantity)").font(.system(size: 14)) //.tag(index)
+                                    Text("Q: \(item.itemQuantity)").font(.system(size: 14))
                                     Text(",").font(.system(size: 14))
-                                    Text("Price:$\(item.itemPrice, specifier: "%.2f")").font(.system(size: 14)) //.tag(index)
+                                    Text("Price:$\(item.itemPrice, specifier: "%.2f")").font(.system(size: 14))
                                 }
-                                
-//                                Text(displayText).tag(index)
                             }
                         }
                         .onChange(of: selectedInventoryItemIndex) { newIndex in
@@ -256,15 +133,10 @@ struct AddOrderView: View {
                         }
                         .pickerStyle(.wheel)
                         .labelsHidden()
-//                        .focused($focusedItem)
                     }
-//                }
                 
                 TextField("Quantity", text: $orderItemQuantity)
                     .keyboardType(.numberPad)
-//                    .onSubmit {
-//                        validateQuantity()
-//                    }
                     .onChange(of: orderItemQuantity) { _ in
                             validateQuantity()
                     }
@@ -276,7 +148,6 @@ struct AddOrderView: View {
                                 
                 Button(action: {
                     
-//                    if let selectedInventoryItem = selectedInventoryItem {
                     // Check if a valid inventory item is selected
                         guard let selectedInventoryItem = selectedInventoryItem else { return }
                         
@@ -307,12 +178,9 @@ struct AddOrderView: View {
                             searchQuery = ""
                             orderItemQuantity = ""
                         }
-
-//                    }
                     
                 }){
                     Text("Add item to order")
-//                        .tint(Color.accentColor)
                 }
                 .disabled(!isQuantityValid || selectedInventoryItem == nil || orderItemQuantity == "")
             }
@@ -449,8 +317,6 @@ struct AddOrderView: View {
                         UserDefaults.standard.set(encodedData, forKey: "orders")
                     }
                     
-                    // Clear the form or navigate to a different view as needed
-                    // For example, you can navigate back to the previous view:
                     presentationMode.wrappedValue.dismiss()
                     
                 }) {
@@ -459,9 +325,6 @@ struct AddOrderView: View {
             }
         }
         .navigationBarTitle("New Order")
-//        .onChange(of: DessertQuantity) { _ in
-//                validateQuantity()
-//        }
     }
     
     private func validateQuantity() {

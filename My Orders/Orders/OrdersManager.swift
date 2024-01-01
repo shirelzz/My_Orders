@@ -178,7 +178,6 @@ struct Order: Identifiable, Codable {
             
             "orderID": orderID,
             "customer": customer.dictionaryRepresentation(), // Convert to dictionary
-//            "orderItems": orderItems.map { $0.dictionaryRepresentation() }, // Convert each OrderItem to dictionary
             "orderDate": dateFormatter.string(from: orderDate),
              "delivery": delivery.dictionaryRepresentation(), // Convert to dictionary
              "notes": notes,
@@ -253,20 +252,9 @@ struct Receipt: Identifiable, Codable, Hashable {
     var id: String //UUID()
     var myID: Int
     var orderID: String
-//    var pdfData: Data?
     var dateGenerated: Date
     var paymentMethod: String
     var paymentDate: Date
-    
-//    init(id: String, myID: Int, orderID: String, pdfData: Data?, dateGenerated: Date, paymentMethod: String, paymentDate: Date) {
-//        self.id = id
-//        self.myID = myID
-//        self.orderID = orderID
-//        self.pdfData = pdfData
-//        self.dateGenerated = dateGenerated
-//        self.paymentMethod = paymentMethod
-//        self.paymentDate = paymentDate
-//    }
     
     // Default constructor
     init(id: String = "", myID: Int = 0, orderID: String = "",
@@ -275,7 +263,6 @@ struct Receipt: Identifiable, Codable, Hashable {
         self.id = id
         self.myID = myID
         self.orderID = orderID
-//        self.pdfData = pdfData
         self.dateGenerated = dateGenerated
         self.paymentMethod = paymentMethod
         self.paymentDate = paymentDate
@@ -286,7 +273,6 @@ struct Receipt: Identifiable, Codable, Hashable {
         guard let id = dictionary["id"] as? String,
               let myID = dictionary["myID"] as? Int,
               let orderID = dictionary["orderID"] as? String,
-//              let pdfData = dictionary["pdfData"] as? Data,
               let dateGenerated = dictionary["dateGenerated"] as? Date,
               let paymentMethod = dictionary["paymentMethod"] as? String,
               let paymentDate = dictionary["paymentDate"] as? Date
@@ -297,7 +283,6 @@ struct Receipt: Identifiable, Codable, Hashable {
         self.id = id
         self.myID = myID
         self.orderID = orderID
-//        self.pdfData = Data() // TO DO
         self.dateGenerated = dateGenerated
         self.paymentMethod = paymentMethod
         self.paymentDate = paymentDate
@@ -312,7 +297,6 @@ struct Receipt: Identifiable, Codable, Hashable {
             "id": id, // new
             "myID": myID,
             "orderID": orderID,
-//            "receiptPdfData": pdfData ?? Data(),
             "dateGenerated": dateFormatter.string(from: dateGenerated),
             "paymentMethod": paymentMethod,
             "paymentDate": dateFormatter.string(from: paymentDate)
@@ -327,8 +311,7 @@ class OrderManager: ObservableObject {
     
     static var shared = OrderManager()
     @Published var orders: [Order] = []
-    @Published var receipts: [Receipt] = [] // Set<Receipt> = Set()
-//    private var generatedReceiptIDs: Set<String> = Set()
+    @Published var receipts: [Receipt] = []
     private var receiptNumber = 0
     private var receiptNumberReset = 0 // 0 = false, 1 = true
     private var isUserSignedIn = Auth.auth().currentUser != nil
@@ -354,8 +337,7 @@ class OrderManager: ObservableObject {
             let path = "users/\(userID)/orders"
 
             DatabaseManager.shared.fetchOrders(path: path, completion: { fetchedOrders in
-//                self.orders = fetchedOrders
-//                print("Success fetching orders")
+
                 DispatchQueue.main.async {
                     self.orders = fetchedOrders
                     print("Success fetching orders")
@@ -373,8 +355,6 @@ class OrderManager: ObservableObject {
             let path = "users/\(userID)/receipts"
 
             DatabaseManager.shared.fetchReceipts(path: path, completion: { fetchedReceipts in
-//                self.receipts = Set(fetchedReceipts)
-//                print("Success fetching receipts")
                 DispatchQueue.main.async {
                     self.receipts = fetchedReceipts // Set(fetchedReceipts)
                     print("Success fetching receipts")
@@ -414,84 +394,7 @@ class OrderManager: ObservableObject {
             DatabaseManager.shared.deleteReceipt(orderID: orderID, path: path) // orderId?
         }
     }
-    
-//    func saveGeneratedReceiptIDs(_ generatedReceiptIDs: Set<String>) {
-//        if isUserSignedIn {
-//            if let currentUser = Auth.auth().currentUser {
-//                let userID = currentUser.uid
-//                let path = "users/\(userID)/generatedReceiptIDs"
-//
-//                DatabaseManager.shared.saveGeneratedReceiptIDs(generatedReceiptIDs, path: path)
-//            }
-//        } else {
-//            // Handle the case where the user is not signed in
-//        }
-//    }
-//
-//    func fetchGeneratedReceiptIDs() {
-//        if isUserSignedIn {
-//            if let currentUser = Auth.auth().currentUser {
-//                let userID = currentUser.uid
-//                let path = "users/\(userID)/generatedReceiptIDs"
-//
-//                DatabaseManager.shared.fetchGeneratedReceiptIDs(path: path) { [weak self] fetchedGeneratedReceiptIDs in
-//                    self?.generatedReceiptIDs = fetchedGeneratedReceiptIDs
-//                }
-//            }
-//        } else {
-//            // Handle the case where the user is not signed in
-//        }
-//    }
-//
-//    func deleteGeneratedReceiptIDs() {
-//        if isUserSignedIn {
-//            if let currentUser = Auth.auth().currentUser {
-//                let userID = currentUser.uid
-//                let path = "users/\(userID)/generatedReceiptIDs"
-//
-//                DatabaseManager.shared.deleteGeneratedReceiptIDs(path: path)
-//            }
-//        } else {
-//            // Handle the case where the user is not signed in
-//        }
-//    }
 
-    
-    //    // Save orders to Firebase
-    //    private func saveOrders2Firebase() {
-    //        let ordersRef = Database.database().reference().child("orders")
-    //
-    //        do {
-    //            let encodedData = try JSONEncoder().encode(orders)
-    //            let orderArray = try JSONSerialization.jsonObject(with: encodedData) as! [[String: Any]]
-    //
-    //            ordersRef.setValue(orderArray)
-    //            print("Success saving orders to Firebase!")
-    //        } catch {
-    //            print("Error encoding or saving orders to Firebase: \(error)")
-    //        }
-    //    }
-
-        
-    //    // Retrieve orders from Firebase
-    //    private func fetchOrdersFromFirebase() {
-    //        let ordersRef = Database.database().reference().child("orders")
-    //
-    //        ordersRef.observeSingleEvent(of: .value) { snapshot in
-    //            guard let orderArray = snapshot.value as? [[String: Any]] else {
-    //                print("Invalid data format from Firebase")
-    //                return
-    //            }
-    //
-    //            do {
-    //                let decodedOrders = try JSONDecoder().decode([Order].self, from: JSONSerialization.data(withJSONObject: orderArray))
-    //                self.orders = decodedOrders
-    //                print("Success fetching orders from Firebase!")
-    //            } catch {
-    //                print("Error decoding or updating orders from Firebase: \(error)")
-    //            }
-    //        }
-    //    }
     
     // MARK: - For guest users (User Defaults)
     

@@ -7,25 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D6153ABF2B379C820033DE9E /* ManageDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6153ABE2B379C820033DE9E /* ManageDataView.swift */; };
 		D64DD7502B1B8C910066BB7E /* Whatsapp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DD74F2B1B8C910066BB7E /* Whatsapp.swift */; };
-		D64DD7522B1BB2D90066BB7E /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DD7512B1BB2D90066BB7E /* MenuView.swift */; };
-		D64DD7542B1BD7CF0066BB7E /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DD7532B1BD7CF0066BB7E /* SideMenu.swift */; };
-		D64DD7562B1BD9D20066BB7E /* NewContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DD7552B1BD9D20066BB7E /* NewContentView.swift */; };
-		D64DD7592B2270B20066BB7E /* ReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DD7582B2270B20066BB7E /* ReviewView.swift */; };
 		D64DD75B2B2273470066BB7E /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DD75A2B2273470066BB7E /* DashboardView.swift */; };
 		D64DD75E2B22743D0066BB7E /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = D64DD75D2B22743D0066BB7E /* SwiftUICharts */; };
 		D66262192B3996D80003608B /* AdsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66262182B3996D80003608B /* AdsViews.swift */; };
 		D662621B2B3A30FE0003608B /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D662621A2B3A30FE0003608B /* FeedbackView.swift */; };
 		D662621D2B3A31270003608B /* MailComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D662621C2B3A31270003608B /* MailComposeView.swift */; };
-		D662621F2B3B624A0003608B /* RewardAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = D662621E2B3B624A0003608B /* RewardAd.swift */; };
-		D66262212B3B63760003608B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66262202B3B63760003608B /* ViewController.swift */; };
 		D6674D012ACB9544003DE4BB /* ReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6674D002ACB9544003DE4BB /* ReceiptView.swift */; };
 		D6674D032ACB9B75003DE4BB /* SharePDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6674D022ACB9B75003DE4BB /* SharePDFView.swift */; };
 		D6674D052ACBA1B4003DE4BB /* AllReceiptsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6674D042ACBA1B4003DE4BB /* AllReceiptsView.swift */; };
 		D6674D072ACBA629003DE4BB /* ReceiptRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6674D062ACBA629003DE4BB /* ReceiptRowView.swift */; };
-		D6674D092ACBB27D003DE4BB /* SignatureCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6674D082ACBB27D003DE4BB /* SignatureCaptureView.swift */; };
-		D6674D0B2ACBB2B0003DE4BB /* SignaturePadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6674D0A2ACBB2B0003DE4BB /* SignaturePadView.swift */; };
 		D66A36DF2B26275C00A921CF /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A36DE2B26275C00A921CF /* WelcomeView.swift */; };
 		D66A36E22B2636A800A921CF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = D66A36E12B2636A800A921CF /* GoogleSignIn */; };
 		D66A36E42B2636A800A921CF /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D66A36E32B2636A800A921CF /* GoogleSignInSwift */; };
@@ -48,22 +39,18 @@
 		D6AF62C42B126DCA0056C973 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62C32B126DCA0056C973 /* Toast.swift */; };
 		D6AF62D02B12BCB90056C973 /* InventoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62CF2B12BCB90056C973 /* InventoryItem.swift */; };
 		D6AF62D42B12BDAB0056C973 /* InventoryContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62D32B12BDAB0056C973 /* InventoryContentView.swift */; };
-		D6AF62D62B12C1E20056C973 /* AllInventoryItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62D52B12C1E20056C973 /* AllInventoryItemsView.swift */; };
 		D6AF62D82B12C2990056C973 /* AddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62D72B12C2990056C973 /* AddItemView.swift */; };
 		D6AF62DA2B12E9710056C973 /* EditItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62D92B12E9710056C973 /* EditItemView.swift */; };
 		D6AF62E02B1363000056C973 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62DF2B1363000056C973 /* SettingsView.swift */; };
 		D6AF62E22B136A4F0056C973 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62E12B136A4F0056C973 /* AccountView.swift */; };
-		D6AF62E42B13724A0056C973 /* SignatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62E32B13724A0056C973 /* SignatureView.swift */; };
 		D6AF62E82B1392FD0056C973 /* CustomizedDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62E72B1392FD0056C973 /* CustomizedDataView.swift */; };
 		D6AF62EA2B1395B10056C973 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62E92B1395B10056C973 /* ImagePicker.swift */; };
 		D6AF62EC2B13A7D20056C973 /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62EB2B13A7D20056C973 /* AppManager.swift */; };
 		D6AF62F02B13FCB10056C973 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62EF2B13FCB10056C973 /* LaunchView.swift */; };
 		D6AF62F22B14059C0056C973 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F12B14059C0056C973 /* MainView.swift */; };
 		D6AF62F42B14A99B0056C973 /* GeneratedReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F32B14A99B0056C973 /* GeneratedReceiptView.swift */; };
-		D6AF62F62B1516B40056C973 /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F52B1516B40056C973 /* NotificationsView.swift */; };
 		D6AF62F82B151CE80056C973 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F72B151CE80056C973 /* NotificationSettingsView.swift */; };
 		D6AF62FA2B1752140056C973 /* ReceiptSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F92B1752130056C973 /* ReceiptSettingsView.swift */; };
-		D6AF62FC2B18CDC70056C973 /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62FB2B18CDC70056C973 /* LanguageManager.swift */; };
 		D6AF630A2B1972620056C973 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D6AF63092B1972620056C973 /* Localizable.xcstrings */; };
 		D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */; };
 		D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3322AC593F8002ECA81 /* ContentView.swift */; };
@@ -101,24 +88,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D6153ABE2B379C820033DE9E /* ManageDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageDataView.swift; sourceTree = "<group>"; };
 		D64DD74F2B1B8C910066BB7E /* Whatsapp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Whatsapp.swift; sourceTree = "<group>"; };
-		D64DD7512B1BB2D90066BB7E /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
-		D64DD7532B1BD7CF0066BB7E /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
-		D64DD7552B1BD9D20066BB7E /* NewContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewContentView.swift; sourceTree = "<group>"; };
-		D64DD7582B2270B20066BB7E /* ReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewView.swift; sourceTree = "<group>"; };
 		D64DD75A2B2273470066BB7E /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		D66262182B3996D80003608B /* AdsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsViews.swift; sourceTree = "<group>"; };
 		D662621A2B3A30FE0003608B /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		D662621C2B3A31270003608B /* MailComposeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposeView.swift; sourceTree = "<group>"; };
-		D662621E2B3B624A0003608B /* RewardAd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAd.swift; sourceTree = "<group>"; };
-		D66262202B3B63760003608B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D6674D002ACB9544003DE4BB /* ReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptView.swift; sourceTree = "<group>"; };
 		D6674D022ACB9B75003DE4BB /* SharePDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePDFView.swift; sourceTree = "<group>"; };
 		D6674D042ACBA1B4003DE4BB /* AllReceiptsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllReceiptsView.swift; sourceTree = "<group>"; };
 		D6674D062ACBA629003DE4BB /* ReceiptRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptRowView.swift; sourceTree = "<group>"; };
-		D6674D082ACBB27D003DE4BB /* SignatureCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SignatureCaptureView.swift; path = ../Orders/SignatureCaptureView.swift; sourceTree = "<group>"; };
-		D6674D0A2ACBB2B0003DE4BB /* SignaturePadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SignaturePadView.swift; path = ../Orders/SignaturePadView.swift; sourceTree = "<group>"; };
 		D66A36DE2B26275C00A921CF /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		D66A36E62B26F0DE00A921CF /* My-Orders-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "My-Orders-Info.plist"; sourceTree = SOURCE_ROOT; };
 		D66A37082B28801200A921CF /* FirebAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FirebAuth.swift; path = ../../FirebAuth.swift; sourceTree = "<group>"; };
@@ -134,22 +112,18 @@
 		D6AF62C32B126DCA0056C973 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Toast.swift; path = "My Orders/Utils/Toast.swift"; sourceTree = SOURCE_ROOT; };
 		D6AF62CF2B12BCB90056C973 /* InventoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryItem.swift; sourceTree = "<group>"; };
 		D6AF62D32B12BDAB0056C973 /* InventoryContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryContentView.swift; sourceTree = "<group>"; };
-		D6AF62D52B12C1E20056C973 /* AllInventoryItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllInventoryItemsView.swift; sourceTree = "<group>"; };
 		D6AF62D72B12C2990056C973 /* AddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemView.swift; sourceTree = "<group>"; };
 		D6AF62D92B12E9710056C973 /* EditItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemView.swift; sourceTree = "<group>"; };
 		D6AF62DF2B1363000056C973 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D6AF62E12B136A4F0056C973 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
-		D6AF62E32B13724A0056C973 /* SignatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureView.swift; sourceTree = "<group>"; };
 		D6AF62E72B1392FD0056C973 /* CustomizedDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizedDataView.swift; sourceTree = "<group>"; };
-		D6AF62E92B1395B10056C973 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		D6AF62E92B1395B10056C973 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImagePicker.swift; path = ../Settings/ImagePicker.swift; sourceTree = "<group>"; };
 		D6AF62EB2B13A7D20056C973 /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
 		D6AF62EF2B13FCB10056C973 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		D6AF62F12B14059C0056C973 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		D6AF62F32B14A99B0056C973 /* GeneratedReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratedReceiptView.swift; sourceTree = "<group>"; };
-		D6AF62F52B1516B40056C973 /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
 		D6AF62F72B151CE80056C973 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 		D6AF62F92B1752130056C973 /* ReceiptSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptSettingsView.swift; sourceTree = "<group>"; };
-		D6AF62FB2B18CDC70056C973 /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
 		D6AF63092B1972620056C973 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		D6F6A32D2AC593F8002ECA81 /* My Orders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Orders.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersApp.swift; sourceTree = "<group>"; };
@@ -209,7 +183,6 @@
 		D64DD7572B2270920066BB7E /* Review */ = {
 			isa = PBXGroup;
 			children = (
-				D64DD7582B2270B20066BB7E /* ReviewView.swift */,
 				D64DD75A2B2273470066BB7E /* DashboardView.swift */,
 			);
 			path = Review;
@@ -233,7 +206,6 @@
 			isa = PBXGroup;
 			children = (
 				D66262182B3996D80003608B /* AdsViews.swift */,
-				D662621E2B3B624A0003608B /* RewardAd.swift */,
 			);
 			path = Ads;
 			sourceTree = "<group>";
@@ -243,7 +215,6 @@
 			children = (
 				D6AF62CF2B12BCB90056C973 /* InventoryItem.swift */,
 				D6AF62D32B12BDAB0056C973 /* InventoryContentView.swift */,
-				D6AF62D52B12C1E20056C973 /* AllInventoryItemsView.swift */,
 				D6AF62D72B12C2990056C973 /* AddItemView.swift */,
 				D6AF62D92B12E9710056C973 /* EditItemView.swift */,
 				D66A371B2B29096700A921CF /* ItemDetailsView.swift */,
@@ -256,7 +227,6 @@
 			children = (
 				D6F8CA632B2F54CF0031A7A2 /* Receipts */,
 				D6F6A35A2AC59961002ECA81 /* OrdersManager.swift */,
-				D64DD7512B1BB2D90066BB7E /* MenuView.swift */,
 				D6F6A3322AC593F8002ECA81 /* ContentView.swift */,
 				D6F6A3622AC59FCE002ECA81 /* AddOrderView.swift */,
 				D66A371D2B290F4700A921CF /* EditOrderView.swift */,
@@ -270,8 +240,7 @@
 		D6AF62DD2B12F6220056C973 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				D6674D082ACBB27D003DE4BB /* SignatureCaptureView.swift */,
-				D6674D0A2ACBB2B0003DE4BB /* SignaturePadView.swift */,
+				D6AF62E92B1395B10056C973 /* ImagePicker.swift */,
 				D66A37172B28EF9D00A921CF /* Ads */,
 				D66A36ED2B26F85900A921CF /* SignIn */,
 				D6AF62C32B126DCA0056C973 /* Toast.swift */,
@@ -289,13 +258,9 @@
 			children = (
 				D6AF62DF2B1363000056C973 /* SettingsView.swift */,
 				D6AF62E12B136A4F0056C973 /* AccountView.swift */,
-				D6AF62E32B13724A0056C973 /* SignatureView.swift */,
 				D6AF62E72B1392FD0056C973 /* CustomizedDataView.swift */,
-				D6AF62E92B1395B10056C973 /* ImagePicker.swift */,
-				D6AF62F52B1516B40056C973 /* NotificationsView.swift */,
 				D6AF62F72B151CE80056C973 /* NotificationSettingsView.swift */,
 				D6AF62F92B1752130056C973 /* ReceiptSettingsView.swift */,
-				D6153ABE2B379C820033DE9E /* ManageDataView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -324,11 +289,8 @@
 				D6F8CA742B32C62F0031A7A2 /* GoogleService-Info.plist */,
 				D6F8CA6A2B31B94A0031A7A2 /* Database */,
 				D66A36E62B26F0DE00A921CF /* My-Orders-Info.plist */,
-				D64DD7532B1BD7CF0066BB7E /* SideMenu.swift */,
-				D64DD7552B1BD9D20066BB7E /* NewContentView.swift */,
 				D66A36DE2B26275C00A921CF /* WelcomeView.swift */,
 				D6AF62F12B14059C0056C973 /* MainView.swift */,
-				D6AF62FB2B18CDC70056C973 /* LanguageManager.swift */,
 				D6AF62EB2B13A7D20056C973 /* AppManager.swift */,
 				D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */,
 				D6AF62EF2B13FCB10056C973 /* LaunchView.swift */,
@@ -340,7 +302,6 @@
 				D6F6A3342AC593FA002ECA81 /* Assets.xcassets */,
 				D6F6A3362AC593FA002ECA81 /* Preview Content */,
 				D6AF63092B1972620056C973 /* Localizable.xcstrings */,
-				D66262202B3B63760003608B /* ViewController.swift */,
 			);
 			path = "My Orders";
 			sourceTree = "<group>";
@@ -529,33 +490,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				D66A371E2B290F4700A921CF /* EditOrderView.swift in Sources */,
-				D64DD7592B2270B20066BB7E /* ReviewView.swift in Sources */,
 				D6F8CA652B2F55050031A7A2 /* ReceiptsUtils.swift in Sources */,
 				D6AF62D02B12BCB90056C973 /* InventoryItem.swift in Sources */,
 				D66A37092B28801200A921CF /* FirebAuth.swift in Sources */,
 				D64DD7502B1B8C910066BB7E /* Whatsapp.swift in Sources */,
-				D662621F2B3B624A0003608B /* RewardAd.swift in Sources */,
 				D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */,
 				D6AF62D42B12BDAB0056C973 /* InventoryContentView.swift in Sources */,
 				D6F8CA772B32DBBC0031A7A2 /* ToDoList.swift in Sources */,
 				D6AF62EA2B1395B10056C973 /* ImagePicker.swift in Sources */,
-				D64DD7522B1BB2D90066BB7E /* MenuView.swift in Sources */,
 				D66A370B2B28803300A921CF /* +View.swift in Sources */,
 				D6AF62C42B126DCA0056C973 /* Toast.swift in Sources */,
 				D6F6A35B2AC59961002ECA81 /* OrdersManager.swift in Sources */,
 				D6AF62EC2B13A7D20056C973 /* AppManager.swift in Sources */,
-				D6AF62F62B1516B40056C973 /* NotificationsView.swift in Sources */,
 				D66A37132B28A79F00A921CF /* AppleButtonLogic.swift in Sources */,
 				D64DD75B2B2273470066BB7E /* DashboardView.swift in Sources */,
 				D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */,
-				D66262212B3B63760003608B /* ViewController.swift in Sources */,
 				D66A36DF2B26275C00A921CF /* WelcomeView.swift in Sources */,
 				D6AF62F82B151CE80056C973 /* NotificationSettingsView.swift in Sources */,
 				D6F6A3632AC59FCE002ECA81 /* AddOrderView.swift in Sources */,
 				D6F6A3612AC59FB6002ECA81 /* OrderRowView.swift in Sources */,
 				D6AF62E22B136A4F0056C973 /* AccountView.swift in Sources */,
-				D64DD7542B1BD7CF0066BB7E /* SideMenu.swift in Sources */,
-				D6674D0B2ACBB2B0003DE4BB /* SignaturePadView.swift in Sources */,
 				D6F8CA732B31C40E0031A7A2 /* DatabaseManager.swift in Sources */,
 				D6F6A35F2AC59CEF002ECA81 /* OrderDetailsView.swift in Sources */,
 				D6AF62F22B14059C0056C973 /* MainView.swift in Sources */,
@@ -564,25 +518,19 @@
 				D662621B2B3A30FE0003608B /* FeedbackView.swift in Sources */,
 				D66262192B3996D80003608B /* AdsViews.swift in Sources */,
 				D66A371C2B29096700A921CF /* ItemDetailsView.swift in Sources */,
-				D6AF62D62B12C1E20056C973 /* AllInventoryItemsView.swift in Sources */,
 				D6AF62FA2B1752140056C973 /* ReceiptSettingsView.swift in Sources */,
 				D6674D052ACBA1B4003DE4BB /* AllReceiptsView.swift in Sources */,
 				D6674D072ACBA629003DE4BB /* ReceiptRowView.swift in Sources */,
 				D6674D012ACB9544003DE4BB /* ReceiptView.swift in Sources */,
 				D6AF62DA2B12E9710056C973 /* EditItemView.swift in Sources */,
-				D6674D092ACBB27D003DE4BB /* SignatureCaptureView.swift in Sources */,
 				D68867E02ACA247A00BCE734 /* SearchBar.swift in Sources */,
-				D6153ABF2B379C820033DE9E /* ManageDataView.swift in Sources */,
-				D6AF62E42B13724A0056C973 /* SignatureView.swift in Sources */,
 				D662621D2B3A31270003608B /* MailComposeView.swift in Sources */,
-				D6AF62FC2B18CDC70056C973 /* LanguageManager.swift in Sources */,
 				D66A370F2B289B3500A921CF /* SignInView.swift in Sources */,
 				D6AF62D82B12C2990056C973 /* AddItemView.swift in Sources */,
 				D6674D032ACB9B75003DE4BB /* SharePDFView.swift in Sources */,
 				D6AF62E82B1392FD0056C973 /* CustomizedDataView.swift in Sources */,
 				D6F6A3652AC5B058002ECA81 /* AllOrdersView.swift in Sources */,
 				D66A370D2B2880BF00A921CF /* GoogleSiginBtn.swift in Sources */,
-				D64DD7562B1BD9D20066BB7E /* NewContentView.swift in Sources */,
 				D66A37112B28A5F000A921CF /* AppleButtonView.swift in Sources */,
 				D6AF62E02B1363000056C973 /* SettingsView.swift in Sources */,
 				D66A37152B28ABD200A921CF /* AuthService.swift in Sources */,

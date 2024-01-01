@@ -10,14 +10,12 @@ import GoogleMobileAds
 import FirebaseAuth
 
 struct ContentView: View {
-    //    @StateObject private var languageManager = LanguageManager.shared
     @StateObject private var appManager = AppManager.shared
     @StateObject private var orderManager = OrderManager.shared
     @StateObject private var inventoryManager = InventoryManager.shared
     
     @State private var selectedOrder: Order = Order()
     @State private var showDeleteAlert = false
-    
     @State private var showAllOrders = false
     @State private var showAllReceipts = false
     @State private var isAddOrderViewPresented = false
@@ -25,24 +23,10 @@ struct ContentView: View {
     @State private var showSideMenu = false
     @State private var isEditOrderViewPresented = false
     @State private var isUserSignedIn = Auth.auth().currentUser != nil
-    
     @State private var showEditOrderView = false
 
         
-    init() {
-        AppManager.shared.loadManagerData()
-
-//        if isUserSignedIn {
-//            OrderManager.shared .fetchOrders()
-//            OrderManager.shared.fetchReceipts()
-//            InventoryManager.shared.fetchItemsFromDB()
-//        }
-//        else {
-//            OrderManager.shared.loadOrders()
-//            OrderManager.shared.loadReceipts()
-//            InventoryManager.shared.loadItemsFromUD()
-//        }
-    }
+    init() {}
     
     
     var body: some View {
@@ -51,33 +35,10 @@ struct ContentView: View {
             
             ZStack(alignment: .topTrailing) {
                 
-//                // Side Menu
-//                SideMenuView(isSideMenuOpen: $isSideMenuOpen)
-//                    .frame(width: UIScreen.main.bounds.width,
-//                           alignment: .leading)
-//                    .offset(x: isSideMenuOpen ? 0 : -UIScreen.main.bounds.width)
-//                    .animation(Animation.easeInOut.speed(2), value: showSideMenu)
-//                    .contentShape(Rectangle()) // Enable tap gesture on entire content area
-//                    .onTapGesture {
-//                    if isSideMenuOpen {
-//                            withAnimation {
-//                                isSideMenuOpen = false
-//                            }
-//                    }
-//                }
-        
+                AppOpenAdView(adUnitID: "ca-app-pub-3940256099942544/5575463023")
                                 
                 VStack (alignment: .leading, spacing: 10) {
                     
-//                    Button(action: {
-//                        withAnimation {
-//                            isSideMenuOpen.toggle()
-//                        }
-//                    }) {
-//                        Image(systemName: "line.horizontal.3")
-//                            .padding()
-//                            .foregroundColor(.black)
-//                    }
                     VStack{
                         
                         Image("Desk2")
@@ -107,7 +68,6 @@ struct ContentView: View {
                                     .padding()
                                     .shadow(color: .black.opacity(0.6), radius: 6, x: 0, y: 2)
 
-//                                    .shadow(radius: 2)
                             }
                             .sheet(isPresented: $isAddOrderViewPresented) {
                                 AddOrderView(
@@ -155,9 +115,7 @@ struct ContentView: View {
                                         }
                                         .tint(.gray.opacity(0.4))
                                     }
-                                //
                             }
-                            //                            .listRowBackground(Color.orange.opacity(0.2))
                         }
                         .listStyle(.plain)
                         .alert(isPresented: $showDeleteAlert) {
@@ -165,21 +123,15 @@ struct ContentView: View {
                                 title: Text("Delete Order"),
                                 message: Text("Are you sure you want to delete this order?"),
                                 primaryButton: .default(Text("Delete")) {
-                                    print("delete pressed 1")
                                     if selectedOrder.orderID != ""{
-                                        print("delete pressed 2")
                                         
                                         if !selectedOrder.isDelivered && !selectedOrder.orderItems.isEmpty{
-                                            print("---> entered 1st if")
 
                                             for orderItem in selectedOrder.orderItems {
                                                 // Update the quantity of the selected inventory item
-                                                print("---> Updating quantity for order item: \(orderItem.inventoryItem.name)")
-
                                                 if let selectedItem = inventoryManager.items.first(where: { $0.id == orderItem.inventoryItem.itemID }) {
                                                     inventoryManager.updateQuantity(item: selectedItem,
                                                                                     newQuantity: selectedItem.itemQuantity + orderItem.quantity)
-                                                    print("---> update 1")
 
                                                 }
                                             }
@@ -202,7 +154,6 @@ struct ContentView: View {
                     
                     AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716") //"ca-app-pub-1213016211458907/1549825745"
                         .frame(height: 50)
-//                        .frame(width: UIScreen.main.bounds.width, height: 50)
                         .background(Color.white)
                 }
             }
@@ -224,10 +175,7 @@ struct ContentView: View {
                             NavigationLink(destination: AllOrdersView(orderManager: orderManager, inventoryManager: inventoryManager)) {
                                     if #available(iOS 17.0, *) {
                                         Label("All orders", systemImage: "rectangle.stack")
-//                                        .symbolEffect(.variableColor.iterative, value: true)
-//                                            .symbolEffect(.variableColor.cumulative, value: true)
                                             .symbolEffect(.bounce, value: 1)
-
 
                                     } else {
                                         Label("All orders", systemImage: "rectangle.stack")
@@ -242,8 +190,7 @@ struct ContentView: View {
                         }
                         
                         HStack {
-                            NavigationLink( destination:
-                                                InventoryContentView(inventoryManager: inventoryManager)) {
+                            NavigationLink( destination: InventoryContentView(inventoryManager: inventoryManager)) {
                                 Label("Inventory", systemImage: "cube")
                             }
                         }
@@ -253,7 +200,6 @@ struct ContentView: View {
                                 Label("Settings", systemImage: "gear")
                             }
                         }
-                        
                         
                     } label: {
                         Image(systemName: "line.horizontal.3")
@@ -273,25 +219,8 @@ struct ContentView: View {
     }
 }
 
-// UIViewRepresentable wrapper for AdMob banner view
-//struct AdBannerView: UIViewRepresentable {
-//    let adUnitID: String
-//
-//    func makeUIView(context: Context) -> GADBannerView {
-//        let bannerView = GADBannerView(adSize: GADAdSizeFromCGSize(CGSize(width: 320, height: 50))) // Set your desired banner ad size
-//        bannerView.adUnitID = adUnitID
-//        bannerView.rootViewController = UIApplication.shared.windows.first?.rootViewController
-//        bannerView.load(GADRequest())
-//        return bannerView
-//    }
-//    
-//    func updateUIView(_ uiView: GADBannerView, context: Context) {}
-//}
-
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
 }
-

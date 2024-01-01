@@ -182,33 +182,31 @@ struct OrderDetailsView: View {
 
                 Toggle("Delivered", isOn: $order.isDelivered).padding(.leading)
                     .onChange(of: order.isDelivered) { newValue in
-//                        if !flag{
-                            OrderManager.shared.updateOrderStatus(orderID: order.id, isDelivered: newValue)
-//                        }
+                        OrderManager.shared.updateOrderStatus(orderID: order.id, isDelivered: newValue)
                     }
                     .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
 
                 
                 if order.isPaid {
                     Button("Show Receipt Preview") {
-                                            if orderManager.receiptExists(forOrderID: order.orderID){
-                                                showGeneratedReceiptPreview = true
-                                            }
-                                            else {
-                                                showReceiptPreview = true
-                                            }
-                                        }
-                                        .sheet(isPresented: $showReceiptPreview) {
-                                            NavigationView {
-                                                ReceiptView(orderManager: orderManager, order: order, isPresented: $showReceiptPreview)
-                                            }
-                                        }
-                                        .sheet(isPresented: $showGeneratedReceiptPreview) {
-                                            NavigationView {
-                                                GeneratedReceiptView(orderManager: orderManager, order: order, isPresented: $showGeneratedReceiptPreview)
-                                            }
-                                        }
-                                        .padding(.leading)
+                        if orderManager.receiptExists(forOrderID: order.orderID){
+                            showGeneratedReceiptPreview = true
+                        }
+                        else {
+                            showReceiptPreview = true
+                        }
+                    }
+                    .sheet(isPresented: $showReceiptPreview) {
+                        NavigationView {
+                            ReceiptView(orderManager: orderManager, order: order, isPresented: $showReceiptPreview)
+                        }
+                    }
+                    .sheet(isPresented: $showGeneratedReceiptPreview) {
+                        NavigationView {
+                            GeneratedReceiptView(orderManager: orderManager, order: order, isPresented: $showGeneratedReceiptPreview)
+                        }
+                    }
+                    .padding(.leading)
                 }
             }
             
@@ -238,7 +236,6 @@ struct OrderDetailsView: View {
         }
         .padding()
         .navigationBarTitle("Order Details")
-//        .navigationBarBackButtonHidden(true)
         .navigationBarItems(
                             
                         trailing: 
@@ -252,14 +249,7 @@ struct OrderDetailsView: View {
                     .sheet(isPresented: $isEditing) {
                         EditOrderView(orderManager: orderManager, inventoryManager: inventoryManager, order: $order, editedOrder: order)
                         
-
-//                            .presentation(isModal ? .modal : .push)
-
-                        // ^ Create a new view for editing and pass the order binding
                     }
-//        .sheet(isPresented: $showReceipt) {
-//            ReceiptView(order: order, isPresented: $showReceipt) // Present receipt view when the state variable is true
-//        }
     }
 }
     
@@ -291,7 +281,6 @@ struct OrderDetailsView_Previews: PreviewProvider {
                 allergies: "",
                 isDelivered: false,
                 isPaid: false
-//                receipt: nil
             )
             
         OrderDetailsView(orderManager: OrderManager.shared, inventoryManager: InventoryManager.shared, order: sampleOrder)

@@ -12,7 +12,6 @@ import UIKit
 struct ReceiptView: View {
     
     @ObservedObject var orderManager: OrderManager
-//    @ObservedObject var languageManager: LanguageManager
     
     @State var order: Order
     @Binding var isPresented: Bool
@@ -24,25 +23,9 @@ struct ReceiptView: View {
     @State private var lastReceipttID = OrderManager.shared.getLastReceiptID()
     @State private var receiptExists = false
     @State private var isRewardedAdPresented = false
-//    @State private var rewardedAdView = AdMobRewardedAdView()
-//    @State private var rewardedAdView: RewardedAdHelper = RewardedAdHelper()
-//    var rewardedAdHelper: RewardedAdHelper
-
-//    init(){
-//        receiptExists = OrderManager.shared.receiptExists(forOrderID: order.orderID)
-//        if receiptExists {
-//            if let receipt = order.receipt {
-//                lastReceipttID = receipt.myID
-//                selectedPaymentMethod = receipt.paymentMethod
-//                selectedPaymentDate = receipt.paymentDate
-//            }
-//        }
-//    }
     
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
-//        formatter.dateFormat = "yyyy-MM-dd"
-
         formatter.dateStyle = .short
         formatter.timeStyle = .short
         return formatter
@@ -59,14 +42,7 @@ struct ReceiptView: View {
             
             HStack{
                 Text("Receipt No.")
-//                if receiptExists {
-//                    if let receipt = order.receipt {
-//                        Text(" \(receipt.myID)")
-//                    }
-//                }
-//                else {
-                    Text(" \(lastReceipttID + 1)")
-//                }
+                Text(" \(lastReceipttID + 1)")
             }
             .padding(.leading)
             
@@ -145,21 +121,9 @@ struct ReceiptView: View {
                         title: Text("Generate Receipt"),
                         message: Text("Are you sure you want to generate this receipt?"),
                         primaryButton: .default(Text("Generate")) {
-//                            rewardedAdView.showRewardedAd() // Use the instance to show the rewarded ad
-                            
-//                            if let windowScene = UIApplication.shared.connectedScenes
-//                                .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
-//                                if let rootViewController = windowScene.windows.first?.rootViewController {
-//                                    rewardedAdView.showRewardedAd(viewController: rootViewController)
-//                                    
-//                                }
-//                            }
                             isRewardedAdPresented = true
-
-//                            RewardedAdView(adUnitID: "ca-app-pub-3940256099942544/1712485313", isPresented: Binding<Bool>)
-                        
-                            
                             generatePDF()
+                            
                             if showSuccessMessage {
                                 Toast.showToast(message: "Receipt generated successfully")
                             }
@@ -169,9 +133,6 @@ struct ReceiptView: View {
                         }
                     )
                 }
-//                .sheet(isPresented: $isRewardedAdPresented) {
-//                    RewardedAdView(adUnitID: "ca-app-pub-3940256099942544/1712485313", isPresented: $isRewardedAdPresented)
-//                }
                 
                 RewardedAdView(adUnitID: "ca-app-pub-3940256099942544/1712485313", isPresented: $isRewardedAdPresented)
 
@@ -205,16 +166,6 @@ struct ReceiptView: View {
                         }
                     }
                     
-                    //                    if let windowScene = UIApplication.shared.connectedScenes
-                    //                        .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
-                    //
-                    //                        let pdfShareView = SharePDFView(pdfData: pdfData)
-                    //                        let hostingController = UIHostingController(rootView: pdfShareView)
-                    //
-                    //                        if let rootViewController = windowScene.windows.first?.rootViewController {
-                    //                            rootViewController.present(hostingController, animated: true, completion: nil)
-                    //                        }
-                    //                    }
                 }
                 .padding(.top, 20)
             }
@@ -324,21 +275,12 @@ struct ReceiptView: View {
             var y_logo: CGFloat = 50
             if en {
                 x_logo = pageRect.width - 100
-//                y_logo =
             }
             
             let logoImage = UIImage(data: AppManager.shared.getLogoImage())
             let logoRect = CGRect(x: x_logo, y: y_logo, width: 50, height: 50)  // Adjust the size and position as needed
             logoImage?.draw(in: logoRect)
             
-            // Title
-//            var title = ""
-//            if (receiptExists){
-//                title = "Receipt No. \(receipt_.myID)"
-//            }
-//            else{
-//                title = "Receipt No. \(lastReceipttID + 1)"
-//            }
                         var title = ""
                         if (receiptExists && en){
                             title = "Receipt No. \(receipt_.myID)"
@@ -388,12 +330,6 @@ struct ReceiptView: View {
             _ = CGRect(x: 50, y: currentY, width: 512, height: 20)
             
             var DocumentDateText = ""
-//            if (receiptExists){
-//                DocumentDateText = "Date created:\(receipt_.dateGenerated.formatted())"
-//            }
-//            else if (receiptExists){
-//                DocumentDateText = "Date created:\(Date().formatted())"
-//            }
             
                         if (receiptExists && en){
                             DocumentDateText = "Date created: \(receipt_.dateGenerated.formatted())"
@@ -609,14 +545,6 @@ struct ReceiptView: View {
             // Update the Y position
             currentY += 50
             
-            
-            //            if order.delivery.cost != 0 {
-            //                let deliveryCostText = "Delivery Cost: \(order.delivery.cost)"
-            //                deliveryCostText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: contactDetailsAttributes)
-            //
-            //                currentY += 20
-            //            }
-            
             // Draw the payment details
             let paymentHeaderAttributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.boldSystemFont(ofSize: 14),
@@ -685,7 +613,7 @@ struct ReceiptView: View {
             
             //  signature
             var x_sign = pageRect.width - 150
-            var y_sign = pageRect.height - 150
+            let y_sign = pageRect.height - 150
             if en {
                 x_sign = 50
 //                y_sign =

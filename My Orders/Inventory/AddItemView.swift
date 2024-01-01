@@ -15,13 +15,11 @@ struct AddItemView: View {
     @State private var newName = ""
     @State private var newCatalogNumber = ""
     @State private var newPrice = ""
-//    @State private var newQuantity = ""
     @State private var newQuantityString = ""
     @State private var newQuantity = 0
     @State private var newSize = ""
     @State private var additionDate = Date()
     @State private var newNotes = ""
-//    @State private var refreshView = false
     @State private var quantityError = false
 
 
@@ -70,12 +68,6 @@ struct AddItemView: View {
 
                 }
                 
-//                Section {
-//                                    Button("Save Item") {
-//                                        saveItem()
-//                                    }
-//                                }
-                
                 Section {
                     Button(action: {
                         
@@ -98,9 +90,7 @@ struct AddItemView: View {
                             if let encodedData = try? JSONEncoder().encode(inventoryManager.items) {
                                 UserDefaults.standard.set(encodedData, forKey: "items")
                             }
-                            
-                            // Clear the form or navigate to a different view as needed
-                            // For example, you can navigate back to the previous view:
+
                             presentationMode.wrappedValue.dismiss()
                         }
                         else{

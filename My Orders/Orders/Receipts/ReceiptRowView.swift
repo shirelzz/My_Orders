@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct ReceiptRowView: View {
-    
-//    @ObservedObject var languageManager: LanguageManager //n
-    
+        
     let order: Order
     let receipt: Receipt
 
@@ -27,18 +25,11 @@ struct ReceiptRowView: View {
         VStack(alignment: .leading) {
             
             Text("Customer: \(order.customer.name)")
-//            Text("Date: \(dateFormatter.string(from: order.orderDate))")
             HStack{
                 Text("Total Price: $")
                 Text("\(order.totalPrice,  specifier: "%.2f")")
 
             }
-//            Text("isPaid: \(order.isPaid.description)")
-
-            
-//            if order.isCompleted {
-//                
-//            }
         }
     }
     
@@ -80,8 +71,6 @@ struct ReceiptRowView_Previews: PreviewProvider {
             allergies: "",
             isDelivered: false,
             isPaid: false
-            
-//            receipt: Receipt(id: "1111", myID: 101, orderID: "1234", pdfData: Data(), dateGenerated: Date(), paymentMethod: "bit", paymentDate: Date())
             
         )
         

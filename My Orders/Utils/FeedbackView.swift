@@ -29,7 +29,7 @@ struct FeedbackView: View {
                 )
                 .offset(y: isMailComposePresented ? 0 : UIScreen.main.bounds.height)
                 .opacity(isMailComposePresented ? 1 : 0)
-                .animation(.easeInOut)
+                .animation(.easeInOut, value: 0.5)
             }
         }
     }

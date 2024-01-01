@@ -11,9 +11,7 @@ import UIKit
 import ZipArchive
 
 class ReceiptUtils {
-    
-    
-    
+
     static func drawPDF(for order: Order) -> Data {
         var dateFormatter: DateFormatter {
             let formatter = DateFormatter()
@@ -24,9 +22,6 @@ class ReceiptUtils {
         
             let receipt_ = OrderManager.shared.getReceipt(forOrderID: order.orderID)
             let receiptExists = OrderManager.shared.receiptExists(forOrderID: order.orderID)
-            
-            //        let en = LanguageManager.shared.getCurrentLanguage() == "english"
-            //        let he = LanguageManager.shared.getCurrentLanguage() == "hebrew"
             
             // Fetch the preferred localization
             let preferredLanguage = Bundle.main.preferredLocalizations.first ?? "en"
@@ -53,10 +48,9 @@ class ReceiptUtils {
                 var currentY: CGFloat = 50
                 
                 var x_logo: CGFloat = 50
-                var y_logo: CGFloat = 50
+                let y_logo: CGFloat = 50
                 if en {
                     x_logo = pageRect.width - 100
-    //                y_logo =
                 }
                 
                 let logoImage = UIImage(data: AppManager.shared.getLogoImage())
@@ -64,27 +58,6 @@ class ReceiptUtils {
                 logoImage?.draw(in: logoRect)
                 
                 // Title
-    //            var title = ""
-    //            if (receiptExists){
-    //                title = "Receipt No. \(receipt_.myID)"
-    //            }
-    //            else{
-    //                title = "Receipt No. \(lastReceipttID + 1)"
-    //            }
-//                            var title = ""
-//                            if (receiptExists && en){
-//                                title = "Receipt No. \(receipt_.myID)"
-//                
-//                            }
-//                            else if (receiptExists && he ){
-//                                title = "קבלה מספר \(receipt_.myID)"
-//                            }
-//                            else if (!receiptExists && en){
-//                                title = "Receipt No. \(lastReceipttID + 1)"
-//                            }
-//                            else {
-//                                title = "קבלה מספר \(lastReceipttID + 1)"
-//                            }
                 
                var title = ""
                 if en{
@@ -128,12 +101,6 @@ class ReceiptUtils {
                 _ = CGRect(x: 50, y: currentY, width: 512, height: 20)
                 
                 var DocumentDateText = ""
-    //            if (receiptExists){
-    //                DocumentDateText = "Date created:\(receipt_.dateGenerated.formatted())"
-    //            }
-    //            else if (receiptExists){
-    //                DocumentDateText = "Date created:\(Date().formatted())"
-    //            }
                 
                             if (receiptExists && en){
                                 DocumentDateText = "Date created: \(receipt_.dateGenerated.formatted())"
@@ -343,19 +310,10 @@ class ReceiptUtils {
                 else {
                     totalPriceText = "עלות כוללת: ₪\(order.totalPrice)"
                 }
-    //            let totalPriceText = "Total Cost: $\(order.totalPrice)"
                 totalPriceText.draw(in: totalPriceRect, withAttributes: totalPriceAttributes)
                 
                 // Update the Y position
                 currentY += 50
-                
-                
-                //            if order.delivery.cost != 0 {
-                //                let deliveryCostText = "Delivery Cost: \(order.delivery.cost)"
-                //                deliveryCostText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: contactDetailsAttributes)
-                //
-                //                currentY += 20
-                //            }
                 
                 // Draw the payment details
                 let paymentHeaderAttributes: [NSAttributedString.Key: Any] = [
@@ -407,7 +365,6 @@ class ReceiptUtils {
                 else {
                     paymentMethodText = "שיטת התשלום: \(receipt_.paymentMethod)"
                 }
-    //            let paymentMethodText = "Payment Method \(selectedPaymentMethod)"
                 paymentMethodText.draw(in: paymentDetailsRect, withAttributes: paymentDetailsAttributes)
                 
                 // Update the Y position for the next detail
@@ -420,7 +377,6 @@ class ReceiptUtils {
                 else {
                     paymentDateText = "מועד התשלום: \(dateFormatter.string(from: receipt_.paymentDate))"
                 }
-    //            let paymentDateText = "Payment Date: \(dateFormatter.string(from: receipt_.paymentDate))"
                 paymentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: paymentDetailsAttributes)
                 
                 //  signature
@@ -428,20 +384,15 @@ class ReceiptUtils {
                 var y_sign = pageRect.height - 150
                 if en {
                     x_sign = 50
-    //                y_sign =
                 }
                 let signatureImage = UIImage(data: AppManager.shared.getSignatureImage())
-                   let signatureRect = CGRect(x: x_sign, y: y_sign, width: 50, height: 50)  // Adjust the size and position as needed
+                   let signatureRect = CGRect(x: x_sign, y: y_sign, width: 50, height: 50)
                    signatureImage?.draw(in: signatureRect)
             }
             
             return pdfData
         
     }
-
-//    static func generateReceipt(for order: Order) -> Receipt {
-//        
-//    }
 
     static func exportReceiptAsPDF(orderManager: OrderManager, receipt: Receipt, selectedYear: Int) {
         // Filter receipts by the selected year
@@ -460,7 +411,6 @@ class ReceiptUtils {
         // Create a PDF for each receipt and save it in the temporary directory
         for (index, receipt) in filteredReceipts.enumerated() {
             let order = orderManager.getOrder(orderID: receipt.orderID)
-            let receipt_ = OrderManager.shared.getReceipt(forOrderID: order.orderID)
 
             if order.orderID != "" {
                 let pdfData = ReceiptUtils.drawPDF(for: order)
