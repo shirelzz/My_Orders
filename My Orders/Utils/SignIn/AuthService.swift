@@ -181,7 +181,7 @@ class AuthService: NSObject, ObservableObject, ASAuthorizationControllerDelegate
       }
     
     // worked. from FireBAuth
-    func signinWithGoogle(presenting: UIViewController,
+    func signinWithGoogle(presenting: UIViewController, authState: AuthState,
                           completion: @escaping (Error?) -> Void) {
         
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
@@ -204,6 +204,8 @@ class AuthService: NSObject, ObservableObject, ASAuthorizationControllerDelegate
                 }
                 print("SIGN IN")
                 UserDefaults.standard.set(true, forKey: "signIn") // When this change to true, it will go to the home screen
+                authState.isAuthenticated = true
+                completion(nil)
             }
         }
     }

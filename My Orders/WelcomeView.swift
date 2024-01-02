@@ -17,6 +17,7 @@ struct WelcomeView: View {
     @State private var isGuestButtonTapped = false
     @State private var isGoogleSignInSuccessful = false
     @State private var isAppleSignInSuccessful = false
+    @EnvironmentObject var authState: AuthState
 
     
     var body: some View {
@@ -48,7 +49,7 @@ struct WelcomeView: View {
                                 
                 GoogleSiginBtn {
                     
-                    AuthService.share.signinWithGoogle(presenting: getRootViewController()) { error in
+                    AuthService.share.signinWithGoogle(presenting: getRootViewController(), authState: authState) { error in
                         // TODO: Handle ERROR
                         if error == nil && Auth.auth().currentUser != nil {
                             hasLaunchedBefore = true

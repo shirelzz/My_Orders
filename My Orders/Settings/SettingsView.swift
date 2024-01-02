@@ -10,13 +10,8 @@ import SwiftUI
 struct SettingsView: View {
     
     @ObservedObject var appManager: AppManager
-//    @ObservedObject var languageManager: LanguageManager //.shared
     @ObservedObject var orderManager: OrderManager
-
-
     @State private var darkModeOn = false
-//    @State private var selectedLanguage: AppLanguage = LanguageManager.shared.currentLanguage
-    
     
     var body: some View {
         

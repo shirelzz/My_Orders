@@ -13,36 +13,59 @@ import FirebaseAuth
 import _AuthenticationServices_SwiftUI
 
 struct SignInView: View {
-    
-//    @ObservedObject var authService: AuthService
+        
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var authState: AuthState
+
 
     var body: some View {
+        
         NavigationView {
+            
             VStack {
                 
                 Spacer()
-                
-//                Text("Sign In")
-//                    .font(.largeTitle)
-//                    .fontWeight(.bold)
-//                    .padding()
 
                 Text("Choose an option:")
                     .font(.headline)
                     .foregroundColor(.gray)
                     .padding(.bottom, 40)
-                                
+                
                 GoogleSiginBtn {
-                    // TODO: - Call the sign method here
-//                    FirebAuth.share.signinWithGoogle(presenting: getRootViewController()) { error in
-//                        // TODO: Handle ERROR
-//                    }
                     
-                    AuthService.share.signinWithGoogle(presenting: getRootViewController()) { error in
+                    print("---> User pressed")
+
+                    
+                    AuthService.share.signinWithGoogle(presenting: getRootViewController(), authState: authState) { error in
                         // TODO: Handle ERROR
+                        if error != nil {
+                            Toast.showToast(message: "error signing you in")
+                            print("---> User is not signed in")
+                        }
+                        else {
+                            print("---> User is signed in")
+                            authState.isAuthenticated = true
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                    
+//                    if authState.isAuthenticated {
+//                        print("---> User signed in")
+//                        presentationMode.wrappedValue.dismiss()
+//                    }
+                
+                }
+                .frame(minWidth: 0 , maxWidth: .infinity)
+                .frame(height: 50)
+                .padding()
+                .onChange(of: authState.isAuthenticated) { isAuthenticated in
+                    if isAuthenticated {
+                        print("---> here 1")
+                        presentationMode.wrappedValue.dismiss()
                     }
                 }
-                .padding()
+                
+                
 
                 Text("or")
                     .foregroundColor(.gray)
@@ -54,7 +77,9 @@ struct SignInView: View {
                     AppleButtonView()
                         .frame(minWidth: 0, maxWidth: .infinity)
                         .frame(height: 50)
+                        .cornerRadius(30)
                         .padding(.horizontal)
+                        .shadow(color: .black.opacity(0.6), radius: 5, x: 0, y: 2)
                 }
                 
 //                Button {} label: {
@@ -79,6 +104,12 @@ struct SignInView: View {
                 Spacer()
             }
             .navigationTitle("Sign In")
+            .onDisappear {
+                print("---> SignInView disappeared")
+            }
+            .onAppear {
+                print("---> SignInView appeared")
+            }
         }
     }
 }

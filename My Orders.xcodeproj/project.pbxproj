@@ -52,6 +52,7 @@
 		D6AF62F82B151CE80056C973 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F72B151CE80056C973 /* NotificationSettingsView.swift */; };
 		D6AF62FA2B1752140056C973 /* ReceiptSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F92B1752130056C973 /* ReceiptSettingsView.swift */; };
 		D6AF630A2B1972620056C973 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D6AF63092B1972620056C973 /* Localizable.xcstrings */; };
+		D6C037872B44598600CFF67E /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C037862B44598600CFF67E /* AuthState.swift */; };
 		D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */; };
 		D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3322AC593F8002ECA81 /* ContentView.swift */; };
 		D6F6A3352AC593FA002ECA81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6F6A3342AC593FA002ECA81 /* Assets.xcassets */; };
@@ -125,6 +126,7 @@
 		D6AF62F72B151CE80056C973 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 		D6AF62F92B1752130056C973 /* ReceiptSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptSettingsView.swift; sourceTree = "<group>"; };
 		D6AF63092B1972620056C973 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		D6C037862B44598600CFF67E /* AuthState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
 		D6F6A32D2AC593F8002ECA81 /* My Orders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Orders.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersApp.swift; sourceTree = "<group>"; };
 		D6F6A3322AC593F8002ECA81 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				D66A37102B28A5F000A921CF /* AppleButtonView.swift */,
 				D66A37122B28A79E00A921CF /* AppleButtonLogic.swift */,
 				D66A37142B28ABD200A921CF /* AuthService.swift */,
+				D6C037862B44598600CFF67E /* AuthState.swift */,
 			);
 			path = SignIn;
 			sourceTree = "<group>";
@@ -518,6 +521,7 @@
 				D662621B2B3A30FE0003608B /* FeedbackView.swift in Sources */,
 				D66262192B3996D80003608B /* AdsViews.swift in Sources */,
 				D66A371C2B29096700A921CF /* ItemDetailsView.swift in Sources */,
+				D6C037872B44598600CFF67E /* AuthState.swift in Sources */,
 				D6AF62FA2B1752140056C973 /* ReceiptSettingsView.swift in Sources */,
 				D6674D052ACBA1B4003DE4BB /* AllReceiptsView.swift in Sources */,
 				D6674D072ACBA629003DE4BB /* ReceiptRowView.swift in Sources */,

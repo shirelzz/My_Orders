@@ -19,90 +19,16 @@ struct CustomizedDataView: View {
 
     @State private var logoImage: UIImage?
     @State private var signatureImage: UIImage?
-//    @State private var logoImageData: UIImage?
-//    @State private var signatureImageData: UIImage?
-
-    
     
     @State private var showLogoImgPicker = false
     @State private var showSignatureImgPicker = false
     
-    
     @Environment(\.presentationMode) var presentationMode
-    
-//    let logoImage = AppManager.shared.logoImg
-//    let signatureImage = AppManager.shared.signatureImg
-
-//    init(appManager: AppManager) {
-//          self.appManager = appManager
-//          _logoImage = State(initialValue: appManager.getLogoImage())
-//          _signatureImage = State(initialValue: appManager.getSignatureImage())
-//      }
     
     var body: some View {
         
-        Form{
-            List{
-                
-//                Section(header: Text("Logo")) {
-//                                    
-//                    HStack{
-//                                        
-//                        if let logoImageData = appManager.manager.logoImgData,
-//                           let logoImage = UIImage(data: logoImageData) {
-//                            Image(uiImage: logoImage)
-//                                .resizable()
-//                                .aspectRatio(contentMode: .fit)
-//                                .frame(width: 100, height: 100)
-//                        } else {
-//                            Image(systemName: "photo.on.rectangle")
-//                                .resizable()
-//                                .frame(width: 50, height: 50)
-//                        }
-//                        
-//                        Spacer()
-//                        
-//                        Button{
-//                            showLogoImgPicker = true
-//                            
-//                        } label: {
-//                            Text("Select image")
-//                        }
-//                        .sheet(isPresented: $showLogoImgPicker) {
-//                            ImagePicker(selectedImage: $logoImage, isPickerShowing: $showLogoImgPicker)
-//                        }
-//                    }
-//                }
-//                                
-//                Section(header: Text("Signature")) {
-//                    HStack {
-//                                                
-//                        if let signatureImageData = appManager.manager.signatureImgData,
-//                           let signatureImage = UIImage(data: signatureImageData) {
-//                            Image(uiImage: signatureImage)
-//                                .resizable()
-//                                .aspectRatio(contentMode: .fit)
-//                                .frame(width: 100, height: 100)
-//                        } else {
-//                            
-//                            Image(systemName: "photo.on.rectangle")
-//                                .resizable()
-//                                .frame(width: 50, height: 50)
-//                            //                                       Text("Error loading signature image")
-//                        }
-//                        
-//                        Spacer()
-//                        
-//                        Button{
-//                            showSignatureImgPicker = true
-//                        } label: {
-//                            Text("Select image")
-//                        }
-//                        .sheet(isPresented: $showSignatureImgPicker, content: {
-//                            ImagePicker(selectedImage: $signatureImage, isPickerShowing: $showSignatureImgPicker)
-//                        })
-//                    }
-//                }
+        Form {
+            List {
                 
                 Section(header: Text("Logo")) {
                     HStack {
@@ -119,9 +45,9 @@ struct CustomizedDataView: View {
                         .sheet(isPresented: $showLogoImgPicker) {
                             ImagePicker(selectedImage: $logoImage, isPickerShowing: $showLogoImgPicker)
                                 .onDisappear {
-                                        // This block will be executed when the ImagePicker is dismissed
-                                        appManager.manager.logoImgData = logoImage?.pngData()
-                                    }
+                                    // This block will be executed when the ImagePicker is dismissed
+                                    appManager.manager.logoImgData = logoImage?.pngData()
+                                }
                         }
                     }
                 }
@@ -141,9 +67,9 @@ struct CustomizedDataView: View {
                         .sheet(isPresented: $showSignatureImgPicker) {
                             ImagePicker(selectedImage: $signatureImage, isPickerShowing: $showSignatureImgPicker)
                                 .onDisappear {
-                                        // This block will be executed when the ImagePicker is dismissed
-                                        appManager.manager.signatureImgData = signatureImage?.pngData()
-                                    }
+                                    // This block will be executed when the ImagePicker is dismissed
+                                    appManager.manager.signatureImgData = signatureImage?.pngData()
+                                }
                         }
                     }
                 }
@@ -167,29 +93,6 @@ struct CustomizedDataView: View {
                         }
                         presentationMode.wrappedValue.dismiss()
                     }
-
-                                        
-//                    Button("Save images"){
-//                        
-//                        if let logoImageData = logoImage?.pngData(),
-//                           let signatureImageData = signatureImage?.pngData() {
-//                            
-//                            if appManager.manager.logoImgData == nil || appManager.manager.signatureImgData == nil {
-//                                let manager = Manager(
-//                                    
-//                                    logoImgData: logoImageData,
-//                                    signatureImgData: signatureImageData
-//                                )
-//                                appManager.saveManager(manager: manager)
-//                            }
-//                            else{
-//                                appManager.updateManager(logoImageData: logoImageData, signatureImageData: signatureImageData)
-//                            }
-//                        }
-//                        
-//                        presentationMode.wrappedValue.dismiss()
-//
-//                    }
                 }
             }
         }

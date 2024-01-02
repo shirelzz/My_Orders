@@ -2110,6 +2110,7 @@
       }
     },
     "Number of Orders This Week: %.2f" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2124,6 +2125,9 @@
           }
         }
       }
+    },
+    "Number of Orders This Week: %lld" : {
+
     },
     "OK" : {
       "extractionState" : "stale",

@@ -57,16 +57,21 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
 @main
 struct MyOrdersApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
+    @StateObject private var authState = AuthState()
 
     var body: some Scene {
         WindowGroup {
             MainView()
                 .environmentObject(OrderManager.shared)
+                .environmentObject(authState)
                 .onAppear {
                     // Ensure Firebase is configured only once
                     if FirebaseApp.app() == nil {
                         FirebaseApp.configure()
                     }
+                    
+                    authState.isAuthenticated = Auth.auth().currentUser != nil
                 }
 
         }

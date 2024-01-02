@@ -8,35 +8,65 @@
 import SwiftUI
 import FirebaseAuth
 
+//class AuthState: ObservableObject {
+//    static var isAuthenticated = Auth.auth().currentUser != nil
+//}
+
 struct AccountView: View {
+           
+    @State private var showSignInView = false
+    @EnvironmentObject var authState: AuthState
+    
+    @Environment(\.presentationMode) var presentationMode
+
     var body: some View {
         
-        
-        VStack {
-            if Auth.auth().currentUser != nil {
-                Text("Welcome, \(Auth.auth().currentUser?.displayName ?? "User")!")
-                    .font(.largeTitle)
-                    .padding(.leading)
+        NavigationView {
+            
+            VStack {
                 
-                List{
-                    Button("Sign Out") {
-//                        do {
-//                            try Auth.auth().signOut()
-//                        } catch {
-//                            print("Error signing out: \(error.localizedDescription)")
-//                        }
-                        AuthService.share.googleSignOut()
-                    }
-                }
-            } else {
-                
-                NavigationStack{
+                if authState.isAuthenticated {
+                    Text("Welcome, \(Auth.auth().currentUser?.displayName ?? "User")!")
+                        .font(.largeTitle)
+                        .padding(.leading)
                     
-                    List{
-                        NavigationLink(destination: SignInView()) {
-                            Text("Sign In")
+                    List {
+                        
+                        Button("Sign Out") {
+                            print("sign out pressed")
+                            do {
+                                try Auth.auth().signOut()
+//                                AuthState.isAuthenticated = false
+                                print("---> here 0")
+                                authState.isAuthenticated = false
+//                                presentationMode.wrappedValue.dismiss()
+                                
+                            } catch {
+                                print("Error signing out: \(error.localizedDescription)")
+                            }
                         }
                     }
+                } else {
+                                        
+//                    List {
+//                        Button("Sign In") {
+//                            showSignInView.toggle()
+//                        }
+//                        .sheet(isPresented: $showSignInView) {
+//                            SignInView()
+//                        }
+//                    }
+                    
+                    SignInView()
+                    
+//                    NavigationStack {
+//                        
+//                        List {
+//                            NavigationLink(destination: SignInView()) {
+//                                Text("Sign In")
+//                            }
+//                        }
+//                    }
                 }
             }
         }
