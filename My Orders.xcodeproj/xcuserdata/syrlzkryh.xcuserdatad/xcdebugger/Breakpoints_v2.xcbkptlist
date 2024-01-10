@@ -30,8 +30,8 @@
             filePath = "My Orders/Orders/OrdersManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "313"
-            endingLineNumber = "313"
+            startingLineNumber = "312"
+            endingLineNumber = "312"
             landmarkName = "OrderManager"
             landmarkType = "3">
             <Locations>
@@ -183,8 +183,8 @@
             filePath = "My Orders/Orders/OrdersManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "339"
-            endingLineNumber = "339"
+            startingLineNumber = "338"
+            endingLineNumber = "338"
             landmarkName = "fetchOrders()"
             landmarkType = "7">
             <Locations>

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UserNotifications
 import FirebaseAuth
 
 struct InventoryItem: Codable, Identifiable, Hashable{ 
@@ -241,21 +240,4 @@ class InventoryManager: ObservableObject {
         }
     }
     
-    
-    // MARK: - Notifications
-
-    func scheduleInventoryNotification(item: InventoryItem, notifyWhenQuantityReaches: Int) {
-        let content = UNMutableNotificationContent()
-        content.title = "Inventory Alert"
-        content.body = "\(item.name) is running low. Current quantity: \(item.itemQuantity)"
-        
-        let triggerQuantity = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)  // Set to 1 second for testing purposes, adjust as needed
-        
-        let request = UNNotificationRequest(identifier: item.itemID, content: content, trigger: triggerQuantity)
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("Error scheduling inventory notification: \(error.localizedDescription)")
-            }
-        }
-    }
 }

@@ -52,6 +52,7 @@
 		D6AF62F82B151CE80056C973 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F72B151CE80056C973 /* NotificationSettingsView.swift */; };
 		D6AF62FA2B1752140056C973 /* ReceiptSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F92B1752130056C973 /* ReceiptSettingsView.swift */; };
 		D6AF630A2B1972620056C973 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D6AF63092B1972620056C973 /* Localizable.xcstrings */; };
+		D6B7A7AE2B4E8CE900E7D941 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B7A7AD2B4E8CE900E7D941 /* NotificationManager.swift */; };
 		D6C037872B44598600CFF67E /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C037862B44598600CFF67E /* AuthState.swift */; };
 		D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */; };
 		D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3322AC593F8002ECA81 /* ContentView.swift */; };
@@ -127,6 +128,7 @@
 		D6AF62F72B151CE80056C973 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 		D6AF62F92B1752130056C973 /* ReceiptSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptSettingsView.swift; sourceTree = "<group>"; };
 		D6AF63092B1972620056C973 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		D6B7A7AD2B4E8CE900E7D941 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		D6C037862B44598600CFF67E /* AuthState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
 		D6F6A32D2AC593F8002ECA81 /* My Orders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Orders.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersApp.swift; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 				D6F8CA762B32DBBC0031A7A2 /* ToDoList.swift */,
 				D662621A2B3A30FE0003608B /* FeedbackView.swift */,
 				D662621C2B3A31270003608B /* MailComposeView.swift */,
+				D6B7A7AD2B4E8CE900E7D941 /* NotificationManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -536,6 +539,7 @@
 				D6674D032ACB9B75003DE4BB /* SharePDFView.swift in Sources */,
 				D6AF62E82B1392FD0056C973 /* CustomizedDataView.swift in Sources */,
 				D6F6A3652AC5B058002ECA81 /* AllOrdersView.swift in Sources */,
+				D6B7A7AE2B4E8CE900E7D941 /* NotificationManager.swift in Sources */,
 				D66A370D2B2880BF00A921CF /* GoogleSiginBtn.swift in Sources */,
 				D66A37112B28A5F000A921CF /* AppleButtonView.swift in Sources */,
 				D6AF62E02B1363000056C973 /* SettingsView.swift in Sources */,

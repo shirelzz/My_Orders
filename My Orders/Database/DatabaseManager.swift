@@ -218,6 +218,30 @@ class DatabaseManager {
         })
     }
     
+    func fetchNotificationSettings(path: String, completion: @escaping (Notifications) -> ()) {
+        
+        let notificationsRef = databaseRef.child(path)
+        
+        notificationsRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            guard let value = snapshot.value as? [String: Any],
+                  let daysBeforeOrderTime = value["daysBeforeOrderTime"] as? Int,
+                  let inventoryQuantityThreshold = value["inventoryQuantityThreshold"] as? Int
+            else {
+                print("No notification settings data found")
+                completion(Notifications(daysBeforeOrderTime: 1, inventoryQuantityThreshold: 0))
+                return
+            }
+            
+            let notificationSettings = Notifications(
+                daysBeforeOrderTime: daysBeforeOrderTime,
+                inventoryQuantityThreshold: inventoryQuantityThreshold
+            )
+            
+            completion(notificationSettings)
+        })
+    }
+                                            
     // MARK: - Writing data
     
     func saveOrder(_ order: Order, path: String) {
@@ -234,6 +258,11 @@ class DatabaseManager {
     func saveReceipt(_ receipt: Receipt, path: String) {
         let receiptRef = databaseRef.child(path).child(receipt.orderID)
         receiptRef.setValue(receipt.dictionaryRepresentation())
+    }
+    
+    func saveNotificationSettings(_ notificationSettings: Notifications, path: String) {
+        let notificationSettingsRef = databaseRef.child(path)
+        notificationSettingsRef.setValue(notificationSettings.dictionaryRepresentation())
     }
     
     // MARK: - Deleting data

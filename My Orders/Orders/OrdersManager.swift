@@ -7,7 +7,6 @@
 
 import Foundation
 import Combine
-import UserNotifications
 //import Firebase
 import FirebaseDatabase
 import FirebaseDatabaseSwift
@@ -472,6 +471,10 @@ class OrderManager: ObservableObject {
         return orders
     }
     
+    func getUpcomingOrders() -> [Order] {
+        return orders.filter { !$0.isDelivered && $0.orderDate > Date()}
+    }
+    
     func getOrder(orderID: String) -> Order {
         if let index = orders.firstIndex(where: { $0.id == orderID }) {
             let order = orders[index]
@@ -698,24 +701,5 @@ class OrderManager: ObservableObject {
         print("paymentDate: \(receipt.paymentDate)")
     }
     
-    
-    // MARK: notifications
-    
-    func scheduleOrderNotification(order: Order, daysBefore: Int) {
-        let content = UNMutableNotificationContent()
-        content.title = "Order Time is Soon"
-        content.body = "Your order \(order.orderID) is coming up in \(daysBefore) days."
-        content.sound = UNNotificationSound.default
-        
-        let triggerDate = Calendar.current.date(byAdding: .day, value: -daysBefore, to: order.orderDate) ?? Date()
-        let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: triggerDate), repeats: false)
-        
-        let request = UNNotificationRequest(identifier: order.orderID, content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("Error scheduling notification: \(error.localizedDescription)")
-            }
-        }
-    }
 }
 

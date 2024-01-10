@@ -11,6 +11,7 @@ import FirebaseAuth
 
 struct ContentView: View {
     @StateObject private var appManager = AppManager.shared
+    @StateObject private var notificationManager = NotificationManager.shared
     @StateObject private var orderManager = OrderManager.shared
     @StateObject private var inventoryManager = InventoryManager.shared
     
@@ -215,7 +216,7 @@ struct ContentView: View {
     }
     
     var upcomingOrders: [Order] {
-        return orderManager.orders.filter { !$0.isDelivered && $0.orderDate > Date()}
+        return orderManager.getUpcomingOrders()
     }
 }
 
