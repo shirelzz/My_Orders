@@ -21,10 +21,3 @@ struct SearchBar: View {
         .padding(.horizontal, 15)
     }
 }
-
-
-//struct SearchBar_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SearchBar()
-//    }
-//}

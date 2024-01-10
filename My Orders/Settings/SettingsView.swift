@@ -29,20 +29,6 @@ struct SettingsView: View {
                         Label("Customized Data", systemImage: "wand.and.stars")
                     }
                 }
-                
-//                Section(header: Text("Data Management")) {
-//                    
-//                    Button("Clear Delivered Orders") {
-//                        orderManager.clearDeliveredOrders()
-//                    }
-//
-//                    Button("Clear Out-of-Stock Items") {
-//                        InventoryManager.shared.clearOutOfStockItems()
-//                    }
-////                    NavigationLink(destination: ManageDataView()) {
-////                        Label("Manage Data", systemImage: "folder")
-////                    }
-//                }
 
                 
                 Section(header: Text("Notification center")) {
@@ -58,52 +44,7 @@ struct SettingsView: View {
                         Label("Receipt", systemImage: "folder")
                     }
                 }
-                
-                Section(header: Text("Feedback")) {
-                    Button(action: {
-                        rateApp()
-                    }) {
-                        Text("Rate Us  🤍")
-                    }
-                    
-                    NavigationLink("Send Suggestions", destination: FeedbackView())
 
-                }
-                
-//                Section(header: Text("Language")) {
-//    
-//                    Picker("Select Language", selection: $selectedLanguage) {
-//                        ForEach(AppLanguage.allCases, id: \.self) { language in
-//                            Text(language.rawValue)
-//                        }
-//                    }
-//                    .pickerStyle(SegmentedPickerStyle())
-//                    .background(Color.accentColor.opacity(0.3).cornerRadius(13.0))
-//                    .cornerRadius(3.0)
-//                    .onChange(of: selectedLanguage) { newLanguage in
-//                        if let language = AppLanguage(rawValue: newLanguage.rawValue) {
-//                            languageManager.currentLanguage = language
-//                        }
-//                    }
-//                }
-                
-                
-                //                Section(header: Text("Display")) {
-                //
-                //                    VStack {
-                //
-                //                        HStack {
-                //
-                //                            Toggle("Dark Mode", systemImage: "moon", isOn: $darkModeOn)
-                //                                .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-                //                                .onChange(of: darkModeOn) { _ in
-                //                                    updateAppearance()
-                //                                }
-                //
-                //                        }
-                //
-                //                    }
-                //                }
             }
             
             AdBannerView(adUnitID: "ca-app-pub-1213016211458907/1549825745")
@@ -115,17 +56,6 @@ struct SettingsView: View {
         
     }
     
-    func rateApp() {
-            guard let appURL = URL(string: "https://apps.apple.com/il/app/candy-crush-soda-saga/id850417475") else { return }
-            
-            if UIApplication.shared.canOpenURL(appURL) {
-                if #available(iOS 10.0, *) {
-                    UIApplication.shared.open(appURL, options: [:], completionHandler: nil)
-                } else {
-                    UIApplication.shared.openURL(appURL)
-                }
-            }
-        }
     
     private func updateAppearance() {
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene

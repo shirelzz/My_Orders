@@ -11,8 +11,6 @@
 		D64DD75B2B2273470066BB7E /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DD75A2B2273470066BB7E /* DashboardView.swift */; };
 		D64DD75E2B22743D0066BB7E /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = D64DD75D2B22743D0066BB7E /* SwiftUICharts */; };
 		D66262192B3996D80003608B /* AdsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66262182B3996D80003608B /* AdsViews.swift */; };
-		D662621B2B3A30FE0003608B /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D662621A2B3A30FE0003608B /* FeedbackView.swift */; };
-		D662621D2B3A31270003608B /* MailComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D662621C2B3A31270003608B /* MailComposeView.swift */; };
 		D6674D012ACB9544003DE4BB /* ReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6674D002ACB9544003DE4BB /* ReceiptView.swift */; };
 		D6674D032ACB9B75003DE4BB /* SharePDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6674D022ACB9B75003DE4BB /* SharePDFView.swift */; };
 		D6674D052ACBA1B4003DE4BB /* AllReceiptsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6674D042ACBA1B4003DE4BB /* AllReceiptsView.swift */; };
@@ -69,7 +67,6 @@
 		D6F8CA692B2F7F870031A7A2 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D6F8CA682B2F7F870031A7A2 /* FirebaseDatabaseSwift */; };
 		D6F8CA732B31C40E0031A7A2 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F8CA722B31C40E0031A7A2 /* DatabaseManager.swift */; };
 		D6F8CA752B32C62F0031A7A2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D6F8CA742B32C62F0031A7A2 /* GoogleService-Info.plist */; };
-		D6F8CA772B32DBBC0031A7A2 /* ToDoList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F8CA762B32DBBC0031A7A2 /* ToDoList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,8 +90,6 @@
 		D64DD74F2B1B8C910066BB7E /* Whatsapp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Whatsapp.swift; sourceTree = "<group>"; };
 		D64DD75A2B2273470066BB7E /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		D66262182B3996D80003608B /* AdsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsViews.swift; sourceTree = "<group>"; };
-		D662621A2B3A30FE0003608B /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
-		D662621C2B3A31270003608B /* MailComposeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposeView.swift; sourceTree = "<group>"; };
 		D6674D002ACB9544003DE4BB /* ReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptView.swift; sourceTree = "<group>"; };
 		D6674D022ACB9B75003DE4BB /* SharePDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePDFView.swift; sourceTree = "<group>"; };
 		D6674D042ACBA1B4003DE4BB /* AllReceiptsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllReceiptsView.swift; sourceTree = "<group>"; };
@@ -145,7 +140,6 @@
 		D6F8CA642B2F55050031A7A2 /* ReceiptsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptsUtils.swift; sourceTree = "<group>"; };
 		D6F8CA722B31C40E0031A7A2 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		D6F8CA742B32C62F0031A7A2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		D6F8CA762B32DBBC0031A7A2 /* ToDoList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -252,9 +246,6 @@
 				D6AF62C32B126DCA0056C973 /* Toast.swift */,
 				D68867DF2ACA247900BCE734 /* SearchBar.swift */,
 				D64DD74F2B1B8C910066BB7E /* Whatsapp.swift */,
-				D6F8CA762B32DBBC0031A7A2 /* ToDoList.swift */,
-				D662621A2B3A30FE0003608B /* FeedbackView.swift */,
-				D662621C2B3A31270003608B /* MailComposeView.swift */,
 				D6B7A7AD2B4E8CE900E7D941 /* NotificationManager.swift */,
 			);
 			path = Utils;
@@ -504,7 +495,6 @@
 				D64DD7502B1B8C910066BB7E /* Whatsapp.swift in Sources */,
 				D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */,
 				D6AF62D42B12BDAB0056C973 /* InventoryContentView.swift in Sources */,
-				D6F8CA772B32DBBC0031A7A2 /* ToDoList.swift in Sources */,
 				D6AF62EA2B1395B10056C973 /* ImagePicker.swift in Sources */,
 				D66A370B2B28803300A921CF /* +View.swift in Sources */,
 				D6AF62C42B126DCA0056C973 /* Toast.swift in Sources */,
@@ -523,7 +513,6 @@
 				D6AF62F22B14059C0056C973 /* MainView.swift in Sources */,
 				D6AF62F42B14A99B0056C973 /* GeneratedReceiptView.swift in Sources */,
 				D6AF62F02B13FCB10056C973 /* LaunchView.swift in Sources */,
-				D662621B2B3A30FE0003608B /* FeedbackView.swift in Sources */,
 				D66262192B3996D80003608B /* AdsViews.swift in Sources */,
 				D66A371C2B29096700A921CF /* ItemDetailsView.swift in Sources */,
 				D6C037872B44598600CFF67E /* AuthState.swift in Sources */,
@@ -533,7 +522,6 @@
 				D6674D012ACB9544003DE4BB /* ReceiptView.swift in Sources */,
 				D6AF62DA2B12E9710056C973 /* EditItemView.swift in Sources */,
 				D68867E02ACA247A00BCE734 /* SearchBar.swift in Sources */,
-				D662621D2B3A31270003608B /* MailComposeView.swift in Sources */,
 				D66A370F2B289B3500A921CF /* SignInView.swift in Sources */,
 				D6AF62D82B12C2990056C973 /* AddItemView.swift in Sources */,
 				D6674D032ACB9B75003DE4BB /* SharePDFView.swift in Sources */,
