@@ -28,7 +28,6 @@ struct AllReceiptsView: View {
                         .scaledToFill()
                         .edgesIgnoringSafeArea(.top)
                         .opacity(0.2)
-                        .padding(.leading)
                         .frame(height: 20)
                     
                     Text("All Receipts")
@@ -68,7 +67,6 @@ struct AllReceiptsView: View {
 
 
                     }
-                    .padding(.top, 10)
 
                 }
                 

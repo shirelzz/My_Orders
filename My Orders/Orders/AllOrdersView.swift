@@ -57,7 +57,7 @@ struct AllOrdersView: View {
                             .scaledToFill()
                             .edgesIgnoringSafeArea(.top)
                             .opacity(0.15)
-                            .frame( height: 20)
+                            .frame(height: 20)
 
                     }
     
