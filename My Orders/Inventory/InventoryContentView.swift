@@ -206,9 +206,10 @@ struct InventoryContentView: View {
             
             Spacer()
             
-            AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716") //"ca-app-pub-1213016211458907/1549825745"
+            AdBannerView(adUnitID: "ca-app-pub-1213016211458907/1549825745")
                 .frame(height: 50)
                 .background(Color.white)
+            // test: ca-app-pub-3940256099942544/2934735716
         }
     }
     

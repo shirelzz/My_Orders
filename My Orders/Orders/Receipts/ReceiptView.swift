@@ -134,7 +134,8 @@ struct ReceiptView: View {
                     )
                 }
                 
-                RewardedAdView(adUnitID: "ca-app-pub-3940256099942544/1712485313", isPresented: $isRewardedAdPresented)
+                RewardedAdView(adUnitID: "ca-app-pub-1213016211458907/4894339659", isPresented: $isRewardedAdPresented)
+                // test: ca-app-pub-3940256099942544/1712485313
 
             }
             

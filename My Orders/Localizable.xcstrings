@@ -3499,7 +3499,11 @@
         }
       }
     },
+    "Welcome %@!" : {
+
+    },
     "Welcome, %@!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

@@ -26,7 +26,7 @@ struct AccountView: View {
             VStack {
                 
                 if authState.isAuthenticated {
-                    Text("Welcome, \(Auth.auth().currentUser?.displayName ?? "")!")
+                    Text("Welcome \(Auth.auth().currentUser?.displayName ?? "")!")
                         .font(.largeTitle)
                         .padding(.leading)
                     
