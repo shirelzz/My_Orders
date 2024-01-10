@@ -1432,6 +1432,7 @@
       }
     },
     "Feedback" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2795,6 +2796,7 @@
       }
     },
     "Rate Us  🤍" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3176,6 +3178,7 @@
       }
     },
     "Send Suggestions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
