@@ -11,7 +11,7 @@ import UIKit
 import ZipArchive
 
 class ReceiptUtils {
-
+    
     static func drawPDF(for order: Order) -> Data {
         var dateFormatter: DateFormatter {
             let formatter = DateFormatter()
@@ -305,7 +305,7 @@ class ReceiptUtils {
                 
                 var totalPriceText = ""
                 if en {
-                    totalPriceText = "Total Cost: $\(order.totalPrice)"
+                    totalPriceText = "Total Cost: \(AppManager.shared.currencySymbol(for: AppManager.shared.currency))\(order.totalPrice)"
                 }
                 else {
                     totalPriceText = "עלות כוללת: ₪\(order.totalPrice)"

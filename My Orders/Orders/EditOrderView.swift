@@ -29,6 +29,7 @@ struct EditOrderView: View {
     @State private var filteredItems: [InventoryItem] = []
     @State private var isQuantityValid = true
     @State private var navigateToContentView = false
+    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
 
     @Environment(\.presentationMode) var presentationMode
     
@@ -55,7 +56,7 @@ struct EditOrderView: View {
                         // Calculate and display the total price
                         let totalPrice = editedOrder.orderItems.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
                         
-                        Text("Total Price: $")
+                        Text("Total Price: \(currency)")
                         Text("\(totalPrice, specifier: "%.2f")")
                     }
                 }
@@ -100,7 +101,7 @@ struct EditOrderView: View {
                         Picker("item", selection: $selectedInventoryItemIndex) {
                             ForEach( filteredItems.indices, id: \.self) { index in
                                 let item = filteredItems[index]
-                                let displayText = "\(item.name) , Q: \(item.itemQuantity), Price: $\(item.itemPrice)"
+                                let displayText = "\(item.name) , Q: \(item.itemQuantity), Price: \(currency)\(item.itemPrice)"
                                 
                                 Text(displayText)
                                     .tag(index)

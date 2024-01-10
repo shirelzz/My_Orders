@@ -10,8 +10,8 @@ import SwiftUI
 struct OrderDetailsView: View {
     @ObservedObject var orderManager: OrderManager
     @ObservedObject var inventoryManager: InventoryManager
-//    @ObservedObject var languageManager: LanguageManager
-    
+    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
+
     @State var order: Order
 
     @State private var showReceipt = false
@@ -26,9 +26,6 @@ struct OrderDetailsView: View {
         
     @Environment(\.presentationMode) var presentationMode
 
-    
-//    var flag = false
-    
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -88,19 +85,11 @@ struct OrderDetailsView: View {
                             Text("\(orderItem.inventoryItem.name)")
                             Spacer()
                             Text("Q: \(orderItem.quantity)")
-                            Text("$\(orderItem.price, specifier: "%.2f")")
+                            Text("\(currency)\(orderItem.price, specifier: "%.2f")")
                         }
                         .padding(.leading)
                     }
                 }
-//                .background(
-//                            Image("aesthetic")
-//                                .resizable()
-//                                .scaledToFill()
-////                                .edgesIgnoringSafeArea(.horizontal)
-//                                .opacity(0.1)
-//                        )
-//                .listStyle(PlainListStyle())
                 .padding()
 
                 
@@ -220,7 +209,7 @@ struct OrderDetailsView: View {
                 
                 if(order.delivery.cost != 0){
                     HStack {
-                        Text("Delivery Cost: $")
+                        Text("Delivery Cost: \(currency)")
                         Text("\(order.delivery.cost, specifier: "%.2f")")
                     }
                     .padding(.leading)
@@ -228,7 +217,7 @@ struct OrderDetailsView: View {
                 }
                 
                 HStack{
-                    Text("Total Price: $")
+                    Text("Total Price: \(currency)")
                     Text("\(order.totalPrice, specifier: "%.2f")")
                 }
                 .padding(.leading)

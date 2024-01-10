@@ -26,9 +26,7 @@ struct ContentView: View {
     @State private var isUserSignedIn = Auth.auth().currentUser != nil
     @State private var showEditOrderView = false
 
-        
     init() {}
-    
     
     var body: some View {
         

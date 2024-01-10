@@ -23,6 +23,7 @@ struct ReceiptView: View {
     @State private var lastReceipttID = OrderManager.shared.getLastReceiptID()
     @State private var receiptExists = false
     @State private var isRewardedAdPresented = false
+    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
     
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -77,7 +78,7 @@ struct ReceiptView: View {
             
             HStack{
                 Text("Price:").font(.headline)
-                Text("$")
+                Text(currency)
                 Text(String(format: "%.2f", order.totalPrice))
                 
             }
@@ -535,7 +536,7 @@ struct ReceiptView: View {
             
             var totalPriceText = ""
             if en {
-                totalPriceText = "Total Cost: $\(order.totalPrice)"
+                totalPriceText = "Total Cost: \(currency)\(order.totalPrice)"
             }
             else {
                 totalPriceText = "עלות כוללת: ₪\(order.totalPrice)"

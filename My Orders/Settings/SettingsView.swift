@@ -12,6 +12,7 @@ struct SettingsView: View {
     @ObservedObject var appManager: AppManager
     @ObservedObject var orderManager: OrderManager
     @State private var darkModeOn = false
+    @State private var selectedCurrency = AppManager.shared.currency
     
     var body: some View {
         
@@ -27,6 +28,21 @@ struct SettingsView: View {
                     
                     NavigationLink(destination: CustomizedDataView(appManager: appManager)) {
                         Label("Customized Data", systemImage: "wand.and.stars")
+                    }
+                    
+                    Picker(selection: $selectedCurrency) {
+                        Text("USD").tag("USD")
+                        Text("ILS").tag("ILS")
+                        Text("EUR").tag("EUR")
+                        Text("GBP").tag("GBP")
+                    } label: {
+                        Label("Select currency", systemImage: "dollarsign.circle")
+//                        Text("Select currency")
+                    }
+                    .pickerStyle(.menu)
+                    .onChange(of: selectedCurrency) { newValue in
+                        print("---> saving currency")
+                        AppManager.shared.saveCurrency(currency: selectedCurrency)
                     }
                 }
 

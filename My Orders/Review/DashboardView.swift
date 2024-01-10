@@ -12,6 +12,7 @@ struct DashboardView: View {
     
     @ObservedObject var orderManager: OrderManager
     @ObservedObject var inventoryManager: InventoryManager
+    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
     
     @State var mostOrderedPeriod = "Week"
     
@@ -31,7 +32,7 @@ struct DashboardView: View {
                     let numOrders = getThisWeekOrders().count
                     
                     VStack (alignment: .leading) {
-                        Text("This Week's Income: $\(thisWeekIncome, specifier: "%.2f")")                .padding()
+                        Text("This Week's Income: \(currency)\(thisWeekIncome, specifier: "%.2f")")                .padding()
                         
                         Text("Number of Orders This Week: \(numOrders)") //, specifier: "%.2f"
                             .padding()

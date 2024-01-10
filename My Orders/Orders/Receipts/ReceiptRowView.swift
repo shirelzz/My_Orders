@@ -11,6 +11,7 @@ struct ReceiptRowView: View {
         
     let order: Order
     let receipt: Receipt
+    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
 
     
     let dateFormatter: DateFormatter = {
@@ -26,7 +27,7 @@ struct ReceiptRowView: View {
             
             Text("Customer: \(order.customer.name)")
             HStack{
-                Text("Total Price: $")
+                Text("Total Price: \(currency)")
                 Text("\(order.totalPrice,  specifier: "%.2f")")
 
             }

@@ -241,6 +241,22 @@ class DatabaseManager {
             completion(notificationSettings)
         })
     }
+    
+    func fetchCurrency(path: String, completion: @escaping (String) -> ()) {
+        
+        let currencyRef = databaseRef.child(path)
+        
+        currencyRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            guard let currency = snapshot.value as? String else {
+                print("No currency data found")
+                completion("USD")
+                return
+            }
+            
+            completion(currency)
+        })
+    }
                                             
     // MARK: - Writing data
     
@@ -252,7 +268,6 @@ class DatabaseManager {
     func saveItem(_ item: InventoryItem, path: String) {
         let itemRef = databaseRef.child(path).child(item.id)
         itemRef.setValue(item.dictionaryRepresentation())
-        
     }
     
     func saveReceipt(_ receipt: Receipt, path: String) {
@@ -263,6 +278,17 @@ class DatabaseManager {
     func saveNotificationSettings(_ notificationSettings: Notifications, path: String) {
         let notificationSettingsRef = databaseRef.child(path)
         notificationSettingsRef.setValue(notificationSettings.dictionaryRepresentation())
+    }
+    
+    func saveCurrency(_ currency: String, path: String) {
+        let currencyRef = databaseRef.child(path)
+        currencyRef.setValue(currency) { error, _ in
+            if let error = error {
+                print("Error saving currency: \(error.localizedDescription)")
+            } else {
+                print("Currency saved successfully")
+            }
+        }
     }
     
     // MARK: - Deleting data
@@ -317,7 +343,7 @@ class DatabaseManager {
     // MARK: - Updating data
     
     func updateOrderInDB(_ order: Order, path: String, completion: @escaping (Bool) -> Void) {
-        let orderRef = databaseRef.child(path) //.child(order.orderID)
+        let orderRef = databaseRef.child(path)
         orderRef.updateChildValues(order.dictionaryRepresentation()) { error, _ in
             completion(error == nil)
         }

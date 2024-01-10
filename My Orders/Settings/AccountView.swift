@@ -8,15 +8,11 @@
 import SwiftUI
 import FirebaseAuth
 
-//class AuthState: ObservableObject {
-//    static var isAuthenticated = Auth.auth().currentUser != nil
-//}
-
 struct AccountView: View {
            
     @State private var showSignInView = false
     @EnvironmentObject var authState: AuthState
-    
+
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
@@ -36,38 +32,20 @@ struct AccountView: View {
                             print("sign out pressed")
                             do {
                                 try Auth.auth().signOut()
-//                                AuthState.isAuthenticated = false
                                 print("---> here 0")
                                 authState.isAuthenticated = false
-//                                presentationMode.wrappedValue.dismiss()
                                 
                             } catch {
                                 print("Error signing out: \(error.localizedDescription)")
                             }
                         }
+                        
                     }
                 } else {
-                                        
-//                    List {
-//                        Button("Sign In") {
-//                            showSignInView.toggle()
-//                        }
-//                        .sheet(isPresented: $showSignInView) {
-//                            SignInView()
-//                        }
-//                    }
-                    
                     SignInView()
-                    
-//                    NavigationStack {
-//                        
-//                        List {
-//                            NavigationLink(destination: SignInView()) {
-//                                Text("Sign In")
-//                            }
-//                        }
-//                    }
                 }
+                
+                
             }
         }
         .navigationTitle("Account")

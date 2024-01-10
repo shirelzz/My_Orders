@@ -142,7 +142,40 @@
         }
       }
     },
+    "%@%.2f" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$.2f"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@%2$.2f"
+          }
+        }
+      }
+    },
+    "%@%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$lld"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@%2$lld"
+          }
+        }
+      }
+    },
     "$" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -159,6 +192,7 @@
       }
     },
     "$%.2f" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -175,6 +209,7 @@
       }
     },
     "$%lld" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -930,6 +965,23 @@
         }
       }
     },
+    "Currency" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Currency"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מטבע"
+          }
+        }
+      }
+    },
     "Current receipt Number %lld" : {
       "localizations" : {
         "en" : {
@@ -1321,7 +1373,40 @@
         }
       }
     },
+    "Delivery cost: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delivery cost: %@"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות משלוח: %@"
+          }
+        }
+      }
+    },
+    "Delivery Cost: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delivery Cost: %@"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות משלוח: %@"
+          }
+        }
+      }
+    },
     "Delivery cost: $" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1466,6 +1551,22 @@
         }
       }
     },
+    "EUR" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "EUR"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "EUR"
+          }
+        }
+      }
+    },
     "Export Receipts" : {
       "localizations" : {
         "en" : {
@@ -1564,6 +1665,22 @@
         }
       }
     },
+    "GBP" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GBP"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GBP"
+          }
+        }
+      }
+    },
     "Generate" : {
       "localizations" : {
         "en" : {
@@ -1625,6 +1742,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "שלום!"
+          }
+        }
+      }
+    },
+    "ILS" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ILS"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ILS"
           }
         }
       }
@@ -2718,7 +2851,24 @@
         }
       }
     },
+    "Price:%@%.2f" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Price:%1$@%2$.2f"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות: %1$@%2$.2f"
+          }
+        }
+      }
+    },
     "Price:$%.2f" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3181,6 +3331,22 @@
         }
       }
     },
+    "Select currency" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select currency"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "בחירת מטבע"
+          }
+        }
+      }
+    },
     "Select image" : {
       "localizations" : {
         "en" : {
@@ -3509,7 +3675,24 @@
         }
       }
     },
+    "This Week's Income: %@%.2f" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This Week's Income: %1$@%2$.2f"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הכנסה החודש:%1$@%2$.2f"
+          }
+        }
+      }
+    },
     "This Week's Income: $%.2f" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3525,7 +3708,40 @@
         }
       }
     },
+    "Total Price: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Price: %@"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות כוללת: %@"
+          }
+        }
+      }
+    },
+    "Total Price: %@%.2f" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Total Price: %1$@%2$.2f"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות כוללת: %1$@%2$.2f"
+          }
+        }
+      }
+    },
     "Total Price: $" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3542,6 +3758,7 @@
       }
     },
     "Total Price: $%.2f" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3570,6 +3787,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "הזמנות קרובות"
+          }
+        }
+      }
+    },
+    "USD" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "USD"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "USD"
           }
         }
       }

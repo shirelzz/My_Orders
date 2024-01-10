@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 import UserNotifications
-
+import FirebaseAuth
 
 struct Manager: Codable {
     
@@ -26,11 +26,84 @@ class AppManager: ObservableObject {
     
     static var shared = AppManager()
     @Published var manager = Manager()
-    @Published var isUserSignedIn = false
-    
+    @Published var isUserSignedIn = Auth.auth().currentUser != nil
+    @Published var currency = "USD"
+
     init() {
         loadManagerData()
+        if isUserSignedIn{
+            fetchCurrencyFromDB()
+        }
+        else{
+            loadCurrencyFromUD()
+        }
     }
+    
+    func saveCurrency(currency: String) {
+        self.currency = currency
+        if isUserSignedIn{
+            print("---> saving currency 2DB")
+            saveCurrency2DB(currency)
+        }
+        else{
+            print("---> saving currency 2UD")
+            saveCurrency2UD()
+        }
+    }
+    
+    // MARK: - Database
+
+    func fetchCurrencyFromDB() {
+        if let currentUser = Auth.auth().currentUser {
+            let userID = currentUser.uid
+            print("Current UserID: \(userID)")
+            let path = "users/\(userID)/currency"
+
+            DatabaseManager.shared.fetchCurrency(path: path, completion: { currency in
+                DispatchQueue.main.async {
+                    self.currency = currency
+                    print("Success fetching currency")
+                }
+            })
+        }
+    }
+    
+    func saveCurrency2DB(_ currency: String) {
+        if let currentUser = Auth.auth().currentUser {
+            let userID = currentUser.uid
+            let path = "users/\(userID)/currency"
+            DatabaseManager.shared.saveCurrency(currency, path: path)
+        }
+    }
+    
+    // MARK: - User Defaults
+
+    
+    private func saveCurrency2UD() {
+        UserDefaults.standard.set(currency, forKey: "selectedCurrency")
+    }
+    
+    func loadCurrencyFromUD() {
+        if let storedCurrency = UserDefaults.standard.string(forKey: "selectedCurrency") {
+            self.currency = storedCurrency
+        }
+    }
+    
+    func currencySymbol(for code: String) -> String {
+        switch code {
+        case "USD":
+            return "$"
+        case "ILS":
+            return "₪"
+        case "EUR":
+            return "€"
+        case "GBP":
+            return "£"
+        default:
+            return "$" // Default to "$" if the code is not recognized
+        }
+    }
+
     
     func saveManager(manager: Manager) {
         self.manager = manager

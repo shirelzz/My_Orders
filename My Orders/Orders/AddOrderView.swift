@@ -35,7 +35,6 @@ struct AddOrderView: View {
     @State private var selectedDeliveryCost = 0
     let deliveryCosts = [0, 5, 10, 15, 20, 25, 30, 40, 50, 60]
     
-    
     @State private var pickupDateTime = Date()
     
     @State private var allergies = "No"
@@ -48,6 +47,8 @@ struct AddOrderView: View {
     @State private var isItemDetailsPopoverPresented = false
     @State private var selectedItemForDetails: InventoryItem?
     @State private var showItemDetails = false
+    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
+
     
     var body: some View {
         
@@ -122,7 +123,7 @@ struct AddOrderView: View {
                                     Text(",").font(.system(size: 14))
                                     Text("Q: \(item.itemQuantity)").font(.system(size: 14))
                                     Text(",").font(.system(size: 14))
-                                    Text("Price:$\(item.itemPrice, specifier: "%.2f")").font(.system(size: 14))
+                                    Text("Price:\(currency)\(item.itemPrice, specifier: "%.2f")").font(.system(size: 14))
                                 }
                             }
                         }
@@ -211,7 +212,7 @@ struct AddOrderView: View {
                     // Calculate and display the total price
                     let totalPrice = orderItems.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
                     
-                    Text("Total Price: $")
+                    Text("Total Price: \(currency)")
                     Text("\(totalPrice, specifier: "%.2f")")
                 }
             }
@@ -233,9 +234,9 @@ struct AddOrderView: View {
                     TextField("Address" , text: $deliveryAddress)
                         .frame(height: 50)
                     
-                    Picker("Delivery cost: $", selection: $selectedDeliveryCost) {
+                    Picker("Delivery cost: \(currency)", selection: $selectedDeliveryCost) {
                         ForEach(deliveryCosts, id: \.self) { cost in
-                            Text("$\(cost)").tag(cost)
+                            Text("\(currency)\(cost)").tag(cost)
                         }
                     }
                     .pickerStyle(DefaultPickerStyle())

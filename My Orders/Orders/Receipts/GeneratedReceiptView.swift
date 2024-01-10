@@ -11,15 +11,11 @@ import UIKit
 
 struct GeneratedReceiptView: View {
     
-    @ObservedObject var orderManager: OrderManager //n
-//    @ObservedObject var languageManager: LanguageManager
-    
-    var order: Order //@state
-    //@state
+    @ObservedObject var orderManager: OrderManager
+    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
 
-    //    let order: Order
+    var order: Order
 
-    
     @Binding var isPresented: Bool
     @State private var pdfData: Data?
     @State private var showConfirmationAlert = false
@@ -45,12 +41,7 @@ struct GeneratedReceiptView: View {
                 .bold()
                 .padding(.bottom, 20)
             
-//            Text("קבלה מספר \(order.receipt?.myID ?? 0)")
             Text("Receipt No. \(receipt.myID)")
-//            HStack {
-//                Text("Receipt No.\(orderManager.getReceipt(forOrderID: order.orderID).myID)")
-//                    }
-
 
             HStack{
                 Text("Date Generated:")
@@ -58,23 +49,15 @@ struct GeneratedReceiptView: View {
                     .fontWeight(.bold)
                     .padding(.bottom)
                 
-//                if let dateGenerated = order.receipt?.dateGenerated {
-//                    Text("\(dateFormatter.string(from: dateGenerated))").padding(.bottom)
-//                } else {
-//                    // Handle the case when dateGenerated is nil
-//                    Text("N/A").padding(.bottom)
-//                }
                 Text("\(dateFormatter.string(from: receipt.dateGenerated))").padding(.bottom)
                 
             }
-//            .environment(\.layoutDirection, languageManager.currentLanguage.layoutDirection)
 
             HStack{
                 Text("For")
                     .bold()
                 Text(order.customer.name)
             }
-//            .environment(\.layoutDirection, languageManager.currentLanguage.layoutDirection)
 
             Section(header:
                         Text("Order Details")
@@ -94,7 +77,7 @@ struct GeneratedReceiptView: View {
             
             HStack{
                 Text("Price:").font(.headline)
-                Text("$")
+                Text(currency)
                 Text(String(format: "%.2f", order.totalPrice))
                 
             }
@@ -103,28 +86,16 @@ struct GeneratedReceiptView: View {
                 
                 Text("Payment Method:")
                     .font(.headline)
-//                Text("\(order.receipt?.paymentMethod ?? "")")
                 Text("\(receipt.paymentMethod)")
 
             }
-//            .environment(\.layoutDirection, languageManager.currentLanguage.layoutDirection)
 
             HStack(alignment: .center, spacing: 5){
                 Text("Payment Date:")
                     .font(.headline)
-//                Text("\(dateFormatter.string(from: order.receipt?.paymentDate ?? Date()))")
                 Text("\(dateFormatter.string(from: receipt.paymentDate))")
 
             }
-            
-//            Text("receipt exist: \(OrderManager.shared.receiptExists(forOrderID: order.orderID).description)")
-//                .environment(\.layoutDirection, languageManager.currentLanguage.layoutDirection)
-
-            
-//            if !OrderManager.shared.receiptExists(forOrderID: order.orderID) {
-//
-//            }
-            
 
             if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
                 
@@ -158,27 +129,6 @@ struct GeneratedReceiptView: View {
                 
                 
             }
-            
-            
-//            if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
-//                Button("Share PDF Receipt") {
-//                    guard let pdfData = self.pdfData else {
-//                        return
-//                    }
-//                    
-//                    if let windowScene = UIApplication.shared.connectedScenes
-//                        .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
-//                        
-//                        let pdfShareView = SharePDFView(pdfData: pdfData)
-//                        let hostingController = UIHostingController(rootView: pdfShareView)
-//                        
-//                        if let rootViewController = windowScene.windows.first?.rootViewController {
-//                            rootViewController.present(hostingController, animated: true, completion: nil)
-//                        }
-//                    }
-//                }
-//                .padding(.top, 20)
-//            }
             
         }
         .padding()
@@ -412,7 +362,7 @@ struct GeneratedReceiptView: View {
             ]
             let totalPriceRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
             
-            let totalPriceText = "Total price: $\(order.totalPrice)"
+            let totalPriceText = "Total price: \(currency)\(order.totalPrice)"
             totalPriceText.draw(in: totalPriceRect, withAttributes: totalPriceAttributes)
             
             // Update the Y position

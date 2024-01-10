@@ -132,8 +132,6 @@ class InventoryManager: ObservableObject {
         }
     }
     
-
-    
     // load items from UserDefaults
     func loadItemsFromUD() {
         if let savedData = UserDefaults.standard.data(forKey: "items"),
