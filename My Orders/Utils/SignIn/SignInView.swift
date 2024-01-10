@@ -43,7 +43,7 @@ struct SignInView: View {
                             print("---> User is not signed in")
                         }
                         else {
-                            print("---> User is signed in")
+                            print("---> User is signed in with google")
                             authState.isAuthenticated = true
                             presentationMode.wrappedValue.dismiss()
                         }
@@ -73,6 +73,10 @@ struct SignInView: View {
                 
                 Button {
                     AuthService.share.startSignInWithAppleFlow()
+
+                    DispatchQueue.main.async {
+                        authState.isAuthenticated = true
+                    }
                 } label: {
                     AppleButtonView()
                         .frame(minWidth: 0, maxWidth: .infinity)
@@ -80,6 +84,12 @@ struct SignInView: View {
                         .cornerRadius(30)
                         .padding(.horizontal)
                         .shadow(color: .black.opacity(0.6), radius: 5, x: 0, y: 2)
+                }
+                .onChange(of: authState.isAuthenticated) { isAuthenticated in
+                    if isAuthenticated {
+                        print("---> here 1")
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 }
                 
 //                Button {} label: {
