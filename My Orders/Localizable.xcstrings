@@ -423,6 +423,23 @@
         }
       }
     },
+    "All" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הכל"
+          }
+        }
+      }
+    },
     "All Inventory Items" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1044,6 +1061,40 @@
         }
       }
     },
+    "Date Added (newest first)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date Added (newest first)"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "תאריך הוספה (מהחדש ביותר)"
+          }
+        }
+      }
+    },
+    "Date Added (oldest first)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date Added (oldest first)"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "תאריך הוספה (מהישן ביותר)"
+          }
+        }
+      }
+    },
     "Date added:" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1330,7 +1381,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "זהו"
+            "value" : "סיים"
           }
         }
       }
@@ -1745,9 +1796,15 @@
     "Language" : {
       "extractionState" : "stale",
       "localizations" : {
-        "he" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "שפה"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
             "value" : "שפה"
           }
         }
@@ -2128,7 +2185,20 @@
       }
     },
     "Number of Orders This Week: %lld" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Number of Orders This Week: %lld"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מספר הזמנות השבוע: %lld"
+          }
+        }
+      }
     },
     "OK" : {
       "extractionState" : "stale",
@@ -2709,6 +2779,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "כמות"
+          }
+        }
+      }
+    },
+    "Quantity (highest first)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quantity (highest first)"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "כמות (מהגבוה ביותר)"
+          }
+        }
+      }
+    },
+    "Quantity (lowest first)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quantity (lowest first)"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "כמות (מהנמוך ביותר)"
           }
         }
       }
@@ -3503,7 +3607,20 @@
       }
     },
     "Welcome %@!" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome %@!"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ברוכ.ה הבא.ה %@!"
+          }
+        }
+      }
     },
     "Welcome, %@!" : {
       "extractionState" : "stale",

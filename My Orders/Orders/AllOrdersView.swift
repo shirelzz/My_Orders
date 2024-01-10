@@ -66,9 +66,10 @@ struct AllOrdersView: View {
                             Menu {
                                 Picker("Filter", selection: $filterType) {
                                     ForEach(FilterType.allCases, id: \.self) { type in
-                                        Text(type.rawValue).tag(type)
+                                        Text(type.rawValue.localized)
                                     }
                                 }
+                               
                             } label: {
                                 Image(systemName: "line.horizontal.3.decrease")
                                     .resizable()
