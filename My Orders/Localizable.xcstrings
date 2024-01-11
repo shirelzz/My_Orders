@@ -2127,6 +2127,23 @@
         }
       }
     },
+    "No items found" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No items found"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "לא נמצאו פריטים"
+          }
+        }
+      }
+    },
     "No orders yet" : {
       "localizations" : {
         "en" : {
@@ -3722,6 +3739,12 @@
             "state" : "new",
             "value" : "This Week's Income:  %1$@%2$.2f"
           }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הכנסה שבועית:   %1$@%2$.2f"
+          }
         }
       }
     },
@@ -3737,7 +3760,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "הכנסה החודש:%1$@%2$.2f"
+            "value" : "הכנסה חודשית: %1$@%2$.2f"
           }
         }
       }

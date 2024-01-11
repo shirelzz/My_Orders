@@ -138,29 +138,32 @@ struct AddOrderView: View {
 
                 }
 
-                if !searchQuery.isEmpty {
-
-                        Picker("item", selection: $selectedInventoryItemIndex) {
-                            ForEach( filteredItems.indices.sorted(by: { filteredItems[$0].name < filteredItems[$1].name }), id: \.self) { index in
-                                let item = filteredItems[index]
-                                
-                                HStack{
-                                    Text("\(item.name)").font(.system(size: 14))
-                                    Text(",").font(.system(size: 14))
-                                    Text("Q: \(item.itemQuantity)").font(.system(size: 14))
-                                    Text(",").font(.system(size: 14))
-                                    Text("Price:\(currency)\(item.itemPrice, specifier: "%.2f")").font(.system(size: 14))
-                                }
+                if !searchQuery.isEmpty && !filteredItems.isEmpty {
+                    
+                    Picker("item", selection: $selectedInventoryItemIndex) {
+                        ForEach( filteredItems.indices.sorted(by: { filteredItems[$0].name < filteredItems[$1].name }), id: \.self) { index in
+                            let item = filteredItems[index]
+                            
+                            HStack{
+                                Text("\(item.name)").font(.system(size: 14))
+                                Text(",").font(.system(size: 14))
+                                Text("Q: \(item.itemQuantity)").font(.system(size: 14))
+                                Text(",").font(.system(size: 14))
+                                Text("Price:\(currency)\(item.itemPrice, specifier: "%.2f")").font(.system(size: 14))
                             }
                         }
-                        .onChange(of: selectedInventoryItemIndex) { newIndex in
-                            // Set selectedInventoryItem to the item at the selected index
-                            print("---> newIndex: \(newIndex)")
-                            selectedInventoryItem = filteredItems[newIndex]
-                        }
-                        .pickerStyle(.wheel)
-                        .labelsHidden()
                     }
+                    .onChange(of: selectedInventoryItemIndex) { newIndex in
+                        // Set selectedInventoryItem to the item at the selected index
+                        print("---> newIndex: \(newIndex)")
+                        selectedInventoryItem = filteredItems[newIndex]
+                    }
+                    .pickerStyle(.wheel)
+                    .labelsHidden()
+                }
+                else if !searchQuery.isEmpty && filteredItems.isEmpty {
+                    Text("No items found")
+                }
                 
                 TextField("Quantity", text: $orderItemQuantity)
                     .keyboardType(.numberPad)
