@@ -235,10 +235,10 @@ struct OrderDetailsView: View {
                                 Text(isEditing ? "Done" : "Edit")
                             }
                     )
-                    .sheet(isPresented: $isEditing) {
-                        EditOrderView(orderManager: orderManager, inventoryManager: inventoryManager, order: $order, editedOrder: order)
-                        
-                    }
+        .sheet(isPresented: $isEditing) {
+            EditOrderView(orderManager: orderManager, inventoryManager: inventoryManager, order: $order, editedOrder: order)
+            
+        }
     }
 }
     

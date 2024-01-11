@@ -12,6 +12,9 @@ struct ItemDetailsView: View {
     @ObservedObject var inventoryManager: InventoryManager
     @State var item: InventoryItem
     
+    @State private var isEditing = false
+
+    
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -21,68 +24,64 @@ struct ItemDetailsView: View {
     
     var body: some View {
         
-//        ZStack{
-//            
-//            VStack{
+        Form {
+            
+            VStack(alignment: .leading, spacing: 10) {
                 
-                Form {
+                Section(header: Text("Item Information")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                ) {
                     
-                    VStack(alignment: .leading, spacing: 10) {
+                    List {
+                        Text("Name: \(item.name)")
                         
-                        Section(header: Text("Item Information")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                        ) {
-                            
-                            List {
-                                Text("Name: \(item.name)")
-                                
-                                Text("Price: \(item.itemPrice, specifier: "%.2f")")
-                                
-                                Text("Quantity: \(String(item.itemQuantity))")
-                                
-                                Text("Size: \(String(item.size))")
-                                
-                                Text("Notes: \(String(item.itemNotes))")
-                                
-                                Text("Date added: \(String(item.AdditionDate.formatted()))")
-                            }
-                        }
+                        Text("Price: \(item.itemPrice, specifier: "%.2f")")
+                        
+                        Text("Quantity: \(String(item.itemQuantity))")
+                        
+                        Text("Size: \(String(item.size))")
+                        
+                        Text("Notes: \(String(item.itemNotes))")
+                        
+                        Text("Date added: \(String(item.AdditionDate.formatted()))")
                     }
-                    
-                    
-                    
-                    .padding()
-                    .navigationBarTitle("Item Details")
-                    
                 }
-//            }
-//
-//            Spacer()
-//            
-//            AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716") //"ca-app-pub-1213016211458907/1549825745"
-//                .frame(height: 50)
-//                .background(Color.white)
-//        }
-        
-
+            }
+            .padding()
+            .navigationBarTitle("Item Details")
+            .navigationBarItems(
+                                
+                            trailing:
+                                    
+                                Button(action: {
+                                    isEditing.toggle()
+                                }) {
+                                    Text(isEditing ? "Done" : "Edit")
+                                }
+                        )
+            .sheet(isPresented: $isEditing) {
+                EditItemView(inventoryManager: inventoryManager, item: item, name: item.name, price: item.itemPrice, quantity: item.itemQuantity, size: item.size, notes: item.itemNotes)
+                
+            }
+            
+        }
     }
-    
     
 }
     
-    struct ItemDetailsView_Previews: PreviewProvider {
-        static var previews: some View {
-            let sampleItem = InventoryItem(itemID: "1234",
-                                           name: "Chocolate cake",
-                                           itemPrice: 20,
-                                           itemQuantity: 20,
-                                           size: "",
-                                           AdditionDate: Date(),
-                                           itemNotes: ""
-            )
-            
-            ItemDetailsView(inventoryManager: InventoryManager.shared, item: sampleItem)
-        }
+struct ItemDetailsView_Previews: PreviewProvider {
+    static var previews: some View {
+        let sampleItem = InventoryItem(itemID: "1234",
+                                       name: "Chocolate cake",
+                                       itemPrice: 20,
+                                       itemQuantity: 20,
+                                       size: "",
+                                       AdditionDate: Date(),
+                                       itemNotes: ""
+        )
+        
+        ItemDetailsView(inventoryManager: InventoryManager.shared, item: sampleItem)
     }
+}
 
