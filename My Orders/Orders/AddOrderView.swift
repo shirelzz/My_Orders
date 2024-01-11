@@ -43,6 +43,10 @@ struct AddOrderView: View {
     @State private var notes = ""
     @State private var isAddItemViewPresented = false
     @State private var isQuantityValid = true
+    @State private var isCustomerNameValid = true
+    @State private var isCustomerPhoneValid = true
+    @State private var showNameError = false
+    @State private var showPhoneError = false
     
     @State private var isItemDetailsPopoverPresented = false
     @State private var selectedItemForDetails: InventoryItem?
@@ -57,9 +61,31 @@ struct AddOrderView: View {
             Section(header: Text("Customer Information")) {
                 
                 TextField("Customer Name", text: $customer.name)
+                    .onChange(of: customer.name) { _ in
+                            validateCustomerName()
+                    }
+                    .onAppear(){
+                        validateCustomerName()
+                    }
                 
                 TextField("Phone Number", text: $customer.phoneNumber)
                     .keyboardType(.numberPad)
+                    .onChange(of: customer.phoneNumber) { _ in
+                            validateCustomerPhone()
+                    }
+                    .onAppear(){
+                        validateCustomerPhone()
+                    }
+                
+                if !isCustomerNameValid && showNameError {
+                    Text("Please enter a valid name.")
+                        .foregroundColor(.red)
+                }
+                
+                if !isCustomerPhoneValid && showPhoneError{
+                    Text("Please enter a valid phone number.")
+                        .foregroundColor(.red)
+                }
                     
             }
             
@@ -183,7 +209,9 @@ struct AddOrderView: View {
                 }){
                     Text("Add item to order")
                 }
-                .disabled(!isQuantityValid || selectedInventoryItem == nil || orderItemQuantity == "")
+                .disabled(!isQuantityValid ||
+                          selectedInventoryItem == nil ||
+                          orderItemQuantity == "")
             }
             
             Section(header: Text("Added Items")){
@@ -277,20 +305,20 @@ struct AddOrderView: View {
                 Button(action: {
                     
                     for dessert in orderItems {
-                            // Update the quantity of the selected inventory item
+                        // Update the quantity of the selected inventory item
                         if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
                             inventoryManager.updateQuantity(item: selectedItem,
                                                             newQuantity: selectedItem.itemQuantity - dessert.quantity)
-                            }
                         }
+                    }
                     
                     for dessert in existedOrderItems {
-                            // Update the quantity of the selected inventory item
+                        // Update the quantity of the selected inventory item
                         if let selectedItem = inventoryManager.items.first(where: { $0.id == dessert.inventoryItem.itemID }) {
                             inventoryManager.updateQuantity(item: selectedItem,
                                                             newQuantity: selectedItem.itemQuantity - dessert.quantity)
-                            }
                         }
+                    }
                     
                     let newOrder = Order(
                         
@@ -303,10 +331,10 @@ struct AddOrderView: View {
                         allergies: allergies_details,
                         isDelivered: false,
                         isPaid: false
-//                        discountAmount: amount,
-//                        discountPercentage: percentage,
-//                        discountType: selectedDiscountType,
-//                        receipt: nil
+                        //                        discountAmount: amount,
+                        //                        discountPercentage: percentage,
+                        //                        discountType: selectedDiscountType,
+                        //                        receipt: nil
                         
                     )
                     
@@ -323,6 +351,18 @@ struct AddOrderView: View {
                 }) {
                     Text("Add Order")
                 }
+                .disabled(!isCustomerNameValid ||
+                          !isCustomerPhoneValid)
+                .onTapGesture {
+                    
+                    if !isCustomerNameValid {
+                        showNameError = true
+                    }
+                    
+                    if !isCustomerPhoneValid {
+                        showPhoneError = true
+                    }
+                }
             }
         }
         .navigationBarTitle("New Order")
@@ -332,7 +372,14 @@ struct AddOrderView: View {
         isQuantityValid =
         Int(orderItemQuantity) ?? 0 > 0 &&
         (Int(selectedInventoryItem?.itemQuantity ?? 0) - (Int(orderItemQuantity) ?? 0)) >= 0
-        // Int(DessertQuantity) != nil &&
+    }
+    
+    private func validateCustomerName() {
+        isCustomerNameValid = customer.name != ""
+    }
+    
+    private func validateCustomerPhone() {
+        isCustomerPhoneValid = customer.phoneNumber != ""
     }
 }
 

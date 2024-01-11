@@ -32,11 +32,11 @@ struct DashboardView: View {
                     let numOrders = getThisWeekOrders().count
                     
                     VStack (alignment: .leading) {
-                        Text("This Week's Income: \(currency)\(thisWeekIncome, specifier: "%.2f")")                .padding()
+                        Text("This Week's Income:  \(currency)\(thisWeekIncome, specifier: "%.2f")")
                         
                         Text("Number of Orders This Week: \(numOrders)") //, specifier: "%.2f"
-                            .padding()
                     }
+                    .padding(.leading)
                     
                 }
                 .padding()

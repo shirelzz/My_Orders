@@ -305,17 +305,6 @@
         }
       }
     },
-    "Add Dessert" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add Dessert"
-          }
-        }
-      }
-    },
     "Add item" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2752,6 +2741,40 @@
         }
       }
     },
+    "Please enter a valid name." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please enter a valid name."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "נא הכנס שם"
+          }
+        }
+      }
+    },
+    "Please enter a valid phone number." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please enter a valid phone number."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "נא הכנס מספר טלפון"
+          }
+        }
+      }
+    },
     "Please enter a valid quantity." : {
       "localizations" : {
         "en" : {
@@ -3692,7 +3715,18 @@
         }
       }
     },
+    "This Week's Income:  %@%.2f" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This Week's Income:  %1$@%2$.2f"
+          }
+        }
+      }
+    },
     "This Week's Income: %@%.2f" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

@@ -27,7 +27,13 @@ struct EditOrderView: View {
     @State private var selectedInventoryItemIndex = 0
     @State private var searchQuery = ""
     @State private var filteredItems: [InventoryItem] = []
+    
     @State private var isQuantityValid = true
+    @State private var isCustomerNameValid = true
+    @State private var isCustomerPhoneValid = true
+    @State private var showNameError = false
+    @State private var showPhoneError = false
+    
     @State private var navigateToContentView = false
     @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
 
@@ -40,6 +46,24 @@ struct EditOrderView: View {
             Form {
                 
                 Section(header: Text("Order Information")) {
+                    
+                    TextField("Customer Name", text: $editedOrder.customer.name)
+                        .onChange(of: editedOrder.customer.name) { _ in
+                                validateCustomerName()
+                        }
+                        .onAppear(){
+                            validateCustomerName()
+                        }
+                    
+                    TextField("Phone Number", text: $editedOrder.customer.phoneNumber)
+                        .keyboardType(.numberPad)
+                        .onChange(of: editedOrder.customer.phoneNumber) { _ in
+                                validateCustomerPhone()
+                        }
+                        .onAppear(){
+                            validateCustomerPhone()
+                        }
+                    
                     DatePicker("Order Date", selection: $editedOrder.orderDate, in: Date(timeIntervalSince1970: 0)..., displayedComponents: [.date, .hourAndMinute])
                 }
                 
@@ -240,7 +264,18 @@ struct EditOrderView: View {
                         }
                         
                         presentationMode.wrappedValue.dismiss()
-
+                    }
+                    .disabled(!isCustomerNameValid ||
+                              !isCustomerPhoneValid)
+                    .onTapGesture {
+                        
+                        if !isCustomerNameValid {
+                            showNameError = true
+                        }
+                        
+                        if !isCustomerPhoneValid {
+                            showPhoneError = true
+                        }
                     }
                 }
             )
@@ -274,6 +309,14 @@ struct EditOrderView: View {
     
     private func validateQuantity() {
         isQuantityValid = Int(newDessertQuantity) != nil && Int(newDessertQuantity) ?? 0 > 0
+    }
+    
+    private func validateCustomerName() {
+        isCustomerNameValid = editedOrder.customer.name != ""
+    }
+    
+    private func validateCustomerPhone() {
+        isCustomerPhoneValid = editedOrder.customer.phoneNumber != ""
     }
     
     private func addDessert() {
