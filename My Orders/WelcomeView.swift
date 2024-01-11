@@ -23,8 +23,11 @@ struct WelcomeView: View {
     var body: some View {
         
         let guestWidth = UIScreen.main.bounds.width - 32
+        let height = UIScreen.main.bounds.height - 32
+
         
         NavigationView {
+            
             VStack {
                 
                 Image("Desk2")
@@ -55,6 +58,9 @@ struct WelcomeView: View {
                             hasLaunchedBefore = true
                             isGoogleSignInSuccessful = true
                         }
+                        else {
+                            Toast.showToast(message: "We had an error signing you in")
+                        }
                     }
                     
                 }
@@ -73,6 +79,9 @@ struct WelcomeView: View {
                         hasLaunchedBefore = true
                         isAppleSignInSuccessful = true
                     }
+                    else {
+                        Toast.showToast(message: "We had an error signing you in")
+                    }
                     
 
                 } label: {
@@ -87,40 +96,37 @@ struct WelcomeView: View {
                     ContentView()
                 })
                 
-//                Button {
-//                    appleButton.signIn()
-//                } label: {
-//                    AppleButtonView()
-//                        .frame(minWidth: 0, maxWidth: .infinity)
-//                        .frame(height: 50)
-//                        .padding(.horizontal)
-//                }
-//                .padding()
-                
                 Text("or")
                     .foregroundColor(.gray)
                     .padding()
                 
                 Button {
-                           isGuestButtonTapped = true
-                           
-                           // Update hasLaunchedBefore to true when the user continues as a guest
-                           hasLaunchedBefore = true
-                       } label: {
-                           Text("Continue as Guest")
-                               .frame(minWidth: 0, maxWidth: .infinity)
-                               .frame(width: guestWidth, height: 50)
-                               .foregroundColor(.white)
-                               .background(Color.accentColor.opacity(0.9))
-                               .cornerRadius(30)
-                               .padding(.horizontal)
-                       }
-                       .sheet(isPresented: $isGuestButtonTapped, content: {
-                           ContentView()
-                       })
-                       .padding(.bottom, 40)
+                    isGuestButtonTapped = true
+                    
+                    // Update hasLaunchedBefore to true when the user continues as a guest
+                    hasLaunchedBefore = true
+                } label: {
+                    Text("Continue as Guest")
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                        .frame(width: guestWidth, height: 50)
+                        .foregroundColor(.white)
+                        .background(Color.accentColor.opacity(0.9))
+                        .cornerRadius(30)
+                        .padding(.horizontal)
+                }
+                .sheet(isPresented: $isGuestButtonTapped, content: {
+                    ContentView()
+                })
+                .padding()
 
-                Spacer(minLength: 60)
+                Text("Note: signing in with Google or Apple allows you to view your data through all your connected devices")
+                    .foregroundColor(.gray)
+                    .padding(.leading, 20)
+                    .padding(.trailing, 20)
+
+
+
+                Spacer(minLength: height / 7)
             }
             .navigationBarHidden(true)
         }

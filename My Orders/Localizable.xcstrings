@@ -130,7 +130,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@ (Quantity: %2$lld)"
           }
         },
@@ -2170,6 +2170,23 @@
         }
       }
     },
+    "Note: signing in with Google or Apple allows you to view your data through all your connected devices" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note: signing in with Google or Apple allows you to view your data through all your connected devices"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שימ.י לב: התחברות באמצעות גוגל או אפל מאפשרת לך לצפות במידע דרך כל המכשירים המקושרים לחשבון שלך."
+          }
+        }
+      }
+    },
     "Notes" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3819,6 +3836,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "איזה כיף לראות אותך 🥳"
+          }
+        }
+      }
+    },
+    "We had an error signing you in" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We had an error signing you in"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "נתקלנו בבעיה בתהליך ההרשמה שלך"
           }
         }
       }
