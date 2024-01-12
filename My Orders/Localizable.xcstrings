@@ -3024,6 +3024,22 @@
         }
       }
     },
+    "Quantity exceeds available quantity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quantity exceeds available quantity"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הכמות שהזנת גבוהה מהכמות במלאי"
+          }
+        }
+      }
+    },
     "Quantity is less or equal to zero." : {
       "localizations" : {
         "en" : {
@@ -3844,6 +3860,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "עלות כוללת: %.2f₪"
+          }
+        }
+      }
+    },
+    "Total Price:%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Price:%@"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות כוללת:%@"
           }
         }
       }

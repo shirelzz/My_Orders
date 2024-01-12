@@ -23,7 +23,8 @@ struct AddOrderView: View {
     @State private var filteredItems: [InventoryItem] = []
     
     @State private var orderItemQuantity = ""
-    @State private var DessertPrice = 0
+    @State private var orderItemNewQuantity = ""
+    @State private var orderItemNewPrice = ""
     @State private var isAddingDessert = false
     
     @State private var orderItems: [OrderItem] = []
@@ -39,15 +40,17 @@ struct AddOrderView: View {
     
     @State private var allergies = "No"
     @State private var allergies_details = ""
-    
     @State private var notes = ""
+    
     @State private var isAddItemViewPresented = false
     @State private var isQuantityValid = true
     @State private var isCustomerNameValid = true
     @State private var isCustomerPhoneValid = true
     @State private var showNameError = false
     @State private var showPhoneError = false
-    
+    @State private var isPopoverPresented: Bool = false
+    @State private var isNewQuantityValid: Bool = true
+
     @State private var isItemDetailsPopoverPresented = false
     @State private var selectedItemForDetails: InventoryItem?
     @State private var showItemDetails = false
@@ -225,17 +228,80 @@ struct AddOrderView: View {
                         Spacer()
                         
                         Button(action: {
+                            orderItemNewQuantity = orderItems[index].quantity.description
+                            orderItemNewPrice = orderItems[index].price.description
+
+                            // Show the popover
+                            isPopoverPresented.toggle()
+                        }) {
+                            Image(systemName: "pencil")
+                                .resizable()
+                                .foregroundColor(.accentColor)
+                                .frame(width: 20,height: 20)
+                        }
+                        .buttonStyle(.bordered)
+                        .popover(isPresented: $isPopoverPresented, arrowEdge: .top) {
+                            VStack {
+                                
+                                let editedItem = orderItems[index]
+                                Text(editedItem.inventoryItem.name)
+                                
+                                TextField("Quantity", text: $orderItemNewQuantity)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .keyboardType(.numberPad)
+                                    .padding()
+                                    .onChange (of: orderItemNewQuantity) { _ in
+                                        let newQuantity = (Int)(orderItemNewQuantity) ?? orderItems[index].quantity
+                                        validateNewQuantity(index: index, quantity: newQuantity)
+                                    }
+                                
+                                if !isNewQuantityValid {
+                                    Text("Quantity exceeds available quantity")
+                                        .foregroundStyle(.red)
+                                }
+
+                                TextField("Price", text: $orderItemNewPrice)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .keyboardType(.decimalPad)
+                                    .padding()
+                                
+                                Button("Save") {
+                                    // Update the quantity for the selected item
+                                    let newQuantity = (Int)(orderItemNewQuantity) ?? orderItems[index].quantity
+                                    let newPrice = (Double)(orderItemNewPrice) ?? orderItems[index].price
+                                    
+                                    if isNewQuantityValid {
+                                        orderItems[index].quantity = newQuantity
+                                    }
+                                    
+                                    orderItems[index].price = newPrice
+
+                                    isPopoverPresented.toggle()
+                                }
+                                .padding()
+                                .buttonStyle(.borderedProminent)
+                                .disabled(!isNewQuantityValid)
+
+                                
+                            }
+                            .padding()
+                        }
+                        
+                        Button(action: {
                             // Get the selected dessert
                             let deletedDessert = orderItems[index]
                             
                             // Delete the dessert from the list
                             orderItems.remove(at: index)
-
+                            
                         }) {
                             Image(systemName: "trash")
+                                .resizable()
                                 .foregroundColor(.red)
+                                .frame(width: 20,height: 20)
                         }
-
+                        .buttonStyle(.bordered)
+                        
                     }
                 }
                 
@@ -243,7 +309,7 @@ struct AddOrderView: View {
                     // Calculate and display the total price
                     let totalPrice = orderItems.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
                     
-                    Text("Total Price: \(currency)")
+                    Text("Total Price:\(currency)")
                     Text("\(totalPrice, specifier: "%.2f")")
                 }
             }
@@ -377,6 +443,10 @@ struct AddOrderView: View {
         (Int(selectedInventoryItem?.itemQuantity ?? 0) - (Int(orderItemQuantity) ?? 0)) >= 0
     }
     
+    private func validateNewQuantity(index: Int, quantity: Int) {
+        isNewQuantityValid = orderItems[index].inventoryItem.itemQuantity - quantity >= 0
+    }
+    
     private func validateCustomerName() {
         isCustomerNameValid = customer.name != ""
     }
@@ -385,6 +455,7 @@ struct AddOrderView: View {
         isCustomerPhoneValid = customer.phoneNumber != ""
     }
 }
+    
 
 #Preview {
     AddOrderView(orderManager: OrderManager.shared,
