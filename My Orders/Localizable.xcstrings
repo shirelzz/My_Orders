@@ -146,7 +146,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@%2$.2f"
           }
         },
@@ -301,6 +301,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "חשבון"
+          }
+        }
+      }
+    },
+    "Add" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הוסף"
           }
         }
       }
@@ -3559,6 +3575,22 @@
         }
       }
     },
+    "Shopping List" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "רשימת קניות"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "רשימת קניות"
+          }
+        }
+      }
+    },
     "Show Preview" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4065,23 +4097,13 @@
         }
       }
     },
-    "You might need to relaunch the app before you see a change through all screens" : {
-      "localizations" : {
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "אולי תצטרך.י להפעיל את האפליקציה מחדש כדי לראות את השינוי בכל המסכים"
-          }
-        }
-      }
-    },
-    "You might need to relaunch the app before you see changes through all screens" : {
-      "extractionState" : "stale",
+    "You might need to relaunch the app before you see this change through all screens" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You might need to relaunch the app before you see changes through all screens"
+            "value" : "You might need to relaunch the app before you see this change through all screens"
           }
         },
         "he" : {

@@ -14,7 +14,8 @@ struct ContentView: View {
     @StateObject private var notificationManager = NotificationManager.shared
     @StateObject private var orderManager = OrderManager.shared
     @StateObject private var inventoryManager = InventoryManager.shared
-    
+    @StateObject private var shoppingList = ShoppingList.shared
+
     @State private var selectedOrder: Order = Order()
     @State private var showDeleteAlert = false
     @State private var showAllOrders = false
@@ -193,6 +194,12 @@ struct ContentView: View {
                         HStack {
                             NavigationLink( destination: InventoryContentView(inventoryManager: inventoryManager)) {
                                 Label("Inventory", systemImage: "cube")
+                            }
+                        }
+                        
+                        HStack {
+                            NavigationLink( destination: ShoppingListView(shoppingList: shoppingList)) {
+                                Label("Shopping List", systemImage: "cart")
                             }
                         }
                         
