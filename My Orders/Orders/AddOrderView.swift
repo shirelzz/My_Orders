@@ -163,6 +163,7 @@ struct AddOrderView: View {
                     }
                     .pickerStyle(.wheel)
                     .labelsHidden()
+                    .frame(height: 100)
                 }
                 else if !searchQuery.isEmpty && filteredItems.isEmpty {
                     Text("No items found")

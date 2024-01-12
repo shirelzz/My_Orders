@@ -354,17 +354,6 @@
         }
       }
     },
-    "Add New Dessert" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add New Dessert"
-          }
-        }
-      }
-    },
     "Add New Item" : {
       "localizations" : {
         "en" : {
@@ -3748,6 +3737,38 @@
         }
       }
     },
+    "This Photo will be used for your receipts as a logo" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This Photo will be used for your receipts as a logo"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "תמונה זו תשמש בקבלות כלוגו"
+          }
+        }
+      }
+    },
+    "This Photo will be used for your receipts as a signature" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This Photo will be used for your receipts as a signature"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "תמונה זו תשמש בקבלות כחתימה"
+          }
+        }
+      }
+    },
     "This Week's Income:  %@%.2f" : {
       "localizations" : {
         "en" : {
@@ -4040,6 +4061,33 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "כן"
+          }
+        }
+      }
+    },
+    "You might need to relaunch the app before you see a change through all screens" : {
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "אולי תצטרך.י להפעיל את האפליקציה מחדש כדי לראות את השינוי בכל המסכים"
+          }
+        }
+      }
+    },
+    "You might need to relaunch the app before you see changes through all screens" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You might need to relaunch the app before you see changes through all screens"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "אולי תצטרך.י להפעיל את האפליקציה מחדש כדי לראות את השינוי בכל המסכים"
           }
         }
       }

@@ -30,6 +30,9 @@ struct SettingsView: View {
                         Label("Customized Data", systemImage: "wand.and.stars")
                     }
                     
+                }
+                
+                Section {
                     Picker(selection: $selectedCurrency) {
                         Text("USD").tag("USD")
                         Text("ILS").tag("ILS")
@@ -37,14 +40,16 @@ struct SettingsView: View {
                         Text("GBP").tag("GBP")
                     } label: {
                         Label("Select currency", systemImage: "dollarsign.circle")
-//                        Text("Select currency")
                     }
                     .pickerStyle(.menu)
                     .onChange(of: selectedCurrency) { newValue in
-                        print("---> saving currency")
                         AppManager.shared.saveCurrency(currency: selectedCurrency)
                     }
+                } footer: {
+                    Text("You might need to relaunch the app before you see change through all screens")
                 }
+                
+                
 
                 
                 Section(header: Text("Notification center")) {
@@ -62,6 +67,8 @@ struct SettingsView: View {
                 }
 
             }
+            
+            
             
             AdBannerView(adUnitID: "ca-app-pub-1213016211458907/1549825745")
                 .frame(height: 50)

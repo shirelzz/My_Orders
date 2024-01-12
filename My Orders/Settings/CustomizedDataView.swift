@@ -30,7 +30,7 @@ struct CustomizedDataView: View {
         Form {
             List {
                 
-                Section(header: Text("Logo")) {
+                Section() {
                     HStack {
                         appManager.getLogoImage()
                             .resizable()
@@ -50,9 +50,16 @@ struct CustomizedDataView: View {
                                 }
                         }
                     }
+                } header: {
+                    Text("Logo")
+                } footer: {
+                    Text("This Photo will be used for your receipts as a logo")
                 }
+                
 
-                Section(header: Text("Signature")) {
+                Section() {
+                    VStack(alignment: .leading, spacing: 8) {
+
                     HStack {
                         appManager.getSignatureImage()
                             .resizable()
@@ -72,8 +79,14 @@ struct CustomizedDataView: View {
                                 }
                         }
                     }
+                    
+                        
+                    }
+                } header: {
+                    Text("Signature")
+                } footer: {
+                    Text("This Photo will be used for your receipts as a signature")
                 }
-
                                 
                 HStack {
                     
