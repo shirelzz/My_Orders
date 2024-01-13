@@ -36,6 +36,11 @@
 		D66A371E2B290F4700A921CF /* EditOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A371D2B290F4700A921CF /* EditOrderView.swift */; };
 		D66A37202B2B3EA600A921CF /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = D66A371F2B2B3EA600A921CF /* FirebaseMessaging */; };
 		D68867E02ACA247A00BCE734 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68867DF2ACA247900BCE734 /* SearchBar.swift */; };
+		D68CEA202B52EE25006D4933 /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68CEA1F2B52EE25006D4933 /* Encryption.swift */; };
+		D68CEA222B52FE43006D4933 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68CEA212B52FE43006D4933 /* User.swift */; };
+		D68CEA242B52FEB3006D4933 /* UserRoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68CEA232B52FEB3006D4933 /* UserRoleView.swift */; };
+		D68CEA262B53028C006D4933 /* VendorTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68CEA252B53028C006D4933 /* VendorTypeView.swift */; };
+		D68CEA282B53047F006D4933 /* CustomerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68CEA272B53047F006D4933 /* CustomerContentView.swift */; };
 		D6AF62C42B126DCA0056C973 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62C32B126DCA0056C973 /* Toast.swift */; };
 		D6AF62D02B12BCB90056C973 /* InventoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62CF2B12BCB90056C973 /* InventoryItem.swift */; };
 		D6AF62D42B12BDAB0056C973 /* InventoryContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62D32B12BDAB0056C973 /* InventoryContentView.swift */; };
@@ -111,6 +116,11 @@
 		D66A371D2B290F4700A921CF /* EditOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOrderView.swift; sourceTree = "<group>"; };
 		D67557DA2B4E1D8900F4036E /* My Orders.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "My Orders.entitlements"; sourceTree = "<group>"; };
 		D68867DF2ACA247900BCE734 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		D68CEA1F2B52EE25006D4933 /* Encryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryption.swift; sourceTree = "<group>"; };
+		D68CEA212B52FE43006D4933 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		D68CEA232B52FEB3006D4933 /* UserRoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRoleView.swift; sourceTree = "<group>"; };
+		D68CEA252B53028C006D4933 /* VendorTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorTypeView.swift; sourceTree = "<group>"; };
+		D68CEA272B53047F006D4933 /* CustomerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerContentView.swift; sourceTree = "<group>"; };
 		D6AF62C32B126DCA0056C973 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Toast.swift; path = "My Orders/Utils/Toast.swift"; sourceTree = SOURCE_ROOT; };
 		D6AF62CF2B12BCB90056C973 /* InventoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryItem.swift; sourceTree = "<group>"; };
 		D6AF62D32B12BDAB0056C973 /* InventoryContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryContentView.swift; sourceTree = "<group>"; };
@@ -253,6 +263,7 @@
 				D6B7A7AD2B4E8CE900E7D941 /* NotificationManager.swift */,
 				D657A2812B516CF60009FCD6 /* ShoppingList.swift */,
 				D657A2832B516D5F0009FCD6 /* ShoppingListView.swift */,
+				D68CEA1F2B52EE25006D4933 /* Encryption.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -307,6 +318,10 @@
 				D6F6A3342AC593FA002ECA81 /* Assets.xcassets */,
 				D6F6A3362AC593FA002ECA81 /* Preview Content */,
 				D6AF63092B1972620056C973 /* Localizable.xcstrings */,
+				D68CEA212B52FE43006D4933 /* User.swift */,
+				D68CEA232B52FEB3006D4933 /* UserRoleView.swift */,
+				D68CEA252B53028C006D4933 /* VendorTypeView.swift */,
+				D68CEA272B53047F006D4933 /* CustomerContentView.swift */,
 			);
 			path = "My Orders";
 			sourceTree = "<group>";
@@ -500,6 +515,8 @@
 				D6AF62D02B12BCB90056C973 /* InventoryItem.swift in Sources */,
 				D66A37092B28801200A921CF /* FirebAuth.swift in Sources */,
 				D64DD7502B1B8C910066BB7E /* Whatsapp.swift in Sources */,
+				D68CEA242B52FEB3006D4933 /* UserRoleView.swift in Sources */,
+				D68CEA282B53047F006D4933 /* CustomerContentView.swift in Sources */,
 				D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */,
 				D6AF62D42B12BDAB0056C973 /* InventoryContentView.swift in Sources */,
 				D6AF62EA2B1395B10056C973 /* ImagePicker.swift in Sources */,
@@ -507,6 +524,7 @@
 				D6AF62C42B126DCA0056C973 /* Toast.swift in Sources */,
 				D6F6A35B2AC59961002ECA81 /* OrdersManager.swift in Sources */,
 				D6AF62EC2B13A7D20056C973 /* AppManager.swift in Sources */,
+				D68CEA262B53028C006D4933 /* VendorTypeView.swift in Sources */,
 				D66A37132B28A79F00A921CF /* AppleButtonLogic.swift in Sources */,
 				D64DD75B2B2273470066BB7E /* DashboardView.swift in Sources */,
 				D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */,
@@ -514,10 +532,12 @@
 				D6AF62F82B151CE80056C973 /* NotificationSettingsView.swift in Sources */,
 				D6F6A3632AC59FCE002ECA81 /* AddOrderView.swift in Sources */,
 				D6F6A3612AC59FB6002ECA81 /* OrderRowView.swift in Sources */,
+				D68CEA222B52FE43006D4933 /* User.swift in Sources */,
 				D6AF62E22B136A4F0056C973 /* AccountView.swift in Sources */,
 				D6F8CA732B31C40E0031A7A2 /* DatabaseManager.swift in Sources */,
 				D6F6A35F2AC59CEF002ECA81 /* OrderDetailsView.swift in Sources */,
 				D6AF62F22B14059C0056C973 /* MainView.swift in Sources */,
+				D68CEA202B52EE25006D4933 /* Encryption.swift in Sources */,
 				D6AF62F42B14A99B0056C973 /* GeneratedReceiptView.swift in Sources */,
 				D6AF62F02B13FCB10056C973 /* LaunchView.swift in Sources */,
 				D66262192B3996D80003608B /* AdsViews.swift in Sources */,

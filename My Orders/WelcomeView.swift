@@ -65,7 +65,8 @@ struct WelcomeView: View {
                     
                 }
                 .sheet(isPresented: $isGoogleSignInSuccessful, content: {
-                    ContentView()
+                    UserRoleView()
+//                    ContentView()
                 })
                 .frame(minWidth: 0 , maxWidth: .infinity)
                 .frame(height: 50)
@@ -93,7 +94,8 @@ struct WelcomeView: View {
                         .shadow(color: .black.opacity(0.6), radius: 5, x: 0, y: 2)
                 }
                 .sheet(isPresented: $isAppleSignInSuccessful, content: {
-                    ContentView()
+                    UserRoleView()
+//                    ContentView()
                 })
                 
                 Text("or")
@@ -115,15 +117,17 @@ struct WelcomeView: View {
                         .padding(.horizontal)
                 }
                 .sheet(isPresented: $isGuestButtonTapped, content: {
-                    ContentView()
+//                    ContentView()
+                    UserRoleView()
                 })
                 .padding()
 
-                Text("Note: signing in with Google or Apple allows you to view your data through all your connected devices")
+                Text("Note: signing in with Google or Apple allows you to view your data through all your connected devices.")
                     .foregroundColor(.gray)
                     .padding(.leading, 20)
                     .padding(.trailing, 20)
 
+//                Text("Note: signing in with Google or Apple allows you to view your data through all your connected devices. And share your inventory items with your customers if you would like to.")
 
 
                 Spacer(minLength: height / 7)

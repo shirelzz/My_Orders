@@ -28,18 +28,42 @@ struct AccountView: View {
                     
                     List {
                         
+                        Section {
+                        
+                            if AppManager.shared.getPublicID() == "" {
+                                Button("Create public code") {
+                                    
+                                    do {
+                                        if let currentUser = Auth.auth().currentUser {
+                                            let userID = currentUser.uid
+                                            let publicID = try Encryption.encryptID(userID: userID)
+                                            AppManager.shared.savePublicID(publicID: publicID)
+                                        }
+                                    } catch {
+                                        print("Error encrypting ID: \(error)")
+                                    }
+                                }
+                            }
+                            else {
+                                
+                                Button("Copy public code") {
+                                    UIPasteboard.general.string = AppManager.shared.getPublicID()
+                                }
+                            }
+                        } footer: {
+                            Text("By sharing this code you allow clients view your public inventory items")
+                        }
+                        
                         Button("Sign Out") {
-                            print("sign out pressed")
                             do {
                                 try Auth.auth().signOut()
-                                print("---> here 0")
                                 authState.isAuthenticated = false
                                 
                             } catch {
                                 print("Error signing out: \(error.localizedDescription)")
                             }
                         }
-                        
+
                     }
                 } else {
                     SignInView()

@@ -28,11 +28,13 @@ class AppManager: ObservableObject {
     @Published var manager = Manager()
     @Published var isUserSignedIn = Auth.auth().currentUser != nil
     @Published var currency = "USD"
+    private var publicID: String?
 
     init() {
         loadManagerData()
         if isUserSignedIn{
             fetchCurrencyFromDB()
+            fetchPublicIDFromDB()
         }
         else{
             loadCurrencyFromUD()
@@ -48,6 +50,13 @@ class AppManager: ObservableObject {
         else{
             print("---> saving currency 2UD")
             saveCurrency2UD()
+        }
+    }
+    
+    func savePublicID(publicID: String) {
+        self.publicID = publicID
+        if isUserSignedIn{
+            savePublicID2DB(publicID)
         }
     }
     
@@ -73,6 +82,34 @@ class AppManager: ObservableObject {
             let userID = currentUser.uid
             let path = "users/\(userID)/currency"
             DatabaseManager.shared.saveCurrency(currency, path: path)
+        }
+    }
+    
+    func fetchPublicIDFromDB() {
+        if let currentUser = Auth.auth().currentUser {
+            let userID = currentUser.uid
+            let path = "users/\(userID)/publicID"
+
+            DatabaseManager.shared.fetchPublicID(path: path, completion: { publicID in
+                DispatchQueue.main.async {
+                    if publicID != "" {
+                        self.publicID = publicID
+                        print("Success fetching publicID")
+                    }
+                }
+            })
+        }
+    }
+    
+    func getPublicID() -> String {
+        return self.publicID ?? ""
+    }
+    
+    func savePublicID2DB(_ publicID: String) {
+        if let currentUser = Auth.auth().currentUser {
+            let userID = currentUser.uid
+            let path = "users/\(userID)/publicID"
+            DatabaseManager.shared.savePublicID(publicID, path: path)
         }
     }
     

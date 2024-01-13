@@ -685,6 +685,9 @@
         }
       }
     },
+    "Beauty" : {
+
+    },
     "Bit" : {
       "localizations" : {
         "en" : {
@@ -700,6 +703,9 @@
           }
         }
       }
+    },
+    "By sharing this code you allow clients view your public inventory items" : {
+
     },
     "Cancel" : {
       "localizations" : {
@@ -943,6 +949,9 @@
         }
       }
     },
+    "Copy public code" : {
+
+    },
     "Create new item" : {
       "localizations" : {
         "en" : {
@@ -958,6 +967,9 @@
           }
         }
       }
+    },
+    "Create public code" : {
+
     },
     "Currency" : {
       "extractionState" : "stale",
@@ -991,6 +1003,9 @@
           }
         }
       }
+    },
+    "Customer" : {
+
     },
     "Customer Information" : {
       "extractionState" : "manual",
@@ -1627,6 +1642,9 @@
         }
       }
     },
+    "Food" : {
+
+    },
     "For" : {
       "localizations" : {
         "en" : {
@@ -1724,7 +1742,6 @@
       }
     },
     "Hello, World!" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2198,6 +2215,9 @@
         }
       }
     },
+    "Note: signing in with Google or Apple allows you to view your data through all your connected devices." : {
+
+    },
     "Notes" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2520,6 +2540,9 @@
           }
         }
       }
+    },
+    "Other" : {
+
     },
     "Paid" : {
       "extractionState" : "manual",
@@ -3965,6 +3988,9 @@
           }
         }
       }
+    },
+    "Vendor" : {
+
     },
     "We are so happy to see you 🥳" : {
       "localizations" : {
