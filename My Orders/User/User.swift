@@ -40,13 +40,18 @@ struct User: Codable, Identifiable {
     
     func dictionaryRepresentation() -> [String: Any] {
 
-        let userDict: [String: Any] = [
+        var userDict: [String: Any] = [
             
             "uid": uid,
-            "role": role,
-            "vendorType": vendorType!
+            "role": role.rawValue,
+//            "vendorType": vendorType!.rawValue
 
         ]
+        
+        if let vendorTypeRawValue = vendorType?.rawValue {
+            userDict["vendorType"] = vendorTypeRawValue
+        }
+        
         return userDict
     }
     
