@@ -15,9 +15,7 @@ struct MainView: View {
     @State private var showLogo = true
     @AppStorage("hasLaunchedBefore") private var hasLaunchedBefore: Bool = false
     @State private var showContentView = false
-
-//    @StateObject var authService = AuthService()
-//    init(){}
+    @EnvironmentObject var authState: AuthState
 
     var body: some View {
 
@@ -41,18 +39,38 @@ struct MainView: View {
                 
                 NavigationView {
                     if !hasLaunchedBefore {
-                        WelcomeView()
-                            .onAppear {
-                                GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+                        
+                        if authState.isAuthenticated {
+                            UserRoleView()
+                                .navigationBarHidden(true)
+                        }
+                        
+                        else {
+                            WelcomeView()
+                                .onAppear {
+                                    GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+                                    }
                                 }
-                            }
-                            .onOpenURL { url in
-                                GIDSignIn.sharedInstance.handle(url)
-                            }
-                            .navigationBarHidden(true)
+                                .onOpenURL { url in
+                                    GIDSignIn.sharedInstance.handle(url)
+                                }
+                                .navigationBarHidden(true)
+                        }
+                       
                     } else {
-                        ContentView()
-                            .navigationBarHidden(true)
+                        
+                        if UserManager.shared.user.role == UserRole.vendor {
+                            ContentView()
+                                .navigationBarHidden(true)
+                        }
+                        else if UserManager.shared.user.role == UserRole.customer {
+                            CustomerContentView()
+                                .navigationBarHidden(true)
+                        }
+                        else {
+                            UserRoleView()
+                                .navigationBarHidden(true)
+                        }
                     }
                 }
                 .onAppear {

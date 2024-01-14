@@ -391,7 +391,7 @@ class DatabaseManager {
     }
     
     func saveUser(_ user: User, path: String) {
-        let userRef = databaseRef.child(path)
+        let userRef = databaseRef.child(path) //.child(user.id)
         userRef.setValue(user.dictionaryRepresentation()) { error, _ in
             if let error = error {
                 print("Error saving user: \(error.localizedDescription)")

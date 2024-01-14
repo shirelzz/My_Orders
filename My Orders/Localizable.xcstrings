@@ -653,7 +653,6 @@
       }
     },
     "Back" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -684,9 +683,6 @@
           }
         }
       }
-    },
-    "Beauty" : {
-
     },
     "Bit" : {
       "localizations" : {
@@ -885,6 +881,9 @@
         }
       }
     },
+    "Continue" : {
+
+    },
     "Continue as Guest" : {
       "localizations" : {
         "en" : {
@@ -1003,9 +1002,6 @@
           }
         }
       }
-    },
-    "Customer" : {
-
     },
     "Customer Information" : {
       "extractionState" : "manual",
@@ -1642,9 +1638,6 @@
         }
       }
     },
-    "Food" : {
-
-    },
     "For" : {
       "localizations" : {
         "en" : {
@@ -1837,6 +1830,15 @@
           }
         }
       }
+    },
+    "isBeautyPressed %@" : {
+
+    },
+    "isFoodPressed %@" : {
+
+    },
+    "isOtherPressed %@" : {
+
     },
     "isPaid: %@" : {
       "extractionState" : "stale",
@@ -2540,9 +2542,6 @@
           }
         }
       }
-    },
-    "Other" : {
-
     },
     "Paid" : {
       "extractionState" : "manual",
@@ -3988,9 +3987,6 @@
           }
         }
       }
-    },
-    "Vendor" : {
-
     },
     "We are so happy to see you 🥳" : {
       "localizations" : {

@@ -72,10 +72,7 @@ struct VendorTypeView: View {
 //                .onTapGesture {
 //                    isPressed.toggle()
 //                }
-                
-                Text("isFoodPressed \(isFoodPressed.description)")
-                Text("isBeautyPressed \(isBeautyPressed.description)")
-                Text("isOtherPressed \(isOtherPressed.description)")
+
                 
                 CustomButton(title: "Food", isPressed: $isFoodPressed, action: {
                                 user = User(uid: UUID().uuidString, role: .vendor, vendorType: .food)
@@ -131,7 +128,8 @@ struct VendorTypeView: View {
                 ToolbarItem(placement: .bottomBar) {
                     HStack {
                         Button("Back") {
-//                            path.popTo(UserRoleView.self)
+                            Router.shared.changeRoute(RoutePath(.userRole))
+//                            Router.shared.backRoute()
 //                            showBackView = true
                         }
                         
@@ -145,16 +143,44 @@ struct VendorTypeView: View {
                             UserManager.shared.saveUser2DB(user)
                             hasLaunchedBefore = true
                             showContentView = true
+                            Router.shared.changeRoute(RoutePath(.contentView))
                         }
-                        .navigationDestination(isPresented: $showContentView, destination: {
-                            ContentView()
-                        })
+//                        .navigationDestination(isPresented: $showContentView, destination: {
+//                            ContentView()
+//                        })
                         .disabled(!isFoodPressed && !isBeautyPressed && !isOtherPressed)
-
+                        .task {
+                            Router.shared.changeRoute = changeRoute
+                            Router.shared.backRoute = backRoute
+                        }
                     }
                 }
             }
+            .navigationDestination(for: RoutePath.self) { route in
+                switch route.route {
+                case .customerContent:
+                    Text("customerContent")
+                    
+                case .vendorType:
+                    Text("vendorType")
+                    
+                case .userRole:
+    //                Router.shared.backRoute()
+                    UserRoleView()
+    //                Text("")
+
+                case .contentView:
+                    ContentView()
+
+                case .none:
+                    EmptyView()
+//                    Text("none")
+
+                }
+            }
         }
+        
+
     }
     
     func resetButtons(isFood: Bool = false, isBeauty: Bool = false, isOther: Bool = false) {
@@ -162,6 +188,15 @@ struct VendorTypeView: View {
         isBeautyPressed = isBeauty
         isOtherPressed = isOther
     }
+    
+    // MARK: Route
+        func changeRoute(_ route: RoutePath) {
+            path.append(route)
+        }
+
+        func backRoute() {
+            path.removeLast()
+        }
 }
 
 #Preview {

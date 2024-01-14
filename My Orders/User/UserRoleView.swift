@@ -11,6 +11,8 @@ import GoogleSignInSwift
 import Firebase
 import FirebaseAuth
 
+// read: https://medium.com/@mdyamin/navigationstack-revolution-of-nested-navigation-with-swiftui-7a00782b974b
+
 struct UserRoleView: View {
     
     @AppStorage("hasLaunchedBefore") private var hasLaunchedBefore: Bool = false
@@ -139,6 +141,8 @@ struct UserRoleView: View {
                         Button("Continue") {
                             if isVendorPressed {
                                 showVendorTypeView = true
+                                Router.shared.changeRoute(RoutePath(.vendorType))
+
                             }
                             else if isCustomerPressed {
                                 
@@ -147,13 +151,36 @@ struct UserRoleView: View {
                                 
                                 hasLaunchedBefore = true
                                 showCustomerContent = true
+                                Router.shared.changeRoute(RoutePath(.customerContent))
                             }
                         }
-                        .navigationDestination(isPresented: $showVendorTypeView, destination: {
-                            VendorTypeView()
-                        })
+//                        .navigationDestination(isPresented: $showVendorTypeView, destination: {
+//                            VendorTypeView()
+//                        })
                         .disabled(!isVendorPressed && !isCustomerPressed)
+                        .task {
+                            Router.shared.changeRoute = changeRoute
+                            Router.shared.backRoute = backRoute
+                        }
                     }
+                }
+            }
+            .navigationDestination(for: RoutePath.self) { route in
+                switch route.route {
+                case .customerContent:
+                    CustomerContentView()
+                    
+                case .vendorType:
+                    VendorTypeView()
+                    
+                case .userRole:
+                    Text("userRole")
+                case .contentView:
+                    Text("contentView")
+
+                case .none:
+                    Text("none")
+
                 }
             }
         }
@@ -163,9 +190,19 @@ struct UserRoleView: View {
         isVendorPressed = isVendor
         isCustomerPressed = isCustomer
     }
-}
-    struct UserRoleView_Previews: PreviewProvider {
-        static var previews: some View {
-            UserRoleView()
+    
+    // MARK: Route
+        func changeRoute(_ route: RoutePath) {
+            path.append(route)
         }
+
+        func backRoute() {
+            path.removeLast()
+        }
+}
+
+struct UserRoleView_Previews: PreviewProvider {
+    static var previews: some View {
+        UserRoleView()
     }
+}

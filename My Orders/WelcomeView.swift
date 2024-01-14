@@ -13,7 +13,7 @@ import FirebaseAuth
 
 struct WelcomeView: View {
     
-    @AppStorage("hasLaunchedBefore") private var hasLaunchedBefore: Bool = false
+//    @AppStorage("hasLaunchedBefore") private var hasLaunchedBefore: Bool = false
     @State private var isGuestButtonTapped = false
     @State private var isGoogleSignInSuccessful = false
     @State private var isAppleSignInSuccessful = false
@@ -22,7 +22,7 @@ struct WelcomeView: View {
     
     var body: some View {
         
-        let guestWidth = UIScreen.main.bounds.width - 32
+        let width = UIScreen.main.bounds.width - 32
         let height = UIScreen.main.bounds.height - 32
 
         
@@ -30,7 +30,7 @@ struct WelcomeView: View {
             
             VStack {
                 
-                Image("Desk2")
+                Image("aesthetic") // Desk2
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.top)
@@ -55,7 +55,7 @@ struct WelcomeView: View {
                     AuthService.share.signinWithGoogle(presenting: getRootViewController(), authState: authState) { error in
                         // TODO: Handle ERROR
                         if error == nil && Auth.auth().currentUser != nil {
-                            hasLaunchedBefore = true
+//                            hasLaunchedBefore = true
                             isGoogleSignInSuccessful = true
                         }
                         else {
@@ -77,7 +77,7 @@ struct WelcomeView: View {
                     AuthService.share.startSignInWithAppleFlow()
                     
                     if Auth.auth().currentUser != nil {
-                        hasLaunchedBefore = true
+//                        hasLaunchedBefore = true
                         isAppleSignInSuccessful = true
                     }
                     else {
@@ -106,11 +106,11 @@ struct WelcomeView: View {
                     isGuestButtonTapped = true
                     
                     // Update hasLaunchedBefore to true when the user continues as a guest
-                    hasLaunchedBefore = true
+//                    hasLaunchedBefore = true
                 } label: {
                     Text("Continue as Guest")
                         .frame(minWidth: 0, maxWidth: .infinity)
-                        .frame(width: guestWidth, height: 50)
+                        .frame(width: width, height: 50)
                         .foregroundColor(.white)
                         .background(Color.accentColor.opacity(0.9))
                         .cornerRadius(30)
