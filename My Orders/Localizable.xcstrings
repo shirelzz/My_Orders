@@ -700,6 +700,9 @@
         }
       }
     },
+    "Business Details" : {
+
+    },
     "By sharing this code you allow clients view your public inventory items" : {
 
     },
@@ -1750,6 +1753,9 @@
         }
       }
     },
+    "Identifier" : {
+
+    },
     "ILS" : {
       "localizations" : {
         "en" : {
@@ -1830,15 +1836,6 @@
           }
         }
       }
-    },
-    "isBeautyPressed %@" : {
-
-    },
-    "isFoodPressed %@" : {
-
-    },
-    "isOtherPressed %@" : {
-
     },
     "isPaid: %@" : {
       "extractionState" : "stale",
@@ -2708,6 +2705,9 @@
         }
       }
     },
+    "Phone number" : {
+
+    },
     "Phone Number" : {
       "localizations" : {
         "en" : {
@@ -3366,6 +3366,7 @@
       }
     },
     "Save images" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3790,6 +3791,12 @@
           }
         }
       }
+    },
+    "These details will be used for your receipts" : {
+
+    },
+    "These details will be used for your receipts.\n You can edit them later in settings." : {
+
     },
     "This Photo will be used for your receipts as a logo" : {
       "localizations" : {

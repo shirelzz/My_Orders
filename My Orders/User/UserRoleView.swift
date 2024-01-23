@@ -20,23 +20,30 @@ struct UserRoleView: View {
     @State private var isCustomerPressed = false
     @State private var showVendorTypeView = false
     @State private var showCustomerContent = false
-    @State private var path: NavigationPath = NavigationPath()
-    
+    @State private var isBackPressed = false
+    @ObservedObject private var userManager = UserManager.shared
+    @ObservedObject private var vendorManager = VendorManager.shared
+//    @State private var path: NavigationPath = NavigationManager.shared.path
+//    @EnvironmentObject var router: Router
+
     var body: some View {
         
         let height = UIScreen.main.bounds.height - 32
         
         
-        NavigationStack(path: $path) {
+        NavigationStack() { //path: $path
             
             VStack {
                 
-                Image("aesthetic")
-                    .resizable()
-                    .scaledToFill()
-                    .edgesIgnoringSafeArea(.top)
-                    .frame(height: height/3)
+//                Image("aesthetic")
+//                    .resizable()
+//                    .scaledToFill()
+//                    .edgesIgnoringSafeArea(.top)
+//                    .frame(height: height/3)
                 
+                Label("", image: "aesthetic")
+                    .frame(height: height/4)
+
                 Spacer()
                 
                 Text("Choose an option:")
@@ -44,49 +51,51 @@ struct UserRoleView: View {
                     .foregroundColor(.gray)
                     .padding(.top, 40)
                 
-//                NavigationLink(destination: VendorTypeView()) {
-//                    Label {
-//                        Text("Vendor")
-//                    } icon: {
-//                        
-//                    }
-////                    EmptyView()
-//
-//                }
-//                .frame(minWidth: 0, maxWidth: .infinity)
-//                .frame(width: width, height: 50)
-//                .foregroundColor(.white)
-//                .background(Color.accentColor.opacity(0.9))
-//                .cornerRadius(30)
-//                .padding(.horizontal)
-//                .onTapGesture {
-//                    isVendorPressed = true
-//                    isPressed = true
-//                }
-//                .buttonStyle(CustomButtonStyle(isPressed: isPressed))
-//                
+                VStack (spacing: 10){
+                
+                //                NavigationLink(destination: VendorTypeView()) {
+                //                    Label {
+                //                        Text("Vendor")
+                //                    } icon: {
+                //
+                //                    }
+                ////                    EmptyView()
+                //
+                //                }
+                //                .frame(minWidth: 0, maxWidth: .infinity)
+                //                .frame(width: width, height: 50)
+                //                .foregroundColor(.white)
+                //                .background(Color.accentColor.opacity(0.9))
+                //                .cornerRadius(30)
+                //                .padding(.horizontal)
+                //                .onTapGesture {
+                //                    isVendorPressed = true
+                //                    isPressed = true
+                //                }
+                //                .buttonStyle(CustomButtonStyle(isPressed: isPressed))
+                //
                 
                 
                 
-//                Button {
-//                    
-//                    isVendor = true
-//                    
-//                } label: {
-//                    Text("Vendor")
-//                        .frame(minWidth: 0, maxWidth: .infinity)
-//                        .frame(width: width, height: 50)
-//                        .foregroundColor(.white)
-//                        .background(Color.accentColor.opacity(0.9))
-//                        .cornerRadius(30)
-//                        .padding(.horizontal)
-//                }
-//                .sheet(isPresented: $isVendor, content: {
-//                    VendorTypeView()
-//                })
-//                .frame(minWidth: 0 , maxWidth: .infinity)
-//                .frame(height: 50)
-//                .padding()
+                //                Button {
+                //
+                //                    isVendor = true
+                //
+                //                } label: {
+                //                    Text("Vendor")
+                //                        .frame(minWidth: 0, maxWidth: .infinity)
+                //                        .frame(width: width, height: 50)
+                //                        .foregroundColor(.white)
+                //                        .background(Color.accentColor.opacity(0.9))
+                //                        .cornerRadius(30)
+                //                        .padding(.horizontal)
+                //                }
+                //                .sheet(isPresented: $isVendor, content: {
+                //                    VendorTypeView()
+                //                })
+                //                .frame(minWidth: 0 , maxWidth: .infinity)
+                //                .frame(height: 50)
+                //                .padding()
                 
                 CustomButton(title: "Vendor", isPressed: $isVendorPressed) {
                     isVendorPressed.toggle()
@@ -94,33 +103,35 @@ struct UserRoleView: View {
                 }
                 
                 
-//                Button {
-//                    
-//                    let user = User(uid: UUID().uuidString, role: UserRole.customer, vendorType: nil)
-//                    
-//                    UserManager.shared.saveUser(user: user)
-//                    hasLaunchedBefore = true
-//                    isCustomer = true
-//                    
-//                } label: {
-//                    Text("Customer")
-//                        .frame(minWidth: 0, maxWidth: .infinity)
-//                        .frame(width: width, height: 50)
-//                        .foregroundColor(.white)
-//                        .background(Color.accentColor.opacity(0.9))
-//                        .cornerRadius(30)
-//                        .padding(.horizontal)
-//                }
-//                .sheet(isPresented: $isCustomer, content: {
-//                    CustomerContentView()
-//                })
-//                .buttonStyle(CustomButtonStyle())
+                //                Button {
+                //
+                //                    let user = User(uid: UUID().uuidString, role: UserRole.customer, vendorType: nil)
+                //
+                //                    UserManager.shared.saveUser(user: user)
+                //                    hasLaunchedBefore = true
+                //                    isCustomer = true
+                //
+                //                } label: {
+                //                    Text("Customer")
+                //                        .frame(minWidth: 0, maxWidth: .infinity)
+                //                        .frame(width: width, height: 50)
+                //                        .foregroundColor(.white)
+                //                        .background(Color.accentColor.opacity(0.9))
+                //                        .cornerRadius(30)
+                //                        .padding(.horizontal)
+                //                }
+                //                .sheet(isPresented: $isCustomer, content: {
+                //                    CustomerContentView()
+                //                })
+                //                .buttonStyle(CustomButtonStyle())
                 
                 CustomButton(title: "Customer", isPressed: $isCustomerPressed) {
                     isCustomerPressed.toggle()
                     resetButtons(isCustomer: isCustomerPressed)
                     
                 }
+            }
+            .padding()
                 
                 
                 Spacer(minLength: height / 7)
@@ -129,60 +140,90 @@ struct UserRoleView: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     HStack {
-//                        Button("Back") {
-//                            showBackView = true
-//                        }
-//                        .navigationDestination(isPresented: $showBackView, destination: {
-//                            UserRoleView()
-//                        })
+                        Button("Back") {
+//                            if path.count > 0 {
+////                                path = NavigationPath()
+//                                 path.removeLast(1)
+//                            }
+//                            router.navigateBack()
+
+//                            router.navigate(to: .welcome)
+                            isBackPressed = true
+                            
+                        }
+                        .navigationDestination(isPresented: $isBackPressed) {
+                            WelcomeView()
+                        }
+//                                                Button("Back") {
+//                                                    showBackView = true
+//                                                }
+//                                                .navigationDestination(isPresented: $showBackView, destination: {
+//                                                    UserRoleView()
+//                                                })
                         
                         Spacer()
                         
                         Button("Continue") {
                             if isVendorPressed {
                                 showVendorTypeView = true
-                                Router.shared.changeRoute(RoutePath(.vendorType))
-
+//                                path.append(Routes.vendorType)
+//                                router.navigate(to: .vendorType)
+//                                Router.shared.changeRoute(RoutePath(.vendorType))
+                                
                             }
                             else if isCustomerPressed {
                                 
                                 let user = User(uid: UUID().uuidString, role: UserRole.customer, vendorType: nil)
-                                UserManager.shared.saveUser(user: user)
+                                userManager.saveUser(user: user)
                                 
                                 hasLaunchedBefore = true
                                 showCustomerContent = true
-                                Router.shared.changeRoute(RoutePath(.customerContent))
+//                                router.navigate(to: .customerContent)
+//                                path.append(RoutePath(.customerContent))
+//                                Router.shared.changeRoute(RoutePath(.customerContent))
                             }
                         }
-//                        .navigationDestination(isPresented: $showVendorTypeView, destination: {
-//                            VendorTypeView()
-//                        })
+                        .navigationDestination(isPresented: $showVendorTypeView, destination: {
+                            VendorTypeView()
+                        })
+                        .navigationDestination(isPresented: $showCustomerContent, destination: {
+                            CustomerContentView()
+                        })
                         .disabled(!isVendorPressed && !isCustomerPressed)
-                        .task {
-                            Router.shared.changeRoute = changeRoute
-                            Router.shared.backRoute = backRoute
-                        }
+//                        .task {
+//                            Router.shared.changeRoute = changeRoute
+//                            Router.shared.backRoute = backRoute
+//                        }
                     }
                 }
             }
-            .navigationDestination(for: RoutePath.self) { route in
-                switch route.route {
-                case .customerContent:
-                    CustomerContentView()
-                    
-                case .vendorType:
-                    VendorTypeView()
-                    
-                case .userRole:
-                    Text("userRole")
-                case .contentView:
-                    Text("contentView")
-
-                case .none:
-                    Text("none")
-
-                }
-            }
+//            .navigationDestination(for: RoutePath.self) { route in
+//                switch route.route {
+//                   
+//                case .welcome:
+//                    WelcomeView()
+//
+//                case .customerContent:
+//                    CustomerContentView()
+////                    NavigationStack(path: [RoutePath(.customerContent)]) {
+////                                            // Your actual ContentView content here
+////                                        }
+//                case .vendorType:
+//                    VendorTypeView()
+//                    
+//                case .businessDetailsView:
+//                    Text("businessDetailsView")
+//                    
+//                case .userRole:
+//                    Text("userRole")
+//                case .contentView:
+//                    Text("contentView")
+//                    
+//                case .none:
+//                    Text("none")
+//                    
+//                }
+//            }
         }
     }
     
@@ -191,14 +232,14 @@ struct UserRoleView: View {
         isCustomerPressed = isCustomer
     }
     
-    // MARK: Route
-        func changeRoute(_ route: RoutePath) {
-            path.append(route)
-        }
-
-        func backRoute() {
-            path.removeLast()
-        }
+//    // MARK: Route
+//    func changeRoute(_ route: RoutePath) {
+//        path.append(route)
+//    }
+//    
+//    func backRoute() {
+//        path.removeLast()
+//    }
 }
 
 struct UserRoleView_Previews: PreviewProvider {

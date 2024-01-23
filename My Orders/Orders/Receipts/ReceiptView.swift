@@ -135,8 +135,9 @@ struct ReceiptView: View {
                     )
                 }
                 
-                RewardedAdView(adUnitID: "ca-app-pub-1213016211458907/4894339659", isPresented: $isRewardedAdPresented)
+                RewardedAdView(adUnitID: "ca-app-pub-3940256099942544/1712485313", isPresented: $isRewardedAdPresented)
                 // test: ca-app-pub-3940256099942544/1712485313
+                // mine: ca-app-pub-1213016211458907/4894339659
 
             }
             
@@ -283,20 +284,46 @@ struct ReceiptView: View {
             let logoRect = CGRect(x: x_logo, y: y_logo, width: 50, height: 50)  // Adjust the size and position as needed
             logoImage?.draw(in: logoRect)
             
-                        var title = ""
-                        if (receiptExists && en){
-                            title = "Receipt No. \(receipt_.myID)"
+            // Draw business details
+            let businessDetailsAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 12),
+                .paragraphStyle: {
+                    let paragraphStyle = NSMutableParagraphStyle()
+                    if en {
+                        paragraphStyle.alignment = .left
+                    } else {
+                        paragraphStyle.alignment = .right
+                    }
+                    return paragraphStyle
+                }()
+            ]
+
+            var businessDetailsText = """
+                \(VendorManager.shared.vendor.businessName)
+                \(VendorManager.shared.vendor.businessID)
+                \(VendorManager.shared.vendor.businessAddress)
+                \(VendorManager.shared.vendor.businessPhone)
+            """
+
+            businessDetailsText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 80), withAttributes: businessDetailsAttributes)
+
+            // Update the Y position
+            currentY += 80
             
-                        }
-                        else if (receiptExists && he ){
-                            title = "קבלה מספר \(receipt_.myID)"
-                        }
-                        else if (!receiptExists && en){
-                            title = "Receipt No. \(lastReceipttID + 1)"
-                        }
-                        else {
-                            title = "קבלה מספר \(lastReceipttID + 1)"
-                        }
+            var title = ""
+            if (receiptExists && en){
+                title = "Receipt No. \(receipt_.myID)"
+                
+            }
+            else if (receiptExists && he ){
+                title = "קבלה מספר \(receipt_.myID)"
+            }
+            else if (!receiptExists && en){
+                title = "Receipt No. \(lastReceipttID + 1)"
+            }
+            else {
+                title = "קבלה מספר \(lastReceipttID + 1)"
+            }
             
             let titleAttributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: 24, weight: .bold),

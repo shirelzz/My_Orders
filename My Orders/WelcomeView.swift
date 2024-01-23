@@ -18,6 +18,7 @@ struct WelcomeView: View {
     @State private var isGoogleSignInSuccessful = false
     @State private var isAppleSignInSuccessful = false
     @EnvironmentObject var authState: AuthState
+//    @EnvironmentObject var router: Router
 
     
     var body: some View {
@@ -26,7 +27,7 @@ struct WelcomeView: View {
         let height = UIScreen.main.bounds.height - 32
 
         
-        NavigationView {
+        NavigationStack {
             
             VStack {
                 
@@ -63,11 +64,16 @@ struct WelcomeView: View {
                         }
                     }
                     
+//                    router.navigate(to: .userRole)
+                    
                 }
-                .sheet(isPresented: $isGoogleSignInSuccessful, content: {
+                .navigationDestination(isPresented: $isGoogleSignInSuccessful, destination: {
                     UserRoleView()
-//                    ContentView()
                 })
+//                .sheet(isPresented: $isGoogleSignInSuccessful, content: {
+//                    UserRoleView()
+////                    ContentView()
+//                })
                 .frame(minWidth: 0 , maxWidth: .infinity)
                 .frame(height: 50)
                 .padding()
@@ -84,6 +90,9 @@ struct WelcomeView: View {
                         Toast.showToast(message: "We had an error signing you in")
                     }
                     
+//                    router.navigate(to: .userRole)
+
+                    
 
                 } label: {
                     AppleButtonView()
@@ -93,10 +102,13 @@ struct WelcomeView: View {
                         .padding(.horizontal)
                         .shadow(color: .black.opacity(0.6), radius: 5, x: 0, y: 2)
                 }
-                .sheet(isPresented: $isAppleSignInSuccessful, content: {
+                .navigationDestination(isPresented: $isAppleSignInSuccessful, destination: {
                     UserRoleView()
-//                    ContentView()
                 })
+//                .sheet(isPresented: $isAppleSignInSuccessful, content: {
+//                    UserRoleView()
+////                    ContentView()
+//                })
                 
                 Text("or")
                     .foregroundColor(.gray)
@@ -104,6 +116,7 @@ struct WelcomeView: View {
                 
                 Button {
                     isGuestButtonTapped = true
+//                    router.navigate(to: .userRole)
                     
                     // Update hasLaunchedBefore to true when the user continues as a guest
 //                    hasLaunchedBefore = true
@@ -116,16 +129,23 @@ struct WelcomeView: View {
                         .cornerRadius(30)
                         .padding(.horizontal)
                 }
-                .sheet(isPresented: $isGuestButtonTapped, content: {
-//                    ContentView()
+                .navigationDestination(isPresented: $isGuestButtonTapped, destination: {
                     UserRoleView()
                 })
+//                .sheet(isPresented: $isGuestButtonTapped, content: {
+////                    ContentView()
+//                    UserRoleView()
+//                })
                 .padding()
 
                 Text("Note: signing in with Google or Apple allows you to view your data through all your connected devices.")
                     .foregroundColor(.gray)
-                    .padding(.leading, 20)
-                    .padding(.trailing, 20)
+                    .padding([.leading, .trailing], 20)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                    
 
 //                Text("Note: signing in with Google or Apple allows you to view your data through all your connected devices. And share your inventory items with your customers if you would like to.")
 
@@ -134,6 +154,7 @@ struct WelcomeView: View {
             }
             .navigationBarHidden(true)
         }
+//        .environmentObject(router)
     }
 }
 

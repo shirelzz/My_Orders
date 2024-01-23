@@ -14,12 +14,6 @@ enum UserRole: String, Codable {
     case none
 }
 
-enum VendorType: String, Codable {
-    case food
-    case beauty
-    case other
-}
-
 struct User: Codable, Identifiable {
     
     var id: String { uid }
@@ -44,7 +38,6 @@ struct User: Codable, Identifiable {
             
             "uid": uid,
             "role": role.rawValue,
-//            "vendorType": vendorType!.rawValue
 
         ]
         
@@ -175,6 +168,6 @@ class UserManager: ObservableObject {
             }
         }
     }
-
     
 }
+

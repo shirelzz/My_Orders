@@ -179,6 +179,32 @@ struct GeneratedReceiptView: View {
             let logoRect = CGRect(x: x_logo, y: y_logo, width: 50, height: 50)  // Adjust the size and position as needed
             logoImage?.draw(in: logoRect)
             
+            // Draw business details
+            let businessDetailsAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 12),
+                .paragraphStyle: {
+                    let paragraphStyle = NSMutableParagraphStyle()
+                    if en {
+                        paragraphStyle.alignment = .left
+                    } else {
+                        paragraphStyle.alignment = .right
+                    }
+                    return paragraphStyle
+                }()
+            ]
+
+            var businessDetailsText = """
+                \(VendorManager.shared.vendor.businessName)
+                \(VendorManager.shared.vendor.businessID)
+                \(VendorManager.shared.vendor.businessAddress)
+                \(VendorManager.shared.vendor.businessPhone)
+            """
+
+            businessDetailsText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 80), withAttributes: businessDetailsAttributes)
+
+            // Update the Y position
+            currentY += 80
+            
             // Title
             let title = "Receipt No.\(receipt.myID)"
             let titleAttributes: [NSAttributedString.Key: Any] = [

@@ -10,7 +10,6 @@ import GoogleMobileAds
 import SwiftUI
 import AVFoundation
 
-
 struct AdBannerView: UIViewRepresentable {
     let adUnitID: String
 

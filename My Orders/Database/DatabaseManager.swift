@@ -339,7 +339,45 @@ class DatabaseManager {
             completion(user)
         })
     }
+    
+    func fetchVendor(path: String, completion: @escaping (Vendor?) -> ()) {
+          
+        let vendorRef = databaseRef.child(path)
+        
+        vendorRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let value = snapshot.value as? [String: Any] else {
+                print("No vendor data found")
+                completion(nil)
+                return
+            }
 
+            var vendor: Vendor?
+            for (_, vendorData) in value {
+                guard let vendorDict = vendorData as? [String: Any],
+                      let uid = vendorDict["uid"] as? String,
+                      let vendorTypeValue = vendorDict["vendorType"] as? String,
+                      let vendorType = VendorType(rawValue: vendorTypeValue),
+                      let businessID = vendorDict["businessID"] as? String,
+                      let businessName = vendorDict["businessName"] as? String,
+                      let businessAddress = vendorDict["businessAddress"] as? String,
+                      let businessPhone = vendorDict["businessPhone"] as? String
+                else {
+                    print("Error parsing user data")
+                    continue
+                }
+
+                vendor = Vendor(
+                    uid: uid,
+                    vendorType: vendorType,
+                    businessID: businessID,
+                    businessName: businessName,
+                    businessAddress: businessAddress,
+                    businessPhone: businessPhone
+                )
+            }
+            completion(vendor)
+        })
+    }
                                             
     // MARK: - Writing data
     
@@ -401,7 +439,16 @@ class DatabaseManager {
         }
     }
     
-    
+    func saveVendor(_ vendor: Vendor, path: String) {
+        let vendorRef = databaseRef.child(path) //.child(user.id)
+        vendorRef.setValue(vendor.dictionaryRepresentation()) { error, _ in
+            if let error = error {
+                print("Error saving vendor: \(error.localizedDescription)")
+            } else {
+                print("saved vendor")
+            }
+        }
+    }
     // MARK: - Deleting data
     
     func deleteOrder(orderID: String, path: String) {
@@ -470,6 +517,13 @@ class DatabaseManager {
     func updateItemInDB(_ item: ShoppingItem, path: String, completion: @escaping (Bool) -> Void) {
         let itemRef = databaseRef.child(path)
         itemRef.updateChildValues(item.dictionaryRepresentation()) { error, _ in
+            completion(error == nil)
+        }
+    }
+    
+    func updateVendorInDB(_ vendor: Vendor, path: String, completion: @escaping (Bool) -> Void) {
+        let vendorRef = databaseRef.child(path) //child(vendor.uid) ?
+        vendorRef.updateChildValues(vendor.dictionaryRepresentation()) { error, _ in
             completion(error == nil)
         }
     }

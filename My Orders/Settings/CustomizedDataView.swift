@@ -16,12 +16,18 @@ extension UIImage {
 struct CustomizedDataView: View {
     
     @ObservedObject var appManager: AppManager
+//    @ObservedObject var vendorManager: VendorManager
 
     @State private var logoImage: UIImage?
     @State private var signatureImage: UIImage?
     
     @State private var showLogoImgPicker = false
     @State private var showSignatureImgPicker = false
+    
+    @State private var businessName = VendorManager.shared.vendor.businessName
+    @State private var businessID = VendorManager.shared.vendor.businessID
+    @State private var businessAddress = VendorManager.shared.vendor.businessAddress
+    @State private var businessPhone = VendorManager.shared.vendor.businessPhone
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -87,10 +93,34 @@ struct CustomizedDataView: View {
                 } footer: {
                     Text("This Photo will be used for your receipts as a signature")
                 }
-                                
+                
+                Section() {
+                    List {
+//                    VStack(alignment: .leading, spacing: 8) {
+                        
+                        
+                            TextField("Name" , text: $businessName)
+
+                            TextField("Identifier" , text: $businessID)
+                                .keyboardType(.numberPad)
+
+                            TextField("Address" , text: $businessAddress)
+
+                            TextField("Phone number" , text: $businessPhone)
+                                .keyboardType(.numberPad)
+//                        }
+
+                        
+                    }
+                } header: {
+                    Text("Business Details")
+                } footer: {
+                    Text("These details will be used for your receipts")
+                }
+                
                 HStack {
                     
-                    Button("Save images") {
+                    Button("Save") {
                         if appManager.manager.logoImgData == nil && appManager.manager.signatureImgData == nil {
                             // First time uploading images
                             appManager.saveManager(manager: Manager(
@@ -104,6 +134,9 @@ struct CustomizedDataView: View {
                                 signatureImageData: signatureImage?.pngData()
                             )
                         }
+                        
+                        VendorManager.shared.updateVendor(businessID: businessID, businessName: businessName, businessAddress: businessAddress, businessPhone: businessPhone)
+                                                
                         presentationMode.wrappedValue.dismiss()
                     }
                 }

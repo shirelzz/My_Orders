@@ -1,24 +1,23 @@
 //
-//  MainView.swift
+//  MainViewOther.swift
 //  My Orders
 //
-//  Created by שיראל זכריה on 27/11/2023.
+//  Created by שיראל זכריה on 23/01/2024.
 //
+
 
 import SwiftUI
 import GoogleSignIn
 import Firebase
 import Combine
 
-struct MainView: View {
-    
+struct MainViewOther: View {
+
     @State private var showLogo = true
     @AppStorage("hasLaunchedBefore") private var hasLaunchedBefore: Bool = false
     @State private var showContentView = false
     @EnvironmentObject var authState: AuthState
-    @StateObject private var userManager = UserManager.shared
-    @StateObject private var vendorManager = VendorManager.shared
-    
+
     var body: some View {
 
         ZStack {
@@ -26,7 +25,7 @@ struct MainView: View {
                 LaunchView()
                     .onAppear {
                         
-                        print("hasLaunchedBefore 0: \(hasLaunchedBefore)")
+                        print("hasLaunchedBefore0: \(hasLaunchedBefore)")
 
                         // Add any additional setup code if needed
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -45,9 +44,6 @@ struct MainView: View {
                         if authState.isAuthenticated {
                             UserRoleView()
                                 .navigationBarHidden(true)
-                                .onAppear(perform: {
-                                    print("--- going to UserRoleView 0")
-                                })
                         }
                         
                         else {
@@ -64,20 +60,17 @@ struct MainView: View {
                        
                     } else {
                         
-                        if userManager.user.role == UserRole.vendor {
+                        if UserManager.shared.user.role == UserRole.vendor {
                             ContentView()
                                 .navigationBarHidden(true)
                         }
-                        else if userManager.user.role == UserRole.customer {
+                        else if UserManager.shared.user.role == UserRole.customer {
                             CustomerContentView()
                                 .navigationBarHidden(true)
                         }
                         else {
                             UserRoleView()
                                 .navigationBarHidden(true)
-                                .onAppear(perform: {
-                                    print("--- going to UserRoleView 1")
-                                })
                         }
                     }
                 }
@@ -99,4 +92,8 @@ struct MainView: View {
 
 #Preview {
     MainView()
+}
+
+#Preview {
+    MainViewOther()
 }

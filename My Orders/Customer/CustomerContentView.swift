@@ -8,8 +8,19 @@
 import SwiftUI
 
 struct CustomerContentView: View {
+    
+//    @State private var path: NavigationPath = NavigationManager.shared.path
+//    @ObservedObject var router = Router()
+    @EnvironmentObject var router: Router
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        NavigationStack() { //path: $router.navPath
+            
+            Text("Hello, World!")
+            
+        }
+        .navigationBarHidden(true)
     }
 }
 
