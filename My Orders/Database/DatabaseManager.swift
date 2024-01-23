@@ -147,9 +147,7 @@ class DatabaseManager {
                       let itemQuantity = itemDict["itemQuantity"] as? Int,
                       let size = itemDict["size"] as? String,
                       let additionDateStr = itemDict["AdditionDate"] as? String,
-                      let itemNotes = itemDict["itemNotes"] as? String,
-                      let tags = itemDict["tags"] as? [String]
- 
+                      let itemNotes = itemDict["itemNotes"] as? String 
                 else {
                     print("item else called")
                     continue
@@ -157,6 +155,11 @@ class DatabaseManager {
                 
                 let additionDate = self.convertStringToDate(additionDateStr)
 
+                var tags: [String]? = nil
+                if let parsedTags = itemDict["tags"] as? [String] {
+                    tags = parsedTags
+                }
+                
                 let item = InventoryItem(
                     itemID: itemID,
                     name:  name,

@@ -35,7 +35,7 @@ struct ContentView: View {
             
             ZStack(alignment: .topTrailing) {
                 
-                AppOpenAdView(adUnitID: "ca-app-pub-3940256099942544/5575463023")
+//                AppOpenAdView(adUnitID: "ca-app-pub-3940256099942544/5575463023")
                 // test:  ca-app-pub-3940256099942544/5575463023
                 // mine: ca-app-pub-1213016211458907/7841665686
                                 

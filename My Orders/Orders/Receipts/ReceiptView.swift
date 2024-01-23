@@ -121,7 +121,7 @@ struct ReceiptView: View {
                     Alert(
                         title: Text("Generate Receipt"),
                         message: Text("Are you sure you want to generate this receipt?"),
-                        primaryButton: .default(Text("Generate")) {
+                        primaryButton: .default(Text("Generate").foregroundColor(Color.accentColor)) {
                             isRewardedAdPresented = true
                             generatePDF()
                             
@@ -130,12 +130,12 @@ struct ReceiptView: View {
                             }
                             
                         },
-                        secondaryButton: .cancel(Text("Cancel")) {
+                        secondaryButton: .cancel(Text("Cancel").foregroundColor(Color.accentColor)) {
                         }
                     )
                 }
                 
-                RewardedAdView(adUnitID: "ca-app-pub-3940256099942544/1712485313", isPresented: $isRewardedAdPresented)
+//                RewardedAdView(adUnitID: "ca-app-pub-3940256099942544/1712485313", isPresented: $isRewardedAdPresented)
                 // test: ca-app-pub-3940256099942544/1712485313
                 // mine: ca-app-pub-1213016211458907/4894339659
 
@@ -295,14 +295,34 @@ struct ReceiptView: View {
                         paragraphStyle.alignment = .right
                     }
                     return paragraphStyle
-                }()
+                }(),
+                .foregroundColor: UIColor.gray
+
             ]
 
+            var name = ""
+            var id = ""
+            var address = ""
+            var phone = ""
+
+            if en {
+                name = "Name: "
+                id = "ID: "
+                address = "Address: "
+                phone = "Phone: "
+            }
+            else {
+                name = "שם: "
+                id = "מזהה: "
+                address = "כתובת: "
+                phone = "טל׳: "
+            }
+
             let businessDetailsText = """
-                \(VendorManager.shared.vendor.businessName)
-                \(VendorManager.shared.vendor.businessID)
-                \(VendorManager.shared.vendor.businessAddress)
-                \(VendorManager.shared.vendor.businessPhone)
+                \(name) \(VendorManager.shared.vendor.businessName)
+                \(id) \(VendorManager.shared.vendor.businessID)
+                \(address) \(VendorManager.shared.vendor.businessAddress)
+                \(phone) \(VendorManager.shared.vendor.businessPhone)
             """
 
             businessDetailsText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 80), withAttributes: businessDetailsAttributes)

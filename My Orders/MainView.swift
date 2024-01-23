@@ -18,6 +18,7 @@ struct MainView: View {
     @EnvironmentObject var authState: AuthState
     @StateObject private var userManager = UserManager.shared
     @StateObject private var vendorManager = VendorManager.shared
+    @State private var userRole: UserRole = UserRole.none
     
     var body: some View {
 
@@ -64,11 +65,11 @@ struct MainView: View {
                        
                     } else {
                         
-                        if userManager.user.role.rawValue == UserRole.vendor.rawValue {
+                        if userRole == UserRole.vendor {
                             ContentView()
                                 .navigationBarHidden(true)
                         }
-                        else if userManager.user.role == UserRole.customer {
+                        else if userRole == UserRole.customer {
                             CustomerContentView()
                                 .navigationBarHidden(true)
                         }
@@ -87,6 +88,8 @@ struct MainView: View {
                             showContentView = true
                         }
                     }
+                    
+                    userRole = userManager.user.role
                 }
             }
         }

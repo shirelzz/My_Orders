@@ -701,10 +701,36 @@
       }
     },
     "Business Details" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Business Details"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פרטי עסק"
+          }
+        }
+      }
     },
     "By sharing this code you allow clients view your public inventory items" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "By sharing this code you allow clients view your public inventory items"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שיתוף קוד זה יאפשר ללקוחות לצפות בפריטים הזמינים במלאי שלך"
+          }
+        }
+      }
     },
     "Cancel" : {
       "localizations" : {
@@ -885,7 +911,20 @@
       }
     },
     "Continue" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "המשך"
+          }
+        }
+      }
     },
     "Continue as Guest" : {
       "localizations" : {
@@ -952,7 +991,20 @@
       }
     },
     "Copy public code" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy public code"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "העתק קוד"
+          }
+        }
+      }
     },
     "Create new item" : {
       "localizations" : {
@@ -971,7 +1023,20 @@
       }
     },
     "Create public code" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create public code"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "יצירת קוד ציבורי"
+          }
+        }
+      }
     },
     "Currency" : {
       "extractionState" : "stale",
@@ -1754,7 +1819,20 @@
       }
     },
     "Identifier" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identifier"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מזהה"
+          }
+        }
+      }
     },
     "ILS" : {
       "localizations" : {
@@ -2182,7 +2260,20 @@
       }
     },
     "No tags available" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tags available"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "אין תגיות זמינות"
+          }
+        }
+      }
     },
     "No upcoming orders yet" : {
       "localizations" : {
@@ -2218,7 +2309,20 @@
       }
     },
     "Note: signing in with Google or Apple allows you to view your data through all your connected devices." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note: signing in with Google or Apple allows you to view your data through all your connected devices."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שימ.י לב: התחברות באמצעות גוגל או אפל מאפשרת לך לצפות במידע דרך כל המכשירים המקושרים לחשבון שלך."
+          }
+        }
+      }
     },
     "Notes" : {
       "extractionState" : "manual",
@@ -2709,7 +2813,20 @@
       }
     },
     "Phone number" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone number"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מספר טלפון"
+          }
+        }
+      }
     },
     "Phone Number" : {
       "localizations" : {
@@ -3796,13 +3913,52 @@
       }
     },
     "Tags" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tags"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "תגיות"
+          }
+        }
+      }
     },
     "These details will be used for your receipts" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These details will be used for your receipts"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פרטים אלו ישמשו ליצירת קבלות"
+          }
+        }
+      }
     },
     "These details will be used for your receipts.\n You can edit them later in settings." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These details will be used for your receipts.\n You can edit them later in settings."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פרטים אלו ישמשו ליצירת קבלות. ניתן לערוך אותם בהגדרות מאוחר יותר."
+          }
+        }
+      }
     },
     "This Photo will be used for your receipts as a logo" : {
       "localizations" : {

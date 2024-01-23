@@ -10,8 +10,7 @@ import SwiftUI
 struct ItemDetailsView: View {
     
     @ObservedObject var inventoryManager: InventoryManager
-    @State var item: InventoryItem
-    
+    @State var item: InventoryItem    
     @State private var isEditing = false
 
     

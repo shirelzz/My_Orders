@@ -10,7 +10,7 @@ import SwiftUI
 struct OrderRowView: View {
     
     @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
-    
+
     let order: Order
     
     let dateFormatter: DateFormatter = {

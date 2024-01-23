@@ -68,14 +68,33 @@ class ReceiptUtils {
                             paragraphStyle.alignment = .right
                         }
                         return paragraphStyle
-                    }()
+                    }(),
+                    .foregroundColor: UIColor.gray
                 ]
+                
+                var name = ""
+                var id = ""
+                var address = ""
+                var phone = ""
 
-                var businessDetailsText = """
-                    \(VendorManager.shared.vendor.businessName)
-                    \(VendorManager.shared.vendor.businessID)
-                    \(VendorManager.shared.vendor.businessAddress)
-                    \(VendorManager.shared.vendor.businessPhone)
+                if en {
+                    name = "Name: "
+                    id = "ID: "
+                    address = "Address: "
+                    phone = "Phone: "
+                }
+                else {
+                    name = "שם: "
+                    id = "מזהה: "
+                    address = "כתובת: "
+                    phone = "טל׳: "
+                }
+
+                let businessDetailsText = """
+                    \(name) \(VendorManager.shared.vendor.businessName)
+                    \(id) \(VendorManager.shared.vendor.businessID)
+                    \(address) \(VendorManager.shared.vendor.businessAddress)
+                    \(phone) \(VendorManager.shared.vendor.businessPhone)
                 """
 
                 businessDetailsText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 80), withAttributes: businessDetailsAttributes)
