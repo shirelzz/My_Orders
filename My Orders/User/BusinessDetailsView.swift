@@ -16,16 +16,13 @@ struct BusinessDetailsView: View {
     @State private var businessID = ""
     @State private var businessAddress = ""
     @State private var businessPhone = ""
-//    @State private var path: NavigationPath = NavigationPath()
-
-//    @EnvironmentObject var router: Router
 
     var body: some View {
         
         let height = UIScreen.main.bounds.height - 32
 
         
-        NavigationStack() { //path: $path
+        NavigationStack() {
             
             VStack {
                 
@@ -35,9 +32,7 @@ struct BusinessDetailsView: View {
                     .edgesIgnoringSafeArea(.top)
                     .frame(height: height/4)
                     .padding(.bottom, 50)
-                
-//                Spacer()
-                
+                                
                 Text("Business Details")
                     .font(.system(size: 24))
                     .foregroundColor(.black.opacity(0.7))
@@ -77,13 +72,8 @@ struct BusinessDetailsView: View {
                 ToolbarItem(placement: .bottomBar) {
                     HStack {
                         Button("Back") {
-//                            router.navigateBack()
-
-//                            Router.shared.changeRoute(RoutePath(.vendorType))
-//                            Router.shared.backRoute()
                             showBackView = true
                         }
-                        
                         .navigationDestination(isPresented: $showBackView, destination: {
                             VendorTypeView()
                         })
@@ -94,18 +84,10 @@ struct BusinessDetailsView: View {
                             VendorManager.shared.updateVendor(businessID: businessID, businessName: businessName, businessAddress: businessAddress, businessPhone: businessPhone)
                             hasLaunchedBefore = true
                             showContentView = true
-                            
-//                            router.navigate(to: .contentView)
-//                            Router.shared.changeRoute(RoutePath(.contentView))
                         }
                         .navigationDestination(isPresented: $showContentView, destination: {
                             ContentView()
                         })
-//                        .disabled(!isFoodPressed && !isBeautyPressed && !isOtherPressed)
-//                        .task {
-//                            Router.shared.changeRoute = changeRoute
-//                            Router.shared.backRoute = backRoute
-//                        }
                     }
                 }
             }
@@ -113,15 +95,6 @@ struct BusinessDetailsView: View {
         .navigationBarHidden(true)
 
     }
-//    
-//    // MARK: Route
-//        func changeRoute(_ route: RoutePath) {
-//            path.append(route)
-//        }
-//
-//        func backRoute() {
-//            path.removeLast()
-//        }
 }
 
 struct AccentBorder: TextFieldStyle {

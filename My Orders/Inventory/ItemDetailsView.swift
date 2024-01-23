@@ -47,6 +47,24 @@ struct ItemDetailsView: View {
                         Text("Date added: \(String(item.AdditionDate.formatted()))")
                     }
                 }
+                
+                Section(header: Text("Tags")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                ) {
+                    
+                    List {
+                        if let tags = item.tags {
+                            ForEach(tags, id: \.self) { tag in
+                                Text(tag)
+                            }
+                        } else {
+                            Text("No tags available")
+                                .foregroundColor(.gray)
+                        }
+                    }
+                }
+                
             }
             .padding()
             .navigationBarTitle("Item Details")

@@ -21,7 +21,8 @@ struct AddItemView: View {
     @State private var additionDate = Date()
     @State private var newNotes = ""
     @State private var quantityError = false
-
+    @State private var foodTags: [String] = ["Dairy", "Non-Dairy", "Vegan", "Vegetarian", "Gluten-Free"]
+    @State private var selectedTags: [String] = []
 
     @Environment(\.presentationMode) var presentationMode
 
@@ -30,7 +31,7 @@ struct AddItemView: View {
         
         NavigationView {
             
-            Form {
+            List {
                 
                 Section(header: Text("Item Information")) {
                     
@@ -65,6 +66,17 @@ struct AddItemView: View {
                     
                     TextField("Notes", text: $newNotes)
 
+                }
+                
+                Section(header: Text("Tags")) {
+                    if VendorManager.shared.vendor.vendorType == .food {
+                        
+                        ForEach(foodTags, id: \.self) { tag in
+                            CheckboxToggle(isOn: $selectedTags, tag: tag)
+                                .toggleStyle(iOSCheckboxToggleStyle())
+                                .padding(.vertical, 5)
+                        }
+                    }
 
                 }
                 
@@ -81,7 +93,8 @@ struct AddItemView: View {
                                 itemQuantity: newQuantity,
                                 size: newSize,
                                 AdditionDate: additionDate,
-                                itemNotes: newNotes
+                                itemNotes: newNotes,
+                                tags: selectedTags
                             )
                             
                             inventoryManager.addItem(item: newItem)
@@ -115,3 +128,41 @@ struct AddItemView: View {
 #Preview {
     AddItemView(inventoryManager: InventoryManager.shared)
 }
+
+struct iOSCheckboxToggleStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        Button(action: {
+
+            configuration.isOn.toggle()
+
+        }, label: {
+            HStack {
+                Image(systemName: configuration.isOn ? "checkmark.square" : "square")
+
+                configuration.label
+            }
+        })
+    }
+}
+
+struct CheckboxToggle: View {
+    @Binding var isOn: [String]
+    let tag: String
+
+    var body: some View {
+        Toggle(isOn: Binding(
+            get: { isOn.contains(tag) },
+            set: { newValue in
+                if newValue {
+                    isOn.append(tag)
+                } else {
+                    isOn.removeAll { $0 == tag }
+                }
+            }
+        )) {
+            Text(tag)
+                .foregroundStyle(.primary)
+        }
+    }
+}
+

@@ -100,11 +100,13 @@ struct CustomizedDataView: View {
                         
                         
                             TextField("Name" , text: $businessName)
+                                .autocorrectionDisabled()
 
                             TextField("Identifier" , text: $businessID)
                                 .keyboardType(.numberPad)
 
                             TextField("Address" , text: $businessAddress)
+                                .autocorrectionDisabled()
 
                             TextField("Phone number" , text: $businessPhone)
                                 .keyboardType(.numberPad)

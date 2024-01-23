@@ -298,7 +298,7 @@ struct ReceiptView: View {
                 }()
             ]
 
-            var businessDetailsText = """
+            let businessDetailsText = """
                 \(VendorManager.shared.vendor.businessName)
                 \(VendorManager.shared.vendor.businessID)
                 \(VendorManager.shared.vendor.businessAddress)

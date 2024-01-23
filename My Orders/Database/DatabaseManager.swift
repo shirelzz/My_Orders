@@ -147,7 +147,8 @@ class DatabaseManager {
                       let itemQuantity = itemDict["itemQuantity"] as? Int,
                       let size = itemDict["size"] as? String,
                       let additionDateStr = itemDict["AdditionDate"] as? String,
-                      let itemNotes = itemDict["itemNotes"] as? String
+                      let itemNotes = itemDict["itemNotes"] as? String,
+                      let tags = itemDict["tags"] as? [String]
  
                 else {
                     print("item else called")
@@ -163,7 +164,8 @@ class DatabaseManager {
                     itemQuantity: itemQuantity,
                     size: size ,
                     AdditionDate: additionDate,
-                    itemNotes:  itemNotes
+                    itemNotes:  itemNotes,
+                    tags: tags
                 )
                 
                 items.append(item)
@@ -323,19 +325,22 @@ class DatabaseManager {
             }
 
             var user: User?
-            for (_, userData) in value {
-                guard let userDict = userData as? [String: Any],
+            guard let userDict = snapshot.value as? [String: Any],
                       let uid = userDict["uid"] as? String,
                       let roleRawValue = userDict["role"] as? String,
+//                      let vendorType = userDict["vendorType"] as? String
                       let role = UserRole(rawValue: roleRawValue)
-                else {
+            else{
                     print("Error parsing user data")
-                    continue
+                    return
                 }
+            print("parsing user: \(uid)")
+            print("parsing user: \(roleRawValue)")
 
-                let vendorType = userDict["vendorType"] as? String
-                user = User(uid: uid, role: role, vendorType: VendorType(rawValue: vendorType ?? ""))
-            }
+            user = User(uid: uid, role: role) //, vendorType: VendorType.none
+
+//                user = User(uid: uid, role: role, vendorType: VendorType(rawValue: vendorType ?? ""))
+            
             completion(user)
         })
     }
@@ -352,8 +357,7 @@ class DatabaseManager {
             }
 
             var vendor: Vendor?
-            for (_, vendorData) in value {
-                guard let vendorDict = vendorData as? [String: Any],
+                guard let vendorDict = snapshot.value as? [String: Any],
                       let uid = vendorDict["uid"] as? String,
                       let vendorTypeValue = vendorDict["vendorType"] as? String,
                       let vendorType = VendorType(rawValue: vendorTypeValue),
@@ -362,8 +366,8 @@ class DatabaseManager {
                       let businessAddress = vendorDict["businessAddress"] as? String,
                       let businessPhone = vendorDict["businessPhone"] as? String
                 else {
-                    print("Error parsing user data")
-                    continue
+                    print("Error parsing vendor data")
+                    return
                 }
 
                 vendor = Vendor(
@@ -374,7 +378,6 @@ class DatabaseManager {
                     businessAddress: businessAddress,
                     businessPhone: businessPhone
                 )
-            }
             completion(vendor)
         })
     }

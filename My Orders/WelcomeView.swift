@@ -13,13 +13,10 @@ import FirebaseAuth
 
 struct WelcomeView: View {
     
-//    @AppStorage("hasLaunchedBefore") private var hasLaunchedBefore: Bool = false
     @State private var isGuestButtonTapped = false
     @State private var isGoogleSignInSuccessful = false
     @State private var isAppleSignInSuccessful = false
     @EnvironmentObject var authState: AuthState
-//    @EnvironmentObject var router: Router
-
     
     var body: some View {
         
@@ -31,7 +28,7 @@ struct WelcomeView: View {
             
             VStack {
                 
-                Image("aesthetic") // Desk2
+                Image("aesthetic")
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.top)
@@ -56,24 +53,17 @@ struct WelcomeView: View {
                     AuthService.share.signinWithGoogle(presenting: getRootViewController(), authState: authState) { error in
                         // TODO: Handle ERROR
                         if error == nil && Auth.auth().currentUser != nil {
-//                            hasLaunchedBefore = true
                             isGoogleSignInSuccessful = true
                         }
                         else {
                             Toast.showToast(message: "We had an error signing you in")
                         }
                     }
-                    
-//                    router.navigate(to: .userRole)
-                    
+                                        
                 }
                 .navigationDestination(isPresented: $isGoogleSignInSuccessful, destination: {
                     UserRoleView()
                 })
-//                .sheet(isPresented: $isGoogleSignInSuccessful, content: {
-//                    UserRoleView()
-////                    ContentView()
-//                })
                 .frame(minWidth: 0 , maxWidth: .infinity)
                 .frame(height: 50)
                 .padding()
@@ -83,15 +73,11 @@ struct WelcomeView: View {
                     AuthService.share.startSignInWithAppleFlow()
                     
                     if Auth.auth().currentUser != nil {
-//                        hasLaunchedBefore = true
                         isAppleSignInSuccessful = true
                     }
                     else {
                         Toast.showToast(message: "We had an error signing you in")
                     }
-                    
-//                    router.navigate(to: .userRole)
-
                     
 
                 } label: {
@@ -105,10 +91,6 @@ struct WelcomeView: View {
                 .navigationDestination(isPresented: $isAppleSignInSuccessful, destination: {
                     UserRoleView()
                 })
-//                .sheet(isPresented: $isAppleSignInSuccessful, content: {
-//                    UserRoleView()
-////                    ContentView()
-//                })
                 
                 Text("or")
                     .foregroundColor(.gray)
@@ -116,10 +98,6 @@ struct WelcomeView: View {
                 
                 Button {
                     isGuestButtonTapped = true
-//                    router.navigate(to: .userRole)
-                    
-                    // Update hasLaunchedBefore to true when the user continues as a guest
-//                    hasLaunchedBefore = true
                 } label: {
                     Text("Continue as Guest")
                         .frame(minWidth: 0, maxWidth: .infinity)
@@ -132,10 +110,6 @@ struct WelcomeView: View {
                 .navigationDestination(isPresented: $isGuestButtonTapped, destination: {
                     UserRoleView()
                 })
-//                .sheet(isPresented: $isGuestButtonTapped, content: {
-////                    ContentView()
-//                    UserRoleView()
-//                })
                 .padding()
 
                 Text("Note: signing in with Google or Apple allows you to view your data through all your connected devices.")
@@ -145,16 +119,10 @@ struct WelcomeView: View {
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
 
-                    
-
-//                Text("Note: signing in with Google or Apple allows you to view your data through all your connected devices. And share your inventory items with your customers if you would like to.")
-
-
                 Spacer(minLength: height / 7)
             }
             .navigationBarHidden(true)
         }
-//        .environmentObject(router)
     }
 }
 

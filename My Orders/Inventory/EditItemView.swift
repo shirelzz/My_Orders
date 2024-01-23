@@ -22,6 +22,8 @@ struct EditItemView: View {
     
     @State private var isQuantityValid = true
     
+    @State private var foodTags: [String] = ["Dairy", "Non-Dairy", "Vegan", "Vegetarian", "Gluten-Free"]
+    @State private var selectedTags: [String] = []
     
     var body: some View {
         
@@ -68,16 +70,30 @@ struct EditItemView: View {
                         .frame(height: 40)
                 }
                 
+                Section(header: Text("Tags")) {
+                    if VendorManager.shared.vendor.vendorType == .food {
+                        
+                        ForEach(foodTags, id: \.self) { tag in
+                            CheckboxToggle(isOn: $selectedTags, tag: tag)
+                                .toggleStyle(iOSCheckboxToggleStyle())
+                                .padding(.vertical, 5)
+                        }
+                    }
+
+                }
             }
             .navigationBarTitle("Edit Item")
             .padding(.top)
+            .onAppear {
+                selectedTags = item?.tags ?? []
+            }
             
             Button("Save Changes") {
                 if let selectedItem = item {
-                    inventoryManager.editItem(item: selectedItem, newName: name, newPrice: price, newQuantity: quantity, newSize: size, newNotes: notes)
+                    inventoryManager.editItem(item: selectedItem, newName: name, newPrice: price, newQuantity: quantity, newSize: size, newNotes: notes, newTags: selectedTags)
                 }
 
-                
+
                 presentationMode.wrappedValue.dismiss()
 
             }

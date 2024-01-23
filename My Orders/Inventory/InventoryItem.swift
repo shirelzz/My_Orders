@@ -18,6 +18,18 @@ struct InventoryItem: Codable, Identifiable, Hashable{
     var size: String
     var AdditionDate: Date
     var itemNotes: String
+    var tags: [String]?
+    
+    init(itemID: String, name: String, itemPrice: Double, itemQuantity: Int, size: String, AdditionDate: Date, itemNotes: String, tags: [String]?) {
+        self.itemID = itemID
+        self.name = name
+        self.itemPrice = itemPrice
+        self.itemQuantity = itemQuantity
+        self.size = size
+        self.AdditionDate = AdditionDate
+        self.itemNotes = itemNotes
+        self.tags = tags
+    }
     
     init(itemID: String, name: String, itemPrice: Double, itemQuantity: Int, size: String, AdditionDate: Date, itemNotes: String) {
         self.itemID = itemID
@@ -33,7 +45,7 @@ struct InventoryItem: Codable, Identifiable, Hashable{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
 
-        let itemDict: [String: Any] = [
+        var itemDict: [String: Any] = [
             
             "itemID": itemID,
             "name": name,
@@ -44,6 +56,11 @@ struct InventoryItem: Codable, Identifiable, Hashable{
             "itemNotes": itemNotes,
 
         ]
+        
+        if let tags = tags {
+            itemDict["tags"] = tags
+        }
+        
         return itemDict
     }
     
@@ -68,6 +85,10 @@ struct InventoryItem: Codable, Identifiable, Hashable{
         self.size = size
         self.AdditionDate = additionDate
         self.itemNotes = notes
+        
+        if let tags = dictionary["tags"] as? [String] {
+            self.tags = tags
+        }
         
     }
 }
@@ -168,7 +189,7 @@ class InventoryManager: ObservableObject {
         }
     }
     
-    func editItem(item: InventoryItem, newName: String, newPrice: Double, newQuantity: Int, newSize: String, newNotes: String) {
+    func editItem(item: InventoryItem, newName: String, newPrice: Double, newQuantity: Int, newSize: String, newNotes: String, newTags: [String]? = nil) {
         if let index = items.firstIndex(of: item) {
             var editedItem = item
             editedItem.name = newName
@@ -176,7 +197,8 @@ class InventoryManager: ObservableObject {
             editedItem.itemQuantity = newQuantity
             editedItem.size = newSize
             editedItem.itemNotes = newNotes
-            
+            editedItem.tags = newTags
+
             items[index] = editedItem
             
             if isUserSignedIn {

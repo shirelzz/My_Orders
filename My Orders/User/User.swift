@@ -19,17 +19,17 @@ struct User: Codable, Identifiable {
     var id: String { uid }
     var uid: String
     var role: UserRole
-    var vendorType: VendorType?
+//    var vendorType: VendorType?
     
     init() {
         self.uid = UUID().uuidString
         self.role = UserRole.none
     }
     
-    init(uid: String, role: UserRole, vendorType: VendorType?){
+    init(uid: String, role: UserRole){ //, vendorType: VendorType?
         self.uid = uid
         self.role = role
-        self.vendorType = vendorType
+//        self.vendorType = vendorType
     }
     
     func dictionaryRepresentation() -> [String: Any] {
@@ -41,9 +41,9 @@ struct User: Codable, Identifiable {
 
         ]
         
-        if let vendorTypeRawValue = vendorType?.rawValue {
-            userDict["vendorType"] = vendorTypeRawValue
-        }
+//        if let vendorTypeRawValue = vendorType?.rawValue {
+//            userDict["vendorType"] = vendorTypeRawValue
+//        }
         
         return userDict
     }
@@ -57,12 +57,12 @@ struct User: Codable, Identifiable {
             return nil
         }
 
-        let vendorTypeRawValue = dictionary["vendorType"] as? String
-        let vendorType = VendorType(rawValue: vendorTypeRawValue ?? "")
+//        let vendorTypeRawValue = dictionary["vendorType"] as? String
+//        let vendorType = VendorType(rawValue: vendorTypeRawValue ?? "")
 
         self.uid = uid
         self.role = role
-        self.vendorType = vendorType
+//        self.vendorType = vendorType
     }
     
     // MARK: - Codable methods
@@ -70,7 +70,7 @@ struct User: Codable, Identifiable {
     enum CodingKeys: String, CodingKey {
         case uid
         case role
-        case vendorType
+//        case vendorType
     }
 
     init(from decoder: Decoder) throws {
@@ -78,7 +78,7 @@ struct User: Codable, Identifiable {
 
         uid = try container.decode(String.self, forKey: .uid)
         role = try container.decode(UserRole.self, forKey: .role)
-        vendorType = try container.decodeIfPresent(VendorType.self, forKey: .vendorType)
+//        vendorType = try container.decodeIfPresent(VendorType.self, forKey: .vendorType)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -86,7 +86,7 @@ struct User: Codable, Identifiable {
 
         try container.encode(uid, forKey: .uid)
         try container.encode(role, forKey: .role)
-        try container.encodeIfPresent(vendorType, forKey: .vendorType)
+//        try container.encodeIfPresent(vendorType, forKey: .vendorType)
     }
     
 }
@@ -101,6 +101,7 @@ class UserManager: ObservableObject {
     init() {
         if isUserSignedIn{
             fetchUserFromDB()
+            print("--- user role: \(user.role.rawValue)")
         }
         else{
             loadUserFromUD()
@@ -146,8 +147,8 @@ class UserManager: ObservableObject {
         // Convert user object to dictionary representation
         let userDict: [String: Any] = [
             "uid": user.uid,
-            "role": user.role.rawValue,
-            "vendorType": user.vendorType?.rawValue ?? ""
+            "role": user.role.rawValue //,
+//            "vendorType": user.vendorType?.rawValue ?? ""
         ]
         
         // Save the dictionary to UserDefaults

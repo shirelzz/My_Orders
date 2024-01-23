@@ -30,7 +30,7 @@ struct Vendor: Codable, Identifiable {
         self.uid = UUID().uuidString
         self.vendorType = VendorType.none
         self.businessID = ""
-        self.businessName = ""
+        self.businessName = "nullName"
         self.businessAddress = ""
         self.businessPhone = ""
     }
@@ -93,6 +93,7 @@ class VendorManager: ObservableObject {
     init() {
         if isUserSignedIn{
             fetchVendorFromDB()
+            print("--- vendor name: \(vendor.businessName)")
         }
         else{
             loadVendorFromUD()

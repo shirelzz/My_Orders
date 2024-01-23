@@ -64,7 +64,7 @@ struct MainView: View {
                        
                     } else {
                         
-                        if userManager.user.role == UserRole.vendor {
+                        if userManager.user.role.rawValue == UserRole.vendor.rawValue {
                             ContentView()
                                 .navigationBarHidden(true)
                         }

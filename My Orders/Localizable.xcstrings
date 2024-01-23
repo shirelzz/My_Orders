@@ -2181,6 +2181,9 @@
         }
       }
     },
+    "No tags available" : {
+
+    },
     "No upcoming orders yet" : {
       "localizations" : {
         "en" : {
@@ -3791,6 +3794,9 @@
           }
         }
       }
+    },
+    "Tags" : {
+
     },
     "These details will be used for your receipts" : {
 
