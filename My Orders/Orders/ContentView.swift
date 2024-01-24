@@ -200,7 +200,7 @@ struct ContentView: View {
                         }
                         
                         HStack {
-                            NavigationLink( destination: ShoppingListView(shoppingList: shoppingList)) {
+                            NavigationLink( destination: ShoppingListView()) {
                                 Label("Shopping List", systemImage: "cart")
                             }
                         }

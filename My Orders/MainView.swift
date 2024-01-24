@@ -18,7 +18,6 @@ struct MainView: View {
     @EnvironmentObject var authState: AuthState
     @StateObject private var userManager = UserManager.shared
     @StateObject private var vendorManager = VendorManager.shared
-    @State private var userRole: UserRole = UserRole.none
     
     var body: some View {
 
@@ -65,11 +64,11 @@ struct MainView: View {
                        
                     } else {
                         
-                        if userRole == UserRole.vendor {
+                        if UserManager.shared.user.role.rawValue == UserRole.vendor.rawValue {
                             ContentView()
                                 .navigationBarHidden(true)
                         }
-                        else if userRole == UserRole.customer {
+                        else if UserManager.shared.user.role.rawValue == UserRole.customer.rawValue {
                             CustomerContentView()
                                 .navigationBarHidden(true)
                         }
@@ -89,7 +88,6 @@ struct MainView: View {
                         }
                     }
                     
-                    userRole = userManager.user.role
                 }
             }
         }
@@ -98,6 +96,7 @@ struct MainView: View {
             print("hasLaunchedBefore Updated: \(hasLaunchedBefore)")
         }
     }
+       
 }
 
 #Preview {

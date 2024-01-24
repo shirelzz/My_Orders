@@ -717,6 +717,7 @@
       }
     },
     "By sharing this code you allow clients view your public inventory items" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -728,6 +729,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "שיתוף קוד זה יאפשר ללקוחות לצפות בפריטים הזמינים במלאי שלך"
+          }
+        }
+      }
+    },
+    "By sharing this code you allow clients view your public inventory items. Will be available soon." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "By sharing this code you allow clients view your public inventory items. Will be available soon."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שיתוף קוד זה יאפשר ללקוחות שלך לצפות בפריטים הזמינים במלאי. פיצ׳ר זה יהיה זמין בקרוב."
           }
         }
       }
@@ -1478,6 +1495,22 @@
         }
       }
     },
+    "Delivery Cost: %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delivery Cost: %lld"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות משלוח: %lld"
+          }
+        }
+      }
+    },
     "Delivery cost: $" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1965,6 +1998,22 @@
         }
       }
     },
+    "Item already exists" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item already exists"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פריט כבר קיים"
+          }
+        }
+      }
+    },
     "Item Details" : {
       "localizations" : {
         "en" : {
@@ -2239,6 +2288,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "לא נמצאו פריטים"
+          }
+        }
+      }
+    },
+    "No items in your list yet" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No items in your list yet"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "אין פריטים ברשימה עדיין"
           }
         }
       }
@@ -3723,7 +3788,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "רשימת קניות"
+            "value" : "Shopping List"
           }
         },
         "he" : {

@@ -14,10 +14,18 @@ struct ShoppingItem: Codable, Identifiable, Hashable {
     var shoppingItemID: String
 //    let id = UUID()
     var name: String
-    var quantity: Int
+    var quantity: Double
     var isChecked: Bool
     
-    init(shoppingItemID: String, name: String, quantity: Int, isChecked: Bool) {
+    init() {
+        self.shoppingItemID = ""
+        self.name = ""
+        self.quantity = 0
+        self.isChecked = false
+        
+    }
+    
+    init(shoppingItemID: String, name: String, quantity: Double, isChecked: Bool) {
         self.shoppingItemID = shoppingItemID
         self.name = name
         self.quantity = quantity
@@ -41,7 +49,7 @@ struct ShoppingItem: Codable, Identifiable, Hashable {
         
         guard let shoppingItemID = dictionary["shoppingItemID"] as? String,
               let name = dictionary["name"] as? String,
-              let quantity = dictionary["quantity"] as? Int,
+              let quantity = dictionary["quantity"] as? Double,
               let isChecked = dictionary["isChecked"] as? Bool
         else {
             return nil
@@ -59,7 +67,6 @@ class ShoppingList: ObservableObject {
     static var shared = ShoppingList()
     @Published var shoppingItems: [ShoppingItem] = []
     private var isUserSignedIn = Auth.auth().currentUser != nil
-    var timer: Timer?
 
     init() {
         if isUserSignedIn{
@@ -103,12 +110,6 @@ class ShoppingList: ObservableObject {
             DatabaseManager.shared.deleteItem(itemID: itemID, path: path)
         }
     }
-
-    // Example function to add a new item to the shopping list
-//    func addItem(name: String, quantity: Int) {
-//        let newItem = ShoppingItem(shoppingItemID: UUID().uuidString, name: name, quantity: quantity, isChecked: false)
-//        shoppingItems.append(newItem)
-//    }
     
     func addItem(item: ShoppingItem) {
         shoppingItems.append(item)
@@ -142,27 +143,8 @@ class ShoppingList: ObservableObject {
         }
     }
     
-    func toggleCheck(item: ShoppingItem) {
-        if let index = shoppingItems.firstIndex(where: { $0.id == item.id }) {
-            shoppingItems[index].isChecked.toggle()
-            print("--->Item checked: \(shoppingItems[index].isChecked)")
-            updateIsChecked(item: item, newState: shoppingItems[index].isChecked)
-        }
-        
-        if item.isChecked {
-            timer?.invalidate()
-            timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { [weak self] _ in
-                self?.deleteItem(item: item)
-            }
-            print("--->Timer started")
-        }
-        
-    }
-
-    
     func deleteItem(item: ShoppingItem) {
-//        if let index = shoppingItems.firstIndex(of: item) {
-        if let index = shoppingItems.firstIndex(where: { $0.id == item.id && $0.isChecked }) {
+        if let index = shoppingItems.firstIndex(where: { $0.id == item.id}) {
             print("--->Deleting item: \(item.name)")
 
             shoppingItems.remove(at: index)
@@ -172,31 +154,83 @@ class ShoppingList: ObservableObject {
             else{
                 saveItems2UD()
             }
-            
-            // If the item is removed, cancel the timer
-            timer?.invalidate()
+        }
+    }
+    
+    private func updateItem(index: Array<ShoppingItem>.Index) {
+
+        if isUserSignedIn {
+            if let currentUser = Auth.auth().currentUser {
+                let userID = currentUser.uid
+                let path = "users/\(userID)/shoppingList/\(shoppingItems[index].shoppingItemID)"
+                DatabaseManager.shared.updateItemInDB(shoppingItems[index], path: path) { success in
+                    if !success {
+                        print("updating in the database failed (update shopping item)")
+                    }
+                }
+            }
+        } else {
+            saveItems2UD()
         }
     }
     
     func updateIsChecked(item: ShoppingItem, newState: Bool) {
-        if let index = shoppingItems.firstIndex(of: item) {
+        if let index = shoppingItems.firstIndex(where: { $0.id == item.id }) {
+
+//        if let index = shoppingItems.firstIndex(of: item) {
             shoppingItems[index].isChecked = newState
+            print("--- 2 shoppingItems[index] ischecked: \(shoppingItems[index].isChecked.description)")
+            updateItem(index: index)
             
-            if isUserSignedIn {
-                if let currentUser = Auth.auth().currentUser {
-                    let userID = currentUser.uid
-                    let path = "users/\(userID)/shppingList/\(shoppingItems[index].shoppingItemID)"
-                    
-                    DatabaseManager.shared.updateItemInDB(shoppingItems[index], path: path) { success in
-                        if !success {
-                            print("updating in the database failed (updateIsChecked)")
-                        }
-                    }
-                }
-            } else {
-                saveItems2UD()
-            }
         }
+        print("--- 2")
+
     }
+    
+    func toggleCheck(item: ShoppingItem) {
+           var isChecked = false
+           if let index = shoppingItems.firstIndex(where: { $0.id == item.id }) {
+               shoppingItems[index].isChecked.toggle()
+               isChecked = shoppingItems[index].isChecked
+               
+   //            if item.isHearted {
+   //                if let index = favShoppingItems.firstIndex(where: { $0.id == item.id }) {
+   //                    favShoppingItems[index].isChecked.toggle()
+   //                }
+   //            }
+               
+               updateIsChecked(item: item, newState: isChecked)
+               
+               print("--- 0 ischecked: \(isChecked)")
+               print("--- 0 item ischecked: \(item.isChecked.description)")
+               print("--- 0 shoppingItems[index] ischecked: \(shoppingItems[index].isChecked.description)")
+               
+               if isChecked {
+                   // Delay the deletion after 4 seconds
+                       DispatchQueue.main.asyncAfter(deadline: .now() + 4) { [weak self] in
+                           guard let self = self else { return }
+
+                           // Check if the item is still checked before deleting
+                           if shoppingItems[index].isChecked {
+                               self.deleteItem(item: item)
+                           }
+                       }
+               }
+
+           }
+
+       }
+    
+    func updateQuantity(item: ShoppingItem, newQuantity: Double) {
+           if let index = shoppingItems.firstIndex(of: item) {
+               shoppingItems[index].quantity = newQuantity
+               
+               updateItem(index: index)
+           }
+       }
+    
+    func getSortedItemsByName() -> [ShoppingItem] {
+          return shoppingItems.sorted(by: { $0.name < $1.name })
+      }
 }
 

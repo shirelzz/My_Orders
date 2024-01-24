@@ -90,8 +90,6 @@ struct OrderDetailsView: View {
                         .padding(.leading)
                     }
                 }
-                .padding()
-
                 
                 Button {
                     var orderDetailsText: String = "Date: " + order.orderDate.formatted().description + "\r\n"

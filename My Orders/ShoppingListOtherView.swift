@@ -1,16 +1,16 @@
 //
-//  ShoppingListView.swift
+//  ShoppingListOtherView.swift
 //  My Orders
 //
-//  Created by שיראל זכריה on 12/01/2024.
+//  Created by שיראל זכריה on 23/01/2024.
 //
 
 import SwiftUI
 import FirebaseAuth
 
-struct ShoppingListView: View {
-    
-    @ObservedObject private var shoppingList = ShoppingList.shared
+struct ShoppingListOtherView: View {
+
+    @StateObject private var shoppingList = ShoppingList.shared
     @State private var newItemName = ""
     @State private var newItemQuantity = ""
     @State private var isNameValid = true
@@ -45,19 +45,19 @@ struct ShoppingListView: View {
                             .frame(height: 20)
                         
 //                        HStack {
-//
+//                            
 //                            Spacer(minLength: 10)
-//
+//                            
 //                            Button(action: {
 //                                addFavoritesItemsPressed.toggle()
-//
+//                                
 //                                if addFavoritesItemsPressed && !flag {
 //                                    shoppingList.addFavItemsInList()
 //                                    flag = true
 //                                }
-//
+//                                
 //                                shoppingList.updateFavItemsInList(add: addFavoritesItemsPressed)
-//
+//                                
 //                            }, label: {
 //                                Image(systemName: addFavoritesItemsPressed ? "heart.circle.fill" : "heart.circle")
 //                                    .foregroundColor(addFavoritesItemsPressed ? .accentColor : .black)
@@ -65,7 +65,7 @@ struct ShoppingListView: View {
 //                            })
 //                            .buttonStyle(.borderless)
 //                            .padding()
-//
+//                            
 //                        }
                         
                     }
@@ -226,12 +226,6 @@ struct ShoppingListView: View {
     }
 }
 
-struct ShoppingListView_Previews: PreviewProvider {
-    static var previews: some View {
-        let previewList = ShoppingList()
-        previewList.addItem(item: ShoppingItem(shoppingItemID: UUID().uuidString, name: "Cocoa", quantity: 1, isChecked: false))
-        previewList.addItem(item: ShoppingItem(shoppingItemID: UUID().uuidString, name: "Milk", quantity: 4, isChecked: false))
-
-        return ShoppingListView()
-    }
+#Preview {
+    ShoppingListOtherView()
 }

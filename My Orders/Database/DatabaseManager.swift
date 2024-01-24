@@ -90,6 +90,10 @@ class DatabaseManager {
                     
                     let additionDate = self.convertStringToDate(additionDateStr)
 
+                    var tags: [String]? = nil
+                    if let parsedTags = inventoryItemDict["tags"] as? [String] {
+                        tags = parsedTags
+                    }
                     let inventoryItem = InventoryItem(
                         itemID: itemID,
                         name:  name,
@@ -97,7 +101,8 @@ class DatabaseManager {
                         itemQuantity: itemQuantity,
                         size: size ,
                         AdditionDate: additionDate,
-                        itemNotes:  itemNotes
+                        itemNotes:  itemNotes,
+                        tags: tags
                     )
 
                     let orderItem = OrderItem(
@@ -278,7 +283,7 @@ class DatabaseManager {
                 guard let shoppingItemDict = itemData as? [String: Any],
                       let shoppingItemID = shoppingItemDict["shoppingItemID"] as? String,
                       let name = shoppingItemDict["name"] as? String,
-                      let quantity = shoppingItemDict["quantity"] as? Int,
+                      let quantity = shoppingItemDict["quantity"] as? Double,
                       let isChecked = shoppingItemDict["isChecked"] as? Bool
  
                 else {

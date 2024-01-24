@@ -306,12 +306,16 @@ struct AddOrderView: View {
                     }
                 }
                 
+                if selectedDeliveryCost != 0{
+                    Text("Delivery Cost: \(selectedDeliveryCost)")
+                }
+                
                 HStack{
                     // Calculate and display the total price
                     let totalPrice = orderItems.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
                     
                     Text("Total Price:\(currency)")
-                    Text("\(totalPrice, specifier: "%.2f")")
+                    Text("\(totalPrice + (Double)(selectedDeliveryCost) , specifier: "%.2f")")
                 }
             }
             

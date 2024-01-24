@@ -43,6 +43,7 @@ struct AccountView: View {
                                         print("Error encrypting ID: \(error)")
                                     }
                                 }
+                                .disabled(true)
                             }
                             else {
                                 
@@ -51,7 +52,7 @@ struct AccountView: View {
                                 }
                             }
                         } footer: {
-                            Text("By sharing this code you allow clients view your public inventory items")
+                            Text("By sharing this code you allow clients view your public inventory items. Will be available soon.")
                         }
                         
                         Button("Sign Out") {
