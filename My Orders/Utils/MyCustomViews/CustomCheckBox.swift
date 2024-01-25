@@ -22,7 +22,7 @@ struct CheckboxToggle: View {
                 }
             }
         )) {
-            Text(tag)
+            Text(tag.localized)
                 .foregroundStyle(.primary)
         }
     }

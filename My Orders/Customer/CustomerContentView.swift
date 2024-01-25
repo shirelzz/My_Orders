@@ -8,16 +8,12 @@
 import SwiftUI
 
 struct CustomerContentView: View {
-    
-//    @State private var path: NavigationPath = NavigationManager.shared.path
-//    @ObservedObject var router = Router()
-    @EnvironmentObject var router: Router
 
     var body: some View {
         
-        NavigationStack() { //path: $router.navPath
+        NavigationStack() {
             
-            Text("Hello, World!")
+            Text("Soon 🩵")
             
         }
         .navigationBarHidden(true)

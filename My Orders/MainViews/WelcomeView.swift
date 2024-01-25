@@ -20,8 +20,8 @@ struct WelcomeView: View {
     
     var body: some View {
         
-        let width = UIScreen.main.bounds.width - 32
-        let height = UIScreen.main.bounds.height - 32
+        let width = HelperFunctions.getWidth()
+        let height = HelperFunctions.getHeight()
 
         
         NavigationStack {

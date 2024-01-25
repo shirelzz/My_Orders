@@ -22,7 +22,7 @@ struct User: Codable, Identifiable {
 //    var vendorType: VendorType?
     
     init() {
-        self.uid = UUID().uuidString
+        self.uid = ""
         self.role = UserRole.none
     }
     
@@ -101,7 +101,6 @@ class UserManager: ObservableObject {
     init() {
         if isUserSignedIn{
             fetchUserFromDB()
-            print("--- user role: \(user.role.rawValue)")
         }
         else{
             loadUserFromUD()
@@ -127,6 +126,7 @@ class UserManager: ObservableObject {
                 DispatchQueue.main.async {
                     self.user = user ?? User()
                     print("Success fetching user")
+                    print("--- user role: \(self.user.role.rawValue)")
                 }
             })
         }

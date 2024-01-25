@@ -52,11 +52,12 @@ struct AddOrderView: View {
     @State private var isNewQuantityValid: Bool = true
 
     @State private var isItemDetailsPopoverPresented = false
-    @State private var selectedItemForDetails: InventoryItem?
+    @State private var selectedItemForDetails: InventoryItem = InventoryItem()
     @State private var showItemDetails = false
     @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
-
     
+    @State private var isActive = false
+
     var body: some View {
         
         Form {
@@ -97,6 +98,7 @@ struct AddOrderView: View {
     
                 HStack {
                     TextField("Search for item", text: $searchQuery)
+                        .autocorrectionDisabled()
                         .frame(height: 40)
                         .padding(.leading)
                         .background(Color.gray.opacity(0.1))
@@ -153,17 +155,39 @@ struct AddOrderView: View {
                                 Text("Q: \(item.itemQuantity)").font(.system(size: 14))
                                 Text(",").font(.system(size: 14))
                                 Text("Price:\(currency)\(item.itemPrice, specifier: "%.2f")").font(.system(size: 14))
+                                
                             }
                         }
                     }
                     .onChange(of: selectedInventoryItemIndex) { newIndex in
                         // Set selectedInventoryItem to the item at the selected index
-                        print("---> newIndex: \(newIndex)")
                         selectedInventoryItem = filteredItems[newIndex]
+                        selectedItemForDetails = filteredItems[newIndex]
                     }
+                    .overlay(content: {
+                        Button {
+                            selectedItemForDetails = selectedInventoryItem ?? InventoryItem()
+                            isActive = true
+                        } label: {
+                            Image(systemName: "info.circle")
+                                .font(.system(size: 16))
+                                .foregroundColor(.accentColor)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    })
                     .pickerStyle(.wheel)
                     .labelsHidden()
                     .frame(height: 100)
+                    
+//                    Button {
+//                        selectedItemForDetails = selectedInventoryItem ?? InventoryItem()
+//                        isActive = true
+//                    } label: {
+//                        Image(systemName: "info.circle")
+//                            .font(.system(size: 16))
+//                            .foregroundColor(.accentColor)
+//                    }
+
                 }
                 else if !searchQuery.isEmpty && filteredItems.isEmpty {
                     Text("No items found")
@@ -375,7 +399,7 @@ struct AddOrderView: View {
                 
             }
             
-            Section {
+//            Section {
                 Button(action: {
                     
                     for dessert in orderItems {
@@ -437,9 +461,21 @@ struct AddOrderView: View {
                         showPhoneError = true
                     }
                 }
-            }
+                .buttonStyle(BorderlessButtonStyle())
+
+            
+//            }
         }
         .navigationBarTitle("New Order")
+        .overlay(content: {
+            if isActive  {
+                CustomPopUpWindow(isActive: $isActive, item: $selectedItemForDetails, title: "Details", buttonTitle: "Close")
+                    .onAppear {
+                        HelperFunctions.closeKeyboard()
+                    }
+            }
+        })
+
     }
     
     private func validateQuantity() {

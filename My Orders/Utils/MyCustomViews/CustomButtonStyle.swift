@@ -12,7 +12,7 @@ struct CustomButtonStyle: ButtonStyle {
     var isPressed: Bool
 
     func makeBody(configuration: Configuration) -> some View {
-        let width = UIScreen.main.bounds.width - 32
+        let width = HelperFunctions.getWidth()
 
         configuration.label
             .foregroundColor(configuration.isPressed ? .white : .accentColor)
@@ -34,7 +34,7 @@ let title: String
 var action: () -> Void
 
 var body: some View {
-    let width = UIScreen.main.bounds.width - 32
+    let width = HelperFunctions.getWidth()
 
     Button(action: {
         action()

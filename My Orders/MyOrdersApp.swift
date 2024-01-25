@@ -80,18 +80,15 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
 @main
 struct MyOrdersApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
     @StateObject private var authState = AuthState()
+    @StateObject private var userManager = UserManager.shared
 
-
-//    @ObservedObject var router = Router()
-    
     var body: some Scene {
         WindowGroup {
                 MainView()
                     .environmentObject(OrderManager.shared)
                     .environmentObject(authState)
-                    .environmentObject(UserManager.shared)
+                    .environmentObject(userManager)
                     .environmentObject(VendorManager.shared)
                     .onAppear {
                         // Ensure Firebase is configured only once
@@ -101,43 +98,6 @@ struct MyOrdersApp: App {
                         
                         authState.isAuthenticated = Auth.auth().currentUser != nil
                     }
-            
-//            NavigationStack(path: $router.navPath) {
-//                MainViewOther()
-//                    .navigationDestination(for: Router.Destination.self) { destination in
-//                        switch destination {
-//                            
-//                        case .welcome:
-//                            WelcomeView()
-//                            
-//                        case .userRole:
-//                            UserRoleView()
-//                            
-//                        case .contentView:
-//                            ContentView()
-//                            
-//                        case .customerContent:
-//                            CustomerContentView()
-//                            
-//                        case .vendorType:
-//                            Text("vendorType")
-//                        case .bussinessDetailsView:
-//                            Text("bussinessDetailsView")
-//                            
-//                        }
-//                    }
-//                    .environmentObject(router)
-//                    .environmentObject(OrderManager.shared)
-//                    .environmentObject(authState)
-//                    .onAppear {
-//                        // Ensure Firebase is configured only once
-//                        if FirebaseApp.app() == nil {
-//                            FirebaseApp.configure()
-//                        }
-//                        
-//                        authState.isAuthenticated = Auth.auth().currentUser != nil
-//                    }
-//            }
         }
     }
 }

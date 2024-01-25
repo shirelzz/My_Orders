@@ -114,6 +114,7 @@ struct AddItemView: View {
                         Text("Add Item")
                     }
                     .disabled(quantityError)
+                    .buttonStyle(.borderless)
                 }
                 
             }

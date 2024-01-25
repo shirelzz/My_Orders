@@ -43,7 +43,7 @@ struct ContentView: View {
                     
                     VStack{
                         
-                        Image("Desk2")
+                        Image(VendorManager.shared.vendor.vendorType == .food ? "kitchen" : "Desk2")
                             .resizable()
                             .scaledToFill()
                             .edgesIgnoringSafeArea(.top)

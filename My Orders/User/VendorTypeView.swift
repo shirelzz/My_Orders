@@ -22,7 +22,7 @@ struct VendorTypeView: View {
 
     var body: some View {
         
-        let height = UIScreen.main.bounds.height - 32
+        let height = HelperFunctions.getHeight()
         
         NavigationStack() {
             

@@ -20,6 +20,16 @@ struct InventoryItem: Codable, Identifiable, Hashable{
     var itemNotes: String
     var tags: [String]?
     
+    init() {
+        self.itemID = ""
+        self.name = ""
+        self.itemPrice = 0
+        self.itemQuantity = 0
+        self.size = ""
+        self.AdditionDate = Date()
+        self.itemNotes = ""
+    }
+    
     init(itemID: String, name: String, itemPrice: Double, itemQuantity: Int, size: String, AdditionDate: Date, itemNotes: String, tags: [String]?) {
         self.itemID = itemID
         self.name = name

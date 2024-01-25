@@ -13,7 +13,7 @@ struct GoogleSiginBtn: View {
     
     var body: some View {
         
-        let width = UIScreen.main.bounds.width - 33
+        let width = HelperFunctions.getWidth()
         
         Button(action: action) {
                     HStack {

@@ -55,7 +55,7 @@ struct ItemDetailsView: View {
                     List {
                         if let tags = item.tags {
                             ForEach(tags, id: \.self) { tag in
-                                Text(tag)
+                                Text(tag.localized)
                             }
                         } else {
                             Text("No tags available")

@@ -16,8 +16,12 @@ struct MainView: View {
     @AppStorage("hasLaunchedBefore") private var hasLaunchedBefore: Bool = false
     @State private var showContentView = false
     @EnvironmentObject var authState: AuthState
-    @StateObject private var userManager = UserManager.shared
+//    @StateObject private var userManager = UserManager.shared
     @StateObject private var vendorManager = VendorManager.shared
+    
+    @State private var showVendorContentView = false
+    @State private var showCustomerContentView = false
+    @State private var showUserRoleView = false
     
     var body: some View {
 
@@ -32,6 +36,16 @@ struct MainView: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             withAnimation {
                                 showLogo = false
+                                
+//                                if UserManager.shared.user.role.rawValue == UserRole.vendor.rawValue {
+//                                    showVendorContentView = true
+//                                }
+//                                else if UserManager.shared.user.role.rawValue == UserRole.customer.rawValue {
+//                                    showCustomerContentView = true
+//                                }
+//                                else if UserManager.shared.user.role.rawValue == UserRole.none.rawValue {
+//                                    showUserRoleView = true
+//                                }
                             }
                         }
                     }
@@ -45,9 +59,6 @@ struct MainView: View {
                         if authState.isAuthenticated {
                             UserRoleView()
                                 .navigationBarHidden(true)
-                                .onAppear(perform: {
-                                    print("--- going to UserRoleView 0")
-                                })
                         }
                         
                         else {
@@ -63,21 +74,23 @@ struct MainView: View {
                         }
                        
                     } else {
-                        
-                        if UserManager.shared.user.role.rawValue == UserRole.vendor.rawValue {
-                            ContentView()
-                                .navigationBarHidden(true)
-                        }
-                        else if UserManager.shared.user.role.rawValue == UserRole.customer.rawValue {
-                            CustomerContentView()
-                                .navigationBarHidden(true)
-                        }
-                        else {
-                            UserRoleView()
-                                .navigationBarHidden(true)
-                                .onAppear(perform: {
-                                    print("--- going to UserRoleView 1")
-                                })
+                                                
+                        if UserManager.shared.user.id != "" {
+                            if UserManager.shared.user.role.rawValue == UserRole.vendor.rawValue || showVendorContentView {
+                                ContentView()
+                                    .navigationBarHidden(true)
+                            }
+                            else if UserManager.shared.user.role.rawValue == UserRole.customer.rawValue || showCustomerContentView {
+                                CustomerContentView()
+                                    .navigationBarHidden(true)
+                            }
+                            else if UserManager.shared.user.role.rawValue == UserRole.none.rawValue || showUserRoleView {
+                                UserRoleView()
+                                    .navigationBarHidden(true)
+                                    .onAppear(perform: {
+                                        print("--- going to UserRoleView 1")
+                                    })
+                            }
                         }
                     }
                 }

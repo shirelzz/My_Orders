@@ -27,7 +27,7 @@ struct ShoppingListView: View {
     
     var body: some View {
         
-        let width = UIScreen.main.bounds.width - 32
+        let width = HelperFunctions.getWidth()
 
         NavigationStack{
             
@@ -72,7 +72,7 @@ struct ShoppingListView: View {
                 }
             }
             .onTapGesture {
-                closeKeyboard()
+                HelperFunctions.closeKeyboard()
             }
             
             List {
@@ -109,7 +109,7 @@ struct ShoppingListView: View {
                         .disabled(!isNameValid || newItemName == "")
                         .buttonStyle(.borderedProminent)
                         .onTapGesture {
-                            closeKeyboard()
+                            HelperFunctions.closeKeyboard()
                         }
                         
                     }
@@ -184,7 +184,7 @@ struct ShoppingListView: View {
             .gesture(
                 TapGesture()
                     .onEnded { _ in
-                        closeKeyboard()
+                        HelperFunctions.closeKeyboard()
                     }
             )
 //            .overlay(content: {
@@ -215,10 +215,6 @@ struct ShoppingListView: View {
             }
         }
         isNameValid = valid
-    }
-    
-    func closeKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     
     var currentShoppingItems: [ShoppingItem] {

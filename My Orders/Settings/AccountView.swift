@@ -36,14 +36,19 @@ struct AccountView: View {
                                     do {
                                         if let currentUser = Auth.auth().currentUser {
                                             let userID = currentUser.uid
+                                            print("--> userID: \(userID)")
                                             let publicID = try Encryption.encryptID(userID: userID)
+                                            print("--> publicID: \(publicID)")
+                                            let decryptedPublicID = try Encryption.decryptID(encryptedID: publicID)
+                                            print("--> decrypted: \(decryptedPublicID)")
                                             AppManager.shared.savePublicID(publicID: publicID)
                                         }
                                     } catch {
                                         print("Error encrypting ID: \(error)")
                                     }
                                 }
-                                .disabled(true)
+                                //.disabled(true)
+                            
                             }
                             else {
                                 
@@ -51,6 +56,9 @@ struct AccountView: View {
                                     UIPasteboard.general.string = AppManager.shared.getPublicID()
                                 }
                             }
+                            
+                           
+
                         } footer: {
                             Text("By sharing this code you allow clients view your public inventory items. Will be available soon.")
                         }

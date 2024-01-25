@@ -1171,6 +1171,23 @@
         }
       }
     },
+    "Dairy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dairy"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "חלבי"
+          }
+        }
+      }
+    },
     "Dashboard" : {
       "localizations" : {
         "en" : {
@@ -1186,6 +1203,9 @@
           }
         }
       }
+    },
+    "Date" : {
+
     },
     "Date Added" : {
       "localizations" : {
@@ -1835,6 +1855,23 @@
         }
       }
     },
+    "Gluten-Free" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gluten-Free"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ללא גלוטן"
+          }
+        }
+      }
+    },
     "Hello, World!" : {
       "localizations" : {
         "en" : {
@@ -2352,6 +2389,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "אין הזמנות קרובות בינתיים"
+          }
+        }
+      }
+    },
+    "Non-Dairy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non-Dairy"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פרווה"
           }
         }
       }
@@ -3302,6 +3356,23 @@
         }
       }
     },
+    "Quantity: %.2f" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quantity: %.2f"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "כמות: %.2f"
+          }
+        }
+      }
+    },
     "Quantity: %@" : {
       "localizations" : {
         "en" : {
@@ -3379,23 +3450,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "הגדרות קבלה"
-          }
-        }
-      }
-    },
-    "receipt exist: %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "receipt exist: %@"
-          }
-        },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "קבלה קיימת: %@"
           }
         }
       }
@@ -3945,6 +3999,22 @@
         }
       }
     },
+    "Soon 🩵" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soon 🩵"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "בקרוב 🩵"
+          }
+        }
+      }
+    },
     "Sort By" : {
       "localizations" : {
         "en" : {
@@ -3977,6 +4047,9 @@
         }
       }
     },
+    "tags" : {
+
+    },
     "Tags" : {
       "localizations" : {
         "en" : {
@@ -3992,6 +4065,9 @@
           }
         }
       }
+    },
+    "test encryption" : {
+
     },
     "These details will be used for your receipts" : {
       "localizations" : {
@@ -4222,6 +4298,40 @@
         }
       }
     },
+    "Vegan" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vegan"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "טבעוני"
+          }
+        }
+      }
+    },
+    "Vegetarian" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vegetarian"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "צמחוני"
+          }
+        }
+      }
+    },
     "We are so happy to see you 🥳" : {
       "localizations" : {
         "en" : {
@@ -4366,23 +4476,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "אולי תצטרך.י להפעיל את האפליקציה מחדש כדי לראות את השינוי בכל המסכים"
-          }
-        }
-      }
-    },
-    "Your App" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your App"
-          }
-        },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "אפליקציה"
           }
         }
       }
