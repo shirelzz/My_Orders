@@ -20,6 +20,7 @@ struct AllOrdersView: View {
     enum FilterType: String, CaseIterable, Identifiable {
         case all = "All"
         case paid = "Paid"
+        case notPaid = "Not paid"
         case delivered = "Delivered"
         
         var id: FilterType { self }
@@ -32,6 +33,8 @@ struct AllOrdersView: View {
             switch filterType {
             case .paid:
                 return nameMatches && order.isPaid
+            case .notPaid:
+                return nameMatches && !order.isPaid
             case .delivered:
                 return nameMatches && order.isDelivered
             case .all:

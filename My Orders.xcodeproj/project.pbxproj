@@ -68,6 +68,9 @@
 		D6E7D2D02B6284AA0027DF29 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2CF2B6284AA0027DF29 /* HelperFunctions.swift */; };
 		D6E7D2D22B62AE8C0027DF29 /* SeeBusinessDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2D12B62AE8C0027DF29 /* SeeBusinessDetails.swift */; };
 		D6E7D2D42B62AEB30027DF29 /* Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2D32B62AEB30027DF29 /* Coder.swift */; };
+		D6E7D2D62B63312B0027DF29 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2D52B63312B0027DF29 /* Customer.swift */; };
+		D6E7D2D82B6332C80027DF29 /* AddBusinessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2D72B6332C80027DF29 /* AddBusinessView.swift */; };
+		D6E7D2DA2B63D2A00027DF29 /* BusinessRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2D92B63D2A00027DF29 /* BusinessRowView.swift */; };
 		D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */; };
 		D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3322AC593F8002ECA81 /* ContentView.swift */; };
 		D6F6A3352AC593FA002ECA81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6F6A3342AC593FA002ECA81 /* Assets.xcassets */; };
@@ -157,6 +160,9 @@
 		D6E7D2CF2B6284AA0027DF29 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
 		D6E7D2D12B62AE8C0027DF29 /* SeeBusinessDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeeBusinessDetails.swift; sourceTree = "<group>"; };
 		D6E7D2D32B62AEB30027DF29 /* Coder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coder.swift; sourceTree = "<group>"; };
+		D6E7D2D52B63312B0027DF29 /* Customer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
+		D6E7D2D72B6332C80027DF29 /* AddBusinessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBusinessView.swift; sourceTree = "<group>"; };
+		D6E7D2D92B63D2A00027DF29 /* BusinessRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessRowView.swift; sourceTree = "<group>"; };
 		D6F6A32D2AC593F8002ECA81 /* My Orders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Orders.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersApp.swift; sourceTree = "<group>"; };
 		D6F6A3322AC593F8002ECA81 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -260,6 +266,9 @@
 			children = (
 				D68CEA272B53047F006D4933 /* CustomerContentView.swift */,
 				D6E7D2D12B62AE8C0027DF29 /* SeeBusinessDetails.swift */,
+				D6E7D2D52B63312B0027DF29 /* Customer.swift */,
+				D6E7D2D72B6332C80027DF29 /* AddBusinessView.swift */,
+				D6E7D2D92B63D2A00027DF29 /* BusinessRowView.swift */,
 			);
 			path = Customer;
 			sourceTree = "<group>";
@@ -577,8 +586,10 @@
 				D6AF62D02B12BCB90056C973 /* InventoryItem.swift in Sources */,
 				D66A37092B28801200A921CF /* FirebAuth.swift in Sources */,
 				D64DD7502B1B8C910066BB7E /* Whatsapp.swift in Sources */,
+				D6E7D2D62B63312B0027DF29 /* Customer.swift in Sources */,
 				D68CEA242B52FEB3006D4933 /* UserRoleView.swift in Sources */,
 				D68CEA282B53047F006D4933 /* CustomerContentView.swift in Sources */,
+				D6E7D2DA2B63D2A00027DF29 /* BusinessRowView.swift in Sources */,
 				D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */,
 				D6AF62D42B12BDAB0056C973 /* InventoryContentView.swift in Sources */,
 				D6AF62EA2B1395B10056C973 /* ImagePicker.swift in Sources */,
@@ -591,6 +602,7 @@
 				D64DD75B2B2273470066BB7E /* DashboardView.swift in Sources */,
 				D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */,
 				D66A36DF2B26275C00A921CF /* WelcomeView.swift in Sources */,
+				D6E7D2D82B6332C80027DF29 /* AddBusinessView.swift in Sources */,
 				D6AF62F82B151CE80056C973 /* NotificationSettingsView.swift in Sources */,
 				D6F6A3632AC59FCE002ECA81 /* AddOrderView.swift in Sources */,
 				D6F6A3612AC59FB6002ECA81 /* OrderRowView.swift in Sources */,
