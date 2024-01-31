@@ -75,6 +75,15 @@ struct GeneratedReceiptView: View {
                 }
             }
             
+            if((order.delivery.address != "") || (order.delivery.cost != 0)){
+                HStack {
+                    Text("Delivery Cost:")
+                        .font(.headline)
+                    Text(currency)
+                    Text(String(format: "%.2f", order.delivery.cost))
+                }
+            }
+            
             HStack{
                 Text("Price:").font(.headline)
                 Text(currency)
@@ -133,14 +142,6 @@ struct GeneratedReceiptView: View {
         }
         .padding()
         
-    }
-    
-    
-    
-    private func formattedDate(_ date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .long
-        return dateFormatter.string(from: date)
     }
     
 }

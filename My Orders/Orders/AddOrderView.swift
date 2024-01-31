@@ -56,7 +56,7 @@ struct AddOrderView: View {
     @State private var showItemDetails = false
     @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
     
-    @State private var isActive = false
+    @State private var showInfo = false
 
     var body: some View {
         
@@ -167,7 +167,7 @@ struct AddOrderView: View {
                     .overlay(content: {
                         Button {
                             selectedItemForDetails = selectedInventoryItem ?? InventoryItem()
-                            isActive = true
+                            showInfo = true
                         } label: {
                             Image(systemName: "info.circle")
                                 .font(.system(size: 16))
@@ -468,8 +468,8 @@ struct AddOrderView: View {
         }
         .navigationBarTitle("New Order")
         .overlay(content: {
-            if isActive  {
-                CustomPopUpWindow(isActive: $isActive, item: $selectedItemForDetails, title: "Details", buttonTitle: "Close")
+            if showInfo  {
+                CustomPopUpWindow(isActive: $showInfo, item: $selectedItemForDetails, title: "Details", buttonTitle: "Close")
                     .onAppear {
                         HelperFunctions.closeKeyboard()
                     }

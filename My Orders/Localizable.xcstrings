@@ -965,6 +965,9 @@
         }
       }
     },
+    "Copy" : {
+
+    },
     "Copy name" : {
       "localizations" : {
         "en" : {
@@ -1211,7 +1214,14 @@
       }
     },
     "Date" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "תאריך"
+          }
+        }
+      }
     },
     "Date Added" : {
       "localizations" : {
@@ -1492,6 +1502,9 @@
         }
       }
     },
+    "Delivery Cost:" : {
+
+    },
     "Delivery cost: %@" : {
       "localizations" : {
         "en" : {
@@ -1650,6 +1663,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ערוך הזמנה"
+          }
+        }
+      }
+    },
+    "Enter code" : {
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הכנס קוד"
           }
         }
       }
@@ -1882,7 +1905,14 @@
       }
     },
     "Hello" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שלום"
+          }
+        }
+      }
     },
     "Hello, World!" : {
       "localizations" : {
@@ -4064,7 +4094,14 @@
       }
     },
     "tags" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "תגיות"
+          }
+        }
+      }
     },
     "Tags" : {
       "localizations" : {

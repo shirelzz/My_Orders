@@ -24,4 +24,10 @@ class HelperFunctions {
         let height = UIScreen.main.bounds.height - 32
         return height
     }
+    
+    static func formatToDate(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        return dateFormatter.string(from: date)
+    }
 }

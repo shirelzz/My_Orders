@@ -21,30 +21,23 @@ struct ReceiptSettingsView: View {
         
         Form{
             
-//            Text("Start creatng receipts at")
-//            TextField("Receipt number", text: Binding<String>(
-//                get: { String(receiptNumber) },
-//                set: { if let newValue = Int($0) {
-//                    receiptNumber = newValue
-//                    
-//                    //send receiptNumber to the order manager
-//                    OrderManager.shared.setStartingReceiptNumber(newValue)} }
-//            ))
-//            .keyboardType(.numberPad)
-            
             Section(header: Text("Start creatng receipts at")) {
                 
-                Text("Current receipt Number \(OrderManager.shared.getLastReceiptID() + 1)")
+                Text("Current receipt Number \(orderManager.getLastReceiptID() + 1)")
                 
                 TextField("Receipt number", text: $receiptNumberString)
                 .keyboardType(.numberPad)
-                .onSubmit {
+                .onChange(of: receiptNumberString, perform: { _ in
                     validateReceiptNum()
-                }
+                })
                 
                 Button("Save") {
                     if validReceiptNum {
-                        OrderManager.shared.setStartingReceiptNumber(receiptNumber)
+                        print("saving")
+                        receiptNumber = Int(receiptNumberString) ?? 1
+                        
+                        orderManager.setStartingReceiptNumber(receiptNumber)
+                        
                     }
                     
                     presentationMode.wrappedValue.dismiss()
@@ -56,8 +49,5 @@ struct ReceiptSettingsView: View {
     
     private func validateReceiptNum() {
         validReceiptNum = Int(receiptNumberString) ?? 1 >= 1
-        if validReceiptNum {
-            receiptNumber = Int(receiptNumberString) ?? 1
-        }
     }
 }

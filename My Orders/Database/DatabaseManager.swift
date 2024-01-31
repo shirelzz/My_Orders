@@ -227,6 +227,27 @@ class DatabaseManager {
         })
     }
     
+    func fetchReceiptValues(path: String, completion: @escaping (ReceiptValues) -> ()) {
+        let receiptValuesRef = databaseRef.child(path)
+
+        receiptValuesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let value = snapshot.value as? [String: Any],
+            let receiptNumber = value["receiptNumber"] as? Int,
+            let receiptNumberReset = value["receiptNumberReset"] as? Int
+            
+            
+            else {
+                print("No receipt values found")
+                completion(ReceiptValues(receiptNumber: -1, receiptNumberReset: -1))
+                return
+            }
+            
+            let recValues = ReceiptValues(receiptNumber: receiptNumber, receiptNumberReset: receiptNumberReset)
+
+            completion(recValues)
+        })
+    }
+    
     func fetchNotificationSettings(path: String, completion: @escaping (Notifications) -> ()) {
         
         let notificationsRef = databaseRef.child(path)
@@ -320,7 +341,6 @@ class DatabaseManager {
         })
     }
     
-    
     func fetchUser(path: String, completion: @escaping (User?) -> ()) {
           
         let userRef = databaseRef.child(path)
@@ -407,6 +427,17 @@ class DatabaseManager {
         receiptRef.setValue(receipt.dictionaryRepresentation())
     }
     
+//    func saveReceiptValues(_ values: ReceiptValues, path: String) {
+//        let receiptValuesRef = databaseRef.child(path)
+//        receiptValuesRef.setValue(values.dictionaryRepresentation()) { error, _ in
+//            if let error = error {
+//                print("Error saving values: \(error.localizedDescription)")
+//            } else {
+//                print("values saved successfully")
+//            }
+//        }
+//    }
+    
     func saveNotificationSettings(_ notificationSettings: Notifications, path: String) {
         let notificationSettingsRef = databaseRef.child(path)
         notificationSettingsRef.setValue(notificationSettings.dictionaryRepresentation())
@@ -460,6 +491,27 @@ class DatabaseManager {
             }
         }
     }
+    
+    func saveOrUpdateReceiptValuesInDB(_ values: ReceiptValues, path: String, completion: @escaping (Bool) -> Void) {
+
+        let receiptValuesRef = databaseRef.child(path)
+
+        receiptValuesRef.observeSingleEvent(of: .value) { snapshot in
+            if snapshot.exists() {
+                // Data exists, update it
+                receiptValuesRef.updateChildValues(values.dictionaryRepresentation()) { error, _ in
+                    completion(error == nil)
+                }
+            } else {
+                // Data doesn't exist, set the new data
+                receiptValuesRef.setValue(values.dictionaryRepresentation()) { error, _ in
+                    completion(error == nil)
+                }
+            }
+        }
+    }
+
+    
     // MARK: - Deleting data
     
     func deleteOrder(orderID: String, path: String) {
@@ -538,6 +590,13 @@ class DatabaseManager {
             completion(error == nil)
         }
     }
+    
+//    func updateReceiptValuesInDB(_ values: ReceiptValues, path: String, completion: @escaping (Bool) -> Void) {
+//        let receiptValuesRef = databaseRef.child(path)
+//        receiptValuesRef.updateChildValues(values.dictionaryRepresentation()) { error, _ in
+//            completion(error == nil)
+//        }
+//    }
     
     // MARK: - Helper Functions
     

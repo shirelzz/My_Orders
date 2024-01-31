@@ -71,6 +71,7 @@
 		D6E7D2D62B63312B0027DF29 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2D52B63312B0027DF29 /* Customer.swift */; };
 		D6E7D2D82B6332C80027DF29 /* AddBusinessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2D72B6332C80027DF29 /* AddBusinessView.swift */; };
 		D6E7D2DA2B63D2A00027DF29 /* BusinessRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2D92B63D2A00027DF29 /* BusinessRowView.swift */; };
+		D6E7D2DC2B6A556C0027DF29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2DB2B6A556C0027DF29 /* AppDelegate.swift */; };
 		D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */; };
 		D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3322AC593F8002ECA81 /* ContentView.swift */; };
 		D6F6A3352AC593FA002ECA81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6F6A3342AC593FA002ECA81 /* Assets.xcassets */; };
@@ -163,6 +164,7 @@
 		D6E7D2D52B63312B0027DF29 /* Customer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
 		D6E7D2D72B6332C80027DF29 /* AddBusinessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBusinessView.swift; sourceTree = "<group>"; };
 		D6E7D2D92B63D2A00027DF29 /* BusinessRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessRowView.swift; sourceTree = "<group>"; };
+		D6E7D2DB2B6A556C0027DF29 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D6F6A32D2AC593F8002ECA81 /* My Orders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Orders.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersApp.swift; sourceTree = "<group>"; };
 		D6F6A3322AC593F8002ECA81 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -374,6 +376,7 @@
 			isa = PBXGroup;
 			children = (
 				D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */,
+				D6E7D2DB2B6A556C0027DF29 /* AppDelegate.swift */,
 				D6AF62EB2B13A7D20056C973 /* AppManager.swift */,
 				D69E2A712B611077004F0D5C /* MainViews */,
 				D68CEA2F2B54065C006D4933 /* Customer */,
@@ -617,6 +620,7 @@
 				D6AF62F02B13FCB10056C973 /* LaunchView.swift in Sources */,
 				D66262192B3996D80003608B /* AdsViews.swift in Sources */,
 				D66A371C2B29096700A921CF /* ItemDetailsView.swift in Sources */,
+				D6E7D2DC2B6A556C0027DF29 /* AppDelegate.swift in Sources */,
 				D6E7D2D02B6284AA0027DF29 /* HelperFunctions.swift in Sources */,
 				D6C037872B44598600CFF67E /* AuthState.swift in Sources */,
 				D6AF62FA2B1752140056C973 /* ReceiptSettingsView.swift in Sources */,

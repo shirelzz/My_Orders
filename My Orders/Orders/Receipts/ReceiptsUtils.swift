@@ -13,12 +13,6 @@ import ZipArchive
 class ReceiptUtils {
     
     static func drawPDF(for order: Order) -> Data {
-        var dateFormatter: DateFormatter {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .short
-            formatter.timeStyle = .short
-            return formatter
-        }
         
             let receipt_ = OrderManager.shared.getReceipt(forOrderID: order.orderID)
             let receiptExists = OrderManager.shared.receiptExists(forOrderID: order.orderID)
@@ -147,16 +141,16 @@ class ReceiptUtils {
                 var DocumentDateText = ""
                 
                             if (receiptExists && en){
-                                DocumentDateText = "Date created: \(receipt_.dateGenerated.formatted())"
+                                DocumentDateText = "Date created: \(HelperFunctions.formatToDate(receipt_.dateGenerated))"
                             }
                             else if (receiptExists && he){
-                                DocumentDateText = "תאריך יצירת המסמך: \(receipt_.dateGenerated.formatted())"
+                                DocumentDateText = "תאריך יצירת המסמך: \(HelperFunctions.formatToDate(receipt_.dateGenerated))"
                             }
                             else if (!receiptExists && en){
-                                DocumentDateText = "Date created: \(Date().formatted())"
+                                DocumentDateText = "Date created: \(HelperFunctions.formatToDate(Date()))"
                             }
                             else{
-                                DocumentDateText = "תאריך יצירת המסמך: \(Date().formatted())"
+                                DocumentDateText = "תאריך יצירת המסמך: \(HelperFunctions.formatToDate(Date()))"
                             }
                 DocumentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: DocumentDateAttributes)
                 
@@ -330,6 +324,27 @@ class ReceiptUtils {
                     currentY += 20
                 }
                 
+                if order.delivery.cost != 0 {
+                    
+                    var deliveryItemTitle = ""
+                    if en {
+                        deliveryItemTitle = "delivery"
+                    }
+                    else {
+                        deliveryItemTitle = "משלוח"
+                    }
+                    // Draw a separate row for the delivery cost
+                    let deliveryCostNameRect = CGRect(x: 262, y: currentY, width: 200, height: 20)
+                    deliveryItemTitle.draw(in: deliveryCostNameRect, withAttributes: cellAttributes)
+
+    //                let deliveryCostRect = CGRect(x: 462, y: currentY, width: 100, height: 20)
+    //                let formattedDeliveryCost = String(format: "%.2f", order.delivery.cost)
+    //                formattedDeliveryCost.draw(in: deliveryCostRect, withAttributes: cellAttributes)
+                    
+                    // Update the Y position
+                    currentY += 20
+                }
+                
                 // Draw the total price
                 let totalPriceAttributes: [NSAttributedString.Key: Any] = [
                     .font: UIFont.boldSystemFont(ofSize: 12),
@@ -416,10 +431,10 @@ class ReceiptUtils {
                 
                 var paymentDateText = ""
                 if en {
-                    paymentDateText = "Payment Date: \(dateFormatter.string(from: receipt_.paymentDate))"
+                    paymentDateText = "Payment Date: \(HelperFunctions.formatToDate(receipt_.paymentDate))"
                 }
                 else {
-                    paymentDateText = "מועד התשלום: \(dateFormatter.string(from: receipt_.paymentDate))"
+                    paymentDateText = "מועד התשלום: \(HelperFunctions.formatToDate(receipt_.paymentDate))"
                 }
                 paymentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: paymentDetailsAttributes)
                 

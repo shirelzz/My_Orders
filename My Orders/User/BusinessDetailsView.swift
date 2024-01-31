@@ -82,6 +82,7 @@ struct BusinessDetailsView: View {
                         
                         Button("Done") {
                             VendorManager.shared.updateVendor(businessID: businessID, businessName: businessName, businessAddress: businessAddress, businessPhone: businessPhone)
+                            
                             hasLaunchedBefore = true
                             showContentView = true
                         }

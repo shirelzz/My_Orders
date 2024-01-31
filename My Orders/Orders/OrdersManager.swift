@@ -305,14 +305,48 @@ struct Receipt: Identifiable, Codable, Hashable {
     }
 }
 
+struct ReceiptValues: Codable {
+    var receiptNumber: Int
+    var receiptNumberReset: Int
+    
+    init(receiptNumber: Int, receiptNumberReset: Int) {
+        self.receiptNumber = receiptNumber
+        self.receiptNumberReset = receiptNumberReset
+    }
+    
+    init?(dictionary: [String: Any]) {
+
+        guard let receiptNumber = dictionary["receiptNumber"] as? Int,
+              let receiptNumberReset = dictionary["receiptNumberReset"] as? Int
+
+        else {
+            return nil
+        }
+        self.receiptNumber = receiptNumber
+        self.receiptNumberReset = receiptNumberReset
+    }
+    
+    func dictionaryRepresentation() -> [String: Any] {
+
+        let receiptValuesDict: [String: Any] = [
+            
+            "receiptNumber": receiptNumber,
+            "receiptNumberReset": receiptNumberReset
+
+        ]
+        return receiptValuesDict
+    }
+}
+
 
 class OrderManager: ObservableObject {
     
     static var shared = OrderManager()
     @Published var orders: [Order] = []
     @Published var receipts: [Receipt] = []
-    private var receiptNumber = 0
-    private var receiptNumberReset = 0 // 0 = false, 1 = true
+
+    var receiptValues: ReceiptValues = ReceiptValues(receiptNumber: 0, receiptNumberReset: 0) // reset: 0 = false, 1 = true
+
     private var isUserSignedIn = Auth.auth().currentUser != nil
 
 
@@ -320,10 +354,12 @@ class OrderManager: ObservableObject {
         if isUserSignedIn{
             fetchOrders()
             fetchReceipts()
+            fetchReceiptValues()
         }
         else {
             loadOrders()
             loadReceipts()
+            loadReceiptValuesFromUD()
         }
     }
     
@@ -346,6 +382,23 @@ class OrderManager: ObservableObject {
             })
         }
     }
+    
+    func fetchReceiptValues() {
+        
+        if let currentUser = Auth.auth().currentUser {
+            let userID = currentUser.uid
+            print("Current UserID: \(userID)")
+            let path = "users/\(userID)/receiptSettings"
+
+            DatabaseManager.shared.fetchReceiptValues(path: path, completion: { fetchedReceiptValues in
+                DispatchQueue.main.async {
+                    self.receiptValues = fetchedReceiptValues
+                    print("Success fetching receipts values")
+                }
+            })
+        }
+    }
+
     
     func fetchReceipts() {
         if let currentUser = Auth.auth().currentUser {
@@ -486,14 +539,6 @@ class OrderManager: ObservableObject {
     
     func removeOrder(with orderID: String) {
         if let index = orders.firstIndex(where: { $0.id == orderID }) {
-            
-//            for orderItem in orders[index].orderItems {
-//                InventoryManager.shared.updateQuantity(
-//                    item: orderItem.inventoryItem,
-//                    newQuantity: orderItem.inventoryItem.itemQuantity + orderItem.quantity
-//                )
-//            }
-            
             orders.remove(at: index)
             
             if isUserSignedIn {
@@ -601,27 +646,10 @@ class OrderManager: ObservableObject {
             print("Receipt is nil")
         }
         
-//        return false
     }
     
     
     // MARK: - Manage Receipts
-    
-    // Function to add and save a receipt
-//    func addReceipt(receipt: Receipt) {
-//        if !generatedReceiptIDs.contains(receipt.orderID) {
-//            // receipts.append(receipt)
-//            receipts.insert(receipt)
-//            generatedReceiptIDs.insert(receipt.orderID)
-//                        
-//            if isUserSignedIn {
-//                saveReceipt2DB(receipt)
-//            }
-//            else{
-//                saveReceipts2UD()
-//            }
-//        }
-//    }
     
     func addReceipt(receipt: Receipt) {
         if !receipts.contains(receipt) {
@@ -674,21 +702,74 @@ class OrderManager: ObservableObject {
     
     func getLastReceiptID() -> Int {
         
-        if (receiptNumberReset == 0) {
+        if (self.receiptValues.receiptNumberReset == 0) { // reset = false
             guard let lastReceipt = receipts.max(by: { $0.myID < $1.myID }) else {
                 return 0
             }
             return lastReceipt.myID
         }
         else {
-            receiptNumberReset = 0
-            return receiptNumber - 1
+            return self.receiptValues.receiptNumber - 1
+        }
+    }
+    
+    func forceReceiptNumberReset(value: Int) {
+        self.receiptValues.receiptNumberReset = value
+        saveReceiptValues()
+    }
+    
+    func toggleReceiptNumberReset() {
+        if self.receiptValues.receiptNumberReset == 1 {
+            self.receiptValues.receiptNumberReset = 0
+        }
+        else if self.receiptValues.receiptNumberReset == 0 {
+            self.receiptValues.receiptNumberReset = 1
+        }
+        
+        saveReceiptValues()
+    }
+    
+    func updateReceiptValues() {
+        
+        if let currentUser = Auth.auth().currentUser {
+            let userID = currentUser.uid
+            print("Current UserID: \(userID)")
+            let path = "users/\(userID)/receiptSettings"
+
+            DatabaseManager.shared.saveOrUpdateReceiptValuesInDB(self.receiptValues, path: path, completion: { _ in
+            })
         }
     }
     
     func setStartingReceiptNumber(_ newNumber: Int) {
-        receiptNumber = newNumber
-        receiptNumberReset = 1
+        self.receiptValues.receiptNumber = newNumber
+        self.receiptValues.receiptNumberReset = 1
+//        toggleReceiptNumberReset()
+        saveReceiptValues()
+    }
+    
+    func saveReceiptValues() {
+        saveReceiptValuesToUD(values: self.receiptValues)
+        
+        if isUserSignedIn {
+            updateReceiptValues()
+        }
+    }
+    
+    func saveReceiptValuesToUD(values: ReceiptValues) {
+        let encoder = JSONEncoder()
+        if let encodedData = try? encoder.encode(values) {
+            UserDefaults.standard.set(encodedData, forKey: "receiptValues")
+        }
+    }
+
+    func loadReceiptValuesFromUD() {
+        if let encodedData = UserDefaults.standard.data(forKey: "receiptValues") {
+            let decoder = JSONDecoder()
+            if let decodedValues = try? decoder.decode(ReceiptValues.self, from: encodedData) {
+                self.receiptValues = decodedValues
+            }
+        }
     }
     
     func printReceipt(receipt: Receipt){
