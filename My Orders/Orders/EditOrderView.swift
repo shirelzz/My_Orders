@@ -36,6 +36,10 @@ struct EditOrderView: View {
     
     @State private var navigateToContentView = false
     @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
+    
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+    @State private var newItemQuantity = ""
 
     @Environment(\.presentationMode) var presentationMode
     
@@ -44,12 +48,12 @@ struct EditOrderView: View {
         
         NavigationView {
             Form {
-                
+            
                 Section(header: Text("Order Information")) {
                     
                     TextField("Customer Name", text: $editedOrder.customer.name)
                         .onChange(of: editedOrder.customer.name) { _ in
-                                validateCustomerName()
+                            validateCustomerName()
                         }
                         .onAppear(){
                             validateCustomerName()
@@ -58,7 +62,7 @@ struct EditOrderView: View {
                     TextField("Phone Number", text: $editedOrder.customer.phoneNumber)
                         .keyboardType(.numberPad)
                         .onChange(of: editedOrder.customer.phoneNumber) { _ in
-                                validateCustomerPhone()
+                            validateCustomerPhone()
                         }
                         .onAppear(){
                             validateCustomerPhone()
@@ -70,7 +74,7 @@ struct EditOrderView: View {
                 Section(header: Text("Order Details")) {
                     //                            List {
                     ForEach(0..<editedOrder.orderItems.count, id: \.self) { index in
-                        DessertEditRow(dessert: $editedOrder.orderItems[index])
+                        DessertEditRow(orderItem: $editedOrder.orderItems[index])
                     }
                     .onDelete { indices in
                         deleteOrderItems(at: indices)
@@ -86,57 +90,98 @@ struct EditOrderView: View {
                 }
                 
                 Section(header: Text("Add Item")) {
-                    TextField("Search for item", text: $searchQuery)
-                        .padding()
-                        .frame(height: 40)
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(10.0)
-                        .overlay(
-                            HStack {
-                                Spacer()
-                                Image(systemName: "magnifyingglass")
-                                    .foregroundColor(.gray)
+                    HStack{
+                        TextField("Search for item", text: $searchQuery)
+                            .autocorrectionDisabled()
+                            .padding()
+                            .frame(height: 40)
+                            .background(Color.gray.opacity(0.1))
+                            .cornerRadius(10.0)
+                            .overlay(
+                                HStack {
+                                    Spacer()
+                                    Image(systemName: "magnifyingglass")
+                                        .foregroundColor(.gray)
+                                }
+                                    .padding(.horizontal, 18)
+                            )
+                            .onChange(of: searchQuery) { value in
+                                filteredItems = inventoryManager.items.filter { $0.name.lowercased().contains(value.lowercased()) }
+                                
+                                // Set selectedInventoryItem to the first item in filteredItems if available
+                                if let firstItem = filteredItems.first {
+                                    selectedInventoryItem = firstItem
+                                }
                             }
-                            .padding(.horizontal, 18)
-                        )
-                        .onChange(of: searchQuery) { value in
-                            filteredItems = inventoryManager.items.filter { $0.name.lowercased().contains(value.lowercased()) }
-                            
-                            // Set selectedInventoryItem to the first item in filteredItems if available
-                            if let firstItem = filteredItems.first {
-                                selectedInventoryItem = firstItem
+                        
+                        Spacer(minLength: 15)
+                        
+                            Button {
+                                isAddItemViewPresented = true
+                            } label: {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.system(size: 24))
+                                    .tint(.accentColor)
+                                    .shadow(color: .gray.opacity(0.5), radius: 5, x: 0, y: 2)
                             }
-                        }
-                    
-                    
-                    if filteredItems.isEmpty {
-                        Button(action: {
-                            isAddItemViewPresented = true
-                        }) {
-                            Text("Create new item")
-                        }
-                        .sheet(isPresented: $isAddItemViewPresented) {
-                            NavigationView{
-                                AddItemView(inventoryManager: inventoryManager)
+                            .foregroundColor(.accentColor) // Set desired text color
+                            .tint(.clear)
+                            .popover(isPresented: $isAddItemViewPresented) {
+                                AddItemView(inventoryManager: inventoryManager, knownName: searchQuery)
                             }
-                        }
+                            .buttonStyle(.bordered)
+                            .frame(width: 20, height: 20)
+                            .padding(5)
                     }
-                    else {
+                    
+                    if !filteredItems.isEmpty{
+                        
                         Picker("item", selection: $selectedInventoryItemIndex) {
                             ForEach( filteredItems.indices, id: \.self) { index in
                                 let item = filteredItems[index]
-                                let displayText = "\(item.name) , Q: \(item.itemQuantity), Price: \(currency)\(item.itemPrice)"
                                 
-                                Text(displayText)
-                                    .tag(index)
+                                HStack{
+                                    Text("\(item.name)").font(.system(size: 14))
+                                    Text(",").font(.system(size: 14))
+                                    Text("Q: \(item.itemQuantity)").font(.system(size: 14))
+                                    Text(",").font(.system(size: 14))
+                                    Text("Price:\(currency)\(item.itemPrice, specifier: "%.2f")").font(.system(size: 14))
+                                    
+                                }
                             }
                         }
                         .onChange(of: selectedInventoryItemIndex) { newIndex in
                             // Set selectedInventoryItem to the item at the selected index
                             selectedInventoryItem = filteredItems[newIndex]
+                            
+                            if selectedInventoryItem?.itemQuantity == 0 {
+                                showAlert = true
+                                alertMessage = "Do you want to update the quantity or delete this item?"
+                            }
                         }
-                        .pickerStyle(.inline)
+                        .pickerStyle(.wheel)
                         .labelsHidden()
+                        .frame(height: 100)
+                        .alert(isPresented: $showAlert) {
+                            Alert(
+                                title: Text("Quantity Alert"),
+                                message: Text(alertMessage),
+                                primaryButton: .default(Text("Update Quantity")) {
+                                    newItemQuantity = "\(selectedInventoryItem?.itemQuantity)"
+                                    showAlert = false
+                                    
+                                    // Show the TextField in a sheet or popover if needed
+                                    TextField("Quantity", text: $newItemQuantity)
+                                        .keyboardType(.numberPad)
+                                        .onSubmit {
+                                            updateSelectedItemQuantity()
+                                        }
+                                },
+                                secondaryButton: .destructive(Text("Delete Item")) {
+                                    deleteSelectedItem()
+                                }
+                            )
+                        }
                         
                         TextField("Quantity", text: $newDessertQuantity)
                             .keyboardType(.numberPad)
@@ -367,29 +412,46 @@ struct EditOrderView: View {
         orderManager.removeOrder(with: order.orderID)
     }
     
+    private func updateSelectedItemQuantity(){
+        if selectedInventoryItem != nil{
+            inventoryManager.updateQuantity(item: selectedInventoryItem!, newQuantity: Int(newItemQuantity) ?? 1)
+        }
+    }
+    
+    private func deleteSelectedItem(){
+        if selectedInventoryItem != nil{
+            inventoryManager.deleteItem(item: selectedInventoryItem!)
+        }
+        
+    }
+    
 }
 
 struct DessertEditRow: View {
     
-    @Binding var dessert: OrderItem
+    @Binding var orderItem: OrderItem
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("Dessert: \(dessert.inventoryItem.name)")
+        HStack(alignment: .top) {
+            Text(orderItem.inventoryItem.name)
             
             HStack {
-                Text("Quantity:")
-                TextField("Enter Quantity", value: $dessert.quantity, formatter: NumberFormatter())
+                Text("Q:")
+                TextField("Enter Quantity", value: $orderItem.quantity, formatter: NumberFormatter())
                     .textFieldStyle(RoundedBorderTextFieldStyle())
+//                    .frame(width: 40)
+                    .background(Color.clear)
             }
             
             HStack {
                 Text("Price:")
-                TextField("Enter Price", value: $dessert.price, formatter: NumberFormatter())
+                TextField("Enter Price", value: $orderItem.price, formatter: NumberFormatter())
                     .textFieldStyle(RoundedBorderTextFieldStyle())
+//                    .frame(width: 40)
+                    .background(Color.clear)
             }
         }
-        .padding()
+//        .padding()
     }
 }
 

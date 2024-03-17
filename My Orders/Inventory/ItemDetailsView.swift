@@ -10,16 +10,8 @@ import SwiftUI
 struct ItemDetailsView: View {
     
     @ObservedObject var inventoryManager: InventoryManager
-    @State var item: InventoryItem    
+    @State var item: InventoryItem
     @State private var isEditing = false
-
-    
-    let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .short
-        return formatter
-    }()
     
     var body: some View {
         
@@ -78,7 +70,7 @@ struct ItemDetailsView: View {
                                 }
                         )
             .sheet(isPresented: $isEditing) {
-                EditItemView(inventoryManager: inventoryManager, item: item, name: item.name, price: item.itemPrice, quantity: item.itemQuantity, size: item.size, notes: item.itemNotes)
+                EditItemView(inventoryManager: inventoryManager, item: $item, name: item.name, price: item.itemPrice, quantity: item.itemQuantity, size: item.size, notes: item.itemNotes)
                 
             }
             
@@ -86,19 +78,3 @@ struct ItemDetailsView: View {
     }
     
 }
-    
-struct ItemDetailsView_Previews: PreviewProvider {
-    static var previews: some View {
-        let sampleItem = InventoryItem(itemID: "1234",
-                                       name: "Chocolate cake",
-                                       itemPrice: 20,
-                                       itemQuantity: 20,
-                                       size: "",
-                                       AdditionDate: Date(),
-                                       itemNotes: ""
-        )
-        
-        ItemDetailsView(inventoryManager: InventoryManager.shared, item: sampleItem)
-    }
-}
-

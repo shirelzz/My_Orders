@@ -25,12 +25,8 @@ struct ReceiptRowView: View {
         
         VStack(alignment: .leading) {
             
-            Text("Customer: \(order.customer.name)")
-            HStack{
-                Text("Total Price: \(currency)")
-                Text("\(order.totalPrice,  specifier: "%.2f")")
-
-            }
+            Text(order.customer.name).bold()
+            Text("\(order.totalPrice,  specifier: "%.2f")\(currency)")
         }
     }
     

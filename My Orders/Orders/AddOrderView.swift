@@ -112,15 +112,20 @@ struct AddOrderView: View {
                                 .padding(.horizontal, 18)
                         )
                         .onChange(of: searchQuery) { value in
-                            filteredItems = inventoryManager.items
-                                .filter { $0.name.lowercased().contains(value.lowercased()) }
-                                .sorted { $0.name < $1.name }
+                            if value.isEmpty {
+                                filteredItems = inventoryManager.items.sorted { $0.name < $1.name }
+                            } else {
+                                filteredItems = inventoryManager.items
+                                    .filter { $0.name.lowercased().contains(value.lowercased()) }
+                                    .sorted { $0.name < $1.name }
+                            }
                             
                             // Set selectedInventoryItem to the first item in filteredItems if available
                             if let firstItem = filteredItems.first {
                                 selectedInventoryItem = firstItem
                             }
                         }
+
                     
                     Spacer(minLength: 15)
                     
@@ -135,7 +140,7 @@ struct AddOrderView: View {
                         .foregroundColor(.accentColor) // Set desired text color
                         .tint(.clear)
                         .popover(isPresented: $isAddItemViewPresented) {
-                            AddItemView(inventoryManager: inventoryManager)
+                            AddItemView(inventoryManager: inventoryManager, knownName: searchQuery)
                         }
                         .buttonStyle(.bordered)
                         .frame(width: 20, height: 20)
@@ -143,7 +148,7 @@ struct AddOrderView: View {
 
                 }
 
-                if !searchQuery.isEmpty && !filteredItems.isEmpty {
+                if !filteredItems.isEmpty { //!searchQuery.isEmpty &&
                     
                     Picker("item", selection: $selectedInventoryItemIndex) {
                         ForEach( filteredItems.indices.sorted(by: { filteredItems[$0].name < filteredItems[$1].name }), id: \.self) { index in
@@ -178,15 +183,6 @@ struct AddOrderView: View {
                     .pickerStyle(.wheel)
                     .labelsHidden()
                     .frame(height: 100)
-                    
-//                    Button {
-//                        selectedItemForDetails = selectedInventoryItem ?? InventoryItem()
-//                        isActive = true
-//                    } label: {
-//                        Image(systemName: "info.circle")
-//                            .font(.system(size: 16))
-//                            .foregroundColor(.accentColor)
-//                    }
 
                 }
                 else if !searchQuery.isEmpty && filteredItems.isEmpty {
@@ -196,6 +192,9 @@ struct AddOrderView: View {
                 TextField("Quantity", text: $orderItemQuantity)
                     .keyboardType(.numberPad)
                     .onChange(of: orderItemQuantity) { _ in
+                            validateQuantity()
+                    }
+                    .onChange(of: selectedInventoryItem) { _ in
                             validateQuantity()
                     }
 
@@ -263,8 +262,10 @@ struct AddOrderView: View {
                                 .resizable()
                                 .foregroundColor(.accentColor)
                                 .frame(width: 20,height: 20)
+                                .background(Color.clear)
                         }
                         .buttonStyle(.bordered)
+                        .background(Color.clear)
                         .popover(isPresented: $isPopoverPresented, arrowEdge: .top) {
                             VStack {
                                 

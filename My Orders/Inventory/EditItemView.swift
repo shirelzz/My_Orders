@@ -13,7 +13,8 @@ struct EditItemView: View {
     @ObservedObject var inventoryManager: InventoryManager
     @Environment(\.presentationMode) var presentationMode
     
-    @State var item: InventoryItem?
+    @Binding var item: InventoryItem
+    
     @State var name: String
     @State var price: Double
     @State var quantity: Int
@@ -85,15 +86,17 @@ struct EditItemView: View {
             .navigationBarTitle("Edit Item")
             .padding(.top)
             .onAppear {
-                selectedTags = item?.tags ?? []
+                selectedTags = item.tags ?? []
             }
             
             Button("Save Changes") {
-                if let selectedItem = item {
-                    inventoryManager.editItem(item: selectedItem, newName: name, newPrice: price, newQuantity: quantity, newSize: size, newNotes: notes, newTags: selectedTags)
-                }
+//                if let selectedItem = item {
+//                    inventoryManager.editItem(item: selectedItem, newName: name, newPrice: price, newQuantity: quantity, newSize: size, newNotes: notes, newTags: selectedTags)
+//                }
 
-
+                // await
+                inventoryManager.editItem(item: item, newName: name, newPrice: price, newQuantity: quantity, newSize: size, newNotes: notes, newTags: selectedTags)
+                
                 presentationMode.wrappedValue.dismiss()
 
             }
@@ -107,18 +110,5 @@ struct EditItemView: View {
     
     private func validateQuantity() {
         isQuantityValid = Int(quantity) > 0
-    }
-}
-
-
-
-struct EditItemView_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        let itemName = "Cupcake"
-        let itemPrice = 10.0
-        let itemQuantity = 5
-        
-        EditItemView(inventoryManager: InventoryManager.shared, name: itemName, price: itemPrice, quantity: itemQuantity, size: "", notes: "")
     }
 }

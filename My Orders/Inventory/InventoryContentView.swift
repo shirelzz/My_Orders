@@ -11,17 +11,16 @@ import GoogleMobileAds
 struct InventoryContentView: View {
     
     @ObservedObject var inventoryManager: InventoryManager
+    @State private var selectedItem: InventoryItem = InventoryItem()
     
+    @State private var searchText = ""
     @State private var isAddItemViewPresented = false
     @State private var isEditItemViewPresented = false
     @State private var isDetailViewActive = false
-    
-    @State private var selectedItem: InventoryItem?
-    
-    @State private var searchText = ""
     @State private var showDeleteAlert = false
+    @State private var isEditing = false
     @State private var isItemDetailsViewPresented = false
-
+    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -148,14 +147,13 @@ struct InventoryContentView: View {
                     else
                     {
                         List(sortedItems) { item in
-                            
                             NavigationLink(destination: ItemDetailsView(inventoryManager: inventoryManager, item: item))
                             {
                                 VStack(alignment: .leading) {
 
-                                    Text("Name: \(item.name)")
-                                    Text("Price: \(item.itemPrice, specifier: "%.2f")")
+                                    Text(item.name).bold()
                                     Text("Q: \(item.itemQuantity)")
+                                    Text("\(item.itemPrice, specifier: "%.2f")\(currency)")
                                 }
                             }
                             .contextMenu {
@@ -164,7 +162,6 @@ struct InventoryContentView: View {
                                     UIPasteboard.general.string = item.name
                                 }
                             }
-                            
                             .swipeActions {
                                 
                                 Button("Delete", role: .destructive) {
@@ -174,6 +171,7 @@ struct InventoryContentView: View {
                                 
                                 Button("Edit", role: .none) {
                                     selectedItem = item
+                                    isEditing = true
                                 }
                             }
                         }
@@ -185,21 +183,21 @@ struct InventoryContentView: View {
                                     Text("Delete"),
                                     action: {
                                         // Perform delete action here
-                                        inventoryManager.deleteItem(item: selectedItem!)
+                                        inventoryManager.deleteItem(item: selectedItem)
                                     }
                                 ),
                                 secondaryButton: .cancel(Text("Cancel"))
                             )
                         }
-                        .sheet(item: $selectedItem) { selectedItem in
+                        .sheet(isPresented: $isEditing, content: {
                             EditItemView(inventoryManager: inventoryManager,
-                                         item: selectedItem,
+                                         item: $selectedItem,
                                          name: selectedItem.name,
                                          price: selectedItem.itemPrice,
                                          quantity: selectedItem.itemQuantity,
                                          size: selectedItem.size,
                                          notes: selectedItem.itemNotes)
-                        }
+                        })
                     }
                 }
             }
@@ -221,9 +219,9 @@ struct InventoryContentView: View {
 }
 
 
-struct InventoryContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        InventoryContentView(inventoryManager: InventoryManager.shared)
-    }
-}
+//struct InventoryContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        
+//        InventoryContentView(inventoryManager: InventoryManager.shared)
+//    }
+//}

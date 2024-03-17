@@ -30,4 +30,11 @@ class HelperFunctions {
         dateFormatter.dateStyle = .short
         return dateFormatter.string(from: date)
     }
+    
+    static func formatToDateAndTimeShort(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        return dateFormatter.string(from: date)
+    }
 }

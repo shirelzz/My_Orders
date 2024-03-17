@@ -10,7 +10,8 @@ import SwiftUI
 struct AddItemView: View {
     
     @ObservedObject var inventoryManager: InventoryManager
-
+    @State var knownName: String?
+    
     // State variables for new item input
     @State private var newName = ""
     @State private var newCatalogNumber = ""
@@ -36,6 +37,9 @@ struct AddItemView: View {
                 Section(header: Text("Item Information")) {
                     
                     TextField("Name", text: $newName)
+                        .onAppear(perform: {
+                            newName = knownName ?? ""
+                        })
 
                     TextField("Price", text: $newPrice)
                     .keyboardType(.decimalPad)

@@ -42,6 +42,7 @@
 		D68CEA262B53028C006D4933 /* VendorTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68CEA252B53028C006D4933 /* VendorTypeView.swift */; };
 		D68CEA282B53047F006D4933 /* CustomerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68CEA272B53047F006D4933 /* CustomerContentView.swift */; };
 		D68CEA2B2B53ECF5006D4933 /* CustomButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68CEA2A2B53ECF5006D4933 /* CustomButtonStyle.swift */; };
+		D69B4A8E2BA6567900C7FC33 /* UpcomingOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69B4A8D2BA6567900C7FC33 /* UpcomingOrders.swift */; };
 		D69E2A652B5F0D8C004F0D5C /* Vendor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69E2A642B5F0D8C004F0D5C /* Vendor.swift */; };
 		D69E2A672B5FE0DA004F0D5C /* BusinessDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69E2A662B5FE0D9004F0D5C /* BusinessDetailsView.swift */; };
 		D69E2A6B2B600F91004F0D5C /* MainViewOther.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69E2A6A2B600F91004F0D5C /* MainViewOther.swift */; };
@@ -135,6 +136,7 @@
 		D68CEA252B53028C006D4933 /* VendorTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorTypeView.swift; sourceTree = "<group>"; };
 		D68CEA272B53047F006D4933 /* CustomerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerContentView.swift; sourceTree = "<group>"; };
 		D68CEA2A2B53ECF5006D4933 /* CustomButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonStyle.swift; sourceTree = "<group>"; };
+		D69B4A8D2BA6567900C7FC33 /* UpcomingOrders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingOrders.swift; sourceTree = "<group>"; };
 		D69E2A642B5F0D8C004F0D5C /* Vendor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vendor.swift; sourceTree = "<group>"; };
 		D69E2A662B5FE0D9004F0D5C /* BusinessDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessDetailsView.swift; sourceTree = "<group>"; };
 		D69E2A6A2B600F91004F0D5C /* MainViewOther.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewOther.swift; sourceTree = "<group>"; };
@@ -227,6 +229,13 @@
 			path = Review;
 			sourceTree = "<group>";
 		};
+		D655FB062B701BD6004E8AB6 /* BeautyVendors */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = BeautyVendors;
+			sourceTree = "<group>";
+		};
 		D66A36ED2B26F85900A921CF /* SignIn */ = {
 			isa = PBXGroup;
 			children = (
@@ -254,9 +263,9 @@
 			isa = PBXGroup;
 			children = (
 				D68CEA212B52FE43006D4933 /* User.swift */,
+				D69E2A642B5F0D8C004F0D5C /* Vendor.swift */,
 				D68CEA232B52FEB3006D4933 /* UserRoleView.swift */,
 				D68CEA252B53028C006D4933 /* VendorTypeView.swift */,
-				D69E2A642B5F0D8C004F0D5C /* Vendor.swift */,
 				D69E2A662B5FE0D9004F0D5C /* BusinessDetailsView.swift */,
 				D69E2A6A2B600F91004F0D5C /* MainViewOther.swift */,
 			);
@@ -318,6 +327,7 @@
 				D6F6A3602AC59FB6002ECA81 /* OrderRowView.swift */,
 				D6F6A35E2AC59CEF002ECA81 /* OrderDetailsView.swift */,
 				D6F6A3642AC5B058002ECA81 /* AllOrdersView.swift */,
+				D69B4A8D2BA6567900C7FC33 /* UpcomingOrders.swift */,
 			);
 			path = Orders;
 			sourceTree = "<group>";
@@ -375,15 +385,16 @@
 		D6F6A32F2AC593F8002ECA81 /* My Orders */ = {
 			isa = PBXGroup;
 			children = (
+				D655FB062B701BD6004E8AB6 /* BeautyVendors */,
+				D67557DA2B4E1D8900F4036E /* My Orders.entitlements */,
+				D66A36E62B26F0DE00A921CF /* My-Orders-Info.plist */,
+				D6F8CA742B32C62F0031A7A2 /* GoogleService-Info.plist */,
 				D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */,
 				D6E7D2DB2B6A556C0027DF29 /* AppDelegate.swift */,
 				D6AF62EB2B13A7D20056C973 /* AppManager.swift */,
 				D69E2A712B611077004F0D5C /* MainViews */,
 				D68CEA2F2B54065C006D4933 /* Customer */,
 				D68CEA2E2B54063E006D4933 /* User */,
-				D67557DA2B4E1D8900F4036E /* My Orders.entitlements */,
-				D6F8CA742B32C62F0031A7A2 /* GoogleService-Info.plist */,
-				D66A36E62B26F0DE00A921CF /* My-Orders-Info.plist */,
 				D6F8CA6A2B31B94A0031A7A2 /* Database */,
 				D64DD7572B2270920066BB7E /* Review */,
 				D6AF62DC2B12F5E80056C973 /* Orders */,
@@ -639,6 +650,7 @@
 				D6AF62E82B1392FD0056C973 /* CustomizedDataView.swift in Sources */,
 				D6F6A3652AC5B058002ECA81 /* AllOrdersView.swift in Sources */,
 				D6B7A7AE2B4E8CE900E7D941 /* NotificationManager.swift in Sources */,
+				D69B4A8E2BA6567900C7FC33 /* UpcomingOrders.swift in Sources */,
 				D66A370D2B2880BF00A921CF /* GoogleSiginBtn.swift in Sources */,
 				D66A37112B28A5F000A921CF /* AppleButtonView.swift in Sources */,
 				D69E2A672B5FE0DA004F0D5C /* BusinessDetailsView.swift in Sources */,
