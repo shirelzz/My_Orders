@@ -115,14 +115,14 @@ struct Order: Identifiable, Codable {
     var orderID: String
     var customer: Customer
     var orderItems: [OrderItem]
+//    var receiptItems: [ReceiptItem]?
     var orderDate: Date
     var delivery: Delivery
     var notes: String
     var allergies: String
     var isDelivered: Bool
     var isPaid: Bool
-
-    
+        
     var totalPrice: Double{
         let orderItemsTotal = orderItems.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
         return orderItemsTotal + delivery.cost // - discount
@@ -508,6 +508,14 @@ class OrderManager: ObservableObject {
     
     // MARK:  - For all users
     
+    func getReceipts() -> [Receipt] {
+        return self.receipts
+    }
+    
+    func getReceipts(forYear year: Date) -> [Receipt] {
+         return receipts.filter { Calendar.current.component(.year, from: $0.dateGenerated) == Calendar.current.component(.year, from: year) }
+     }
+    
     // MARK: - Manage Orders
 
     func addOrder(order: Order) {
@@ -574,7 +582,6 @@ class OrderManager: ObservableObject {
     
     
     func updateOrderStatus(orderID: String, isDelivered: Bool) {
-        print("--- isDelivered \(isDelivered)")
         if let index = orders.firstIndex(where: { $0.id == orderID }) {
             orders[index].isDelivered = isDelivered
             
@@ -677,6 +684,14 @@ class OrderManager: ObservableObject {
             return receipt
         } else {
             return Receipt()
+        }
+    }
+    
+    func getOrderFromReceipt(forReceiptID receiptID: String) -> Order {
+        if let order = orders.first(where: { $0.receipt?.id == receiptID }) {
+            return order
+        } else {
+            return Order()
         }
     }
     

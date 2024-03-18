@@ -14,7 +14,7 @@ struct ReceiptView: View {
     @ObservedObject var orderManager: OrderManager
     
     @State var order: Order
-    @Binding var isPresented: Bool
+    @Binding var showGenerationAlert: Bool
     @State private var pdfData: Data?
     @State private var showConfirmationAlert = false
     @State private var selectedPaymentMethod = "Paybox"
@@ -24,13 +24,6 @@ struct ReceiptView: View {
     @State private var receiptExists = false
     @State private var isRewardedAdPresented = false
     @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
-    
-//    var dateFormatter: DateFormatter {
-//        let formatter = DateFormatter()
-//        formatter.dateStyle = .short
-//        formatter.timeStyle = .short
-//        return formatter
-//    }
     
     var body: some View {
         
@@ -153,7 +146,7 @@ struct ReceiptView: View {
             
             if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
                 Button("Share PDF Receipt") {
-                    pdfData = drawPDF()
+                    pdfData = ReceiptUtils.drawPDF(for: order)
                     guard let pdfData = self.pdfData else {
                         Toast.showToast(message: "cant find data")
                         return
@@ -187,525 +180,32 @@ struct ReceiptView: View {
         .padding()
     }
     
-//    private func formattedDate(_ date: Date) -> String {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateStyle = .short
-//        return dateFormatter.string(from: date)
-//    }
-    
-    private func generatePDF() {
-        // Check if a receipt with the same order ID already exists
+    private func checkIfReceiptExist(){
         if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
             Toast.showToast(message: "Receipt already exists")
-            isPresented = true
+            showGenerationAlert = true
             return
         }
+    }
+    
+    private func generatePDF() {
         
+        checkIfReceiptExist()
+
         // Create a Receipt instance
         let receipt = Receipt(
             id: UUID().uuidString,
             myID: lastReceipttID + 1,
             orderID: order.orderID,
-//            pdfData: pdfData,
             dateGenerated: Date(),
             paymentMethod: selectedPaymentMethod ,
             paymentDate: selectedPaymentDate
         )
         
-        if let updatedOrder = OrderManager.shared.assignReceiptToOrder(receipt: receipt, toOrderWithID: order.orderID) {
-            OrderManager.shared.addReceipt(receipt: receipt)
-        }
-        
-        let pdfData = ReceiptUtils.drawPDF(for: order)
-        
-        // Specify the file URL where you want to save the PDF
-        guard let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("receipt.pdf") else {
-            return
-        }
-        
-        // Save the PDF to the file URL
-        do {
-            try pdfData.write(to: fileURL)
-            self.pdfData = pdfData
-            
-            // Log the file path
-            print("PDF file saved to: \(fileURL)")
-            
-            isPresented = true
-            
-            if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-                do {
-                    let files = try FileManager.default.contentsOfDirectory(atPath: documentDirectory.path)
-                    print("Files in document directory: \(files)")
-                } catch {
-                    print("Error listing files in document directory: \(error.localizedDescription)")
-                }
-            }
-            
+        if let _pdfData = ReceiptUtils.generatePDF(order: order, receipt: receipt) {
             showSuccessMessage = true
-            
-            
-        } catch {
-            print("Error saving PDF: \(error.localizedDescription)")
         }
     }
-    
-    
-    
-    func drawPDF() -> Data {
-        
-        let receipt_ = OrderManager.shared.getReceipt(forOrderID: order.orderID)
-        let receiptExists = OrderManager.shared.receiptExists(forOrderID: order.orderID)
-        
-        //        let en = LanguageManager.shared.getCurrentLanguage() == "english"
-        //        let he = LanguageManager.shared.getCurrentLanguage() == "hebrew"
-        
-        // Fetch the preferred localization
-        let preferredLanguage = Bundle.main.preferredLocalizations.first ?? "en"
-        
-        // Check the language and set your conditions accordingly
-        let en = preferredLanguage == "en"
-        let he = preferredLanguage == "he"
-        
-        // Create a PDF context
-        let pdfMetaData = [
-            kCGPDFContextCreator: "My Orders",
-            kCGPDFContextAuthor: "Shirel Turgeman"
-        ]
-        let pdfFormat = UIGraphicsPDFRendererFormat()
-        pdfFormat.documentInfo = pdfMetaData as [String: Any]
-        
-        let pageRect = CGRect(x: 0, y: 0, width: 612, height: 792)
-        
-        let renderer = UIGraphicsPDFRenderer(bounds: pageRect, format: pdfFormat)
-        let pdfData = renderer.pdfData { (context) in
-            context.beginPage()
-            
-            // Define the starting position for the content
-            var currentY: CGFloat = 50
-            
-            var x_logo: CGFloat = 50
-            var y_logo: CGFloat = 50
-            if en {
-                x_logo = pageRect.width - 100
-            }
-            
-            let logoImage = UIImage(data: AppManager.shared.getLogoImage())
-            let logoRect = CGRect(x: x_logo, y: y_logo, width: 50, height: 50)  // Adjust the size and position as needed
-            logoImage?.draw(in: logoRect)
-            
-            // Draw business details
-            let businessDetailsAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 12),
-                .paragraphStyle: {
-                    let paragraphStyle = NSMutableParagraphStyle()
-                    if en {
-                        paragraphStyle.alignment = .left
-                    } else {
-                        paragraphStyle.alignment = .right
-                    }
-                    return paragraphStyle
-                }(),
-                .foregroundColor: UIColor.gray
-
-            ]
-
-            var name = ""
-            var id = ""
-            var address = ""
-            var phone = ""
-
-            if en {
-                name = "Name: "
-                id = "ID: "
-                address = "Address: "
-                phone = "Phone: "
-            }
-            else {
-                name = "שם: "
-                id = "מזהה: "
-                address = "כתובת: "
-                phone = "טל׳: "
-            }
-
-            let businessDetailsText = """
-                \(name) \(VendorManager.shared.vendor.businessName)
-                \(id) \(VendorManager.shared.vendor.businessID)
-                \(address) \(VendorManager.shared.vendor.businessAddress)
-                \(phone) \(VendorManager.shared.vendor.businessPhone)
-            """
-
-            businessDetailsText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 80), withAttributes: businessDetailsAttributes)
-
-            // Update the Y position
-            currentY += 80
-            
-            var title = ""
-            if (receiptExists && en){
-                title = "Receipt No. \(receipt_.myID)"
-                
-            }
-            else if (receiptExists && he ){
-                title = "קבלה מספר \(receipt_.myID)"
-            }
-            else if (!receiptExists && en){
-                title = "Receipt No. \(lastReceipttID + 1)"
-            }
-            else {
-                title = "קבלה מספר \(lastReceipttID + 1)"
-            }
-            
-            let titleAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 24, weight: .bold),
-                .paragraphStyle: {
-                    let paragraphStyle = NSMutableParagraphStyle()
-                    if en {
-                        paragraphStyle.alignment = .left
-                    }
-                    else {
-                        paragraphStyle.alignment = .right
-                    }
-                    return paragraphStyle
-                }()
-            ]
-            let textRect = CGRect(x: 50, y: currentY, width: 512, height: 50)
-            title.draw(in: textRect, withAttributes: titleAttributes)
-            
-            currentY += 50
-            
-            let DocumentDateAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 12),
-                .paragraphStyle: {
-                    let paragraphStyle = NSMutableParagraphStyle()
-                    if en {
-                        paragraphStyle.alignment = .left
-                    }
-                    else {
-                        paragraphStyle.alignment = .right
-                    }
-                    return paragraphStyle
-                }()
-            ]
-            _ = CGRect(x: 50, y: currentY, width: 512, height: 20)
-            
-            var DocumentDateText = ""
-            
-                        if (receiptExists && en){
-                            DocumentDateText = "Date created: \(HelperFunctions.formatToDate(receipt_.dateGenerated))"
-                        }
-                        else if (receiptExists && he){
-                            DocumentDateText = "תאריך יצירת המסמך: \(HelperFunctions.formatToDate(receipt_.dateGenerated))"
-                        }
-                        else if (!receiptExists && en){
-                            DocumentDateText = "Date created: \(HelperFunctions.formatToDate(Date()))"
-                        }
-                        else{
-                            DocumentDateText = "תאריך יצירת המסמך: \(HelperFunctions.formatToDate(Date()))"
-                        }
-            DocumentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: DocumentDateAttributes)
-            
-            currentY += 50
-            
-            
-            // Draw contact details
-            let contactHeaderAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.boldSystemFont(ofSize: 14),
-                .paragraphStyle: {
-                    let paragraphStyle = NSMutableParagraphStyle()
-                    if en {
-                        paragraphStyle.alignment = .left
-                    }
-                    else {
-                        paragraphStyle.alignment = .right
-                    }
-                    return paragraphStyle
-                }()
-            ]
-            let contactHeaderRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
-            
-            
-            var contactHeaderText = ""
-            if en {
-                contactHeaderText = "Customer Details"
-            }
-            else {
-                contactHeaderText = "פרטי הלקוח"
-            }
-            contactHeaderText.draw(in: contactHeaderRect, withAttributes: contactHeaderAttributes)
-            
-            // Update the Y position
-            currentY += 25
-            
-            let contactDetailsAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 12),
-                .paragraphStyle: {
-                    let paragraphStyle = NSMutableParagraphStyle()
-                    if en {
-                        paragraphStyle.alignment = .left
-                    }
-                    else {
-                        paragraphStyle.alignment = .right
-                    }
-                    return paragraphStyle
-                }()
-            ]
-            let contactDetailsRect = CGRect(x: 50, y: currentY, width: 512, height: 20)
-            
-            var contactDetailsText = ""
-            if en {
-                contactDetailsText = "Name: \(order.customer.name)\n"
-            }
-            else {
-                contactDetailsText = "שם: \(order.customer.name)\n"
-            }
-            contactDetailsText.draw(in: contactDetailsRect, withAttributes: contactDetailsAttributes)
-            
-            currentY += 20
-            
-            var phoneNumberText = ""
-            if en {
-                phoneNumberText = "Phone Number: \(order.customer.phoneNumber)"
-            }
-            else {
-                phoneNumberText = "מס׳ טלפון: \(order.customer.phoneNumber)"
-            }
-            phoneNumberText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: contactDetailsAttributes)
-            
-            currentY += 50
-            
-            
-            // Draw a table header
-            let orderHeaderAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.boldSystemFont(ofSize: 14),
-                .paragraphStyle: {
-                    let paragraphStyle = NSMutableParagraphStyle()
-                    if en {
-                        paragraphStyle.alignment = .left
-                    }
-                    else {
-                        paragraphStyle.alignment = .right
-                    }
-                    return paragraphStyle
-                }()
-            ]
-            let orderHeaderRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
-            
-            var orderHeaderText = ""
-            if en {
-                orderHeaderText = "Order Details"
-            }
-            else {
-                orderHeaderText = "פרטי הזמנה"
-            }
-            orderHeaderText.draw(in: orderHeaderRect, withAttributes: orderHeaderAttributes)
-            
-            // Update the Y position
-            currentY += 25
-            
-            // Draw table headers
-            let columnHeaderAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.boldSystemFont(ofSize: 12),
-                .paragraphStyle: {
-                    let paragraphStyle = NSMutableParagraphStyle()
-                    if en {
-                        paragraphStyle.alignment = .left
-                    }
-                    else {
-                        paragraphStyle.alignment = .right
-                    }
-                    return paragraphStyle
-                }()
-            ]
-            let columnHeaderRect = CGRect(x: 262, y: currentY, width: 200, height: 20)
-            
-            var columnHeaderText = ""
-            if en {
-                columnHeaderText = "Item"
-            }
-            else {
-                columnHeaderText = "מוצר"
-            }
-            columnHeaderText.draw(in: columnHeaderRect, withAttributes: columnHeaderAttributes)
-            
-            let quantityColumnRect = CGRect(x: 462, y: currentY, width: 100, height: 20)
-            
-            var quantityColumnText = ""
-            if en {
-                quantityColumnText = "Quantity"
-            }
-            else {
-                quantityColumnText = "כמות"
-            }
-            quantityColumnText.draw(in: quantityColumnRect, withAttributes: columnHeaderAttributes)
-            
-            //            let priceColumnRect = CGRect(x: 350, y: currentY, width: 150, height: 20)
-            //            let priceColumnText = "Price"
-            //            priceColumnText.draw(in: priceColumnRect, withAttributes: columnHeaderAttributes)
-            
-            // Update the Y position
-            currentY += 20
-            
-            // Draw the order details in a tabular form
-            let cellAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 12),
-                .paragraphStyle: {
-                    let paragraphStyle = NSMutableParagraphStyle()
-                    if en {
-                        paragraphStyle.alignment = .left
-                    }
-                    else {
-                        paragraphStyle.alignment = .right
-                    }
-                    return paragraphStyle
-                }()
-            ]
-            
-            for dessert in order.orderItems {
-                let dessertNameRect = CGRect(x: 262, y: currentY, width: 200, height: 20)
-                dessert.inventoryItem.name.draw(in: dessertNameRect, withAttributes: cellAttributes)
-                
-                let quantityRect = CGRect(x: 462, y: currentY, width: 100, height: 20)
-                String(dessert.quantity).draw(in: quantityRect, withAttributes: cellAttributes)
-                
-                //                let priceRect = CGRect(x: 350, y: currentY, width: 150, height: 20)
-                //                String(format: "₪%.2f", dessert.price * Double(dessert.quantity)).draw(in: priceRect, withAttributes: cellAttributes)
-                
-                // Update the Y position
-                currentY += 20
-            }
-            
-            if order.delivery.cost != 0 {
-                
-                var deliveryItemTitle = ""
-                if en {
-                    deliveryItemTitle = "delivery"
-                }
-                else {
-                    deliveryItemTitle = "משלוח"
-                }
-                // Draw a separate row for the delivery cost
-                let deliveryCostNameRect = CGRect(x: 262, y: currentY, width: 200, height: 20)
-                deliveryItemTitle.draw(in: deliveryCostNameRect, withAttributes: cellAttributes)
-
-//                let deliveryCostRect = CGRect(x: 462, y: currentY, width: 100, height: 20)
-//                let formattedDeliveryCost = String(format: "%.2f", order.delivery.cost)
-//                formattedDeliveryCost.draw(in: deliveryCostRect, withAttributes: cellAttributes)
-                
-                // Update the Y position
-                currentY += 20
-            }
-            
-            // Draw the total price
-            let totalPriceAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.boldSystemFont(ofSize: 12),
-                .paragraphStyle: {
-                    let paragraphStyle = NSMutableParagraphStyle()
-                    if en {
-                        paragraphStyle.alignment = .left
-                    }
-                    else {
-                        paragraphStyle.alignment = .right
-                    }
-                    return paragraphStyle
-                }()
-            ]
-            let totalPriceRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
-            
-            
-            var totalPriceText = ""
-            if en {
-                totalPriceText = "Total Cost: \(currency)\(order.totalPrice)"
-            }
-            else {
-                totalPriceText = "עלות כוללת: ₪\(order.totalPrice)"
-            }
-//            let totalPriceText = "Total Cost: $\(order.totalPrice)"
-            totalPriceText.draw(in: totalPriceRect, withAttributes: totalPriceAttributes)
-            
-            // Update the Y position
-            currentY += 50
-            
-            // Draw the payment details
-            let paymentHeaderAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.boldSystemFont(ofSize: 14),
-                .paragraphStyle: {
-                    let paragraphStyle = NSMutableParagraphStyle()
-                    if en {
-                        paragraphStyle.alignment = .left
-                    }
-                    else {
-                        paragraphStyle.alignment = .right
-                    }
-                    return paragraphStyle
-                }()
-            ]
-            let paymentHeaderRect = CGRect(x: 50, y: currentY, width: 512, height: 25)
-            
-            var paymentHeaderText = ""
-            if en {
-                paymentHeaderText = "Payment Details"
-            }
-            else {
-                paymentHeaderText = "פרטי התשלום"
-            }
-            paymentHeaderText.draw(in: paymentHeaderRect, withAttributes: paymentHeaderAttributes)
-            
-            // Update the Y position
-            currentY += 25
-            
-            let paymentDetailsAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 12),
-                .paragraphStyle: {
-                    let paragraphStyle = NSMutableParagraphStyle()
-                    if en {
-                        paragraphStyle.alignment = .left
-                    }
-                    else {
-                        paragraphStyle.alignment = .right
-                    }
-                    return paragraphStyle
-                }()
-            ]
-            let paymentDetailsRect = CGRect(x: 50, y: currentY, width: 512, height: 20)
-            
-            var paymentMethodText = ""
-            if en {
-                paymentMethodText = "Payment Method \(selectedPaymentMethod)"
-            }
-            else {
-                paymentMethodText = "שיטת התשלום: \(selectedPaymentMethod)"
-            }
-//            let paymentMethodText = "Payment Method \(selectedPaymentMethod)"
-            paymentMethodText.draw(in: paymentDetailsRect, withAttributes: paymentDetailsAttributes)
-            
-            // Update the Y position for the next detail
-            currentY += 20
-            
-            var paymentDateText = ""
-            if en {
-                paymentDateText = "Payment Date: \(HelperFunctions.formatToDate(receipt_.paymentDate))"
-            }
-            else {
-                paymentDateText = "מועד התשלום: \(HelperFunctions.formatToDate(receipt_.paymentDate))"
-            }
-//            let paymentDateText = "Payment Date: \(dateFormatter.string(from: receipt_.paymentDate))"
-            paymentDateText.draw(in: CGRect(x: 50, y: currentY, width: 512, height: 20), withAttributes: paymentDetailsAttributes)
-            
-            //  signature
-            var x_sign = pageRect.width - 150
-            let y_sign = pageRect.height - 150
-            if en {
-                x_sign = 50
-//                y_sign =
-            }
-            let signatureImage = UIImage(data: AppManager.shared.getSignatureImage())
-               let signatureRect = CGRect(x: x_sign, y: y_sign, width: 50, height: 50)  // Adjust the size and position as needed
-               signatureImage?.draw(in: signatureRect)
-        }
-        
-        return pdfData
-    }
-    
     
 }
 
@@ -744,7 +244,7 @@ struct ReceiptView_Previews: PreviewProvider {
             
         )
         
-        return ReceiptView(orderManager: OrderManager.shared, order: sampleOrder, isPresented: .constant(false))
+        return ReceiptView(orderManager: OrderManager.shared, order: sampleOrder, showGenerationAlert: .constant(false))
             .previewLayout(.sizeThatFits)
                         .padding()
     }

@@ -49,7 +49,7 @@ struct GeneratedReceiptView: View {
                     .fontWeight(.bold)
                     .padding(.bottom)
                 
-                Text("\(dateFormatter.string(from: receipt.dateGenerated))").padding(.bottom)
+                Text(HelperFunctions.formatToDate(receipt.dateGenerated)).padding(.bottom)
                 
             }
 
@@ -102,7 +102,7 @@ struct GeneratedReceiptView: View {
             HStack(alignment: .center, spacing: 5){
                 Text("Payment Date:")
                     .font(.headline)
-                Text("\(dateFormatter.string(from: receipt.paymentDate))")
+                Text(HelperFunctions.formatToDate(receipt.paymentDate))
 
             }
 

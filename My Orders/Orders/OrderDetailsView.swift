@@ -102,8 +102,7 @@ struct OrderDetailsView: View {
                 }
             }
         }
-        .background(Color.brown.opacity(0.1))
-        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+        .customVStackStyle(backgroundColor: .brown, cornerRadius: 15, shadowRadius: 2)
     }
     
     private var orderInformationSection: some View {
@@ -190,7 +189,6 @@ struct OrderDetailsView: View {
                 Toast.showToast(message: "Order details copied")
             }
             label: {
-//                        Text("Copy order details")
                 Image(systemName: "doc.on.doc")
                     .padding()
                     .tint(.accentColor)
@@ -198,8 +196,7 @@ struct OrderDetailsView: View {
             
             
         }
-        .background(Color.accentColor.opacity(0.1))
-        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+        .customVStackStyle(backgroundColor: .accentColor, cornerRadius: 15, shadowRadius: 2)
         
     }
     
@@ -209,6 +206,8 @@ struct OrderDetailsView: View {
             Section(header: Text("Additional Details")
                 .font(.footnote)
                 .padding(.leading, 10)
+                .padding(.top, 10)
+                .opacity(0.7)
             ) {
                 
                 if((order.delivery.address != "") || (order.delivery.cost != 0)){
@@ -264,13 +263,11 @@ struct OrderDetailsView: View {
                 
             }
         }
-        .background(Color(.gray).opacity(0.1))
-        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+        .customVStackStyle(backgroundColor: .gray, cornerRadius: 15, shadowRadius: 2)
     }
     
     private var orderStatusSection: some View {
         VStack(alignment: .leading) {
-            
             Section(header: Text("Order Status")
                 .font(.footnote)
                 .padding(.leading, 10)
@@ -300,7 +297,7 @@ struct OrderDetailsView: View {
                     }
                     .sheet(isPresented: $showReceiptPreview) {
                         NavigationView {
-                            ReceiptView(orderManager: orderManager, order: order, isPresented: $showReceiptPreview)
+                            ReceiptView(orderManager: orderManager, order: order, showGenerationAlert: $showReceiptPreview)
                         }
                     }
                     .sheet(isPresented: $showGeneratedReceiptPreview) {
@@ -312,34 +309,34 @@ struct OrderDetailsView: View {
                 }
             }
         }
-        .background(Color(.green).opacity(0.1))
-        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+        .customVStackStyle(backgroundColor: Color("greener"), cornerRadius: 15, shadowRadius: 2)
     }
     
     private var priceSection: some View {
-        
-        Section(header:
-                    Text("Price")
-            .font(.headline)
-            .fontWeight(.bold)
-            .padding(.leading)
-        ) {
-            
-            if(order.delivery.cost != 0){
-                HStack {
-                    Text("Delivery Cost: \(currency)")
-                    Text("\(order.delivery.cost, specifier: "%.2f")")
+        VStack(alignment: .leading) {
+            Section(header: Text("Price")
+                .font(.headline)
+                .fontWeight(.bold)
+                .padding(.leading)
+            ) {
+                
+                if(order.delivery.cost != 0){
+                    HStack {
+                        Text("Delivery Cost: \(currency)")
+                        Text("\(order.delivery.cost, specifier: "%.2f")")
+                    }
+                    .padding(.leading)
+                    
+                }
+                
+                HStack{
+                    Text("Total Price: \(currency)")
+                    Text("\(order.totalPrice, specifier: "%.2f")")
                 }
                 .padding(.leading)
-                
             }
-            
-            HStack{
-                Text("Total Price: \(currency)")
-                Text("\(order.totalPrice, specifier: "%.2f")")
-            }
-            .padding(.leading)
         }
+        .customVStackStyle(backgroundColor: .brown, cornerRadius: 15, shadowRadius: 2)
     }
 }
     

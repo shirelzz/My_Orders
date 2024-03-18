@@ -43,6 +43,8 @@
 		D68CEA282B53047F006D4933 /* CustomerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68CEA272B53047F006D4933 /* CustomerContentView.swift */; };
 		D68CEA2B2B53ECF5006D4933 /* CustomButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68CEA2A2B53ECF5006D4933 /* CustomButtonStyle.swift */; };
 		D69B4A8E2BA6567900C7FC33 /* UpcomingOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69B4A8D2BA6567900C7FC33 /* UpcomingOrders.swift */; };
+		D69B4A902BA70A9A00C7FC33 /* CustomVStackStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69B4A8F2BA70A9A00C7FC33 /* CustomVStackStyle.swift */; };
+		D69B4A922BA7138800C7FC33 /* AddReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69B4A912BA7138800C7FC33 /* AddReceiptView.swift */; };
 		D69E2A652B5F0D8C004F0D5C /* Vendor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69E2A642B5F0D8C004F0D5C /* Vendor.swift */; };
 		D69E2A672B5FE0DA004F0D5C /* BusinessDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69E2A662B5FE0D9004F0D5C /* BusinessDetailsView.swift */; };
 		D69E2A6B2B600F91004F0D5C /* MainViewOther.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69E2A6A2B600F91004F0D5C /* MainViewOther.swift */; };
@@ -137,6 +139,8 @@
 		D68CEA272B53047F006D4933 /* CustomerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerContentView.swift; sourceTree = "<group>"; };
 		D68CEA2A2B53ECF5006D4933 /* CustomButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonStyle.swift; sourceTree = "<group>"; };
 		D69B4A8D2BA6567900C7FC33 /* UpcomingOrders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingOrders.swift; sourceTree = "<group>"; };
+		D69B4A8F2BA70A9A00C7FC33 /* CustomVStackStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVStackStyle.swift; sourceTree = "<group>"; };
+		D69B4A912BA7138800C7FC33 /* AddReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReceiptView.swift; sourceTree = "<group>"; };
 		D69E2A642B5F0D8C004F0D5C /* Vendor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vendor.swift; sourceTree = "<group>"; };
 		D69E2A662B5FE0D9004F0D5C /* BusinessDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessDetailsView.swift; sourceTree = "<group>"; };
 		D69E2A6A2B600F91004F0D5C /* MainViewOther.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewOther.swift; sourceTree = "<group>"; };
@@ -301,6 +305,7 @@
 				D69E2A6D2B60564E004F0D5C /* CustomCheckBox.swift */,
 				D68CEA2A2B53ECF5006D4933 /* CustomButtonStyle.swift */,
 				D69E2A742B615EFC004F0D5C /* CustomPopUpWindow.swift */,
+				D69B4A8F2BA70A9A00C7FC33 /* CustomVStackStyle.swift */,
 			);
 			path = MyCustomViews;
 			sourceTree = "<group>";
@@ -425,6 +430,7 @@
 				D6674D062ACBA629003DE4BB /* ReceiptRowView.swift */,
 				D6674D022ACB9B75003DE4BB /* SharePDFView.swift */,
 				D6F8CA642B2F55050031A7A2 /* ReceiptsUtils.swift */,
+				D69B4A912BA7138800C7FC33 /* AddReceiptView.swift */,
 			);
 			path = Receipts;
 			sourceTree = "<group>";
@@ -599,6 +605,7 @@
 				D6F8CA652B2F55050031A7A2 /* ReceiptsUtils.swift in Sources */,
 				D6AF62D02B12BCB90056C973 /* InventoryItem.swift in Sources */,
 				D66A37092B28801200A921CF /* FirebAuth.swift in Sources */,
+				D69B4A902BA70A9A00C7FC33 /* CustomVStackStyle.swift in Sources */,
 				D64DD7502B1B8C910066BB7E /* Whatsapp.swift in Sources */,
 				D6E7D2D62B63312B0027DF29 /* Customer.swift in Sources */,
 				D68CEA242B52FEB3006D4933 /* UserRoleView.swift in Sources */,
@@ -615,6 +622,7 @@
 				D66A37132B28A79F00A921CF /* AppleButtonLogic.swift in Sources */,
 				D64DD75B2B2273470066BB7E /* DashboardView.swift in Sources */,
 				D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */,
+				D69B4A922BA7138800C7FC33 /* AddReceiptView.swift in Sources */,
 				D66A36DF2B26275C00A921CF /* WelcomeView.swift in Sources */,
 				D6E7D2D82B6332C80027DF29 /* AddBusinessView.swift in Sources */,
 				D6AF62F82B151CE80056C973 /* NotificationSettingsView.swift in Sources */,

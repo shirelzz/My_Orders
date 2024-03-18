@@ -117,7 +117,7 @@ struct InventoryContentView: View {
                     }
 
                     
-                    HStack{
+                    HStack(alignment: .center){
                         
                         Menu {
                         

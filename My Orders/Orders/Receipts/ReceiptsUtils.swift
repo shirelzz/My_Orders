@@ -12,6 +12,42 @@ import ZipArchive
 
 class ReceiptUtils {
     
+    static func generatePDF(order: Order, receipt: Receipt) -> Data? {
+        
+        if OrderManager.shared.assignReceiptToOrder(receipt: receipt, toOrderWithID: order.orderID) != nil {
+            OrderManager.shared.addReceipt(receipt: receipt)
+        }
+        
+        let pdfData = drawPDF(for: order)
+        
+        // Specify the file URL where you want to save the PDF
+        guard let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("receipt.pdf") else {
+            return nil
+        }
+        
+        // Save the PDF to the file URL
+        do {
+            try pdfData.write(to: fileURL)
+            
+            // Log the file path
+            print("PDF file saved to: \(fileURL)")
+                        
+            if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                do {
+                    let files = try FileManager.default.contentsOfDirectory(atPath: documentDirectory.path)
+                    print("Files in document directory: \(files)")
+                } catch {
+                    print("Error listing files in document directory: \(error.localizedDescription)")
+                }
+            }
+                        
+        } catch {
+            print("Error saving PDF: \(error.localizedDescription)")
+        }
+        
+        return pdfData
+    }
+    
     static func drawPDF(for order: Order) -> Data {
         
             let receipt_ = OrderManager.shared.getReceipt(forOrderID: order.orderID)
