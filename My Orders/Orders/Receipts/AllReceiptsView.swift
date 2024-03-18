@@ -13,7 +13,7 @@ struct AllReceiptsView: View {
     
     @ObservedObject var orderManager: OrderManager
 
-    @State private var selectedYear: Date = Date() //Int = Calendar.current.component(.year, from: Date())
+    @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())  // Date = Date()
     @State private var searchText = ""
     @State private var isAddItemViewPresented = false
     @State private var sortOption: SortOption = .date_new
@@ -26,21 +26,21 @@ struct AllReceiptsView: View {
     
     var sortedReceipts: [Receipt] {
         switch sortOption {
-            case .name:
+        case .name:
             return filteredReceipts.sorted { receipt1, receipt2 in
                 let order1 = orderManager.getOrderFromReceipt(forReceiptID: receipt1.id)
                 let order2 = orderManager.getOrderFromReceipt(forReceiptID: receipt2.id)
                 return order1.customer.name < order2.customer.name
             }
-            case .date_new:
-                return filteredReceipts.sorted { (rec1: Receipt, rec2: Receipt) -> Bool in
-                        return rec1.dateGenerated > rec2.dateGenerated
-                }
+        case .date_new:
+            return filteredReceipts.sorted { (rec1: Receipt, rec2: Receipt) -> Bool in
+                return rec1.dateGenerated > rec2.dateGenerated
+            }
             
-            case .date_old:
-                return filteredReceipts.sorted { (rec1: Receipt, rec2: Receipt) -> Bool in
-                    return rec1.dateGenerated < rec2.dateGenerated
-                }
+        case .date_old:
+            return filteredReceipts.sorted { (rec1: Receipt, rec2: Receipt) -> Bool in
+                return rec1.dateGenerated < rec2.dateGenerated
+            }
         }
     }
     
@@ -48,70 +48,58 @@ struct AllReceiptsView: View {
         orderManager.getReceipts(forYear: selectedYear)
             .filter { receipt in
                 let order = orderManager.getOrderFromReceipt(forReceiptID: receipt.id)
-                return searchText.isEmpty || order.customer.name.lowercased().contains(searchText.lowercased())
+                return searchText.isEmpty || order.customer.name.localizedCaseInsensitiveContains(searchText)  //lowercased().contains(searchText.lowercased())
             }
     }
-
     
     var body: some View {
         
         NavigationStack {
             ZStack(alignment: .center){
                 VStack (alignment: .trailing, spacing: 10) {
-                            
+                    
+                    VStack{
                         
-                        Image("receipts")
-                            .resizable()
-                            .scaledToFill()
-                            .edgesIgnoringSafeArea(.top)
-                            .opacity(0.2)
-                            .frame(height: 200)
-                            .overlay {
+                        HStack{
+                            
+                            Menu {
                                 
-                                VStack{
-                                    
-//                                    HStack {
-//
-//                                                                            
-//                                        
-//                                    }
-                                    
-                                    HStack{
-                                        
-                                        Menu {
-                                            
-                                            Picker("Sort By", selection: $sortOption) {
-                                                ForEach(SortOption.allCases, id: \.self) { option in
-                                                    Text(option.rawValue.localized)
-                                                }
-                                            }
-                                            .padding()
-                                        } label: {
-                                            Image(systemName: "arrow.up.arrow.down")
-                                                .resizable()
-                                                .frame(width: 16, height: 16)
-                                                .padding()
-                                        }
-                                        
-                                        SearchBar(searchText: $searchText)
-                                            .padding()
-                                        
+                                Picker("Sort By", selection: $sortOption) {
+                                    ForEach(SortOption.allCases, id: \.self) { option in
+                                        Text(option.rawValue.localized)
                                     }
                                 }
+                                //.padding()
+                            } label: {
+                                Image(systemName: "arrow.up.arrow.down")
+                                    .resizable()
+                                    .frame(width: 16, height: 16)
+                                    .padding()
                             }
-//                    }
-//                    .background(Color.green)
+                            
+                            SearchBar(searchText: $searchText)
+                            //                                .padding()
+                            
+                        }
+                        .background {
+                            Image("receipts")
+                                .resizable()
+                                .scaledToFill()
+                                .edgesIgnoringSafeArea(.top)
+                                .opacity(0.2)
+                                .frame(height: 200)
+                        }
+                        
+                    }
                     
-//                    List {
-//                        ForEach(filteredReceipts.sorted(by: { $0.myID < $1.myID }), id: \.id) { receipt in
-                        List(sortedReceipts) { receipt in
-                            if let order = orderManager.orders.first(where: { $0.orderID == receipt.orderID }) {
-                                NavigationLink(destination: GeneratedReceiptView(orderManager: orderManager, order: order, isPresented: .constant(false))) {
-                                    ReceiptRowView(order: order, receipt: receipt)
-                                }
+                    
+                    List(sortedReceipts) { receipt in
+                        if let order = orderManager.orders.first(where: { $0.orderID == receipt.orderID }) {
+                            NavigationLink(destination: GeneratedReceiptView(orderManager: orderManager, order: order, isPresented: .constant(false))) {
+                                ReceiptRowView(order: order, receipt: receipt)
                             }
                         }
-//                    }
+                    }
                     .listStyle(InsetGroupedListStyle())
                     
                     AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716")
@@ -121,52 +109,44 @@ struct AllReceiptsView: View {
                     // mine: ca-app-pub-1213016211458907/1549825745
                     
                 }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Picker("", selection: $selectedYear) {
+                            ForEach(2020...2030, id: \.self) {
+                                Text(String($0)).bold()
+                            }
+                        }
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Export") {
+                            exportReceiptsZip()
+                        }
+                        .foregroundColor(.accentColor)
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: {
+                            isAddItemViewPresented = true
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.system(size: 20))
+                            //.padding()
+                                .shadow(radius: 1)
+                        }
+                        .sheet(isPresented: $isAddItemViewPresented) {
+                            AddReceiptView(orderManager: orderManager, isPresented: $isAddItemViewPresented)
+                        }
+                    }
+                }
             }
-            .toolbarTitleMenu(content: {
-                Text("All Receipts")
-            })
-            .toolbar(content: {
-                
-//                Picker("", selection: $selectedYear) {
-//                    ForEach(2020...2030, id: \.self) {
-//                        Text(String($0)).bold()
-//                    }
-//                }
-                
-                Picker(selection: $selectedYear,
-                       label: Text("Year")) {
-                    Text("2023").tag(2023)
-                    Text("2024").tag(2024)
-                    Text("2025").tag(2025)
-                    Text("2026").tag(2026)
-                }
-               .pickerStyle(.automatic)
-                
-                Button("Export") {
-                    exportReceiptsZip()
-                }
-                .foregroundColor(.accentColor)
-                
-                Button(action: {
-                    isAddItemViewPresented = true
-                }) {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.system(size: 20))
-                        //.padding()
-                        .shadow(radius: 1)
-                }
-                .sheet(isPresented: $isAddItemViewPresented) {
-                    AddReceiptView(orderManager: orderManager, isPresented: $isAddItemViewPresented)
-                }
-            })
         }
+
     }
     
     private func exportReceiptsZip() {
         // Filter receipts by the selected year
         let filteredReceipts = orderManager.receipts.filter { receipt in
             let receiptYear = Calendar.current.component(.year, from: receipt.dateGenerated)
-            return receiptYear == Calendar.current.component(.year, from: selectedYear)
+            return receiptYear == selectedYear
         }
 
         // Create a temporary directory to store individual PDFs
@@ -214,8 +194,7 @@ struct AllReceiptsView: View {
         // Filter receipts by the selected year
         let filteredReceipts = orderManager.receipts.filter { receipt in
             let receiptYear = Calendar.current.component(.year, from: receipt.dateGenerated)
-            let selectedYear_ = Calendar.current.component(.year, from: selectedYear)
-            return receiptYear == selectedYear_
+            return receiptYear == selectedYear
         }
         
         // Create a file name for the exported file

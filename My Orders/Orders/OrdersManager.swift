@@ -512,8 +512,8 @@ class OrderManager: ObservableObject {
         return self.receipts
     }
     
-    func getReceipts(forYear year: Date) -> [Receipt] {
-         return receipts.filter { Calendar.current.component(.year, from: $0.dateGenerated) == Calendar.current.component(.year, from: year) }
+    func getReceipts(forYear year: Int) -> [Receipt] {
+         return receipts.filter { Calendar.current.component(.year, from: $0.dateGenerated) == year }
      }
     
     // MARK: - Manage Orders
