@@ -133,6 +133,12 @@
             "state" : "new",
             "value" : "%1$.2f%2$@"
           }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$.2f%2$@"
+          }
         }
       }
     },
@@ -196,6 +202,49 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@%2$lld"
+          }
+        }
+      }
+    },
+    "%lf" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lf"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lf"
+          }
+        }
+      }
+    },
+    "%lf%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lf%2$@"
+          }
+        }
+      }
+    },
+    "%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
           }
         }
       }
@@ -1087,7 +1136,20 @@
       }
     },
     "Cost" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cost"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות"
+          }
+        }
+      }
     },
     "Create new item" : {
       "extractionState" : "stale",
@@ -1107,7 +1169,20 @@
       }
     },
     "Create New Receipt" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create New Receipt"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "צור קבלה חדשה"
+          }
+        }
+      }
     },
     "Create public code" : {
       "localizations" : {
@@ -1159,7 +1234,20 @@
       }
     },
     "Customer Details" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customer Details"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פרטי לקוח"
+          }
+        }
+      }
     },
     "Customer Information" : {
       "extractionState" : "manual",
@@ -1847,7 +1935,20 @@
       }
     },
     "Export" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ייצא"
+          }
+        }
+      }
     },
     "Export Receipts" : {
       "extractionState" : "stale",
@@ -2989,7 +3090,20 @@
       }
     },
     "Payment Date" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment Date"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מועד תשלום"
+          }
+        }
+      }
     },
     "Payment date:" : {
       "extractionState" : "manual",
@@ -3042,7 +3156,20 @@
       }
     },
     "Payment Details" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment Details"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פרטי תשלום"
+          }
+        }
+      }
     },
     "Payment Method" : {
       "localizations" : {
@@ -3127,7 +3254,20 @@
       }
     },
     "Phone" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "טלפון"
+          }
+        }
+      }
     },
     "Phone number" : {
       "localizations" : {
@@ -3686,7 +3826,14 @@
       }
     },
     "Receipt Items" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Receipt Items"
+          }
+        }
+      }
     },
     "Receipt No." : {
       "extractionState" : "manual",
@@ -4073,6 +4220,7 @@
       }
     },
     "Share PDF Receipt" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4462,7 +4610,20 @@
       }
     },
     "Total Cost" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Cost"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות כוללת:"
+          }
+        }
+      }
     },
     "Total Price: %@" : {
       "localizations" : {
@@ -4547,9 +4708,31 @@
         }
       }
     },
+    "Total: %.2f" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %.2f"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות כוללת: %.2f"
+          }
+        }
+      }
+    },
     "Upcoming" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upcoming"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",

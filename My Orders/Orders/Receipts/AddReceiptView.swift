@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct AddReceiptView: View {
     @ObservedObject var orderManager: OrderManager
@@ -40,11 +41,23 @@ struct AddReceiptView: View {
                 }
                 
                 Section(header: Text("Receipt Items")) {
-                    ForEach(receiptItems.indices, id: \.self) { index in
-                        OrderItemRow(item: $receiptItems[index], onDelete: {
-                            receiptItems.remove(at: index)
-                            updateTotalCost()
-                        })
+                    ForEach(receiptItems, id: \.id) { item in
+                           OrderItemRow(item: item) {
+                               removeItem(item)
+                           }
+                       }
+                    
+                    HStack{
+                        
+                        TextField("Name", text: $itemName)
+                        
+                        TextField("Quantity", text: $itemQuantity)
+                            .keyboardType(.numberPad)
+                            
+                        
+                        TextField("Cost", text: $itemCost)
+                            .keyboardType(.decimalPad)
+                           
                     }
                     
                     Button(action: {
@@ -52,6 +65,12 @@ struct AddReceiptView: View {
                         let item = InventoryItem(itemID: UUID().uuidString, name: itemName, itemPrice: Double(itemCost) ?? 0, itemQuantity: Int(itemQuantity) ?? 1, size: "", AdditionDate: Date(), itemNotes: "")
 
                         receiptItems.append(item)
+              
+                        itemName = ""
+                        itemCost = ""
+                        itemQuantity = ""
+                        
+                        updateTotalCost()
                     }) {
                         HStack {
                             Image(systemName: "plus.circle.fill")
@@ -61,8 +80,21 @@ struct AddReceiptView: View {
                 }
                 
                 Section(header: Text("Total Cost")) {
-                    TextField("Total Cost", value: $totalCost, format: .number)
-                        .keyboardType(.decimalPad)
+                    HStack {
+                        Text("Total: \(totalCost, specifier: "%.2f")")
+                        
+//                        Button {
+//                            isAddingDiscount = true
+//                        } label: {
+//                            Text("Add discount")
+//                        }
+
+                    }
+                    
+                    
+
+//                    TextField("Total Cost", value: $totalCost, format: .number)
+//                        .keyboardType(.decimalPad)
                 }
                 
                 Section(header: Text("Payment Details")) {
@@ -82,15 +114,22 @@ struct AddReceiptView: View {
                 leading: Button("Cancel") {
                     isPresented = false
                 },
-                trailing: Button("Save") {
+                trailing: Button("Generate") {
                     saveReceipt()
                 }
             )
         }
     }
     
-    private func updateTotalCost() {
-        totalCost = receiptItems.reduce(0) { $0 + $1.itemPrice } //fix
+    func updateTotalCost() {
+        totalCost = receiptItems.reduce(0) { $0 + ($1.itemPrice * Double($1.itemQuantity)) }
+    }
+    
+    private func removeItem(_ item: InventoryItem) {
+        if let index = receiptItems.firstIndex(where: { $0.id == item.id }) {
+            receiptItems.remove(at: index)
+            updateTotalCost()
+        }
     }
     
     private func saveReceipt() {
@@ -105,8 +144,11 @@ struct AddReceiptView: View {
         }
         
         let order = Order(orderID: UUID().uuidString,
-                          customer: Customer(name: customerName, phoneNumber: "0"),
-                        orderItems: orderItems)
+                            customer: Customer(name: customerName, phoneNumber: "0"),
+                            orderItems: orderItems,
+                            isDelivered: true,
+                            isPaid: true)
+        
         
         
         // Create a new receipt with the entered details
@@ -134,18 +176,17 @@ struct ReceiptItem {
 }
 
 struct OrderItemRow: View {
-    @Binding var item: InventoryItem
+    var item: InventoryItem
     var onDelete: () -> Void
+    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
     
     var body: some View {
         HStack {
-            TextField("Name", text: $item.name)
+            Text(item.name)
+            Text("\(item.itemQuantity)")
+            Text("\(item.itemPrice)\(currency)")
             
-            TextField("Quantity", value: $item.itemQuantity, format: .number)
-                .keyboardType(.numberPad)
-            
-            TextField("Cost", value: $item.itemPrice, format: .number)
-                .keyboardType(.decimalPad)
+            Spacer()
             
             Button(action: onDelete) {
                 Image(systemName: "minus.circle.fill")
@@ -153,6 +194,7 @@ struct OrderItemRow: View {
         }
     }
 }
+
 
 struct AddReceiptView_Previews: PreviewProvider {
     static var previews: some View {

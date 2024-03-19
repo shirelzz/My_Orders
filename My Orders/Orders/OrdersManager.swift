@@ -533,7 +533,8 @@ class OrderManager: ObservableObject {
     }
     
     func getUpcomingOrders() -> [Order] {
-        return orders.filter { !$0.isDelivered && $0.orderDate > Date()}
+        let upcomingOrders = orders.filter { !$0.isDelivered && $0.orderDate > Date() }
+        return upcomingOrders.sorted { $0.orderDate < $1.orderDate }
     }
     
     func getOrder(orderID: String) -> Order {

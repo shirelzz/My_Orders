@@ -105,42 +105,49 @@ struct GeneratedReceiptView: View {
                 Text(HelperFunctions.formatToDate(receipt.paymentDate))
 
             }
-
-            if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
-                
-                Button("Share PDF Receipt") {
-                    pdfData = ReceiptUtils.drawPDF(for: order)
-                    guard let pdfData = self.pdfData else {
-                        return
-                    }
-
-                    if let windowScene = UIApplication.shared.connectedScenes
-                        .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
-
-                        let pdfShareView = SharePDFView(pdfData: pdfData)
-                        let hostingController = UIHostingController(rootView: pdfShareView)
-
-                        if let rootViewController = windowScene.windows.first?.rootViewController {
-                            // Dismiss any existing presented view controller
-                            if let presentedViewController = rootViewController.presentedViewController {
-                                presentedViewController.dismiss(animated: true) {
-                                    // Present the new view controller
-                                    rootViewController.present(hostingController, animated: true, completion: nil)
-                                }
-                            } else {
-                                // No view controller is currently presented, so present the new one
-                                rootViewController.present(hostingController, animated: true, completion: nil)
-                            }
-                        }
-                    }
-                }
-                .padding(.top, 20)
-                
-                
-            }
             
         }
         .padding()
+        .toolbar {
+
+            if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    
+                    Button {
+                        
+                        pdfData = ReceiptUtils.drawPDF(for: order)
+                        guard let pdfData = self.pdfData else {
+                            return
+                        }
+                        
+                        if let windowScene = UIApplication.shared.connectedScenes
+                            .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
+                            
+                            let pdfShareView = SharePDFView(pdfData: pdfData)
+                            let hostingController = UIHostingController(rootView: pdfShareView)
+                            
+                            if let rootViewController = windowScene.windows.first?.rootViewController {
+                                // Dismiss any existing presented view controller
+                                if let presentedViewController = rootViewController.presentedViewController {
+                                    presentedViewController.dismiss(animated: true) {
+                                        // Present the new view controller
+                                        rootViewController.present(hostingController, animated: true, completion: nil)
+                                    }
+                                } else {
+                                    // No view controller is currently presented, so present the new one
+                                    rootViewController.present(hostingController, animated: true, completion: nil)
+                                }
+                            }
+                        }
+                        
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                }
+            }
+
+        }
         
     }
     

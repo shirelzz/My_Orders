@@ -144,40 +144,51 @@ struct ReceiptView: View {
 
             }
             
+        }
+        .padding()
+        .toolbar {
+   
             if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
-                Button("Share PDF Receipt") {
-                    pdfData = ReceiptUtils.drawPDF(for: order)
-                    guard let pdfData = self.pdfData else {
-                        Toast.showToast(message: "cant find data")
-                        return
-                    }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
                     
-                    if let windowScene = UIApplication.shared.connectedScenes
-                        .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
+                    Button {
                         
-                        let pdfShareView = SharePDFView(pdfData: pdfData)
-                        let hostingController = UIHostingController(rootView: pdfShareView)
+                        pdfData = ReceiptUtils.drawPDF(for: order)
+                        guard let pdfData = self.pdfData else {
+                            Toast.showToast(message: "cant find data")
+                            return
+                        }
                         
-                        if let rootViewController = windowScene.windows.first?.rootViewController {
-                            // Dismiss any existing presented view controller
-                            if let presentedViewController = rootViewController.presentedViewController {
-                                presentedViewController.dismiss(animated: true) {
-                                    // Present the new view controller
+                        if let windowScene = UIApplication.shared.connectedScenes
+                            .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
+                            
+                            let pdfShareView = SharePDFView(pdfData: pdfData)
+                            let hostingController = UIHostingController(rootView: pdfShareView)
+                            
+                            if let rootViewController = windowScene.windows.first?.rootViewController {
+                                // Dismiss any existing presented view controller
+                                if let presentedViewController = rootViewController.presentedViewController {
+                                    presentedViewController.dismiss(animated: true) {
+                                        // Present the new view controller
+                                        rootViewController.present(hostingController, animated: true, completion: nil)
+                                    }
+                                } else {
+                                    // No view controller is currently presented, so present the new one
                                     rootViewController.present(hostingController, animated: true, completion: nil)
                                 }
-                            } else {
-                                // No view controller is currently presented, so present the new one
-                                rootViewController.present(hostingController, animated: true, completion: nil)
                             }
                         }
+                        
+                        
+                        
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
                     }
                     
                 }
-                .padding(.top, 20)
             }
-            
         }
-        .padding()
     }
     
     private func checkIfReceiptExist(){
