@@ -44,6 +44,12 @@ struct AllReceiptsView: View {
         }
     }
     
+    var yearReceipts: [Receipt] {
+        let receipts = orderManager.getReceipts(forYear: selectedYear)
+        print("Year: \(selectedYear) \n Receipts: \(receipts)")
+        return receipts
+    }
+    
     var filteredReceipts: [Receipt] {
         orderManager.getReceipts(forYear: selectedYear)
             .filter { receipt in
@@ -69,7 +75,6 @@ struct AllReceiptsView: View {
                                         Text(option.rawValue.localized)
                                     }
                                 }
-                                //.padding()
                             } label: {
                                 Image(systemName: "arrow.up.arrow.down")
                                     .resizable()
@@ -78,7 +83,6 @@ struct AllReceiptsView: View {
                             }
                             
                             SearchBar(searchText: $searchText)
-                            //                                .padding()
                             
                         }
                         .background {
@@ -93,7 +97,7 @@ struct AllReceiptsView: View {
                     }
                     
                     
-                    List(sortedReceipts) { receipt in
+                    List(yearReceipts) { receipt in
                         if let order = orderManager.orders.first(where: { $0.orderID == receipt.orderID }) {
                             NavigationLink(destination: GeneratedReceiptView(orderManager: orderManager, order: order, isPresented: .constant(false))) {
                                 ReceiptRowView(order: order, receipt: receipt)

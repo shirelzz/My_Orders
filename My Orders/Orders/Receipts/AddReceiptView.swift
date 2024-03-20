@@ -13,16 +13,24 @@ struct AddReceiptView: View {
     @Binding var isPresented: Bool
     @State private var customerName = ""
     @State private var customerPhone = ""
+    @State private var isCustomerNameValid = true
 
     @State private var itemName = ""
     @State private var itemQuantity = ""
     @State private var itemCost = ""
+    @State private var isItemNameValid = true
+    @State private var isItemQuantityValid = true
 
     @State private var receiptItems: [InventoryItem] = []
     @State private var totalCost: Double = 0
     @State private var selectedPaymentMethod = "Paybox"
     @State private var selectedPaymentDate: Date = Date()
+    
     @State private var lastReceipttID = OrderManager.shared.getLastReceiptID()
+    @State private var showSuccessMessage = false
+    @State private var isRewardedAdPresented = false
+    @State private var showConfirmationAlert = false
+    
     
     var body: some View {
         NavigationStack {
@@ -36,36 +44,62 @@ struct AddReceiptView: View {
                 
                 Section(header: Text("Customer Details")) {
                     TextField("Name", text: $customerName)
+                        .autocorrectionDisabled()
+                        .onChange(of: customerName) { _ in
+                            validateCustomerName()
+                        }
+                    
                     TextField("Phone", text: $customerPhone)
+                        .keyboardType(.numberPad)
 
+                    if !isCustomerNameValid {
+                        Text ("Invalid name")
+                            .foregroundStyle(.red)
+                    }
                 }
                 
                 Section(header: Text("Receipt Items")) {
                     ForEach(receiptItems, id: \.id) { item in
-                           OrderItemRow(item: item) {
-                               removeItem(item)
-                           }
-                       }
+                        OrderItemRow(item: item) {
+                            removeItem(item)
+                        }
+                    }
                     
                     HStack{
                         
                         TextField("Name", text: $itemName)
+                            .autocorrectionDisabled()
+                            .onChange(of: itemName) { _ in
+                                validateItemName()
+                            }
                         
                         TextField("Quantity", text: $itemQuantity)
                             .keyboardType(.numberPad)
-                            
+                            .onChange(of: itemQuantity) { _ in
+                                validateItemQuantity()
+                            }
                         
                         TextField("Cost", text: $itemCost)
                             .keyboardType(.decimalPad)
-                           
+                        
+                    }
+                    
+                    if !isItemNameValid {
+                        Text ("Invalid name")
+                            .foregroundStyle(.red)
+                    }
+                    
+                    if !isItemQuantityValid {
+                        Text ("Invalid quantity")
+                            .foregroundStyle(.red)
                     }
                     
                     Button(action: {
                         
                         let item = InventoryItem(itemID: UUID().uuidString, name: itemName, itemPrice: Double(itemCost) ?? 0, itemQuantity: Int(itemQuantity) ?? 1, size: "", AdditionDate: Date(), itemNotes: "")
-
+                        
                         receiptItems.append(item)
-              
+                        
                         itemName = ""
                         itemCost = ""
                         itemQuantity = ""
@@ -77,6 +111,7 @@ struct AddReceiptView: View {
                             Text("Add Item")
                         }
                     }
+                    .disabled(itemName == "" || Int(itemQuantity) ?? 0 <= 0 || Double(itemCost) ?? 0 <= 0)
                 }
                 
                 Section(header: Text("Total Cost")) {
@@ -114,11 +149,43 @@ struct AddReceiptView: View {
                 leading: Button("Cancel") {
                     isPresented = false
                 },
-                trailing: Button("Generate") {
-                    saveReceipt()
-                }
+                trailing:
+                    Button("Generate") {
+                        showConfirmationAlert = true
+                    }
+                    .disabled(customerName == "" || receiptItems.isEmpty)
+                    .alert(isPresented: $showConfirmationAlert) {
+                        Alert(
+                            title: Text("Gen erate Receipt"),
+                            message: Text("Are you sure you want to generate this receipt? Once a receipt is generated it cannot be deleted."),
+                            primaryButton: .default(Text("Generate").foregroundColor(Color.accentColor)) {
+                                isRewardedAdPresented = true
+                                saveReceipt()
+
+                                if showSuccessMessage {
+                                    orderManager.forceReceiptNumberReset(value: 0)
+                                    Toast.showToast(message: "Receipt generated successfully")
+                                }
+                                
+                            },
+                            secondaryButton: .cancel(Text("Cancel").foregroundColor(Color.accentColor)) {
+                            }
+                        )
+                    }
             )
         }
+    }
+    
+    private func validateCustomerName() {
+        isCustomerNameValid = customerName != ""
+    }
+    
+    private func validateItemName() {
+        isItemNameValid = itemName != ""
+    }
+    
+    private func validateItemQuantity() {
+        isItemQuantityValid = Int(itemQuantity) ?? 0 > 0
     }
     
     func updateTotalCost() {
@@ -141,6 +208,7 @@ struct AddReceiptView: View {
         var orderItems: [OrderItem] = []
         for item in receiptItems {
             let orderItem = OrderItem(inventoryItem: item, quantity: item.itemQuantity, price: item.itemPrice)
+            orderItems.append(orderItem)
         }
         
         let order = Order(orderID: UUID().uuidString,
@@ -148,9 +216,7 @@ struct AddReceiptView: View {
                             orderItems: orderItems,
                             isDelivered: true,
                             isPaid: true)
-        
-        
-        
+                
         // Create a new receipt with the entered details
         let newReceipt = Receipt(
             id: UUID().uuidString,
@@ -161,12 +227,17 @@ struct AddReceiptView: View {
             paymentDate: selectedPaymentDate
         )
         
-        // Add the new receipt to the OrderManager
-        orderManager.addReceipt(receipt: newReceipt)
+        orderManager.addOrder(order: order)
+        orderManager.addReceipt(receipt: newReceipt) // remove if using this line:
+//        if let _pdfData = ReceiptUtils.generatePDF(order: order, receipt: receipt) {
+//            showSuccessMessage = true
+//        }
         
         // Show success message or navigate back
+        showSuccessMessage = true
         isPresented = false
     }
+
 }
 
 struct ReceiptItem {
@@ -183,8 +254,14 @@ struct OrderItemRow: View {
     var body: some View {
         HStack {
             Text(item.name)
+            
+            Spacer()
+
             Text("\(item.itemQuantity)")
-            Text("\(item.itemPrice)\(currency)")
+            
+            Spacer()
+
+            Text("\(item.itemPrice, specifier: "%.2f")\(currency)")
             
             Spacer()
             

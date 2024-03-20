@@ -717,11 +717,12 @@ class OrderManager: ObservableObject {
     }
     
     func getLastReceiptID() -> Int {
-        
+        print("--- getLastReceiptID -> receiptNumberReset = \(receiptValues.receiptNumberReset)")
         if (self.receiptValues.receiptNumberReset == 0) { // reset = false
             guard let lastReceipt = receipts.max(by: { $0.myID < $1.myID }) else {
                 return 0
             }
+            print("--- getLastReceiptID -> lastReceipt.myID = \(lastReceipt.myID)")
             return lastReceipt.myID
         }
         else {
@@ -730,8 +731,11 @@ class OrderManager: ObservableObject {
     }
     
     func forceReceiptNumberReset(value: Int) {
+        print("--- forceReceiptNumberReset 1 -> receiptNumberReset = \(receiptValues.receiptNumberReset)")
         self.receiptValues.receiptNumberReset = value
+        print("--- forceReceiptNumberReset 2 -> receiptNumberReset = \(receiptValues.receiptNumberReset)")
         saveReceiptValues()
+        print("--- forceReceiptNumberReset 3 -> receiptNumberReset = \(receiptValues.receiptNumberReset)")
     }
     
     func toggleReceiptNumberReset() {

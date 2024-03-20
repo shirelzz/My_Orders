@@ -122,7 +122,7 @@ struct ReceiptView: View {
                 .alert(isPresented: $showConfirmationAlert) {
                     Alert(
                         title: Text("Generate Receipt"),
-                        message: Text("Are you sure you want to generate this receipt?"),
+                        message: Text("Are you sure you want to generate this receipt? Once a receipt is generated it cannot be deleted."),
                         primaryButton: .default(Text("Generate").foregroundColor(Color.accentColor)) {
                             isRewardedAdPresented = true
                             generatePDF()
@@ -191,17 +191,21 @@ struct ReceiptView: View {
         }
     }
     
-    private func checkIfReceiptExist(){
+    private func checkIfReceiptExist() -> Bool {
         if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
             Toast.showToast(message: "Receipt already exists")
-            showGenerationAlert = true
-            return
+            return true
         }
+        return false
     }
     
     private func generatePDF() {
         
-        checkIfReceiptExist()
+        if checkIfReceiptExist() {
+            return
+        }
+        
+        showGenerationAlert = true
 
         // Create a Receipt instance
         let receipt = Receipt(
