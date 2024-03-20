@@ -8,6 +8,11 @@
 import SwiftUI
 import Combine
 
+enum DiscountType {
+    case fixedAmount
+    case percentage
+}
+
 struct AddReceiptView: View {
     @ObservedObject var orderManager: OrderManager
     @Binding var isPresented: Bool
@@ -18,6 +23,9 @@ struct AddReceiptView: View {
     @State private var itemName = ""
     @State private var itemQuantity = ""
     @State private var itemCost = ""
+    @State private var isAddingDiscount = false
+    @State private var discountType: DiscountType = .fixedAmount
+    @State private var discountValue = 0.0
     @State private var isItemNameValid = true
     @State private var isItemQuantityValid = true
 
@@ -116,25 +124,64 @@ struct AddReceiptView: View {
                 
                 Section(header: Text("Total Cost")) {
                     HStack {
-                        Text("Total: \(totalCost, specifier: "%.2f")")
+                        Text("Total: \(calculateFinalCost(), specifier: "%.2f")")
                         
-//                        Button {
-//                            isAddingDiscount = true
-//                        } label: {
-//                            Text("Add discount")
-//                        }
+                        if !isAddingDiscount {
+
+                        Button {
+                            isAddingDiscount = true
+                        } label: {
+                            Text("Add discount")
+                        }
+                        
+                            
+                        } else {
+                            
+                            HStack {
+                                
+                                if discountType == .fixedAmount {
+                                    TextField("Discount Amount", value: $discountValue, formatter: NumberFormatter())
+                                        .keyboardType(.decimalPad)
+                                        .onChange(of: discountValue) { newValue in
+                                            applyDiscount()
+                                        }
+                                    
+                                } else {
+                                    TextField("Discount Percentage", value: $discountValue, formatter: NumberFormatter())
+                                        .keyboardType(.decimalPad)
+                                        .onChange(of: discountValue) { newValue in
+                                            applyDiscount()
+                                        }
+                                }
+                                
+                                Picker("Discount Type", selection: $discountType) {
+                                    Text("\(HelperFunctions.getCurrency())")
+                                        .tag(DiscountType.fixedAmount)
+                                    
+                                    Text("%")
+                                        .tag(DiscountType.percentage)
+                                }
+                                .pickerStyle(SegmentedPickerStyle())
+                                .onChange(of: discountType) { newValue in
+                                    applyDiscount()
+                                }
+                                
+                                Button("Cancel Discount") {
+                                    discountValue = 0.0
+                                    discountType = .fixedAmount
+                                    isAddingDiscount = false
+                                }
+                            }
+                            
+                        }
 
                     }
                     
-                    
-
-//                    TextField("Total Cost", value: $totalCost, format: .number)
-//                        .keyboardType(.decimalPad)
                 }
                 
                 Section(header: Text("Payment Details")) {
                     
-                    DatePicker("Payment Date", selection: $selectedPaymentDate, displayedComponents: .date)
+                    DatePicker("Payment Date", selection: $selectedPaymentDate, in: ...Date(), displayedComponents: .date)
                     
                     Picker("Payment Method", selection: $selectedPaymentMethod) {
                         Text("Paybox").tag("Paybox")
@@ -188,8 +235,21 @@ struct AddReceiptView: View {
         isItemQuantityValid = Int(itemQuantity) ?? 0 > 0
     }
     
-    func updateTotalCost() {
+    private func updateTotalCost() {
         totalCost = receiptItems.reduce(0) { $0 + ($1.itemPrice * Double($1.itemQuantity)) }
+    }
+    
+    private func applyDiscount() {
+        if discountType == .fixedAmount {
+            totalCost -= discountValue
+        } else {
+            let percentage = discountValue / 100.0
+            let discountAmount = totalCost * percentage
+            totalCost -= discountAmount
+        }
+        
+        // Ensure the total cost is not negative
+        totalCost = max(totalCost, 0)
     }
     
     private func removeItem(_ item: InventoryItem) {
@@ -200,10 +260,6 @@ struct AddReceiptView: View {
     }
     
     private func saveReceipt() {
-        guard !customerName.isEmpty else {
-            // Show validation message for empty customer name
-            return
-        }
         
         var orderItems: [OrderItem] = []
         for item in receiptItems {

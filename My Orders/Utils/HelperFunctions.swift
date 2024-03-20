@@ -37,4 +37,8 @@ class HelperFunctions {
         dateFormatter.timeStyle = .short
         return dateFormatter.string(from: date)
     }
+    
+    static func getCurrency() -> String {
+        return AppManager.shared.currencySymbol(for: AppManager.shared.currency)
+    }
 }
