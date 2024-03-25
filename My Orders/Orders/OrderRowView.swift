@@ -15,8 +15,7 @@ struct OrderRowView: View {
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .short 
+        formatter.dateFormat = "EEEE, MMM d, HH:mm"
         return formatter
     }()
     

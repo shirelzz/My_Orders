@@ -36,6 +36,7 @@ struct AddOrderView: View {
     @State private var selectedDeliveryCost = 0
     let deliveryCosts = [0, 5, 10, 15, 20, 25, 30, 40, 50, 60]
     
+    @State private var orderOpenDate = Date()
     @State private var pickupDateTime = Date()
     
     @State private var allergies = "No"
@@ -61,6 +62,10 @@ struct AddOrderView: View {
     var body: some View {
         
         Form {
+            
+            Section{
+                DatePicker("Order Date", selection: $orderOpenDate, displayedComponents: .date)
+            }
             
             Section(header: Text("Customer Information")) {
                 
@@ -254,8 +259,6 @@ struct AddOrderView: View {
                         Button(action: {
                             orderItemNewQuantity = orderItems[index].quantity.description
                             orderItemNewPrice = orderItems[index].price.description
-
-                            // Show the popover
                             isPopoverPresented.toggle()
                         }) {
                             Image(systemName: "pencil")
@@ -314,12 +317,8 @@ struct AddOrderView: View {
                         }
                         
                         Button(action: {
-                            // Get the selected dessert
-                            let deletedDessert = orderItems[index]
-                            
-                            // Delete the dessert from the list
                             orderItems.remove(at: index)
-                            
+                                                        
                         }) {
                             Image(systemName: "trash")
                                 .resizable()
@@ -370,7 +369,7 @@ struct AddOrderView: View {
                     
                 }
                 
-                DatePicker("Pickup Date and Time",
+                DatePicker("Supply Date",
                            selection: $pickupDateTime,
                            in: Date()...,
                            displayedComponents: [.date, .hourAndMinute])

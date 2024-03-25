@@ -48,13 +48,15 @@ class DatabaseManager {
                       let isDelivered = orderDict["isDelivered"] as? Bool,
                       let isPaid = orderDict["isPaid"] as? Bool
                 else {
-                    print("stopped middle way")
+                    print("stopped middle way: ")
                     continue
                 }
                 
                 let customer = Customer(name: customerDict["name"] as? String ?? "",
                                         phoneNumber: customerDict["phoneNumber"] as? String ?? "")
 
+                print("customer name: \(customer.name)")
+                
                 let delivery = Delivery(
                     address: deliveryDict["address"] as? String ?? "",
                     cost: deliveryDict["cost"] as? Double ?? 0.0
@@ -84,10 +86,7 @@ class DatabaseManager {
                              print("Failed to parse orderItemData")
                              continue
                          }
-                         
-                         // Parse inventoryItem
-                    print("---> before parse inventoryItem:")
-                    
+                                             
                     let additionDate = self.convertStringToDate(additionDateStr)
 
                     var tags: [String]? = nil

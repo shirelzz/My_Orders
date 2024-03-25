@@ -30,20 +30,20 @@ struct SettingsView: View {
                         Label("Customized Data", systemImage: "wand.and.stars")
                     }
                     
-                    Button {
-                        do {
-                        let userID = "Piggy123world"
-                        print("--> userID: \(userID)")
-                        let publicID = try Encryption.encryptID(userID: userID)
-                        print("--> publicID: \(publicID)")
-                        let decryptedPublicID = try Encryption.decryptID(encryptedID: publicID)
-                        print("--> decrypted: \(decryptedPublicID)")
-                    } catch {
-                        print("Error encrypting ID: \(error)")
-                    }
-                    } label: {
-                        Text("test encryption")
-                    }
+//                    Button {
+//                        do {
+//                        let userID = "Piggy123world"
+//                        print("--> userID: \(userID)")
+//                        let publicID = try Encryption.encryptID(userID: userID)
+//                        print("--> publicID: \(publicID)")
+//                        let decryptedPublicID = try Encryption.decryptID(encryptedID: publicID)
+//                        print("--> decrypted: \(decryptedPublicID)")
+//                    } catch {
+//                        print("Error encrypting ID: \(error)")
+//                    }
+//                    } label: {
+//                        Text("test encryption")
+//                    }
                     
                 }
                 

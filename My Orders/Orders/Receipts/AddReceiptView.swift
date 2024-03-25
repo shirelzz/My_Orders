@@ -28,7 +28,11 @@ struct AddReceiptView: View {
     @State private var discountValue = 0.0
     @State private var isItemNameValid = true
     @State private var isItemQuantityValid = true
-
+    @State private var isItemCostValid = true
+    @State private var isItemListEmpty = true
+    @State private var showValidationErrors = false
+    @State private var showOnlyEmptyItemListError = false
+    
     @State private var receiptItems: [InventoryItem] = []
     @State private var totalCost: Double = 0
     @State private var selectedPaymentMethod = "Paybox"
@@ -60,7 +64,7 @@ struct AddReceiptView: View {
                     TextField("Phone", text: $customerPhone)
                         .keyboardType(.numberPad)
 
-                    if !isCustomerNameValid {
+                    if !isCustomerNameValid && showValidationErrors {
                         Text ("Invalid name")
                             .foregroundStyle(.red)
                     }
@@ -89,16 +93,24 @@ struct AddReceiptView: View {
                         
                         TextField("Cost", text: $itemCost)
                             .keyboardType(.decimalPad)
+                            .onChange(of: itemCost) { _ in
+                                validateItemCost()
+                            }
                         
                     }
                     
-                    if !isItemNameValid {
+                    if !isItemNameValid && showValidationErrors && !showOnlyEmptyItemListError {
                         Text ("Invalid name")
                             .foregroundStyle(.red)
                     }
                     
-                    if !isItemQuantityValid {
+                    if !isItemQuantityValid && showValidationErrors && !showOnlyEmptyItemListError {
                         Text ("Invalid quantity")
+                            .foregroundStyle(.red)
+                    }
+                    
+                    if !isItemCostValid && showValidationErrors && !showOnlyEmptyItemListError {
+                        Text ("Invalid cost")
                             .foregroundStyle(.red)
                     }
                     
@@ -111,8 +123,9 @@ struct AddReceiptView: View {
                         itemName = ""
                         itemCost = ""
                         itemQuantity = ""
+                        showValidationErrors = false
+                        calculateFinalCost()
                         
-                        updateTotalCost()
                     }) {
                         HStack {
                             Image(systemName: "plus.circle.fill")
@@ -120,61 +133,73 @@ struct AddReceiptView: View {
                         }
                     }
                     .disabled(itemName == "" || Int(itemQuantity) ?? 0 <= 0 || Double(itemCost) ?? 0 <= 0)
+                    .buttonStyle(.borderless)
+                    
+                    
+                    if isItemListEmpty && showValidationErrors {
+                        Text ("Add at least one item")
+                            .foregroundStyle(.red)
+                    }
                 }
                 
                 Section(header: Text("Total Cost")) {
-                    HStack {
-                        Text("Total: \(calculateFinalCost(), specifier: "%.2f")")
+                    
+                    Text("Total: \(totalCost, specifier: "%.2f")")
+                    
+                    if !isAddingDiscount {
                         
-                        if !isAddingDiscount {
-
                         Button {
                             isAddingDiscount = true
                         } label: {
                             Text("Add discount")
                         }
+                        .buttonStyle(.borderedProminent)
                         
+                    } else {
+                        
+                        HStack {
                             
-                        } else {
+                            if discountType == .fixedAmount {
+                                TextField("Discount Amount", value: $discountValue, formatter: NumberFormatter())
+                                    .keyboardType(.decimalPad)
+                                    .onChange(of: discountValue) { newValue in
+                                        calculateFinalCost()
+                                    }
+                                
+                            } else {
+                                TextField("Discount Percentage", value: $discountValue, formatter: NumberFormatter())
+                                    .keyboardType(.decimalPad)
+                                    .onChange(of: discountValue) { newValue in
+                                        calculateFinalCost()
+                                    }
+                            }
                             
-                            HStack {
+                            Spacer()
+                            
+                            Picker("Discount Type", selection: $discountType) {
+                                Text("\(HelperFunctions.getCurrency())")
+                                    .tag(DiscountType.fixedAmount)
                                 
-                                if discountType == .fixedAmount {
-                                    TextField("Discount Amount", value: $discountValue, formatter: NumberFormatter())
-                                        .keyboardType(.decimalPad)
-                                        .onChange(of: discountValue) { newValue in
-                                            applyDiscount()
-                                        }
-                                    
-                                } else {
-                                    TextField("Discount Percentage", value: $discountValue, formatter: NumberFormatter())
-                                        .keyboardType(.decimalPad)
-                                        .onChange(of: discountValue) { newValue in
-                                            applyDiscount()
-                                        }
-                                }
-                                
-                                Picker("Discount Type", selection: $discountType) {
-                                    Text("\(HelperFunctions.getCurrency())")
-                                        .tag(DiscountType.fixedAmount)
-                                    
-                                    Text("%")
-                                        .tag(DiscountType.percentage)
-                                }
-                                .pickerStyle(SegmentedPickerStyle())
-                                .onChange(of: discountType) { newValue in
-                                    applyDiscount()
-                                }
-                                
-                                Button("Cancel Discount") {
-                                    discountValue = 0.0
-                                    discountType = .fixedAmount
-                                    isAddingDiscount = false
-                                }
+                                Text("%")
+                                    .tag(DiscountType.percentage)
+                            }
+                            .pickerStyle(SegmentedPickerStyle())
+                            .padding(.horizontal, 12)
+                            .onChange(of: discountType) { newValue in
+                                calculateFinalCost()
+                            }
+                            
+                            Button {
+                                discountValue = 0.0
+                                discountType = .fixedAmount
+                                calculateFinalCost()
+                                isAddingDiscount = false
+                            } label: {
+                                Image(systemName: "minus.circle.fill")
                             }
                             
                         }
-
+                        
                     }
                     
                 }
@@ -201,9 +226,20 @@ struct AddReceiptView: View {
                         showConfirmationAlert = true
                     }
                     .disabled(customerName == "" || receiptItems.isEmpty)
+                    .onTapGesture {
+                        if customerName == "" || receiptItems.isEmpty {
+                            
+                        }
+                        showValidationErrors = true
+                        validateNonEmptyList()
+                        if isItemListEmpty {
+                            showOnlyEmptyItemListError = true
+                        }
+
+                    }
                     .alert(isPresented: $showConfirmationAlert) {
                         Alert(
-                            title: Text("Gen erate Receipt"),
+                            title: Text("Generate Receipt"),
                             message: Text("Are you sure you want to generate this receipt? Once a receipt is generated it cannot be deleted."),
                             primaryButton: .default(Text("Generate").foregroundColor(Color.accentColor)) {
                                 isRewardedAdPresented = true
@@ -223,6 +259,10 @@ struct AddReceiptView: View {
         }
     }
     
+    private func validateNonEmptyList() {
+        isItemListEmpty = receiptItems.isEmpty
+    }
+    
     private func validateCustomerName() {
         isCustomerNameValid = customerName != ""
     }
@@ -235,8 +275,22 @@ struct AddReceiptView: View {
         isItemQuantityValid = Int(itemQuantity) ?? 0 > 0
     }
     
+    private func validateItemCost() {
+        isItemCostValid = Double(itemCost) ?? 0 <= 0
+    }
+    
     private func updateTotalCost() {
         totalCost = receiptItems.reduce(0) { $0 + ($1.itemPrice * Double($1.itemQuantity)) }
+    }
+    
+    private func calculateFinalCost() {
+        updateTotalCost()
+        if isAddingDiscount {
+            applyDiscount()
+        }
+        
+        // Ensure the total cost is not negative
+        totalCost = max(totalCost, 0)
     }
     
     private func applyDiscount() {
@@ -247,15 +301,12 @@ struct AddReceiptView: View {
             let discountAmount = totalCost * percentage
             totalCost -= discountAmount
         }
-        
-        // Ensure the total cost is not negative
-        totalCost = max(totalCost, 0)
     }
     
     private func removeItem(_ item: InventoryItem) {
         if let index = receiptItems.firstIndex(where: { $0.id == item.id }) {
             receiptItems.remove(at: index)
-            updateTotalCost()
+            calculateFinalCost()
         }
     }
     

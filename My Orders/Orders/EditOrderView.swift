@@ -22,6 +22,11 @@ struct EditOrderView: View {
     @State private var addedOrderItems: [OrderItem] = []
     @State private var deletedOrderItems: [OrderItem] = []
     
+    @State private var isDelivering = false
+    @State private var deliveryAddress = ""
+    @State private var selectedDeliveryCost = 0.0
+    let deliveryCosts = [0, 5, 10, 15, 20, 25, 30, 40, 50, 60]
+
     @State private var isAddItemViewPresented = false
     @State private var selectedInventoryItem: InventoryItem? = nil
     @State private var selectedInventoryItemIndex = 0
@@ -35,14 +40,13 @@ struct EditOrderView: View {
     @State private var showPhoneError = false
     
     @State private var navigateToContentView = false
-    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
+    @State private var currency = HelperFunctions.getCurrency()
     
     @State private var showAlert = false
     @State private var alertMessage = ""
     @State private var newItemQuantity = ""
 
     @Environment(\.presentationMode) var presentationMode
-    
     
     var body: some View {
         
@@ -167,10 +171,9 @@ struct EditOrderView: View {
                                 title: Text("Quantity Alert"),
                                 message: Text(alertMessage),
                                 primaryButton: .default(Text("Update Quantity")) {
-                                    newItemQuantity = "\(selectedInventoryItem?.itemQuantity)"
+                                    newItemQuantity = "\(selectedInventoryItem?.itemQuantity ?? 0)"
                                     showAlert = false
                                     
-                                    // Show the TextField in a sheet or popover if needed
                                     TextField("Quantity", text: $newItemQuantity)
                                         .keyboardType(.numberPad)
                                         .onSubmit {
@@ -204,6 +207,35 @@ struct EditOrderView: View {
                 }
                 
                 Section(header: Text("Additional Details")) {
+                    
+                    Toggle("Delivery", isOn: $isDelivering)
+                        .onChange(of: isDelivering) { newValue in
+                             if !isDelivering {
+                                deliveryAddress = ""
+                                selectedDeliveryCost = 0
+                                 
+                                editedOrder.delivery.address = ""
+                                editedOrder.delivery.cost = 0
+                             }
+                         }
+                     
+                     if isDelivering {
+                         TextField("Delivery Address", text: $deliveryAddress)
+                             .onChange(of: deliveryAddress) { newValue in
+                                 editedOrder.delivery.address = deliveryAddress
+                             }
+                         
+                         Picker("Delivery Cost", selection: $selectedDeliveryCost) {
+                             ForEach(deliveryCosts, id: \.self) { cost in
+                                 Text("\(currency)\(cost)").tag(cost)
+                             }
+                         }
+                         .onChange(of: selectedDeliveryCost) { newValue in
+                             editedOrder.delivery.cost = selectedDeliveryCost
+                         }
+//                         .pickerStyle(SegmentedPickerStyle())
+                     }
+                    
                     TextField("Allergies", text: $editedOrder.allergies)
                     TextField("Delivery", text: $editedOrder.delivery.address)
                     TextField("Notes", text: $editedOrder.notes)

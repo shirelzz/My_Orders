@@ -25,6 +25,10 @@ struct UpcomingOrders: View {
     @State private var isUserSignedIn = Auth.auth().currentUser != nil
     @State private var showEditOrderView = false
     
+    var upcomingOrders: [Order] {
+        return orderManager.getUpcomingOrders()
+    }
+    
     var body: some View {
         NavigationStack {
             ZStack(alignment: .topTrailing) {
@@ -56,7 +60,7 @@ struct UpcomingOrders: View {
                                 Image(systemName: "plus.circle.fill")
                                     .font(.system(size: 36))
                                     .padding()
-                                    .shadow(color: .black.opacity(0.6), radius: 6, x: 0, y: 2)
+                                    .shadow(color: .black.opacity(0.3), radius: 1, x: 0, y: 2)
                                 
                             }
                             .sheet(isPresented: $isAddOrderViewPresented) {
@@ -65,7 +69,7 @@ struct UpcomingOrders: View {
                             }
                             
                         }
-                        .padding(.top, 45)
+                        .padding()
                         
                     }
                     
@@ -105,6 +109,10 @@ struct UpcomingOrders: View {
                             }
                         }
                         .listStyle(.plain)
+                        .refreshable {
+                            await refreshUpcomingOrders()
+
+                        }
                         .alert(isPresented: $showDeleteAlert) {
                             Alert(
                                 title: Text("Delete Order"),
@@ -180,8 +188,9 @@ struct UpcomingOrders: View {
         orderManager.removeOrder(with: orderID)
     }
     
-    var upcomingOrders: [Order] {
-        return orderManager.getUpcomingOrders()
+    private func refreshUpcomingOrders() async {
+        orderManager.fetchOrders()
+        AppManager.shared.fetchCurrencyFromDB()
     }
 }
 

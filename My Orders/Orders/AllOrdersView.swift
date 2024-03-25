@@ -47,9 +47,7 @@ struct AllOrdersView: View {
     var body: some View {
         NavigationStack{
             
-            
             ZStack(alignment: .center) {
-                
                 
                 VStack (alignment: .trailing, spacing: 10) {
                     
@@ -112,7 +110,7 @@ struct AllOrdersView: View {
                                 }
                             }
                         }
-                        .listStyle(InsetGroupedListStyle())
+                        .listStyle(.plain)
                     }
                     
                     AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716")

@@ -123,7 +123,6 @@ class InventoryManager: ObservableObject {
     func fetchItemsFromDB() {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
-            print("Current UserID: \(userID)")
             let path = "users/\(userID)/items"
 
             DatabaseManager.shared.fetchItems(path: path, completion: { fetchedItems in

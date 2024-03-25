@@ -44,7 +44,7 @@ class AppManager: ObservableObject {
     func saveCurrency(currency: String) {
         self.currency = currency
         if isUserSignedIn{
-            print("---> saving currency 2DB")
+            print("---> saving currency 2DB: \(currency)")
             saveCurrency2DB(currency)
         }
         else{
@@ -71,7 +71,7 @@ class AppManager: ObservableObject {
             DatabaseManager.shared.fetchCurrency(path: path, completion: { currency in
                 DispatchQueue.main.async {
                     self.currency = currency
-                    print("Success fetching currency")
+                    print("Success fetching currency: \(currency)")
                 }
             })
         }

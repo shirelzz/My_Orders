@@ -368,7 +368,6 @@ class OrderManager: ObservableObject {
     func fetchOrders() {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
-            print("Current UserID: \(userID)")
             let path = "users/\(userID)/orders"
 
             DatabaseManager.shared.fetchOrders(path: path, completion: { fetchedOrders in
@@ -387,7 +386,6 @@ class OrderManager: ObservableObject {
         
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
-            print("Current UserID: \(userID)")
             let path = "users/\(userID)/receiptSettings"
 
             DatabaseManager.shared.fetchReceiptValues(path: path, completion: { fetchedReceiptValues in
@@ -403,7 +401,6 @@ class OrderManager: ObservableObject {
     func fetchReceipts() {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
-            print("Current UserID: \(userID)")
             let path = "users/\(userID)/receipts"
 
             DatabaseManager.shared.fetchReceipts(path: path, completion: { fetchedReceipts in
@@ -533,7 +530,7 @@ class OrderManager: ObservableObject {
     }
     
     func getUpcomingOrders() -> [Order] {
-        let upcomingOrders = orders.filter { !$0.isDelivered && $0.orderDate > Date() }
+        let upcomingOrders = orders.filter { !$0.isDelivered } // && $0.orderDate > Date()
         return upcomingOrders.sorted { $0.orderDate < $1.orderDate }
     }
     
@@ -753,7 +750,6 @@ class OrderManager: ObservableObject {
         
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
-            print("Current UserID: \(userID)")
             let path = "users/\(userID)/receiptSettings"
 
             DatabaseManager.shared.saveOrUpdateReceiptValuesInDB(self.receiptValues, path: path, completion: { _ in

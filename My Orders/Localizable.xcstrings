@@ -110,6 +110,22 @@
         }
       }
     },
+    "%" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%"
+          }
+        }
+      }
+    },
     "%.2f" : {
       "localizations" : {
         "en" : {
@@ -386,6 +402,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "הוסף"
+          }
+        }
+      }
+    },
+    "Add at least one item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add at least one item"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הוסף לפחות פריט אחד"
+          }
+        }
+      }
+    },
+    "Add discount" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add discount"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הוסף הנחה"
           }
         }
       }
@@ -739,7 +787,14 @@
       }
     },
     "Are you sure you want to generate this receipt? Once a receipt is generated it cannot be deleted." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to generate this receipt? Once a receipt is generated it cannot be deleted."
+          }
+        }
+      }
     },
     "Back" : {
       "localizations" : {
@@ -1668,6 +1723,22 @@
         }
       }
     },
+    "Delivery Address" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delivery Address"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "כתובת למשלוח"
+          }
+        }
+      }
+    },
     "Delivery Address:" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1681,6 +1752,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "כתובת למשלוח:"
+          }
+        }
+      }
+    },
+    "Delivery Cost" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delivery Cost"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות משלוח"
           }
         }
       }
@@ -1796,6 +1883,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "קינוח: %@"
+          }
+        }
+      }
+    },
+    "Discount Amount" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discount Amount"
+          }
+        }
+      }
+    },
+    "Discount Percentage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discount Percentage"
+          }
+        }
+      }
+    },
+    "Discount Type" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discount Type"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "סוג הנחה"
           }
         }
       }
@@ -2060,7 +2183,15 @@
       }
     },
     "Gen erate Receipt" : {
-
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gen erate Receipt"
+          }
+        }
+      }
     },
     "Generate" : {
       "localizations" : {
@@ -2207,11 +2338,53 @@
         }
       }
     },
+    "Invalid cost" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid cost"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות לא תקינה"
+          }
+        }
+      }
+    },
     "Invalid name" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid name"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שם ךא תקין"
+          }
+        }
+      }
     },
     "Invalid quantity" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid quantity"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "כמות לא תקינה"
+          }
+        }
+      }
     },
     "Inventory" : {
       "extractionState" : "manual",
@@ -3520,7 +3693,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Price:%1$@%2$.2f"
           }
         },
@@ -4450,6 +4623,22 @@
         }
       }
     },
+    "Supply Date" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supply Date"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מועד אספקה"
+          }
+        }
+      }
+    },
     "tags" : {
       "localizations" : {
         "en" : {
@@ -4483,6 +4672,7 @@
       }
     },
     "test encryption" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

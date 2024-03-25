@@ -175,6 +175,7 @@ struct InventoryContentView: View {
                                 }
                             }
                         }
+                        .listStyle(.plain)
                         .alert(isPresented: $showDeleteAlert) {
                             Alert(
                                 title: Text("Confirm Deletion"),
