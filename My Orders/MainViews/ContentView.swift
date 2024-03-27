@@ -16,7 +16,7 @@ struct ContentView: View {
     @StateObject private var orderManager = OrderManager.shared
     @StateObject private var inventoryManager = InventoryManager.shared
     @StateObject private var shoppingList = ShoppingList.shared
-    
+
     var body: some View {
         
         //                AppOpenAdView(adUnitID: "ca-app-pub-3940256099942544/5575463023")

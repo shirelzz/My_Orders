@@ -16,6 +16,8 @@ enum DiscountType {
 struct AddReceiptView: View {
     @ObservedObject var orderManager: OrderManager
     @Binding var isPresented: Bool
+    
+    @State private var currency = HelperFunctions.getCurrency()
     @State private var customerName = ""
     @State private var customerPhone = ""
     @State private var isCustomerNameValid = true
@@ -160,14 +162,14 @@ struct AddReceiptView: View {
                         HStack {
                             
                             if discountType == .fixedAmount {
-                                TextField("Discount Amount", value: $discountValue, formatter: NumberFormatter())
+                                TextField("\(currency)", value: $discountValue, formatter: NumberFormatter())
                                     .keyboardType(.decimalPad)
                                     .onChange(of: discountValue) { newValue in
                                         calculateFinalCost()
                                     }
                                 
                             } else {
-                                TextField("Discount Percentage", value: $discountValue, formatter: NumberFormatter())
+                                TextField("%", value: $discountValue, formatter: NumberFormatter())
                                     .keyboardType(.decimalPad)
                                     .onChange(of: discountValue) { newValue in
                                         calculateFinalCost()
@@ -177,7 +179,7 @@ struct AddReceiptView: View {
                             Spacer()
                             
                             Picker("Discount Type", selection: $discountType) {
-                                Text("\(HelperFunctions.getCurrency())")
+                                Text("\(currency)")
                                     .tag(DiscountType.fixedAmount)
                                 
                                 Text("%")

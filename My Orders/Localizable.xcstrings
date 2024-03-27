@@ -1888,6 +1888,7 @@
       }
     },
     "Discount Amount" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1898,6 +1899,7 @@
       }
     },
     "Discount Percentage" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2582,6 +2584,9 @@
           }
         }
       }
+    },
+    "Menu" : {
+
     },
     "Month" : {
       "localizations" : {
