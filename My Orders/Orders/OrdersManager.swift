@@ -375,6 +375,10 @@ class OrderManager: ObservableObject {
                 DispatchQueue.main.async {
                     self.orders = fetchedOrders
                     print("Success fetching orders")
+                    
+                    for order in fetchedOrders {
+                        self.printOrder(order: order)
+                    }
                 }
 
 
@@ -635,20 +639,20 @@ class OrderManager: ObservableObject {
     }
 
     func printOrder(order: Order) -> Void {
-        print("orderID: \(order.orderID)")
-        print("ispaid: \(order.isPaid.description)")
+        print("> orderID: \(order.orderID)")
+        print("> ispaid: \(order.isPaid.description)")
         
         if let receipt = order.receipt {
-            print("receipt details: ")
+            print("> receipt details: ")
             
-            print("id: \(receipt.id)")
-            print("myID: \(receipt.myID)")
-            print("orderID: \(receipt.orderID)")
-            print("dateGenerated: \(receipt.dateGenerated)")
-            print("paymentMethod: \(receipt.paymentMethod)")
-            print("paymentDate: \(receipt.paymentDate)")
+            print("> id: \(receipt.id)")
+            print("> myID: \(receipt.myID)")
+            print("> orderID: \(receipt.orderID)")
+            print("> dateGenerated: \(receipt.dateGenerated)")
+            print("> paymentMethod: \(receipt.paymentMethod)")
+            print("> paymentDate: \(receipt.paymentDate)")
         } else {
-            print("Receipt is nil")
+            print("> Receipt is nil")
         }
         
     }
@@ -685,8 +689,8 @@ class OrderManager: ObservableObject {
         }
     }
     
-    func getOrderFromReceipt(forReceiptID receiptID: String) -> Order {
-        if let order = orders.first(where: { $0.receipt?.id == receiptID }) {
+    func getOrderFromID(forOrderID orderID: String) -> Order {
+        if let order = orders.first(where: { $0.orderID == orderID }) {
             return order
         } else {
             return Order()

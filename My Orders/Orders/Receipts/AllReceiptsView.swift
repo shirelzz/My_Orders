@@ -28,8 +28,8 @@ struct AllReceiptsView: View {
         switch sortOption {
         case .name:
             return filteredReceipts.sorted { receipt1, receipt2 in
-                let order1 = orderManager.getOrderFromReceipt(forReceiptID: receipt1.id)
-                let order2 = orderManager.getOrderFromReceipt(forReceiptID: receipt2.id)
+                let order1 = orderManager.getOrderFromID(forOrderID: receipt1.orderID)
+                let order2 = orderManager.getOrderFromID(forOrderID: receipt2.orderID)
                 return order1.customer.name < order2.customer.name
             }
         case .date_new:
@@ -44,19 +44,24 @@ struct AllReceiptsView: View {
         }
     }
     
-    var yearReceipts: [Receipt] {
-        let receipts = orderManager.getReceipts(forYear: selectedYear)
-        print("Year: \(selectedYear) \n Receipts: \(receipts)")
-        return receipts
-    }
-    
     var filteredReceipts: [Receipt] {
-        orderManager.getReceipts(forYear: selectedYear)
+        let lowercaseSearchText = searchText.lowercased()
+        print("---> Search Text: \(searchText), Lowercase Search Text: \(lowercaseSearchText)")
+        
+        let filtered = orderManager.getReceipts(forYear: selectedYear)
             .filter { receipt in
-                let order = orderManager.getOrderFromReceipt(forReceiptID: receipt.id)
-                return searchText.isEmpty || order.customer.name.localizedCaseInsensitiveContains(searchText)  //lowercased().contains(searchText.lowercased())
+                print("---> \(receipt.id)")
+                let order = orderManager.getOrderFromID(forOrderID: receipt.orderID)
+                let lowercaseCustomerName = order.customer.name.lowercased()
+                print("---> Customer Name: \(order.customer.name), Lowercase Customer Name: \(lowercaseCustomerName)")
+                
+                return lowercaseSearchText.isEmpty || lowercaseCustomerName.localizedCaseInsensitiveContains(lowercaseSearchText)
             }
+        
+        print("---> Filtered Receipts Count: \(filtered.count)")
+        return filtered
     }
+
     
     var body: some View {
         
@@ -98,7 +103,7 @@ struct AllReceiptsView: View {
                     }
                     
                     
-                    List(yearReceipts) { receipt in
+                    List(sortedReceipts) { receipt in
                         if let order = orderManager.orders.first(where: { $0.orderID == receipt.orderID }) {
                             NavigationLink(destination: GeneratedReceiptView(orderManager: orderManager, order: order, isPresented: .constant(false))) {
                                 ReceiptRowView(order: order, receipt: receipt)
