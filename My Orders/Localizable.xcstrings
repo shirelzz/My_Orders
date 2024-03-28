@@ -793,6 +793,12 @@
             "state" : "translated",
             "value" : "Are you sure you want to generate this receipt? Once a receipt is generated it cannot be deleted."
           }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "לייצר קבלה זו? לאחר שקבלה נוצרה לא ניתן למחוק אותה"
+          }
         }
       }
     },
@@ -2535,6 +2541,9 @@
         }
       }
     },
+    "Items" : {
+
+    },
     "Items Selection" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2584,9 +2593,6 @@
           }
         }
       }
-    },
-    "Menu" : {
-
     },
     "Month" : {
       "localizations" : {
@@ -4007,6 +4013,7 @@
       }
     },
     "Receipt Items" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

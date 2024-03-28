@@ -17,7 +17,11 @@ struct SearchBar: View {
         }
         .padding(.vertical, 10)
         .background(Color(.systemGray5))
-        .cornerRadius(8)
-        .padding(.horizontal, 15)
+        .cornerRadius(10)
+        .padding(.horizontal, 10)
     }
+}
+
+#Preview {
+    InventoryContentView(inventoryManager: InventoryManager.shared)
 }

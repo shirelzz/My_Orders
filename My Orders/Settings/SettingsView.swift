@@ -61,7 +61,7 @@ struct SettingsView: View {
                         AppManager.shared.saveCurrency(currency: selectedCurrency)
                     }
                 } footer: {
-                    Text("You might need to relaunch the app before you see this change through all screens")
+//                    Text("You might need to relaunch the app before you see this change through all screens")
                 }
                 
                 Section(header: Text("Notification center")) {

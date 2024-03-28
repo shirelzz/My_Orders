@@ -66,7 +66,7 @@ struct AllReceiptsView: View {
                     
                     VStack{
                         
-                        HStack{
+                        HStack {
                             
                             Menu {
                                 
@@ -77,14 +77,15 @@ struct AllReceiptsView: View {
                                 }
                             } label: {
                                 Image(systemName: "arrow.up.arrow.down")
-                                    .resizable()
-                                    .frame(width: 16, height: 16)
-                                    .padding()
+//                                    .resizable()
+//                                    .frame(width: 16, height: 16)
+//                                    .padding(.horizontal)
                             }
                             
                             SearchBar(searchText: $searchText)
                             
                         }
+                        .padding(8)
                         .background {
                             Image("receipts")
                                 .resizable()
@@ -113,6 +114,7 @@ struct AllReceiptsView: View {
                     // mine: ca-app-pub-1213016211458907/1549825745
                     
                 }
+                .navigationTitle("All Receipts")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Picker("", selection: $selectedYear) {
@@ -134,7 +136,7 @@ struct AllReceiptsView: View {
                             Image(systemName: "plus.circle.fill")
                                 .font(.system(size: 20))
                             //.padding()
-                                .shadow(radius: 1)
+//                                .shadow(radius: 1)
                         }
                         .sheet(isPresented: $isAddItemViewPresented) {
                             AddReceiptView(orderManager: orderManager, isPresented: $isAddItemViewPresented)

@@ -72,7 +72,7 @@ struct AddReceiptView: View {
                     }
                 }
                 
-                Section(header: Text("Receipt Items")) {
+                Section(header: Text("Items")) {
                     ForEach(receiptItems, id: \.id) { item in
                         OrderItemRow(item: item) {
                             removeItem(item)

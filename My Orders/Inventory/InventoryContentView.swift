@@ -90,35 +90,10 @@ struct InventoryContentView: View {
                             .edgesIgnoringSafeArea(.top)
                             .opacity(0.2)
                             .frame(height: 20)
-                        
-                        HStack {
-                            
-                            Spacer()
-                            
-                            Text("Inventory Items")
-                                .font(.largeTitle)
-                                .bold()
-                            
-                            Spacer()
-                            
-                            Button(action: {
-                                isAddItemViewPresented = true
-                            }) {
-                                Image(systemName: "plus.circle.fill")
-                                    .font(.system(size: 36))
-                                    .padding()
-                                    .shadow(radius: 1)
-                            }
-                            .sheet(isPresented: $isAddItemViewPresented) {
-                                AddItemView(inventoryManager: inventoryManager)
-                            }
-                        }
-                        .padding(.top, 30)
                     }
-
                     
                     HStack(alignment: .center){
-                        
+                                                
                         Menu {
                         
                             Picker("Sort By", selection: $sortOption) {
@@ -129,15 +104,15 @@ struct InventoryContentView: View {
                         } 
                         label: {
                             Image(systemName: "arrow.up.arrow.down")
-                                .resizable()
-                                .frame(width: 16, height: 16)
+//                                .padding(.horizontal)
+//                                .resizable()
+//                                .frame(width: 16, height: 16)
                         }
                         
                         SearchBar(searchText: $searchText)
-
+                                                
                     }
-                    .padding()
-                    
+                    .padding(8)
                     
                     if inventoryItems.isEmpty {
                         Text("No inventory items yet")
@@ -202,7 +177,22 @@ struct InventoryContentView: View {
                     }
                 }
             }
-            
+            .navigationTitle("Inventory Items")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        isAddItemViewPresented = true
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 20))
+
+                    }
+                    .sheet(isPresented: $isAddItemViewPresented) {
+                        AddItemView(inventoryManager: inventoryManager)
+                    }
+                }
+            }
+
             Spacer()
             
             AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716")
@@ -220,9 +210,9 @@ struct InventoryContentView: View {
 }
 
 
-//struct InventoryContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        
-//        InventoryContentView(inventoryManager: InventoryManager.shared)
-//    }
-//}
+struct InventoryContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        
+        InventoryContentView(inventoryManager: InventoryManager.shared)
+    }
+}

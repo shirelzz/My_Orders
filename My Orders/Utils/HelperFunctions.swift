@@ -11,6 +11,13 @@ import SwiftUI
 
 class HelperFunctions {
     
+    static func isDarkMode() -> Bool {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            return windowScene.traitCollection.userInterfaceStyle == .dark
+        }
+        return false
+    }
+    
     static func closeKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
