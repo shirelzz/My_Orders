@@ -11,7 +11,7 @@ struct OrderDetailsView: View {
     @ObservedObject var orderManager: OrderManager
     @ObservedObject var inventoryManager: InventoryManager
     @State private var currency = HelperFunctions.getCurrencySymbol()
-
+    
     @State var order: Order
     @State private var selectedItemForDetails: InventoryItem = InventoryItem()
     @State private var showInfo = false
@@ -22,7 +22,7 @@ struct OrderDetailsView: View {
     @State private var isEditing = false
     @State private var phoneNumberCopied = false
     @State private var phoneNumberToCopy = ""
-            
+    
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -110,16 +110,9 @@ struct OrderDetailsView: View {
                     
                 }
             }
-            .padding(.vertical, 10)
-            .background(
-                RoundedRectangle(cornerRadius: 15)
-                    .fill(Color.gray.opacity(0.1))
-            )
+            .customGraySectionVStyle()
+            
         }
-        
-        
-        //        }
-        //        .customVStackStyle(backgroundColor: .brown, cornerRadius: 15, shadowRadius: 2)
     }
     
     private var orderInformationSection: some View {
@@ -136,7 +129,7 @@ struct OrderDetailsView: View {
                     Text(order.orderDate.formatted())
                 }
                 .padding(.leading, 10)
-
+                
                 ForEach(order.orderItems, id: \.inventoryItem.name) { orderItem in
                     VStack(alignment: .center) {
                         HStack {
@@ -166,8 +159,6 @@ struct OrderDetailsView: View {
                     }
                     .background(Color(.systemBackground))
                     .cornerRadius(10)
-//                    .shadow(radius: 0.8)
-                    //                        .frame(minHeight: 30)
                     .frame(maxWidth: HelperFunctions.getWidth())
                     .padding(8)
                 }
@@ -205,11 +196,11 @@ struct OrderDetailsView: View {
                 UIPasteboard.general.string = orderDetailsText
                 Toast.showToast(message: "Order details copied")
             }
-            label: {
-                Image(systemName: "doc.on.doc")
-                    .padding()
-                    .tint(.accentColor)
-            }
+        label: {
+            Image(systemName: "doc.on.doc")
+                .padding()
+                .tint(.accentColor)
+        }
             
             
         }
@@ -218,20 +209,21 @@ struct OrderDetailsView: View {
     }
     
     private var additionalDetailsSection: some View {
-//        VStack(alignment: .leading) {
+        
+        Section(header: Text("Additional Details")
+            .font(.footnote)
+            .padding(.leading, 10)
+            .padding(.top, 10)
+            .opacity(0.7)
+        ) {
             
-            Section(header: Text("Additional Details")
-                .font(.footnote)
-                .padding(.leading, 10)
-                .padding(.top, 10)
-                .opacity(0.7)
-            ) {
+            VStack(alignment: .leading, spacing: 0) {
+                
+                ScrollView {
                     
-                VStack(alignment: .leading, spacing: 0) {
-                    
-                    ScrollView {
-                        
-                        if((order.delivery.address != "") || (order.delivery.cost != 0)){
+                    if((order.delivery.address != "") || (order.delivery.cost != 0)){
+                        VStack(alignment: .leading) {
+                            
                             Text("Delivery Address:")
                                 .padding(.leading)
                             
@@ -258,212 +250,161 @@ struct OrderDetailsView: View {
                                     .padding(8)
                                 
                             }
-                            
                         }
                         
-                        if order.notes != "" {
-                            VStack(alignment: .leading) {
-                                Text("Notes:")
-                                    .padding(.leading)
-                                
-                                HStack {
-                                    Text(order.notes)
-                                        .padding(.leading)
-                                        .contextMenu {
-                                            Button(action: {
-                                                UIPasteboard.general.string = order.notes
-                                            }) {
-                                                Text("Copy")
-                                                Image(systemName: "doc.on.doc")
-                                            }
-                                        }
-                                    
-                                    
-                                    Spacer()
-                                    
-                                    Text("")
-                                }
-                                
-                                if (order.allergies != "") {
-                                    Divider()
-                                        .padding(.horizontal, 8)
-                                        .padding(8)
-                                    
-                                }
-                            }
-                            
-                        }
-                        
-                        if(order.allergies != ""){
-                            VStack(alignment: .leading) {
-                                Text("Allergies:")
-                                    .padding(.leading)
-                                
-                                HStack {
-                                    Text(order.allergies)
-                                        .padding(.leading)
-                                    
-                                    
-                                    Spacer()
-                                    
-                                    Text("")
-                                }
-                                
-                            }
-                            
-                        }
                     }
                     
+                    if order.notes != "" {
+                        VStack(alignment: .leading) {
+                            Text("Notes:")
+                                .padding(.leading)
+                            
+                            HStack {
+                                Text(order.notes)
+                                    .padding(.leading)
+                                    .contextMenu {
+                                        Button(action: {
+                                            UIPasteboard.general.string = order.notes
+                                        }) {
+                                            Text("Copy")
+                                            Image(systemName: "doc.on.doc")
+                                        }
+                                    }
+                                
+                                
+                                Spacer()
+                                
+                                Text("")
+                            }
+                            
+                            if (order.allergies != "") {
+                                Divider()
+                                    .padding(.horizontal, 8)
+                                    .padding(8)
+                                
+                            }
+                        }
+                        
+                    }
+                    
+                    if(order.allergies != ""){
+                        VStack(alignment: .leading) {
+                            Text("Allergies:")
+                                .padding(.leading)
+                            
+                            HStack {
+                                Text(order.allergies)
+                                    .padding(.leading)
+                                
+                                
+                                Spacer()
+                                
+                                Text("")
+                            }
+                            
+                        }
+                        
+                    }
                 }
-                .padding(.vertical, 10) // Add vertical padding to the VStack if needed
-                .background(
-                    RoundedRectangle(cornerRadius: 15) // Adjust corner radius as needed
-                        .fill(Color.gray.opacity(0.1))
-                )
                 
             }
-//        }
-//        .customVStackStyle(backgroundColor: .gray, cornerRadius: 15, shadowRadius: 2)
+            .customGraySectionVStyle()
+            
+        }
     }
     
     private var orderStatusSection: some View {
-//        VStack(alignment: .leading) {
-            Section(header: Text("Order Status")
-                .font(.footnote)
-                .padding(.leading, 10)
-            ) {
+        Section(header: Text("Order Status")
+            .font(.footnote)
+            .padding(.leading, 10)
+        ) {
+            
+            VStack(alignment: .leading, spacing: 0) {
                 
-                VStack(alignment: .leading, spacing: 0) {
-
-                    Toggle("Paid", isOn: $order.isPaid).padding(.leading)
-                        .onChange(of: order.isPaid) { newValue in
-                            OrderManager.shared.updatePaymentStatus(orderID: order.id, isPaid: newValue)
-                        }
-                        .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
-                        .padding(8)
-                    
-                    Divider()
-                        .padding(.horizontal, 8)
-                        .padding(8)
-                    
-                    Toggle("Delivered", isOn: $order.isDelivered).padding(.leading)
-                        .onChange(of: order.isDelivered) { newValue in
-                            OrderManager.shared.updateOrderStatus(orderID: order.id, isDelivered: newValue)
-                        }
-                        .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
-                        .padding(8)
-                    
-                    
-                    if order.isPaid {
-                        Button("Show Receipt Preview") {
-                            if orderManager.receiptExists(forOrderID: order.orderID){
-                                showGeneratedReceiptPreview = true
-                            }
-                            else {
-                                showReceiptPreview = true
-                            }
-                        }
-                        .sheet(isPresented: $showReceiptPreview) {
-                            NavigationView {
-                                ReceiptView(orderManager: orderManager, order: order, showGenerationAlert: $showReceiptPreview)
-                            }
-                        }
-                        .sheet(isPresented: $showGeneratedReceiptPreview) {
-                            NavigationView {
-                                GeneratedReceiptView(orderManager: orderManager, order: order, isPresented: $showGeneratedReceiptPreview)
-                            }
-                        }
-                        .padding(.leading)
+                Toggle("Paid", isOn: $order.isPaid).padding(.leading)
+                    .onChange(of: order.isPaid) { newValue in
+                        OrderManager.shared.updatePaymentStatus(orderID: order.id, isPaid: newValue)
                     }
+                    .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
+                    .padding(8)
+                
+                Divider()
+                    .padding(.horizontal, 8)
+                    .padding(8)
+                
+                Toggle("Delivered", isOn: $order.isDelivered).padding(.leading)
+                    .onChange(of: order.isDelivered) { newValue in
+                        OrderManager.shared.updateOrderStatus(orderID: order.id, isDelivered: newValue)
+                    }
+                    .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
+                    .padding(8)
+                
+                
+                if order.isPaid {
+                    Button("Show Receipt Preview") {
+                        if orderManager.receiptExists(forOrderID: order.orderID){
+                            showGeneratedReceiptPreview = true
+                        }
+                        else {
+                            showReceiptPreview = true
+                        }
+                    }
+                    .sheet(isPresented: $showReceiptPreview) {
+                        NavigationView {
+                            ReceiptView(orderManager: orderManager, order: order, showGenerationAlert: $showReceiptPreview)
+                        }
+                    }
+                    .sheet(isPresented: $showGeneratedReceiptPreview) {
+                        NavigationView {
+                            GeneratedReceiptView(orderManager: orderManager, order: order, isPresented: $showGeneratedReceiptPreview)
+                        }
+                    }
+                    .padding(.leading)
                 }
-                .padding(.vertical, 10) // Add vertical padding to the VStack if needed
-                .background(
-                    RoundedRectangle(cornerRadius: 15) // Adjust corner radius as needed
-                        .fill(Color.gray.opacity(0.1))
-                )
             }
-//        }
-//        .customVStackStyle(backgroundColor: Color("greener"), cornerRadius: 15, shadowRadius: 2)
+            .customGraySectionVStyle()
+            
+        }
     }
     
     private var priceSection: some View {
-//        VStack(alignment: .leading) {
-            Section(header: Text("Price")
-                .font(.footnote)
-                .padding(.leading)
-            ) {
-                VStack(alignment: .leading, spacing: 0) {
-                    
-                    if(order.delivery.cost != 0){
-                        HStack {
-                            Text("Delivery Cost: ")
-                                .padding(.leading)
-
-                            Spacer()
-                            
-                            Text("\(order.delivery.cost, specifier: "%.2f")\(currency)")
-                                .padding(8)
-                        }
-//                        .padding(.leading)
-                        
-                    }
-                    
-                    HStack{
-                        Text("Total Price: ")
+        Section(header: Text("Price")
+            .font(.footnote)
+            .padding(.leading)
+        ) {
+            VStack(alignment: .leading, spacing: 0) {
+                
+                if(order.delivery.cost != 0){
+                    HStack {
+                        Text("Delivery Cost: ")
                             .padding(.leading)
-
+                        
                         Spacer()
                         
-                        Text("\(order.totalPrice, specifier: "%.2f") \(currency)")
+                        Text("\(order.delivery.cost, specifier: "%.2f")\(currency)")
                             .padding(8)
                     }
-//                    .padding(.leading)
+                    //                        .padding(.leading)
+                    
                 }
-                .padding(.vertical, 10) // Add vertical padding to the VStack if needed
-                .background(
-                    RoundedRectangle(cornerRadius: 15) // Adjust corner radius as needed
-                        .fill(Color.gray.opacity(0.1))
-                )
+                
+                HStack{
+                    Text("Total Price: ")
+                        .padding(.leading)
+                    
+                    Spacer()
+                    
+                    Text("\(order.totalPrice, specifier: "%.2f") \(currency)")
+                        .padding(8)
+                }
+                //                    .padding(.leading)
             }
-//        }
-//        .customVStackStyle(backgroundColor: .brown, cornerRadius: 15, shadowRadius: 2)
+            .customGraySectionVStyle()
+            
+        }
     }
 }
 
 #Preview {
     UpcomingOrders(orderManager: OrderManager.shared, inventoryManager: InventoryManager.shared)
 }
-    
-
-//struct OrderDetailsView_Previews: PreviewProvider {
-//
-//    static var previews: some View {
-//
-//        let sampleItem = InventoryItem(itemID: "1234",
-//                                       name: "Chocolate cake",
-//                                       itemPrice: 20,
-//                                       itemQuantity: 20,
-//                                       size: "",
-//                                       AdditionDate: Date(),
-//                                       itemNotes: ""
-//                                       )
-//                                       
-//        
-//            let sampleOrder = Order(
-//                orderID: "123",
-//                customer: Customer(name: "John Doe", phoneNumber: "0546768900"),
-//                
-//                orderItems: [OrderItem(inventoryItem: sampleItem, quantity: 2, price: 10.0)],
-//                
-//                orderDate: Date(),
-//                delivery: Delivery(address: "yefe nof 18, peduel", cost: 10) ,
-//                notes: "",
-//                allergies: "",
-//                isDelivered: false,
-//                isPaid: false
-//            )
-//            
-//        OrderDetailsView(orderManager: OrderManager.shared, inventoryManager: InventoryManager.shared, order: sampleOrder)
-//    }
-//}
-

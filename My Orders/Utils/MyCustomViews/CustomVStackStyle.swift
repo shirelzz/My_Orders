@@ -39,7 +39,7 @@ extension View {
         self.modifier(CustomVStackStyle(backgroundColor: backgroundColor, cornerRadius: cornerRadius, shadowRadius: shadowRadius))
     }
     
-    func CustomGraySectionVStyle() -> some View {
+    func customGraySectionVStyle() -> some View {
         self.modifier(CustomGraySectionVStyle())
     }
 }
