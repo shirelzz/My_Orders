@@ -40,7 +40,7 @@ struct EditOrderView: View {
     @State private var showPhoneError = false
     
     @State private var navigateToContentView = false
-    @State private var currency = HelperFunctions.getCurrency()
+    @State private var currency = HelperFunctions.getCurrencySymbol()
     
     @State private var showAlert = false
     @State private var alertMessage = ""

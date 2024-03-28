@@ -12,7 +12,7 @@ import UIKit
 struct GeneratedReceiptView: View {
     
     @ObservedObject var orderManager: OrderManager
-    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
+    @State private var currency = HelperFunctions.getCurrencySymbol()
 
     var order: Order
 

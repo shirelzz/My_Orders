@@ -214,5 +214,19 @@ class AppManager: ObservableObject {
         }
     }
     
+    // MARK: - All Users
+
+    func getCurrencySymbol() -> String {
+        return self.currencySymbol(for: currency)
+    }
+    
+    func refreshCurrency() {
+        if isUserSignedIn{
+            fetchCurrencyFromDB()
+        }
+        else{
+            loadCurrencyFromUD()
+        }
+    }
 }
 

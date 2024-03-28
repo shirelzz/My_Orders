@@ -22,8 +22,24 @@ struct CustomVStackStyle: ViewModifier {
     }
 }
 
+struct CustomGraySectionVStyle: ViewModifier {
+
+    func body(content: Content) -> some View {
+        content
+            .padding(.vertical, 10)
+            .background(
+                RoundedRectangle(cornerRadius: 15)
+                    .fill(Color.gray.opacity(0.1))
+            )
+    }
+}
+
 extension View {
     func customVStackStyle(backgroundColor: Color = .accentColor, cornerRadius: CGFloat = 15, shadowRadius: CGFloat = 2) -> some View {
         self.modifier(CustomVStackStyle(backgroundColor: backgroundColor, cornerRadius: cornerRadius, shadowRadius: shadowRadius))
+    }
+    
+    func CustomGraySectionVStyle() -> some View {
+        self.modifier(CustomGraySectionVStyle())
     }
 }

@@ -142,11 +142,27 @@
         }
       }
     },
-    "%.2f%@" : {
+    "%.2f %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "%1$.2f %2$@"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$.2f %2$@"
+          }
+        }
+      }
+    },
+    "%.2f%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "%1$.2f%2$@"
           }
         },
@@ -1794,6 +1810,22 @@
         }
       }
     },
+    "Delivery Cost: " : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delivery Cost: "
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות משלוח:"
+          }
+        }
+      }
+    },
     "Delivery cost: %@" : {
       "localizations" : {
         "en" : {
@@ -1811,6 +1843,7 @@
       }
     },
     "Delivery Cost: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2542,7 +2575,20 @@
       }
     },
     "Items" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Items"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פריטים"
+          }
+        }
+      }
     },
     "Items Selection" : {
       "extractionState" : "manual",
@@ -4820,6 +4866,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Total Cost"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות כוללת:"
+          }
+        }
+      }
+    },
+    "Total Price: " : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Price: "
           }
         },
         "he" : {

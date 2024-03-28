@@ -11,7 +11,7 @@ struct ReceiptRowView: View {
         
     let order: Order
     let receipt: Receipt
-    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
+    @State private var currency = HelperFunctions.getCurrencySymbol()
 
     
     let dateFormatter: DateFormatter = {

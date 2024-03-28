@@ -63,7 +63,7 @@ struct AnimatedSideMenu<Content: View, MenuView: View, Background: View> : View 
             .offset(x: -sideMenuWidth)
             .offset(x: offsetx)
             .contentShape(.rect)
-            .simultaneousGesture(dragGesture)
+//            .simultaneousGesture(dragGesture)
 
         }
         .background(background)
@@ -96,7 +96,12 @@ struct AnimatedSideMenu<Content: View, MenuView: View, Background: View> : View 
             .onChanged { value in
                 guard value.startLocation.x > 10 else { return }
                 
-                let translationX = isDragging ? max(min(value.translation.width + lastOffsetx, sideMenuWidth), 0) : 0
+                var translationX: CGFloat = 0
+                if isDragging {
+                    let layoutDirection = UIApplication.shared.userInterfaceLayoutDirection
+                    translationX = layoutDirection == .leftToRight ? max(min(value.translation.width + lastOffsetx, sideMenuWidth), 0) : max(min(-value.translation.width + lastOffsetx, sideMenuWidth), 0)
+                }
+
                 offsetx = translationX
                 calculateProgress()
             }

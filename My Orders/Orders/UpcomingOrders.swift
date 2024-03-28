@@ -290,8 +290,8 @@ struct UpcomingOrders: View {
     }
     
     func refreshUpcomingOrders() async {
+        AppManager.shared.refreshCurrency()
         orderManager.fetchOrders()
-        AppManager.shared.fetchCurrencyFromDB()
     }
 }
 

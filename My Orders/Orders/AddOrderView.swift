@@ -55,7 +55,7 @@ struct AddOrderView: View {
     @State private var isItemDetailsPopoverPresented = false
     @State private var selectedItemForDetails: InventoryItem = InventoryItem()
     @State private var showItemDetails = false
-    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
+    @State private var currency = HelperFunctions.getCurrencySymbol()
     
     @State private var showInfo = false
 

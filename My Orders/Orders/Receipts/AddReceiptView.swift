@@ -17,7 +17,7 @@ struct AddReceiptView: View {
     @ObservedObject var orderManager: OrderManager
     @Binding var isPresented: Bool
     
-    @State private var currency = HelperFunctions.getCurrency()
+    @State private var currency = HelperFunctions.getCurrencySymbol()
     @State private var customerName = ""
     @State private var customerPhone = ""
     @State private var isCustomerNameValid = true
@@ -358,7 +358,7 @@ struct ReceiptItem {
 struct OrderItemRow: View {
     var item: InventoryItem
     var onDelete: () -> Void
-    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
+    @State private var currency = HelperFunctions.getCurrencySymbol()
     
     var body: some View {
         HStack {

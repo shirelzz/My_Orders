@@ -400,7 +400,7 @@ class ReceiptUtils {
                 
                 var totalPriceText = ""
                 if en {
-                    totalPriceText = "Total Cost: \(AppManager.shared.currencySymbol(for: AppManager.shared.currency))\(order.totalPrice)"
+                    totalPriceText = "Total Cost: \(HelperFunctions.getCurrencySymbol())\(order.totalPrice)"
                 }
                 else {
                     totalPriceText = "עלות כוללת: ₪\(order.totalPrice)"

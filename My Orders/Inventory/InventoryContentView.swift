@@ -20,7 +20,7 @@ struct InventoryContentView: View {
     @State private var showDeleteAlert = false
     @State private var isEditing = false
     @State private var isItemDetailsViewPresented = false
-    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
+    @State private var currency = HelperFunctions.getCurrencySymbol()
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()

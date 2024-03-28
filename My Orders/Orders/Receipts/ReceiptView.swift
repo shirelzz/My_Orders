@@ -23,7 +23,7 @@ struct ReceiptView: View {
     @State private var lastReceipttID = OrderManager.shared.getLastReceiptID()
     @State private var receiptExists = false
     @State private var isRewardedAdPresented = false
-    @State private var currency = AppManager.shared.currencySymbol(for: AppManager.shared.currency)
+    @State private var currency = HelperFunctions.getCurrencySymbol()
     
     var body: some View {
         

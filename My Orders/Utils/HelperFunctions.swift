@@ -45,7 +45,7 @@ class HelperFunctions {
         return dateFormatter.string(from: date)
     }
     
-    static func getCurrency() -> String {
-        return AppManager.shared.currencySymbol(for: AppManager.shared.currency)
+    static func getCurrencySymbol() -> String {
+        return AppManager.shared.getCurrencySymbol()
     }
 }
