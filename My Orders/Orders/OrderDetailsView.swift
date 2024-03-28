@@ -116,19 +116,18 @@ struct OrderDetailsView: View {
     }
     
     private var orderInformationSection: some View {
-        VStack(alignment: .leading) {
-            Section(header: Text("Order Information")
-                .font(.footnote)
-                .padding(.leading, 10)
-                .padding(.top, 10)
-                .opacity(0.7)
-            ) {
+        Section(header: Text("Order Information")
+            .font(.footnote)
+            .padding(.leading, 10)
+            .padding(.top, 10)
+            .opacity(0.7)
+        ) {
+            
+            VStack(alignment: .leading, spacing: 0) {
                 
-                HStack{
-                    Text("Order Date:")
-                    Text(order.orderDate.formatted())
-                }
-                .padding(.leading, 10)
+                Text("Order Date: \(order.orderDate.formatted())")
+                    .padding(.leading)
+                    .padding(.vertical, 10)
                 
                 ForEach(order.orderItems, id: \.inventoryItem.name) { orderItem in
                     VStack(alignment: .center) {
@@ -162,49 +161,49 @@ struct OrderDetailsView: View {
                     .frame(maxWidth: HelperFunctions.getWidth())
                     .padding(8)
                 }
-            }
-            
-            Button {
-                var orderDetailsText: String = "Date: " + order.orderDate.formatted().description + "\r\n"
-                for orderItem in order.orderItems {
-                    orderDetailsText += "\r\n" +
-                    orderItem.quantity.description + " " +
-                    orderItem.inventoryItem.name + " " +
-                    orderItem.price.description + " "
-                }
                 
-                if order.delivery.address != "" || order.delivery.cost != 0 {
-                    let deliveryTitle = "Delivery address:"
-                    let deliveryCostTitle = "Delivery cost:"
+                Button {
+                    var orderDetailsText: String = "Date: " + order.orderDate.formatted().description + "\r\n"
+                    for orderItem in order.orderItems {
+                        orderDetailsText += "\r\n" +
+                        orderItem.quantity.description + " " +
+                        orderItem.inventoryItem.name + " " +
+                        orderItem.price.description + " "
+                    }
                     
-                    orderDetailsText += "\r\n" + deliveryTitle + " " + order.delivery.address + "\r\n" +
-                    deliveryCostTitle + " " + order.delivery.cost.description
+                    if order.delivery.address != "" || order.delivery.cost != 0 {
+                        let deliveryTitle = "Delivery address:"
+                        let deliveryCostTitle = "Delivery cost:"
+                        
+                        orderDetailsText += "\r\n" + deliveryTitle + " " + order.delivery.address + "\r\n" +
+                        deliveryCostTitle + " " + order.delivery.cost.description
+                    }
+                    
+                    orderDetailsText += "\r\n" + "Total: " + order.totalPrice.description
+                    
+                    if order.allergies != "" {
+                        let allergiesTitle = "Allergies:"
+                        orderDetailsText += "\r\n" + allergiesTitle + " " + order.allergies
+                    }
+                    
+                    if order.notes != "" {
+                        let notesTitle = "Notes:"
+                        orderDetailsText += "\r\n" + notesTitle + " " + order.notes
+                    }
+                    
+                    UIPasteboard.general.string = orderDetailsText
+                    Toast.showToast(message: "Order details copied")
                 }
-                
-                orderDetailsText += "\r\n" + "Total: " + order.totalPrice.description
-                
-                if order.allergies != "" {
-                    let allergiesTitle = "Allergies:"
-                    orderDetailsText += "\r\n" + allergiesTitle + " " + order.allergies
-                }
-                
-                if order.notes != "" {
-                    let notesTitle = "Notes:"
-                    orderDetailsText += "\r\n" + notesTitle + " " + order.notes
-                }
-                
-                UIPasteboard.general.string = orderDetailsText
-                Toast.showToast(message: "Order details copied")
+            label: {
+                Image(systemName: "doc.on.doc")
+                    .padding()
+                    .tint(.accentColor)
             }
-        label: {
-            Image(systemName: "doc.on.doc")
-                .padding()
-                .tint(.accentColor)
+                
+                
+            }
+            .customVStackStyle(backgroundColor: .accentColor.opacity(0.4), cornerRadius: 15, shadowRadius: 0.0)
         }
-            
-            
-        }
-        .customVStackStyle(backgroundColor: .accentColor.opacity(0.4), cornerRadius: 15, shadowRadius: 0.0)
         
     }
     

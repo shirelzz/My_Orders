@@ -205,6 +205,8 @@ struct UpcomingOrders: View {
                     switch phase {
                     case .success(let image):
                         image
+                            .resizable()
+                            .scaledToFit()
                             .frame(width: 48, height: 48)
                             .clipShape(Circle())
                     default:

@@ -398,6 +398,12 @@ class OrderManager: ObservableObject {
                     print("Success fetching receipts values")
                 }
             })
+            
+            if self.receiptValues.receiptNumberReset == -1 {
+                let lastReceiptID = getLastReceiptID()
+                self.receiptValues = ReceiptValues(receiptNumber: lastReceiptID, receiptNumberReset: 0)
+                saveReceiptValues()
+            }
         }
     }
 
@@ -671,7 +677,6 @@ class OrderManager: ObservableObject {
             }
         }
     }
-
     
     func assignReceiptToOrder(receipt: Receipt, toOrderWithID orderID: String) -> Order? {
         if let index = orders.firstIndex(where: { $0.orderID == orderID }) {
@@ -719,15 +724,18 @@ class OrderManager: ObservableObject {
     
     func getLastReceiptID() -> Int {
         print("--- getLastReceiptID -> receiptNumberReset = \(receiptValues.receiptNumberReset)")
-        if (self.receiptValues.receiptNumberReset == 0) { // reset = false
+        if (self.receiptValues.receiptNumberReset == 0 || self.receiptValues.receiptNumberReset == -1) { // reset = false
             guard let lastReceipt = receipts.max(by: { $0.myID < $1.myID }) else {
                 return 0
             }
             print("--- getLastReceiptID -> lastReceipt.myID = \(lastReceipt.myID)")
             return lastReceipt.myID
         }
-        else {
+        else if (self.receiptValues.receiptNumberReset == 1) {
             return self.receiptValues.receiptNumber - 1
+        }
+        else{
+            return -1
         }
     }
     
@@ -751,7 +759,6 @@ class OrderManager: ObservableObject {
     }
     
     func updateReceiptValues() {
-        
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
             let path = "users/\(userID)/receiptSettings"
@@ -764,15 +771,16 @@ class OrderManager: ObservableObject {
     func setStartingReceiptNumber(_ newNumber: Int) {
         self.receiptValues.receiptNumber = newNumber
         self.receiptValues.receiptNumberReset = 1
-//        toggleReceiptNumberReset()
         saveReceiptValues()
     }
     
     func saveReceiptValues() {
-        saveReceiptValuesToUD(values: self.receiptValues)
         
         if isUserSignedIn {
             updateReceiptValues()
+        }
+        else{
+            saveReceiptValuesToUD(values: self.receiptValues)
         }
     }
     

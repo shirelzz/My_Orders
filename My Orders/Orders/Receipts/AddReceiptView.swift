@@ -321,10 +321,12 @@ struct AddReceiptView: View {
         }
         
         let order = Order(orderID: UUID().uuidString,
-                            customer: Customer(name: customerName, phoneNumber: "0"),
-                            orderItems: orderItems,
-                            isDelivered: true,
-                            isPaid: true)
+                          customer: Customer(name: customerName, phoneNumber: "0"),
+                          orderItems: orderItems,
+                          orderDate: Date(),
+                          delivery: Delivery(address: "", cost: 0.0),
+                          isDelivered: true,
+                          isPaid: true)
                 
         // Create a new receipt with the entered details
         let newReceipt = Receipt(

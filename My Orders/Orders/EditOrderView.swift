@@ -52,8 +52,13 @@ struct EditOrderView: View {
         
         NavigationView {
             Form {
+                
+                Section(header: Text("")) {
+                    
+                    DatePicker("Order Date", selection: $editedOrder.orderDate, in: Date(timeIntervalSince1970: 0)..., displayedComponents: [.date, .hourAndMinute])
+                }
             
-                Section(header: Text("Order Information")) {
+                Section(header: Text("Customer Information")) {
                     
                     TextField("Customer Name", text: $editedOrder.customer.name)
                         .onChange(of: editedOrder.customer.name) { _ in
@@ -71,8 +76,6 @@ struct EditOrderView: View {
                         .onAppear(){
                             validateCustomerPhone()
                         }
-                    
-                    DatePicker("Order Date", selection: $editedOrder.orderDate, in: Date(timeIntervalSince1970: 0)..., displayedComponents: [.date, .hourAndMinute])
                 }
                 
                 Section(header: Text("Order Details")) {
@@ -464,8 +467,10 @@ struct DessertEditRow: View {
     @Binding var orderItem: OrderItem
     
     var body: some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .center) {
             Text(orderItem.inventoryItem.name)
+            
+            Spacer()
             
             HStack {
                 Text("Q:")

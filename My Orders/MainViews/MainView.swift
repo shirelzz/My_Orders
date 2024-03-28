@@ -36,16 +36,6 @@ struct MainView: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             withAnimation {
                                 showLogo = false
-                                
-//                                if UserManager.shared.user.role.rawValue == UserRole.vendor.rawValue {
-//                                    showVendorContentView = true
-//                                }
-//                                else if UserManager.shared.user.role.rawValue == UserRole.customer.rawValue {
-//                                    showCustomerContentView = true
-//                                }
-//                                else if UserManager.shared.user.role.rawValue == UserRole.none.rawValue {
-//                                    showUserRoleView = true
-//                                }
                             }
                         }
                     }

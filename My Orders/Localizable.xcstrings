@@ -3189,6 +3189,9 @@
         }
       }
     },
+    "Order Date: %@" : {
+
+    },
     "Order Details" : {
       "localizations" : {
         "en" : {

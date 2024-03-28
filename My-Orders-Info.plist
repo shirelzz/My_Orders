@@ -15,6 +15,19 @@
 			</array>
 		</dict>
 	</array>
+    
+    <key>NSPrivacyAccessedAPIs</key>
+    <dict>
+        <key>NSPrivacyAccessedAPICategoryDiskSpace</key>
+        <string>To save user preferences and data locally, such as guest user information, signature, and logo images, reducing reliance on server storage.</string>
+        
+        <key>NSPrivacyAccessedAPICategoryFileTimestamp</key>
+        <string>To manage file-related operations, including saving receipts exported by users to a designated folder on their device with timestamps for record-keeping and retrieval.</string>
+        
+        <key>NSPrivacyAccessedAPICategoryUserDefaults</key>
+        <string>Used for storing guest user data, signature, logo images, and other non-sensitive preferences locally on the device, providing a seamless user experience across sessions.</string>
+    </dict>
+    
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-1213016211458907~1551509957</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
