@@ -47,7 +47,7 @@ struct AccountView: View {
                                         print("Error encrypting ID: \(error)")
                                     }
                                 }
-                                //.disabled(true)
+                                .disabled(true)
                             
                             }
                             else {

@@ -155,7 +155,7 @@ struct Order: Identifiable, Codable {
          customer: Customer = Customer(name: "No Name", phoneNumber: "0000000"),
          orderItems: [OrderItem] = [],
          orderDate: Date = Date(),
-         delivery: Delivery = Delivery(address: "No where", cost: 1000.0),
+         delivery: Delivery = Delivery(address: "Null", cost: 0.0),
          notes: String = "", allergies: String = "", isDelivered: Bool = false, isPaid: Bool = false)
     {
         self.orderID = orderID
