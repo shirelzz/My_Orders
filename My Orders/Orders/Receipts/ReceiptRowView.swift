@@ -25,8 +25,14 @@ struct ReceiptRowView: View {
         
         VStack(alignment: .leading) {
             
-            Text(order.customer.name).bold()
+            Text(order.customer.name)
+                .bold()
+            
             Text("\(order.totalPrice,  specifier: "%.2f")\(currency)")
+            
+            Text(receipt.myID.description)
+                .font(.footnote)
+                .foregroundStyle(.primary.opacity(0.5))
         }
     }
     

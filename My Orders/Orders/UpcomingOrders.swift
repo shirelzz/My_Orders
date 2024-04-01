@@ -254,9 +254,11 @@ struct UpcomingOrders: View {
                 HStack(spacing: 12) {
                     Image(systemName: tab.rawValue)
                         .font(.title3)
+                        .foregroundStyle(.black)
                     
                     Text(tab.title.localized)
                         .font(.headline)
+                        .foregroundStyle(.black)
                     
                     Spacer(minLength: 0)
                 }

@@ -27,7 +27,7 @@ struct AddReceiptView: View {
     @State private var itemCost = ""
     @State private var isAddingDiscount = false
     @State private var discountType: DiscountType = .fixedAmount
-    @State private var discountValue = 0.0
+    @State private var discountValue = 0.0 // ""
     @State private var isItemNameValid = true
     @State private var isItemQuantityValid = true
     @State private var isItemCostValid = true
@@ -44,6 +44,11 @@ struct AddReceiptView: View {
     @State private var showSuccessMessage = false
     @State private var isRewardedAdPresented = false
     @State private var showConfirmationAlert = false
+    @State private var isAddingDelivery = false
+    
+    @State private var deliveryAddress = ""
+    @State private var selectedDeliveryCost: Double = 0
+    let deliveryCosts: [Double] = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
     
     
     var body: some View {
@@ -73,19 +78,19 @@ struct AddReceiptView: View {
                 }
                 
                 Section(header: Text("Items")) {
-                    ForEach(receiptItems, id: \.id) { item in
-                        OrderItemRow(item: item) {
-                            removeItem(item)
+                    
+                    TextField("Name", text: $itemName)
+                        .autocorrectionDisabled()
+                        .onChange(of: itemName) { _ in
+                            validateItemName()
                         }
+                    
+                    if !isItemNameValid && showValidationErrors && !showOnlyEmptyItemListError {
+                        Text ("Invalid name")
+                            .foregroundStyle(.red)
                     }
                     
                     HStack{
-                        
-                        TextField("Name", text: $itemName)
-                            .autocorrectionDisabled()
-                            .onChange(of: itemName) { _ in
-                                validateItemName()
-                            }
                         
                         TextField("Quantity", text: $itemQuantity)
                             .keyboardType(.numberPad)
@@ -100,12 +105,7 @@ struct AddReceiptView: View {
                             }
                         
                     }
-                    
-                    if !isItemNameValid && showValidationErrors && !showOnlyEmptyItemListError {
-                        Text ("Invalid name")
-                            .foregroundStyle(.red)
-                    }
-                    
+
                     if !isItemQuantityValid && showValidationErrors && !showOnlyEmptyItemListError {
                         Text ("Invalid quantity")
                             .foregroundStyle(.red)
@@ -137,6 +137,11 @@ struct AddReceiptView: View {
                     .disabled(itemName == "" || Int(itemQuantity) ?? 0 <= 0 || Double(itemCost) ?? 0 <= 0)
                     .buttonStyle(.borderless)
                     
+                    ForEach(receiptItems, id: \.id) { item in
+                        OrderItemRow(item: item) {
+                            removeItem(item)
+                        }
+                    }
                     
                     if isItemListEmpty && showValidationErrors {
                         Text ("Add at least one item")
@@ -145,65 +150,124 @@ struct AddReceiptView: View {
                 }
                 
                 Section(header: Text("Total Cost")) {
-                    
-                    Text("Total: \(totalCost, specifier: "%.2f")")
-                    
-                    if !isAddingDiscount {
+                                        
+                    HStack {
                         
-                        Button {
-                            isAddingDiscount = true
-                        } label: {
-                            Text("Add discount")
-                        }
-                        .buttonStyle(.borderedProminent)
-                        
-                    } else {
-                        
-                        HStack {
-                            
-                            if discountType == .fixedAmount {
-                                TextField("\(currency)", value: $discountValue, formatter: NumberFormatter())
-                                    .keyboardType(.decimalPad)
-                                    .onChange(of: discountValue) { newValue in
-                                        calculateFinalCost()
-                                    }
-                                
-                            } else {
-                                TextField("%", value: $discountValue, formatter: NumberFormatter())
-                                    .keyboardType(.decimalPad)
-                                    .onChange(of: discountValue) { newValue in
-                                        calculateFinalCost()
-                                    }
-                            }
-                            
-                            Spacer()
-                            
-                            Picker("Discount Type", selection: $discountType) {
-                                Text("\(currency)")
-                                    .tag(DiscountType.fixedAmount)
-                                
-                                Text("%")
-                                    .tag(DiscountType.percentage)
-                            }
-                            .pickerStyle(SegmentedPickerStyle())
-                            .padding(.horizontal, 12)
-                            .onChange(of: discountType) { newValue in
-                                calculateFinalCost()
-                            }
+                        if !isAddingDiscount {
                             
                             Button {
-                                discountValue = 0.0
-                                discountType = .fixedAmount
-                                calculateFinalCost()
-                                isAddingDiscount = false
+                                isAddingDiscount = true
                             } label: {
-                                Image(systemName: "minus.circle.fill")
+                                HStack {
+                                    Image(systemName: "plus.circle.fill")
+                                    Text("Add discount")
+                                }
+                            }
+                            .disabled(totalCost == 0)
+                            
+                        } else {
+                            
+                            HStack {
+                                
+                                if discountType == .fixedAmount {
+                                    TextField("\(currency)", value: $discountValue, formatter: NumberFormatter())
+                                        .keyboardType(.decimalPad)
+                                        .onChange(of: discountValue) { newValue in
+                                            calculateFinalCost()
+                                        }
+                                    
+                                } else {
+                                    TextField("%", value: $discountValue, formatter: NumberFormatter())
+                                        .keyboardType(.decimalPad)
+                                        .onChange(of: discountValue) { newValue in
+                                            calculateFinalCost()
+                                        }
+                                }
+                                
+                                Spacer()
+                                
+                                Picker("Discount Type", selection: $discountType) {
+                                    Text("\(currency)")
+                                        .tag(DiscountType.fixedAmount)
+                                    
+                                    Text("%")
+                                        .tag(DiscountType.percentage)
+                                }
+                                .pickerStyle(SegmentedPickerStyle())
+                                .padding(.horizontal, 12)
+                                .onChange(of: discountType) { newValue in
+                                    calculateFinalCost()
+                                }
+                                
+                                Button {
+                                    discountValue = 0.0
+                                    discountType = .fixedAmount
+                                    calculateFinalCost()
+                                    isAddingDiscount = false
+                                } label: {
+                                    Image(systemName: "minus.circle.fill")
+                                        .foregroundStyle(Color.accentColor)
+
+                                }
+                                .buttonStyle(.bordered)
+                                .tint(.clear)
                             }
                             
                         }
-                        
                     }
                     
+                    HStack{
+                        
+                        if !isAddingDelivery {
+                            
+                            Button {
+                                isAddingDelivery = true
+                            } label: {
+                                HStack {
+                                    Image(systemName: "plus.circle.fill")
+                                    Text("Add delivery")
+                                }
+                            }
+                        }
+                        else {
+                            
+                            HStack {
+                                TextField("Address" , text: $deliveryAddress)
+                                
+                                Spacer()
+                                
+                                Picker("", selection: $selectedDeliveryCost) {
+                                    ForEach(deliveryCosts, id: \.self) { cost in
+                                        Text("\(cost, specifier: "%.2f")\(currency)")
+                                            .tag(cost)
+                                    }
+                                }
+                                .pickerStyle(DefaultPickerStyle())
+                                .labelsHidden()
+//                                .buttonBorderShape(.automatic)
+                                .onChange(of: selectedDeliveryCost) { newValue in
+                                    calculateFinalCost()
+                                }
+                                
+                                Spacer()
+                                
+                                Button {
+                                    selectedDeliveryCost = 0
+                                    deliveryAddress = ""
+                                    calculateFinalCost()
+                                    isAddingDelivery = false
+                                } label: {
+                                    Image(systemName: "minus.circle.fill")
+                                        .foregroundStyle(Color.accentColor)
+                                }
+                                .buttonStyle(.bordered)
+                                .tint(.clear)
+                            }
+                        }
+                    }
+                    
+                    Text("Total: \(totalCost, specifier: "%.2f")")
+
                 }
                 
                 Section(header: Text("Payment Details")) {
@@ -291,17 +355,29 @@ struct AddReceiptView: View {
             applyDiscount()
         }
         
+        if isAddingDelivery {
+            applyDeliveryCost()
+        }
+        
         // Ensure the total cost is not negative
         totalCost = max(totalCost, 0)
     }
     
     private func applyDiscount() {
+//        let discount = Double(discountValue) ?? 0.0
+
         if discountType == .fixedAmount {
             totalCost -= discountValue
         } else {
             let percentage = discountValue / 100.0
             let discountAmount = totalCost * percentage
             totalCost -= discountAmount
+        }
+    }
+    
+    private func applyDeliveryCost() {
+        if selectedDeliveryCost != 0 {
+            totalCost += Double(selectedDeliveryCost)
         }
     }
     
@@ -324,7 +400,7 @@ struct AddReceiptView: View {
                           customer: Customer(name: customerName, phoneNumber: "0"),
                           orderItems: orderItems,
                           orderDate: Date(),
-                          delivery: Delivery(address: "", cost: 0.0),
+                          delivery: Delivery(address: deliveryAddress, cost: selectedDeliveryCost),
                           isDelivered: true,
                           isPaid: true)
                 
