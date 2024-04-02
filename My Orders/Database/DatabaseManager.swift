@@ -16,9 +16,9 @@ class DatabaseManager {
     
     static var shared = DatabaseManager()
     
-    private var databaseRef = Database.database().reference()
+    internal var databaseRef = Database.database().reference()
     
-    private func usersRef() -> DatabaseReference {
+    internal func usersRef() -> DatabaseReference {
         return databaseRef.child("users")
     }
     
@@ -131,55 +131,55 @@ class DatabaseManager {
         })
     }
     
-    func fetchItems(path: String, completion: @escaping ([InventoryItem]) -> ()) {
-      
-        let itemsRef = databaseRef.child(path)
-        
-        itemsRef.observeSingleEvent(of: .value, with: { (snapshot) in
-        guard let value = snapshot.value as? [String: Any] else {
-                print("No items data found")
-                completion([])
-                return
-            }
-            
-            var items = [InventoryItem]()
-            for (_, itemData) in value {
-                guard let itemDict = itemData as? [String: Any],
-                      let itemID = itemDict["itemID"] as? String,
-                      let name = itemDict["name"] as? String,
-                      let itemPrice = itemDict["itemPrice"] as? Double,
-                      let itemQuantity = itemDict["itemQuantity"] as? Int,
-                      let size = itemDict["size"] as? String,
-                      let additionDateStr = itemDict["AdditionDate"] as? String,
-                      let itemNotes = itemDict["itemNotes"] as? String 
-                else {
-                    print("item else called")
-                    continue
-                }
-                
-                let additionDate = self.convertStringToDate(additionDateStr)
-
-                var tags: [String]? = nil
-                if let parsedTags = itemDict["tags"] as? [String] {
-                    tags = parsedTags
-                }
-                
-                let item = InventoryItem(
-                    itemID: itemID,
-                    name:  name,
-                    itemPrice: itemPrice,
-                    itemQuantity: itemQuantity,
-                    size: size ,
-                    AdditionDate: additionDate,
-                    itemNotes:  itemNotes,
-                    tags: tags
-                )
-                
-                items.append(item)
-            }
-            completion(items)
-        })
-    }
+//    func fetchItems(path: String, completion: @escaping ([InventoryItem]) -> ()) {
+//      
+//        let itemsRef = databaseRef.child(path)
+//        
+//        itemsRef.observeSingleEvent(of: .value, with: { (snapshot) in
+//        guard let value = snapshot.value as? [String: Any] else {
+//                print("No items data found")
+//                completion([])
+//                return
+//            }
+//            
+//            var items = [InventoryItem]()
+//            for (_, itemData) in value {
+//                guard let itemDict = itemData as? [String: Any],
+//                      let itemID = itemDict["itemID"] as? String,
+//                      let name = itemDict["name"] as? String,
+//                      let itemPrice = itemDict["itemPrice"] as? Double,
+//                      let itemQuantity = itemDict["itemQuantity"] as? Int,
+//                      let size = itemDict["size"] as? String,
+//                      let additionDateStr = itemDict["AdditionDate"] as? String,
+//                      let itemNotes = itemDict["itemNotes"] as? String 
+//                else {
+//                    print("item else called")
+//                    continue
+//                }
+//                
+//                let additionDate = self.convertStringToDate(additionDateStr)
+//
+//                var tags: [String]? = nil
+//                if let parsedTags = itemDict["tags"] as? [String] {
+//                    tags = parsedTags
+//                }
+//                
+//                let item = InventoryItem(
+//                    itemID: itemID,
+//                    name:  name,
+//                    itemPrice: itemPrice,
+//                    itemQuantity: itemQuantity,
+//                    size: size ,
+//                    AdditionDate: additionDate,
+//                    itemNotes:  itemNotes,
+//                    tags: tags
+//                )
+//                
+//                items.append(item)
+//            }
+//            completion(items)
+//        })
+//    }
     
     func fetchReceipts(path: String, completion: @escaping ([Receipt]) -> ()) { // Set<Receipt>
         let receiptsRef = databaseRef.child(path)
@@ -416,26 +416,15 @@ class DatabaseManager {
         orderRef.setValue(order.dictionaryRepresentation())
     }
     
-    func saveItem(_ item: InventoryItem, path: String) {
-        let itemRef = databaseRef.child(path).child(item.id)
-        itemRef.setValue(item.dictionaryRepresentation())
-    }
+//    func saveItem(_ item: InventoryItem, path: String) {
+//        let itemRef = databaseRef.child(path).child(item.id)
+//        itemRef.setValue(item.dictionaryRepresentation())
+//    }
     
     func saveReceipt(_ receipt: Receipt, path: String) {
         let receiptRef = databaseRef.child(path).child(receipt.orderID)
         receiptRef.setValue(receipt.dictionaryRepresentation())
     }
-    
-//    func saveReceiptValues(_ values: ReceiptValues, path: String) {
-//        let receiptValuesRef = databaseRef.child(path)
-//        receiptValuesRef.setValue(values.dictionaryRepresentation()) { error, _ in
-//            if let error = error {
-//                print("Error saving values: \(error.localizedDescription)")
-//            } else {
-//                print("values saved successfully")
-//            }
-//        }
-//    }
     
     func saveNotificationSettings(_ notificationSettings: Notifications, path: String) {
         let notificationSettingsRef = databaseRef.child(path)
@@ -528,35 +517,35 @@ class DatabaseManager {
         receiptRef.removeValue()
     }
 
-    func clearOutOfStockItemsFromDB(path: String, completion: @escaping () -> Void) {
-        let itemsRef = databaseRef.child(path)
-        
-        itemsRef.observeSingleEvent(of: .value) { snapshot in
-            guard var items = snapshot.value as? [String: [String: Any]] else {
-                print("error clearing items")
-                completion()
-                return
-            }
-            
-            // Remove out-of-stock items
-            items = items.filter { (_, itemData) in
-                guard let quantity = itemData["itemQuantity"] as? Int else {
-                    return true // Keep if quantity information is not available
-                }
-                return quantity > 0
-            }
-            
-            // Save the updated items back to the database
-            itemsRef.setValue(items) { error, _ in
-                if let error = error {
-                    print("Error clearing out-of-stock items: \(error.localizedDescription)")
-                } else {
-                    print("Out-of-stock items cleared successfully from database.")
-                }
-                completion()
-            }
-        }
-    }
+//    func clearOutOfStockItemsFromDB(path: String, completion: @escaping () -> Void) {
+//        let itemsRef = databaseRef.child(path)
+//        
+//        itemsRef.observeSingleEvent(of: .value) { snapshot in
+//            guard var items = snapshot.value as? [String: [String: Any]] else {
+//                print("error clearing items")
+//                completion()
+//                return
+//            }
+//            
+//            // Remove out-of-stock items
+//            items = items.filter { (_, itemData) in
+//                guard let quantity = itemData["itemQuantity"] as? Int else {
+//                    return true // Keep if quantity information is not available
+//                }
+//                return quantity > 0
+//            }
+//            
+//            // Save the updated items back to the database
+//            itemsRef.setValue(items) { error, _ in
+//                if let error = error {
+//                    print("Error clearing out-of-stock items: \(error.localizedDescription)")
+//                } else {
+//                    print("Out-of-stock items cleared successfully from database.")
+//                }
+//                completion()
+//            }
+//        }
+//    }
 
 
     
@@ -569,12 +558,12 @@ class DatabaseManager {
         }
     }
     
-    func updateItemInDB(_ item: InventoryItem, path: String, completion: @escaping (Bool) -> Void) {
-        let itemRef = databaseRef.child(path)
-        itemRef.updateChildValues(item.dictionaryRepresentation()) { error, _ in
-            completion(error == nil)
-        }
-    }
+//    func updateItemInDB(_ item: InventoryItem, path: String, completion: @escaping (Bool) -> Void) {
+//        let itemRef = databaseRef.child(path)
+//        itemRef.updateChildValues(item.dictionaryRepresentation()) { error, _ in
+//            completion(error == nil)
+//        }
+//    }
     
     func updateItemInDB(_ item: ShoppingItem, path: String, completion: @escaping (Bool) -> Void) {
         let itemRef = databaseRef.child(path)
@@ -605,12 +594,6 @@ class DatabaseManager {
         return dateFormatter.date(from: dateString) ?? Date()
     }
     
-//    func convertStringToDateAndTime(_ dateString: String) -> Date {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-//        return dateFormatter.date(from: dateString) ?? Date()
-//    }
-    
     func convertStringToDateAndTime(_ dateString: String) -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" //HH:mm
@@ -620,40 +603,3 @@ class DatabaseManager {
     //i dont understand why the items quantity doesnt update when i delete an order
 
 }
-
-//    func deleteOrder(orderID: String) {
-//        ordersRef().child(orderID).removeValue()
-//    }
-//
-//    func deleteItem(itemID: String) {
-//        itemsRef().child(itemID).removeValue()
-//    }
-//
-//    func deleteReceipt(receiptID: String) {
-//        receiptsRef().child(receiptID).removeValue()
-//    }
-
-
-//    func saveGeneratedReceiptIDs(_ generatedReceiptIDs: Set<String>, path: String) {
-//            let generatedReceiptIDsRef = databaseRef.child("generatedReceiptIDs").child(path)
-//            generatedReceiptIDsRef.setValue(Array(generatedReceiptIDs))
-//        }
-//
-//        func fetchGeneratedReceiptIDs(path: String, completion: @escaping (Set<String>) -> Void) {
-//            let generatedReceiptIDsRef = databaseRef.child("generatedReceiptIDs").child(path)
-//
-//            generatedReceiptIDsRef.observeSingleEvent(of: .value) { snapshot in
-//                guard let value = snapshot.value as? [String] else {
-//                    completion([])
-//                    return
-//                }
-//
-//                let setOfGeneratedReceiptIDs = Set(value)
-//                completion(setOfGeneratedReceiptIDs)
-//            }
-//        }
-//
-//        func deleteGeneratedReceiptIDs(path: String) {
-//            let generatedReceiptIDsRef = databaseRef.child("generatedReceiptIDs").child(path)
-//            generatedReceiptIDsRef.removeValue()
-//        }

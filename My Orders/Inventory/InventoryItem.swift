@@ -252,21 +252,37 @@ class InventoryManager: ObservableObject {
         return items
     }
     
-    func clearOutOfStockItems() {
-        items.removeAll { $0.itemQuantity <= 0 }
+    func clearOutOfStockItems() -> (Bool, Bool) {
+        var itemsToRemoveExist: Bool = false
+        var isSuccessful: Bool = false
         
-        if isUserSignedIn {
-            if let currentUser = Auth.auth().currentUser {
-                let userID = currentUser.uid
-                let path = "users/\(userID)/items"
-                DatabaseManager.shared.clearOutOfStockItemsFromDB(path: path, completion: {
-                    
-                })
+        let itemsLength = items.count
+        items.removeAll { $0.itemQuantity <= 0 }
+        let itemsLengthAfterRemoval = items.count
+                
+        if itemsLengthAfterRemoval < itemsLength {
+            itemsToRemoveExist = true
+            
+            if isUserSignedIn {
+                if let currentUser = Auth.auth().currentUser {
+                    let userID = currentUser.uid
+                    let path = "users/\(userID)/items"
+                    DatabaseManager.shared.clearOutOfStockItemsFromDB(path: path, completion: {
+                        isSuccessful = true
+                    })
+                }
+            } else {
+                // Clear data from UserDefaults
+                UserDefaults.standard.removeObject(forKey: "items")
+                isSuccessful = true
             }
-        } else {
-            // Clear data from UserDefaults
-            UserDefaults.standard.removeObject(forKey: "items")
         }
+        else {
+            itemsToRemoveExist = false
+            isSuccessful = false
+        }
+        
+        return (itemsToRemoveExist, isSuccessful)
     }
     
 }

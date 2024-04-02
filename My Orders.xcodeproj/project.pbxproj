@@ -76,6 +76,7 @@
 		D6E7D2D82B6332C80027DF29 /* AddBusinessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2D72B6332C80027DF29 /* AddBusinessView.swift */; };
 		D6E7D2DA2B63D2A00027DF29 /* BusinessRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2D92B63D2A00027DF29 /* BusinessRowView.swift */; };
 		D6E7D2DC2B6A556C0027DF29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2DB2B6A556C0027DF29 /* AppDelegate.swift */; };
+		D6F435162BBC0EEA0038938F /* DatabaseManager_Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F435152BBC0EEA0038938F /* DatabaseManager_Inventory.swift */; };
 		D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */; };
 		D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3322AC593F8002ECA81 /* ContentView.swift */; };
 		D6F6A3352AC593FA002ECA81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6F6A3342AC593FA002ECA81 /* Assets.xcassets */; };
@@ -173,6 +174,7 @@
 		D6E7D2D72B6332C80027DF29 /* AddBusinessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBusinessView.swift; sourceTree = "<group>"; };
 		D6E7D2D92B63D2A00027DF29 /* BusinessRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessRowView.swift; sourceTree = "<group>"; };
 		D6E7D2DB2B6A556C0027DF29 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D6F435152BBC0EEA0038938F /* DatabaseManager_Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager_Inventory.swift; sourceTree = "<group>"; };
 		D6F6A32D2AC593F8002ECA81 /* My Orders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Orders.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersApp.swift; sourceTree = "<group>"; };
 		D6F6A3322AC593F8002ECA81 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -434,6 +436,7 @@
 			isa = PBXGroup;
 			children = (
 				D6F8CA722B31C40E0031A7A2 /* DatabaseManager.swift */,
+				D6F435152BBC0EEA0038938F /* DatabaseManager_Inventory.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -616,6 +619,7 @@
 				D68CEA262B53028C006D4933 /* VendorTypeView.swift in Sources */,
 				D66A37132B28A79F00A921CF /* AppleButtonLogic.swift in Sources */,
 				D64DD75B2B2273470066BB7E /* DashboardView.swift in Sources */,
+				D6F435162BBC0EEA0038938F /* DatabaseManager_Inventory.swift in Sources */,
 				D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */,
 				D69B4A922BA7138800C7FC33 /* AddReceiptView.swift in Sources */,
 				D684DC652BB4919100018186 /* AnimatedSideMenu.swift in Sources */,

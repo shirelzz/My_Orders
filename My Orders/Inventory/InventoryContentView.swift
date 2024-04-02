@@ -21,7 +21,8 @@ struct InventoryContentView: View {
     @State private var isEditing = false
     @State private var isItemDetailsViewPresented = false
     @State private var currency = HelperFunctions.getCurrencySymbol()
-    
+    @State private var showClearAlert = false
+
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -191,6 +192,36 @@ struct InventoryContentView: View {
                         AddItemView(inventoryManager: inventoryManager)
                     }
                 }
+                
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        showClearAlert = true
+                    }) {
+                        Text("Clear")
+                    }
+                    .alert(isPresented: $showClearAlert) {
+                        Alert(
+                            title: Text("Clear Out of Stock Items"),
+                            message: Text("Are you sure you want to delete all items with quantity 0?"),
+                            primaryButton: .destructive(Text("Delete")) {
+                                // Handle deletion here
+                                let ans = inventoryManager.clearOutOfStockItems()
+                                if ans == (true, true) {
+                                    Toast.showToast(message: "Items cleared successfully")
+
+                                }
+                                else if ans == (false, false){
+                                    Toast.showAlert(message: "No items to delete")
+                                }
+                                else if ans == (true, false){
+                                    Toast.showAlert(message: "An error accured")
+                                }
+                            },
+                            secondaryButton: .cancel()
+                        )
+                    }
+                }
+                
             }
 
             Spacer()

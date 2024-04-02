@@ -439,7 +439,20 @@
       }
     },
     "Add delivery" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add delivery"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הוסף משלוח"
+          }
+        }
+      }
     },
     "Add discount" : {
       "localizations" : {
@@ -736,6 +749,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "אלרגיות:"
+          }
+        }
+      }
+    },
+    "Are you sure you want to delete all items with quantity 0?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete all items with quantity 0?"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "האם למחוק את כל הפריטים שיש להם כמות 0?"
           }
         }
       }
@@ -1059,6 +1088,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "בחר אפשרות:"
+          }
+        }
+      }
+    },
+    "Clear Out of Stock" : {
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "נקה פריטים שלא במלאי"
           }
         }
       }
