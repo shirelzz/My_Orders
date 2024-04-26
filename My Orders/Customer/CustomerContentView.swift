@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CustomerContentView: View {
     
-    @StateObject private var businessManager = BusinessManager.shared
+    @StateObject private var customerManager = CustomerManager.shared
     @State private var isAddBusiness = false
     @State private var showDeleteAlert = false
     @State private var selectedBus: Business = Business()
@@ -36,12 +36,11 @@ struct CustomerContentView: View {
                             .frame(height: 20)
                         
                         HStack {
-                            
-                            Spacer()
-                            
+                                                        
                             Text("Hello")
                                 .font(.largeTitle)
                                 .bold()
+                                .padding()
                             
                             Spacer(minLength: 10)
                             
@@ -61,6 +60,7 @@ struct CustomerContentView: View {
                             }
                             
                         }
+//                        .padding()
                         .padding(.top, 45)
                         
                     }
@@ -116,17 +116,25 @@ struct CustomerContentView: View {
                     // test: ca-app-pub-3940256099942544/2934735716
                     // mine: ca-app-pub-1213016211458907/1549825745
                 }
+                .overlay(content: {
+                    if isAddBusiness  {
+                        AddBusPopUp(customerManager: customerManager, isActive: $isAddBusiness, title: "Add new business", buttonTitle: "Save")
+                            .onAppear {
+                                HelperFunctions.closeKeyboard()
+                            }
+                    }
+                })
             }
         }
         .navigationBarHidden(true)
     }
      
     func deleteBus(busID: String) {
-      businessManager.deleteBus(busID: busID)
+        customerManager.deleteBus(busID: busID)
     }
                                                
     var ListOfBusinesses: [Business] {
-        return businessManager.getBusinesses()
+        return customerManager.getBusinesses()
     }
 }
 

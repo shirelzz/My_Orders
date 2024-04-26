@@ -133,7 +133,7 @@ class VendorManager: ObservableObject {
             let userID = currentUser.uid
             let path = "users/\(userID)/vendorManager"
 
-            DatabaseManager.shared.fetchVendor(path: path, completion: { vendor in
+            VendorDatabaseManager.shared.fetchVendor(path: path, completion: { vendor in
                 DispatchQueue.main.async {
                     self.vendor = vendor ?? Vendor()
                     print("Success fetching vendor")
@@ -146,7 +146,7 @@ class VendorManager: ObservableObject {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
             let path = "users/\(userID)/vendorManager"
-            DatabaseManager.shared.saveVendor(vendor, path: path)
+            VendorDatabaseManager.shared.saveVendor(vendor, path: path)
         }
     }
     
@@ -154,7 +154,7 @@ class VendorManager: ObservableObject {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
             let path = "users/\(userID)/vendorManager"
-            DatabaseManager.shared.updateVendorInDB(vendor, path: path) { success in
+            VendorDatabaseManager.shared.updateVendorInDB(vendor, path: path) { success in
                 if !success {
                     print("updating in the database failed (updateVendorInDB)")
                 }

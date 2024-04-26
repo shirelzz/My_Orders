@@ -68,7 +68,7 @@ class AppManager: ObservableObject {
             print("Current UserID: \(userID)")
             let path = "users/\(userID)/currency"
 
-            DatabaseManager.shared.fetchCurrency(path: path, completion: { currency in
+            CurrencyDatabaseManager.shared.fetchCurrency(path: path, completion: { currency in
                 DispatchQueue.main.async {
                     self.currency = currency
                     print("Success fetching currency: \(currency)")
@@ -81,7 +81,7 @@ class AppManager: ObservableObject {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
             let path = "users/\(userID)/currency"
-            DatabaseManager.shared.saveCurrency(currency, path: path)
+            CurrencyDatabaseManager.shared.saveCurrency(currency, path: path)
         }
     }
     
@@ -90,7 +90,7 @@ class AppManager: ObservableObject {
             let userID = currentUser.uid
             let path = "users/\(userID)/publicID"
 
-            DatabaseManager.shared.fetchPublicID(path: path, completion: { publicID in
+            UserDatabaseManager.shared.fetchPublicID(path: path, completion: { publicID in
                 DispatchQueue.main.async {
                     if publicID != "" {
                         self.publicID = publicID
@@ -109,7 +109,7 @@ class AppManager: ObservableObject {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
             let path = "users/\(userID)/publicID"
-            DatabaseManager.shared.savePublicID(publicID, path: path)
+            UserDatabaseManager.shared.savePublicID(publicID, path: path)
         }
     }
     

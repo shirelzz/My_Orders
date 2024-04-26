@@ -27,7 +27,7 @@ struct ContentView: View {
             
             UpcomingOrders(orderManager: orderManager, inventoryManager: inventoryManager)
                 .tabItem {
-                    Label("Upcoming", systemImage: "tray.and.arrow.down.fill")
+                    Label("Home", systemImage: "house")
                 }
             
             AllOrdersView(orderManager: orderManager, inventoryManager: inventoryManager)

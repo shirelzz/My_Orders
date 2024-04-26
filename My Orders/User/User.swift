@@ -122,7 +122,7 @@ class UserManager: ObservableObject {
             let userID = currentUser.uid
             let path = "users/\(userID)/userManager"
 
-            DatabaseManager.shared.fetchUser(path: path, completion: { user in
+            UserDatabaseManager.shared.fetchUser(path: path, completion: { user in
                 DispatchQueue.main.async {
                     self.user = user ?? User()
                     print("Success fetching user")
@@ -136,7 +136,7 @@ class UserManager: ObservableObject {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
             let path = "users/\(userID)/userManager"
-            DatabaseManager.shared.saveUser(user, path: path)
+            UserDatabaseManager.shared.saveUser(user, path: path)
         }
     }
     

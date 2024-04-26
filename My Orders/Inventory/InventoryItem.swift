@@ -125,7 +125,7 @@ class InventoryManager: ObservableObject {
             let userID = currentUser.uid
             let path = "users/\(userID)/items"
 
-            DatabaseManager.shared.fetchItems(path: path, completion: { fetchedItems in
+            InventoryDatabaseManager.shared.fetchItems(path: path, completion: { fetchedItems in
                 DispatchQueue.main.async {
                     self.items = fetchedItems
                     print("Success fetching items")
@@ -138,7 +138,7 @@ class InventoryManager: ObservableObject {
             if let currentUser = Auth.auth().currentUser {
                 let userID = currentUser.uid
                 let path = "users/\(userID)/items"
-                DatabaseManager.shared.saveItem(item, path: path)
+                InventoryDatabaseManager.shared.saveItem(item, path: path)
             }
         }
         
@@ -146,7 +146,7 @@ class InventoryManager: ObservableObject {
             if let currentUser = Auth.auth().currentUser {
                 let userID = currentUser.uid
                 let path = "users/\(userID)/items"
-                DatabaseManager.shared.deleteItem(itemID: itemID, path: path)
+                InventoryDatabaseManager.shared.deleteItem(itemID: itemID, path: path)
             }
         }
     
@@ -215,7 +215,7 @@ class InventoryManager: ObservableObject {
                     let userID = currentUser.uid
                     let path = "users/\(userID)/items/\(editedItem.itemID)"
                     
-                    DatabaseManager.shared.updateItemInDB(editedItem, path: path) { success in
+                    InventoryDatabaseManager.shared.updateItemInDB(editedItem, path: path) { success in
                         if !success {
                             print("updating in the database failed (editItem)")
                         }
@@ -236,7 +236,7 @@ class InventoryManager: ObservableObject {
                     let userID = currentUser.uid
                     let path = "users/\(userID)/items/\(items[index].itemID)"
                     
-                    DatabaseManager.shared.updateItemInDB(items[index], path: path) { success in
+                    InventoryDatabaseManager.shared.updateItemInDB(items[index], path: path) { success in
                         if !success {
                             print("updating in the database failed (editItem)")
                         }
@@ -267,7 +267,7 @@ class InventoryManager: ObservableObject {
                 if let currentUser = Auth.auth().currentUser {
                     let userID = currentUser.uid
                     let path = "users/\(userID)/items"
-                    DatabaseManager.shared.clearOutOfStockItemsFromDB(path: path, completion: {
+                    InventoryDatabaseManager.shared.clearOutOfStockItemsFromDB(path: path, completion: {
                         isSuccessful = true
                     })
                 }

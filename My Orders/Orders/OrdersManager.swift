@@ -370,7 +370,7 @@ class OrderManager: ObservableObject {
             let userID = currentUser.uid
             let path = "users/\(userID)/orders"
 
-            DatabaseManager.shared.fetchOrders(path: path, completion: { fetchedOrders in
+            OrderDatabaseManager.shared.fetchOrders(path: path, completion: { fetchedOrders in
 
                 DispatchQueue.main.async {
                     self.orders = fetchedOrders
@@ -392,7 +392,7 @@ class OrderManager: ObservableObject {
             let userID = currentUser.uid
             let path = "users/\(userID)/receiptSettings"
 
-            DatabaseManager.shared.fetchReceiptValues(path: path, completion: { fetchedReceiptValues in
+            ReceiptsDatabaseManager.shared.fetchReceiptValues(path: path, completion: { fetchedReceiptValues in
                 DispatchQueue.main.async {
                     self.receiptValues = fetchedReceiptValues
                     print("Success fetching receipts values")
@@ -413,7 +413,7 @@ class OrderManager: ObservableObject {
             let userID = currentUser.uid
             let path = "users/\(userID)/receipts"
 
-            DatabaseManager.shared.fetchReceipts(path: path, completion: { fetchedReceipts in
+            ReceiptsDatabaseManager.shared.fetchReceipts(path: path, completion: { fetchedReceipts in
                 DispatchQueue.main.async {
                     self.receipts = fetchedReceipts // Set(fetchedReceipts)
                     print("Success fetching receipts")
@@ -426,7 +426,7 @@ class OrderManager: ObservableObject {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
             let path = "users/\(userID)/orders"
-            DatabaseManager.shared.saveOrder(order, path: path)
+            OrderDatabaseManager.shared.saveOrder(order, path: path)
         }
     }
 
@@ -434,7 +434,7 @@ class OrderManager: ObservableObject {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
             let path = "users/\(userID)/receipts"
-            DatabaseManager.shared.saveReceipt(receipt, path: path)
+            ReceiptsDatabaseManager.shared.saveReceipt(receipt, path: path)
         }
     }
     
@@ -442,7 +442,7 @@ class OrderManager: ObservableObject {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
             let path = "users/\(userID)/orders"
-            DatabaseManager.shared.deleteOrder(orderID: orderID, path: path)
+            OrderDatabaseManager.shared.deleteOrder(orderID: orderID, path: path)
         }
     }
 
@@ -450,7 +450,7 @@ class OrderManager: ObservableObject {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
             let path = "users/\(userID)/receipts"
-            DatabaseManager.shared.deleteReceipt(orderID: orderID, path: path) // orderId?
+            ReceiptsDatabaseManager.shared.deleteReceipt(orderID: orderID, path: path) // orderId?
         }
     }
 
@@ -575,7 +575,7 @@ class OrderManager: ObservableObject {
                     let userID = currentUser.uid
                     let path = "users/\(userID)/orders/\(orders[index].orderID)"
                     
-                    DatabaseManager.shared.updateOrderInDB(order, path: path) { success in
+                    OrderDatabaseManager.shared.updateOrderInDB(order, path: path) { success in
                         if !success {
                             print("updating in the database failed")
                         }
@@ -598,7 +598,7 @@ class OrderManager: ObservableObject {
                     let userID = currentUser.uid
                     let path = "users/\(userID)/orders/\(orders[index].orderID)"
                     
-                    DatabaseManager.shared.updateOrderInDB(orders[index], path: path) { success in
+                    OrderDatabaseManager.shared.updateOrderInDB(orders[index], path: path) { success in
                         if !success {
                             print("updating in the database failed")
                         }
@@ -620,7 +620,7 @@ class OrderManager: ObservableObject {
                         let userID = currentUser.uid
                         let path = "users/\(userID)/orders/\(orders[index].orderID)"
                         
-                        DatabaseManager.shared.updateOrderInDB(orders[index], path: path) { success in
+                        OrderDatabaseManager.shared.updateOrderInDB(orders[index], path: path) { success in
                             if !success {
                                 print("updating in the database failed")
                             }
@@ -763,7 +763,7 @@ class OrderManager: ObservableObject {
             let userID = currentUser.uid
             let path = "users/\(userID)/receiptSettings"
 
-            DatabaseManager.shared.saveOrUpdateReceiptValuesInDB(self.receiptValues, path: path, completion: { _ in
+            ReceiptsDatabaseManager.shared.saveOrUpdateReceiptValuesInDB(self.receiptValues, path: path, completion: { _ in
             })
         }
     }

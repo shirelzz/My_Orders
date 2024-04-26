@@ -1,14 +1,18 @@
 //
-//  DatabaseManager_Inventory.swift
+//  InventoryDatabaseManager.swift
 //  My Orders
 //
-//  Created by שיראל זכריה on 02/04/2024.
+//  Created by שיראל זכריה on 26/04/2024.
 //
 
 import Foundation
 
-extension DatabaseManager {
+class InventoryDatabaseManager: DatabaseManager {
     
+    static var shared = InventoryDatabaseManager()
+    
+    // MARK: - Reading data
+
     func fetchItems(path: String, completion: @escaping ([InventoryItem]) -> ()) {
       
         let itemsRef = databaseRef.child(path)

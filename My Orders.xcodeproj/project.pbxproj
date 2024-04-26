@@ -76,7 +76,21 @@
 		D6E7D2D82B6332C80027DF29 /* AddBusinessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2D72B6332C80027DF29 /* AddBusinessView.swift */; };
 		D6E7D2DA2B63D2A00027DF29 /* BusinessRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2D92B63D2A00027DF29 /* BusinessRowView.swift */; };
 		D6E7D2DC2B6A556C0027DF29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2DB2B6A556C0027DF29 /* AppDelegate.swift */; };
-		D6F435162BBC0EEA0038938F /* DatabaseManager_Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F435152BBC0EEA0038938F /* DatabaseManager_Inventory.swift */; };
+		D6F435562BDBD54A0038938F /* AddBusPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F435552BDBD54A0038938F /* AddBusPopUp.swift */; };
+		D6F435582BDBD7DA0038938F /* InventoryDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F435572BDBD7DA0038938F /* InventoryDatabaseManager.swift */; };
+		D6F4355A2BDBD8700038938F /* ReceiptsDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F435592BDBD8700038938F /* ReceiptsDatabaseManager.swift */; };
+		D6F4355C2BDBD9B90038938F /* OrderDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F4355B2BDBD9B90038938F /* OrderDatabaseManager.swift */; };
+		D6F4355E2BDBDA9C0038938F /* ShoppingDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F4355D2BDBDA9C0038938F /* ShoppingDatabaseManager.swift */; };
+		D6F435602BDBDAB70038938F /* VendorDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F4355F2BDBDAB70038938F /* VendorDatabaseManager.swift */; };
+		D6F435622BDBDAD50038938F /* NotificationsDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F435612BDBDAD50038938F /* NotificationsDatabaseManager.swift */; };
+		D6F435642BDBDAF10038938F /* UserDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F435632BDBDAF10038938F /* UserDatabaseManager.swift */; };
+		D6F435662BDBDB200038938F /* CustomerDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F435652BDBDB200038938F /* CustomerDatabaseManager.swift */; };
+		D6F4356B2BDBE7650038938F /* WorkingHoursDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F435682BDBE7650038938F /* WorkingHoursDetailView.swift */; };
+		D6F4356C2BDBE7650038938F /* WorkingHours.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F435692BDBE7650038938F /* WorkingHours.swift */; };
+		D6F4356D2BDBE7650038938F /* SelectWorkingHoursView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F4356A2BDBE7650038938F /* SelectWorkingHoursView.swift */; };
+		D6F4356F2BDBEAEB0038938F /* AESCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F4356E2BDBEAEB0038938F /* AESCryptor.swift */; };
+		D6F435722BDBEBD40038938F /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D6F435712BDBEBD40038938F /* CryptoSwift */; };
+		D6F435742BDBEE030038938F /* CurrencyDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F435732BDBEE030038938F /* CurrencyDatabaseManager.swift */; };
 		D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */; };
 		D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3322AC593F8002ECA81 /* ContentView.swift */; };
 		D6F6A3352AC593FA002ECA81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6F6A3342AC593FA002ECA81 /* Assets.xcassets */; };
@@ -174,7 +188,20 @@
 		D6E7D2D72B6332C80027DF29 /* AddBusinessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBusinessView.swift; sourceTree = "<group>"; };
 		D6E7D2D92B63D2A00027DF29 /* BusinessRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessRowView.swift; sourceTree = "<group>"; };
 		D6E7D2DB2B6A556C0027DF29 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D6F435152BBC0EEA0038938F /* DatabaseManager_Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager_Inventory.swift; sourceTree = "<group>"; };
+		D6F435552BDBD54A0038938F /* AddBusPopUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBusPopUp.swift; sourceTree = "<group>"; };
+		D6F435572BDBD7DA0038938F /* InventoryDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryDatabaseManager.swift; sourceTree = "<group>"; };
+		D6F435592BDBD8700038938F /* ReceiptsDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptsDatabaseManager.swift; sourceTree = "<group>"; };
+		D6F4355B2BDBD9B90038938F /* OrderDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDatabaseManager.swift; sourceTree = "<group>"; };
+		D6F4355D2BDBDA9C0038938F /* ShoppingDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingDatabaseManager.swift; sourceTree = "<group>"; };
+		D6F4355F2BDBDAB70038938F /* VendorDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorDatabaseManager.swift; sourceTree = "<group>"; };
+		D6F435612BDBDAD50038938F /* NotificationsDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsDatabaseManager.swift; sourceTree = "<group>"; };
+		D6F435632BDBDAF10038938F /* UserDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDatabaseManager.swift; sourceTree = "<group>"; };
+		D6F435652BDBDB200038938F /* CustomerDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerDatabaseManager.swift; sourceTree = "<group>"; };
+		D6F435682BDBE7650038938F /* WorkingHoursDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkingHoursDetailView.swift; sourceTree = "<group>"; };
+		D6F435692BDBE7650038938F /* WorkingHours.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkingHours.swift; sourceTree = "<group>"; };
+		D6F4356A2BDBE7650038938F /* SelectWorkingHoursView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectWorkingHoursView.swift; sourceTree = "<group>"; };
+		D6F4356E2BDBEAEB0038938F /* AESCryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESCryptor.swift; sourceTree = "<group>"; };
+		D6F435732BDBEE030038938F /* CurrencyDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyDatabaseManager.swift; sourceTree = "<group>"; };
 		D6F6A32D2AC593F8002ECA81 /* My Orders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Orders.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersApp.swift; sourceTree = "<group>"; };
 		D6F6A3322AC593F8002ECA81 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -197,6 +224,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6F435722BDBEBD40038938F /* CryptoSwift in Frameworks */,
 				D6F8CA692B2F7F870031A7A2 /* FirebaseDatabaseSwift in Frameworks */,
 				D66A37202B2B3EA600A921CF /* FirebaseMessaging in Frameworks */,
 				D66A36E42B2636A800A921CF /* GoogleSignInSwift in Frameworks */,
@@ -277,6 +305,7 @@
 			isa = PBXGroup;
 			children = (
 				D68CEA272B53047F006D4933 /* CustomerContentView.swift */,
+				D6F435552BDBD54A0038938F /* AddBusPopUp.swift */,
 				D6E7D2D12B62AE8C0027DF29 /* SeeBusinessDetails.swift */,
 				D6E7D2D52B63312B0027DF29 /* Customer.swift */,
 				D6E7D2D72B6332C80027DF29 /* AddBusinessView.swift */,
@@ -351,6 +380,7 @@
 				D68CEA1F2B52EE25006D4933 /* Encryption.swift */,
 				D6E7D2CF2B6284AA0027DF29 /* HelperFunctions.swift */,
 				D6E7D2D32B62AEB30027DF29 /* Coder.swift */,
+				D6F4356E2BDBEAEB0038938F /* AESCryptor.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -365,6 +395,16 @@
 				D6AF62F92B1752130056C973 /* ReceiptSettingsView.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		D6F435672BDBE7650038938F /* WorkingHours */ = {
+			isa = PBXGroup;
+			children = (
+				D6F435682BDBE7650038938F /* WorkingHoursDetailView.swift */,
+				D6F435692BDBE7650038938F /* WorkingHours.swift */,
+				D6F4356A2BDBE7650038938F /* SelectWorkingHoursView.swift */,
+			);
+			path = WorkingHours;
 			sourceTree = "<group>";
 		};
 		D6F6A3242AC593F8002ECA81 = {
@@ -388,6 +428,7 @@
 		D6F6A32F2AC593F8002ECA81 /* My Orders */ = {
 			isa = PBXGroup;
 			children = (
+				D6F435672BDBE7650038938F /* WorkingHours */,
 				D67557DA2B4E1D8900F4036E /* My Orders.entitlements */,
 				D66A36E62B26F0DE00A921CF /* My-Orders-Info.plist */,
 				D6F8CA742B32C62F0031A7A2 /* GoogleService-Info.plist */,
@@ -436,7 +477,15 @@
 			isa = PBXGroup;
 			children = (
 				D6F8CA722B31C40E0031A7A2 /* DatabaseManager.swift */,
-				D6F435152BBC0EEA0038938F /* DatabaseManager_Inventory.swift */,
+				D6F435572BDBD7DA0038938F /* InventoryDatabaseManager.swift */,
+				D6F435592BDBD8700038938F /* ReceiptsDatabaseManager.swift */,
+				D6F4355B2BDBD9B90038938F /* OrderDatabaseManager.swift */,
+				D6F4355D2BDBDA9C0038938F /* ShoppingDatabaseManager.swift */,
+				D6F4355F2BDBDAB70038938F /* VendorDatabaseManager.swift */,
+				D6F435612BDBDAD50038938F /* NotificationsDatabaseManager.swift */,
+				D6F435632BDBDAF10038938F /* UserDatabaseManager.swift */,
+				D6F435652BDBDB200038938F /* CustomerDatabaseManager.swift */,
+				D6F435732BDBEE030038938F /* CurrencyDatabaseManager.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -470,6 +519,7 @@
 				D6F8CA612B2F53DD0031A7A2 /* ZipArchive */,
 				D6F8CA662B2F7F870031A7A2 /* FirebaseDatabase */,
 				D6F8CA682B2F7F870031A7A2 /* FirebaseDatabaseSwift */,
+				D6F435712BDBEBD40038938F /* CryptoSwift */,
 			);
 			productName = "My Orders";
 			productReference = D6F6A32D2AC593F8002ECA81 /* My Orders.app */;
@@ -550,6 +600,7 @@
 				D66A36E52B26EDE900A921CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				D66A37182B28F34000A921CF /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 				D6F8CA602B2F53DC0031A7A2 /* XCRemoteSwiftPackageReference "ZipArchive" */,
+				D6F435702BDBEBD30038938F /* XCRemoteSwiftPackageReference "CryptoSwift" */,
 			);
 			productRefGroup = D6F6A32E2AC593F8002ECA81 /* Products */;
 			projectDirPath = "";
@@ -599,17 +650,21 @@
 				D69E2A6E2B60564E004F0D5C /* CustomCheckBox.swift in Sources */,
 				D6E7D2D22B62AE8C0027DF29 /* SeeBusinessDetails.swift in Sources */,
 				D66A371E2B290F4700A921CF /* EditOrderView.swift in Sources */,
+				D6F435622BDBDAD50038938F /* NotificationsDatabaseManager.swift in Sources */,
 				D68CEA2B2B53ECF5006D4933 /* CustomButtonStyle.swift in Sources */,
 				D6F8CA652B2F55050031A7A2 /* ReceiptsUtils.swift in Sources */,
 				D6AF62D02B12BCB90056C973 /* InventoryItem.swift in Sources */,
+				D6F4355A2BDBD8700038938F /* ReceiptsDatabaseManager.swift in Sources */,
 				D66A37092B28801200A921CF /* FirebAuth.swift in Sources */,
 				D69B4A902BA70A9A00C7FC33 /* CustomVStackStyle.swift in Sources */,
 				D64DD7502B1B8C910066BB7E /* Whatsapp.swift in Sources */,
 				D6E7D2D62B63312B0027DF29 /* Customer.swift in Sources */,
 				D68CEA242B52FEB3006D4933 /* UserRoleView.swift in Sources */,
 				D68CEA282B53047F006D4933 /* CustomerContentView.swift in Sources */,
+				D6F4356C2BDBE7650038938F /* WorkingHours.swift in Sources */,
 				D6E7D2DA2B63D2A00027DF29 /* BusinessRowView.swift in Sources */,
 				D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */,
+				D6F435662BDBDB200038938F /* CustomerDatabaseManager.swift in Sources */,
 				D6AF62D42B12BDAB0056C973 /* InventoryContentView.swift in Sources */,
 				D6AF62EA2B1395B10056C973 /* ImagePicker.swift in Sources */,
 				D66A370B2B28803300A921CF /* +View.swift in Sources */,
@@ -619,14 +674,17 @@
 				D68CEA262B53028C006D4933 /* VendorTypeView.swift in Sources */,
 				D66A37132B28A79F00A921CF /* AppleButtonLogic.swift in Sources */,
 				D64DD75B2B2273470066BB7E /* DashboardView.swift in Sources */,
-				D6F435162BBC0EEA0038938F /* DatabaseManager_Inventory.swift in Sources */,
+				D6F435562BDBD54A0038938F /* AddBusPopUp.swift in Sources */,
+				D6F4355E2BDBDA9C0038938F /* ShoppingDatabaseManager.swift in Sources */,
 				D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */,
 				D69B4A922BA7138800C7FC33 /* AddReceiptView.swift in Sources */,
 				D684DC652BB4919100018186 /* AnimatedSideMenu.swift in Sources */,
 				D66A36DF2B26275C00A921CF /* WelcomeView.swift in Sources */,
+				D6F435582BDBD7DA0038938F /* InventoryDatabaseManager.swift in Sources */,
 				D6E7D2D82B6332C80027DF29 /* AddBusinessView.swift in Sources */,
 				D6AF62F82B151CE80056C973 /* NotificationSettingsView.swift in Sources */,
 				D6F6A3632AC59FCE002ECA81 /* AddOrderView.swift in Sources */,
+				D6F4356B2BDBE7650038938F /* WorkingHoursDetailView.swift in Sources */,
 				D6F6A3612AC59FB6002ECA81 /* OrderRowView.swift in Sources */,
 				D68CEA222B52FE43006D4933 /* User.swift in Sources */,
 				D6AF62E22B136A4F0056C973 /* AccountView.swift in Sources */,
@@ -642,6 +700,7 @@
 				D6E7D2DC2B6A556C0027DF29 /* AppDelegate.swift in Sources */,
 				D6E7D2D02B6284AA0027DF29 /* HelperFunctions.swift in Sources */,
 				D6C037872B44598600CFF67E /* AuthState.swift in Sources */,
+				D6F435602BDBDAB70038938F /* VendorDatabaseManager.swift in Sources */,
 				D6AF62FA2B1752140056C973 /* ReceiptSettingsView.swift in Sources */,
 				D6674D052ACBA1B4003DE4BB /* AllReceiptsView.swift in Sources */,
 				D6674D072ACBA629003DE4BB /* ReceiptRowView.swift in Sources */,
@@ -650,12 +709,17 @@
 				D69E2A6B2B600F91004F0D5C /* MainViewOther.swift in Sources */,
 				D68867E02ACA247A00BCE734 /* SearchBar.swift in Sources */,
 				D66A370F2B289B3500A921CF /* SignInView.swift in Sources */,
+				D6F435742BDBEE030038938F /* CurrencyDatabaseManager.swift in Sources */,
+				D6F4355C2BDBD9B90038938F /* OrderDatabaseManager.swift in Sources */,
 				D6AF62D82B12C2990056C973 /* AddItemView.swift in Sources */,
 				D6674D032ACB9B75003DE4BB /* SharePDFView.swift in Sources */,
 				D69E2A652B5F0D8C004F0D5C /* Vendor.swift in Sources */,
 				D657A2822B516CF60009FCD6 /* ShoppingList.swift in Sources */,
+				D6F4356F2BDBEAEB0038938F /* AESCryptor.swift in Sources */,
+				D6F4356D2BDBE7650038938F /* SelectWorkingHoursView.swift in Sources */,
 				D69E2A752B615EFC004F0D5C /* CustomPopUpWindow.swift in Sources */,
 				D6AF62E82B1392FD0056C973 /* CustomizedDataView.swift in Sources */,
+				D6F435642BDBDAF10038938F /* UserDatabaseManager.swift in Sources */,
 				D6F6A3652AC5B058002ECA81 /* AllOrdersView.swift in Sources */,
 				D6B7A7AE2B4E8CE900E7D941 /* NotificationManager.swift in Sources */,
 				D69B4A8E2BA6567900C7FC33 /* UpcomingOrders.swift in Sources */,
@@ -1027,6 +1091,14 @@
 				minimumVersion = 10.14.0;
 			};
 		};
+		D6F435702BDBEBD30038938F /* XCRemoteSwiftPackageReference "CryptoSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzyzanowskim/CryptoSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.8.2;
+			};
+		};
 		D6F8CA602B2F53DC0031A7A2 /* XCRemoteSwiftPackageReference "ZipArchive" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ZipArchive/ZipArchive.git";
@@ -1082,6 +1154,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D66A36E52B26EDE900A921CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
+		};
+		D6F435712BDBEBD40038938F /* CryptoSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D6F435702BDBEBD30038938F /* XCRemoteSwiftPackageReference "CryptoSwift" */;
+			productName = CryptoSwift;
 		};
 		D6F8CA612B2F53DD0031A7A2 /* ZipArchive */ = {
 			isa = XCSwiftPackageProductDependency;

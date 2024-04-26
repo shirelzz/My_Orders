@@ -58,7 +58,7 @@ class NotificationManager: ObservableObject {
             let userID = currentUser.uid
             let path = "users/\(userID)/notificationSettings"
 
-            DatabaseManager.shared.fetchNotificationSettings(path: path, completion: { fetchedNotificationSettings in
+            NotificationsDatabaseManager.shared.fetchNotificationSettings(path: path, completion: { fetchedNotificationSettings in
 
                 DispatchQueue.main.async {
                     self.notificationSettings = fetchedNotificationSettings
@@ -72,7 +72,7 @@ class NotificationManager: ObservableObject {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
             let path = "users/\(userID)/notificationSettings"
-            DatabaseManager.shared.saveNotificationSettings(notifications, path: path)
+            NotificationsDatabaseManager.shared.saveNotificationSettings(notifications, path: path)
         }
     }
     

@@ -83,7 +83,7 @@ class ShoppingList: ObservableObject {
             print("Current UserID: \(userID)")
             let path = "users/\(userID)/shoppingList"
 
-            DatabaseManager.shared.fetchShoppingItems(path: path, completion: { fetchedShoppingItems in
+            ShoppingDatabaseManager.shared.fetchShoppingItems(path: path, completion: { fetchedShoppingItems in
 
                 DispatchQueue.main.async {
                     self.shoppingItems = fetchedShoppingItems
@@ -99,7 +99,7 @@ class ShoppingList: ObservableObject {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
             let path = "users/\(userID)/shoppingList"
-            DatabaseManager.shared.saveItem(item, path: path)
+            ShoppingDatabaseManager.shared.saveItem(item, path: path)
         }
     }
     
@@ -107,7 +107,7 @@ class ShoppingList: ObservableObject {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
             let path = "users/\(userID)/shoppingList"
-            DatabaseManager.shared.deleteItem(itemID: itemID, path: path)
+            ShoppingDatabaseManager.shared.deleteItem(itemID: itemID, path: path)
         }
     }
     
@@ -163,7 +163,7 @@ class ShoppingList: ObservableObject {
             if let currentUser = Auth.auth().currentUser {
                 let userID = currentUser.uid
                 let path = "users/\(userID)/shoppingList/\(shoppingItems[index].shoppingItemID)"
-                DatabaseManager.shared.updateItemInDB(shoppingItems[index], path: path) { success in
+                ShoppingDatabaseManager.shared.updateItemInDB(shoppingItems[index], path: path) { success in
                     if !success {
                         print("updating in the database failed (update shopping item)")
                     }
