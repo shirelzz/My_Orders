@@ -91,6 +91,9 @@
 		D6F4356F2BDBEAEB0038938F /* AESCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F4356E2BDBEAEB0038938F /* AESCryptor.swift */; };
 		D6F435722BDBEBD40038938F /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D6F435712BDBEBD40038938F /* CryptoSwift */; };
 		D6F435742BDBEE030038938F /* CurrencyDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F435732BDBEE030038938F /* CurrencyDatabaseManager.swift */; };
+		D6F435762BDD73700038938F /* TagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F435752BDD736F0038938F /* TagsView.swift */; };
+		D6F435782BE4FCEC0038938F /* TagManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F435772BE4FCEC0038938F /* TagManager.swift */; };
+		D6F4357A2BE4FDD40038938F /* TagsDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F435792BE4FDD40038938F /* TagsDatabaseManager.swift */; };
 		D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */; };
 		D6F6A3332AC593F8002ECA81 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6A3322AC593F8002ECA81 /* ContentView.swift */; };
 		D6F6A3352AC593FA002ECA81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6F6A3342AC593FA002ECA81 /* Assets.xcassets */; };
@@ -202,6 +205,9 @@
 		D6F4356A2BDBE7650038938F /* SelectWorkingHoursView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectWorkingHoursView.swift; sourceTree = "<group>"; };
 		D6F4356E2BDBEAEB0038938F /* AESCryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESCryptor.swift; sourceTree = "<group>"; };
 		D6F435732BDBEE030038938F /* CurrencyDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyDatabaseManager.swift; sourceTree = "<group>"; };
+		D6F435752BDD736F0038938F /* TagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsView.swift; sourceTree = "<group>"; };
+		D6F435772BE4FCEC0038938F /* TagManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagManager.swift; sourceTree = "<group>"; };
+		D6F435792BE4FDD40038938F /* TagsDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsDatabaseManager.swift; sourceTree = "<group>"; };
 		D6F6A32D2AC593F8002ECA81 /* My Orders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Orders.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersApp.swift; sourceTree = "<group>"; };
 		D6F6A3322AC593F8002ECA81 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -345,6 +351,8 @@
 				D6AF62D72B12C2990056C973 /* AddItemView.swift */,
 				D6AF62D92B12E9710056C973 /* EditItemView.swift */,
 				D66A371B2B29096700A921CF /* ItemDetailsView.swift */,
+				D6F435752BDD736F0038938F /* TagsView.swift */,
+				D6F435772BE4FCEC0038938F /* TagManager.swift */,
 			);
 			path = Inventory;
 			sourceTree = "<group>";
@@ -486,6 +494,7 @@
 				D6F435632BDBDAF10038938F /* UserDatabaseManager.swift */,
 				D6F435652BDBDB200038938F /* CustomerDatabaseManager.swift */,
 				D6F435732BDBEE030038938F /* CurrencyDatabaseManager.swift */,
+				D6F435792BE4FDD40038938F /* TagsDatabaseManager.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -678,9 +687,11 @@
 				D6F4355E2BDBDA9C0038938F /* ShoppingDatabaseManager.swift in Sources */,
 				D6F6A3312AC593F8002ECA81 /* MyOrdersApp.swift in Sources */,
 				D69B4A922BA7138800C7FC33 /* AddReceiptView.swift in Sources */,
+				D6F4357A2BE4FDD40038938F /* TagsDatabaseManager.swift in Sources */,
 				D684DC652BB4919100018186 /* AnimatedSideMenu.swift in Sources */,
 				D66A36DF2B26275C00A921CF /* WelcomeView.swift in Sources */,
 				D6F435582BDBD7DA0038938F /* InventoryDatabaseManager.swift in Sources */,
+				D6F435762BDD73700038938F /* TagsView.swift in Sources */,
 				D6E7D2D82B6332C80027DF29 /* AddBusinessView.swift in Sources */,
 				D6AF62F82B151CE80056C973 /* NotificationSettingsView.swift in Sources */,
 				D6F6A3632AC59FCE002ECA81 /* AddOrderView.swift in Sources */,
@@ -703,6 +714,7 @@
 				D6F435602BDBDAB70038938F /* VendorDatabaseManager.swift in Sources */,
 				D6AF62FA2B1752140056C973 /* ReceiptSettingsView.swift in Sources */,
 				D6674D052ACBA1B4003DE4BB /* AllReceiptsView.swift in Sources */,
+				D6F435782BE4FCEC0038938F /* TagManager.swift in Sources */,
 				D6674D072ACBA629003DE4BB /* ReceiptRowView.swift in Sources */,
 				D6674D012ACB9544003DE4BB /* ReceiptView.swift in Sources */,
 				D6AF62DA2B12E9710056C973 /* EditItemView.swift in Sources */,

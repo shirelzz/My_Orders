@@ -23,5 +23,5 @@ struct SearchBar: View {
 }
 
 #Preview {
-    InventoryContentView(inventoryManager: InventoryManager.shared)
+    InventoryContentView(inventoryManager: InventoryManager.shared, tagManager: TagManager.shared)
 }

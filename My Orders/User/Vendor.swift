@@ -8,40 +8,41 @@
 import Foundation
 import FirebaseAuth
 
-enum VendorType: String, Codable {
-    case food
-    case beauty
-    case other
-    case none
-}
+//enum VendorType: String, Codable {
+//    case food
+//    case beauty
+//    case other
+//    case none
+//}
 
 
 struct Vendor: Codable, Identifiable {
     
     var id: String { uid }
     var uid: String
-    var vendorType: VendorType
     var businessID: String
     var businessName: String
     var businessAddress: String
     var businessPhone: String
-    
+    var businessDiaplayName: String
+
     init() {
         self.uid = UUID().uuidString
-        self.vendorType = VendorType.none
         self.businessID = ""
         self.businessName = "nullName"
         self.businessAddress = ""
         self.businessPhone = ""
+        self.businessDiaplayName = ""
     }
     
-    init(uid: String, vendorType: VendorType, businessID: String, businessName: String , businessAddress: String , businessPhone: String){
+    init(uid: String, businessID: String, businessName: String , businessAddress: String , businessPhone: String, businessDiaplayName: String){
         self.uid = uid
-        self.vendorType = vendorType
         self.businessID = businessID
         self.businessName = businessName
         self.businessAddress = businessAddress
         self.businessPhone = businessPhone
+        self.businessDiaplayName = businessDiaplayName
+        
     }
     
     func dictionaryRepresentation() -> [String: Any] {
@@ -49,11 +50,11 @@ struct Vendor: Codable, Identifiable {
         var vendorDict: [String: Any] = [
             
             "uid": uid,
-            "vendorType": vendorType.rawValue,
             "businessID": businessID,
             "businessName": businessName,
             "businessAddress": businessAddress,
-            "businessPhone": businessPhone
+            "businessPhone": businessPhone,
+            "businessDiaplayName": businessDiaplayName
 
         ]
         
@@ -63,23 +64,22 @@ struct Vendor: Codable, Identifiable {
     init?(dictionary: [String: Any]) {
         guard
             let uid = dictionary["uid"] as? String,
-            let vendorTypeRawValue = dictionary["vendorType"] as? String,
-            let vendorType = VendorType(rawValue: vendorTypeRawValue),
             let businessID = dictionary["businessID"] as? String,
             let businessName = dictionary["businessName"] as? String,
             let businessAddress = dictionary["businessAddress"] as? String,
-            let businessPhone = dictionary["businessPhone"] as? String
+            let businessPhone = dictionary["businessPhone"] as? String,
+            let businessDiaplayName = dictionary["businessDiaplayName"] as? String
 
         else {
             return nil
         }
 
         self.uid = uid
-        self.vendorType = vendorType
         self.businessID = businessID
         self.businessName = businessName
         self.businessAddress = businessAddress
         self.businessPhone = businessPhone
+        self.businessDiaplayName = businessDiaplayName
     }
 
 }
@@ -114,7 +114,7 @@ class VendorManager: ObservableObject {
         return vendor
     }
     
-    func updateVendor(businessID: String, businessName: String , businessAddress: String , businessPhone: String) {
+    func updateVendor(businessID: String, businessName: String , businessAddress: String, businessPhone: String) {
         vendor.businessID = businessID
         vendor.businessName = businessName
         vendor.businessAddress = businessAddress
@@ -127,6 +127,14 @@ class VendorManager: ObservableObject {
             saveVendor2UD()
         }
     }
+    
+//    func updateVendorDisplayedName(businessDisplayedName: String) {
+//        self.vendor.businessDiaplayName = businessDisplayedName
+//        if isUserSignedIn {
+//            updateVendorInDB()
+//            updateVendorDisplayedNameInDB(name: businessDisplayedName)
+//        }
+//    }
     
     func fetchVendorFromDB() {
         if let currentUser = Auth.auth().currentUser {
@@ -142,6 +150,17 @@ class VendorManager: ObservableObject {
         }
     }
     
+    func getWorkingHoursFromDB() -> [WorkingDay] {
+        var hours: [WorkingDay] = []
+        let path = "vendors/\(vendor.id)/businessHours"
+        VendorDatabaseManager.shared.fetchWorkingHours(path: path, completion: { fetchedHours in
+            DispatchQueue.main.async {
+                hours = fetchedHours
+            }
+        })
+        return hours
+    }
+
     private func saveVendor2DB(_ vendor: Vendor) {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
@@ -150,6 +169,20 @@ class VendorManager: ObservableObject {
         }
     }
     
+    func saveVendorDisplayedName(_ name: String, vendorID: String) {
+        if let currentUser = Auth.auth().currentUser {
+            let path = "vendors/\(vendorID)/name"
+            VendorDatabaseManager.shared.saveVendorDisplayedName(name, path: path)
+        }
+    }
+    
+    func saveBusinessHours(businessHours: [WorkingDay]) {
+        if let currentUser = Auth.auth().currentUser {
+            let path = "vendors/\(vendor.id)/businessHours"
+            VendorDatabaseManager.shared.saveBusinessHours(businessHours, path: path)
+        }
+    }
+        
     private func updateVendorInDB() {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
@@ -162,13 +195,23 @@ class VendorManager: ObservableObject {
         }
     }
     
+//    private func updateVendorDisplayedNameInDB(name: String) {
+//        if let currentUser = Auth.auth().currentUser {
+//            let vendorsPath = "vendors/\(vendor.id)"
+//            DatabaseManager.shared.saveVendorDisplayedName(name: name, path: vendorsPath, completion: { success in
+//                if !success {
+//                    print("updating in the database failed (updateVendor name InDB)")
+//                }
+//            })
+//        }
+//    }
+    
     // MARK:  user defaults (guest users)
     
     private func saveVendor2UD() {
         
         let vendorDict: [String: Any] = [
             "uid": vendor.uid,
-            "vendorType": vendor.vendorType.rawValue,
             "businessID": vendor.businessID,
             "businessName": vendor.businessName,
             "businessAddress": vendor.businessAddress,
@@ -193,3 +236,4 @@ class VendorManager: ObservableObject {
     }
     
 }
+

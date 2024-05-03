@@ -18,7 +18,8 @@ struct UserRoleView: View {
     @AppStorage("hasLaunchedBefore") private var hasLaunchedBefore: Bool = false
     @State private var isVendorPressed = false
     @State private var isCustomerPressed = false
-    @State private var showVendorTypeView = false
+//    @State private var showVendorTypeView = false
+    @State private var showBusinessDetailsView = false
     @State private var showCustomerContent = false
     @State private var isBackPressed = false
     @ObservedObject private var userManager = UserManager.shared
@@ -82,7 +83,8 @@ struct UserRoleView: View {
                         
                         Button("Continue") {
                             if isVendorPressed {
-                                showVendorTypeView = true
+//                                showVendorTypeView = true
+                                showBusinessDetailsView = true
                             }
                             else if isCustomerPressed {
                                 
@@ -94,8 +96,11 @@ struct UserRoleView: View {
 
                             }
                         }
-                        .navigationDestination(isPresented: $showVendorTypeView, destination: {
-                            VendorTypeView()
+//                        .navigationDestination(isPresented: $showVendorTypeView, destination: {
+//                            VendorTypeView()
+//                        })
+                        .navigationDestination(isPresented: $showBusinessDetailsView, destination: {
+                            BusinessDetailsView()
                         })
                         .navigationDestination(isPresented: $showCustomerContent, destination: {
                             CustomerContentView()

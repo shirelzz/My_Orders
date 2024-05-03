@@ -817,23 +817,6 @@
         }
       }
     },
-    "Are you sure you want to generate this receipt?" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to generate this receipt?"
-          }
-        },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "לייצר קבלה זו?"
-          }
-        }
-      }
-    },
     "Are you sure you want to generate this receipt? Once a receipt is generated it cannot be deleted." : {
       "localizations" : {
         "en" : {
@@ -1076,6 +1059,17 @@
         }
       }
     },
+    "Cheque" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "המחאה"
+          }
+        }
+      }
+    },
     "Choose an option:" : {
       "localizations" : {
         "en" : {
@@ -1094,6 +1088,12 @@
     },
     "Clear Out of Stock" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear Out of Stock"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2265,17 +2265,6 @@
         }
       }
     },
-    "Gen erate Receipt" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gen erate Receipt"
-          }
-        }
-      }
-    },
     "Generate" : {
       "localizations" : {
         "en" : {
@@ -3232,7 +3221,14 @@
       }
     },
     "Order Date: %@" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מועד הזמנה: %@"
+          }
+        }
+      }
     },
     "Order Details" : {
       "localizations" : {

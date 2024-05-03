@@ -279,6 +279,7 @@ struct AddReceiptView: View {
                         Text("Bit").tag("Bit")
                         Text("Bank transfer").tag("Bank transfer")
                         Text("Cash").tag("Cash")
+                        Text("Cheque").tag("Cheque")
                     }
                 }
             }

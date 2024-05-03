@@ -15,6 +15,7 @@ struct ContentView: View {
     @StateObject private var notificationManager = NotificationManager.shared
     @StateObject private var orderManager = OrderManager.shared
     @StateObject private var inventoryManager = InventoryManager.shared
+    @StateObject private var tagManager = TagManager.shared
     @StateObject private var shoppingList = ShoppingList.shared
 
     var body: some View {
@@ -35,7 +36,7 @@ struct ContentView: View {
                     Label("All orders", systemImage: "tray.full.fill")
                 }
             
-            InventoryContentView(inventoryManager: InventoryManager.shared)
+            InventoryContentView(inventoryManager: inventoryManager, tagManager: tagManager)
                 .tabItem {
                     Label("Inventory", systemImage: "archivebox.fill")
                 }

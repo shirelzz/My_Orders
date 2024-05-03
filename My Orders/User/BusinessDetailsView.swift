@@ -75,7 +75,8 @@ struct BusinessDetailsView: View {
                             showBackView = true
                         }
                         .navigationDestination(isPresented: $showBackView, destination: {
-                            VendorTypeView()
+//                            VendorTypeView()
+                            UserRoleView()
                         })
                         
                         Spacer()

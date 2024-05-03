@@ -27,25 +27,25 @@ class VendorDatabaseManager: DatabaseManager {
             var vendor: Vendor?
                 guard let vendorDict = snapshot.value as? [String: Any],
                       let uid = vendorDict["uid"] as? String,
-                      let vendorTypeValue = vendorDict["vendorType"] as? String,
-                      let vendorType = VendorType(rawValue: vendorTypeValue),
                       let businessID = vendorDict["businessID"] as? String,
                       let businessName = vendorDict["businessName"] as? String,
                       let businessAddress = vendorDict["businessAddress"] as? String,
-                      let businessPhone = vendorDict["businessPhone"] as? String
+                      let businessPhone = vendorDict["businessPhone"] as? String,
+                    let businessDiaplayName = vendorDict["businessDiaplayName"] as? String
                 else {
                     print("Error parsing vendor data")
                     return
                 }
-
-                vendor = Vendor(
-                    uid: uid,
-                    vendorType: vendorType,
-                    businessID: businessID,
-                    businessName: businessName,
-                    businessAddress: businessAddress,
-                    businessPhone: businessPhone
-                )
+                        
+            vendor = Vendor(
+                uid: uid,
+                businessID: businessID,
+                businessName: businessName,
+                businessAddress: businessAddress,
+                businessPhone: businessPhone,
+                businessDiaplayName: businessDiaplayName
+            )
+            
             completion(vendor)
         })
     }
@@ -109,6 +109,31 @@ class VendorDatabaseManager: DatabaseManager {
                 print("Error saving vendor: \(error.localizedDescription)")
             } else {
                 print("saved vendor")
+            }
+        }
+    }
+    
+    func saveVendorDisplayedName(_ name: String, path: String) {
+        let vendorsRef = databaseRef.child(path) //.child(user.id)
+        vendorsRef.setValue(name) { error, _ in
+            if let error = error {
+                print("Error saving vendor name: \(error.localizedDescription)")
+            } else {
+                print("saved vendor")
+            }
+        }
+    }
+    
+    func saveBusinessHours(_ businessHours: [WorkingDay], path: String) {
+        let vendorsRef = databaseRef.child(path) //.child(user.id)
+        // Convert the array of WorkingDay objects into a dictionary
+        let workingHoursDict = businessHours.map { $0.dictionaryRepresentation() }
+        
+        vendorsRef.setValue(workingHoursDict) { error, _ in
+            if let error = error {
+                print("Error saving vendor businessHours: \(error.localizedDescription)")
+            } else {
+                print("saved vendor businessHours")
             }
         }
     }

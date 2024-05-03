@@ -11,8 +11,9 @@ import GoogleMobileAds
 struct InventoryContentView: View {
     
     @ObservedObject var inventoryManager: InventoryManager
-    @State private var selectedItem: InventoryItem = InventoryItem()
+    @ObservedObject var tagManager: TagManager
     
+    @State private var selectedItem: InventoryItem = InventoryItem()
     @State private var searchText = ""
     @State private var isAddItemViewPresented = false
     @State private var isEditItemViewPresented = false
@@ -22,6 +23,7 @@ struct InventoryContentView: View {
     @State private var isItemDetailsViewPresented = false
     @State private var currency = HelperFunctions.getCurrencySymbol()
     @State private var showClearAlert = false
+    @State private var isAddTagsViewPresented = false
 
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -180,6 +182,7 @@ struct InventoryContentView: View {
             }
             .navigationTitle("Inventory Items")
             .toolbar {
+                
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         isAddItemViewPresented = true
@@ -189,7 +192,18 @@ struct InventoryContentView: View {
 
                     }
                     .sheet(isPresented: $isAddItemViewPresented) {
-                        AddItemView(inventoryManager: inventoryManager)
+                        AddItemView(inventoryManager: inventoryManager, tagManager: tagManager)
+                    }
+                }
+                
+                ToolbarItem(placement: .automatic) {
+                    Button(action: {
+                        isAddTagsViewPresented = true
+                    }) {
+                        Text("Tags")
+                    }
+                    .sheet(isPresented: $isAddTagsViewPresented) {
+                        TagsView(tagManager: tagManager)
                     }
                 }
                 
@@ -221,7 +235,6 @@ struct InventoryContentView: View {
                         )
                     }
                 }
-                
             }
 
             Spacer()
@@ -244,6 +257,6 @@ struct InventoryContentView: View {
 struct InventoryContentView_Previews: PreviewProvider {
     static var previews: some View {
         
-        InventoryContentView(inventoryManager: InventoryManager.shared)
+        InventoryContentView(inventoryManager: InventoryManager.shared, tagManager: TagManager.shared)
     }
 }

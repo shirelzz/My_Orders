@@ -134,7 +134,7 @@ struct EditOrderView: View {
                             .foregroundColor(.accentColor) // Set desired text color
                             .tint(.clear)
                             .popover(isPresented: $isAddItemViewPresented) {
-                                AddItemView(inventoryManager: inventoryManager, knownName: searchQuery)
+                                AddItemView(inventoryManager: inventoryManager, tagManager: TagManager.shared, knownName: searchQuery)
                             }
                             .buttonStyle(.bordered)
                             .frame(width: 20, height: 20)

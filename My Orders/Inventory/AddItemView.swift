@@ -10,6 +10,7 @@ import SwiftUI
 struct AddItemView: View {
     
     @ObservedObject var inventoryManager: InventoryManager
+    @ObservedObject var tagManager: TagManager
     @State var knownName: String?
     
     // State variables for new item input
@@ -24,6 +25,7 @@ struct AddItemView: View {
     @State private var quantityError = false
     
     @State private var foodTags: [String] = ["Dairy", "Non-Dairy", "Vegan", "Vegetarian", "Gluten-Free"]
+    
     @State private var otherBusinessesTags: [String] = []
     @State private var selectedTags: [String] = []
     @State private var isAddingTag = false
@@ -77,13 +79,11 @@ struct AddItemView: View {
                 }
                 
                 Section(header: Text("Tags")) {
-                    if VendorManager.shared.vendor.vendorType == .food {
                         
-                        ForEach(foodTags, id: \.self) { tag in
-                            CheckboxToggle(isOn: $selectedTags, tag: tag)
-                                .toggleStyle(iOSCheckboxToggleStyle())
-                                .padding(.vertical, 5)
-                        }
+                    ForEach(tagManager.tags, id: \.self) { tag in
+                        CheckboxToggle(isOn: $selectedTags, tag: tag)
+                            .toggleStyle(iOSCheckboxToggleStyle())
+                            .padding(.vertical, 5)
                     }
                     
                     if isAddingTag {
@@ -91,7 +91,8 @@ struct AddItemView: View {
                             TextField("Enter new tag", text: $newTagText, onCommit: {
                                 // Save the new tag when user presses return/enter
                                 if !newTagText.isEmpty {
-                                    selectedTags.append(newTagText)
+//                                    selectedTags.append(newTagText)
+                                    tagManager.addTag(newTagText)
                                     newTagText = ""
                                     isAddingTag = false
                                 }
@@ -208,5 +209,5 @@ struct AddItemView: View {
      
 
 #Preview {
-    AddItemView(inventoryManager: InventoryManager.shared)
+    AddItemView(inventoryManager: InventoryManager.shared, tagManager: TagManager.shared)
 }

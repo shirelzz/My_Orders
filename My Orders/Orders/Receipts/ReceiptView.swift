@@ -90,12 +90,15 @@ struct ReceiptView: View {
             HStack(alignment: .center, spacing: 5) {
                 Text("Payment method:")
                     .font(.headline)
+                
                 Spacer()
+                
                 Picker(selection: $selectedPaymentMethod, label: Text("Payment Method")) {
                     Text("Paybox").tag("Paybox")
                     Text("Bit").tag("Bit")
                     Text("Bank transfer").tag("Bank transfer")
                     Text("Cash").tag("Cash")
+                    Text("Cheque").tag("Cheque")
                 }
                 
             }

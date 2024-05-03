@@ -28,10 +28,8 @@ struct EditItemView: View {
     
     var body: some View {
         
-        NavigationStack
-        {
-            Form
-            {
+        NavigationStack {
+            Form {
                 
                 Section(header: Text("Change Name") ) {
                     TextField("Name", text: $name)
@@ -72,14 +70,14 @@ struct EditItemView: View {
                 }
                 
                 Section(header: Text("Tags")) {
-                    if VendorManager.shared.vendor.vendorType == .food {
+//                    if VendorManager.shared.vendor.vendorType == .food {
                         
                         ForEach(foodTags, id: \.self) { tag in
                             CheckboxToggle(isOn: $selectedTags, tag: tag)
                                 .toggleStyle(iOSCheckboxToggleStyle())
                                 .padding(.vertical, 5)
                         }
-                    }
+//                    }
 
                 }
             }
