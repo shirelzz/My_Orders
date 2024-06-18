@@ -100,7 +100,7 @@ class CustomerManager: ObservableObject {
     
     
     func fetchBusinessDiaplayName(vandorID: String, completion: @escaping (String) -> Void) {
-        if let currentUser = Auth.auth().currentUser {
+        if Auth.auth().currentUser != nil {
             let path = "vendors/\(vandorID)/name"
             
             VendorDatabaseManager.shared.fetchVendorName(path: path) { fetchedName in

@@ -552,6 +552,9 @@
         }
       }
     },
+    "Add Working Hours" : {
+
+    },
     "Added Items" : {
       "localizations" : {
         "en" : {
@@ -1086,7 +1089,11 @@
         }
       }
     },
+    "Clear" : {
+
+    },
     "Clear Out of Stock" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1101,6 +1108,9 @@
           }
         }
       }
+    },
+    "Clear Out of Stock Items" : {
+
     },
     "Close Menu" : {
       "extractionState" : "stale",
@@ -2070,6 +2080,9 @@
         }
       }
     },
+    "Enter a tag" : {
+
+    },
     "Enter code" : {
       "localizations" : {
         "en" : {
@@ -2085,6 +2098,9 @@
           }
         }
       }
+    },
+    "Enter new tag" : {
+
     },
     "Enter Price" : {
       "localizations" : {
@@ -2249,6 +2265,9 @@
         }
       }
     },
+    "From" : {
+
+    },
     "GBP" : {
       "localizations" : {
         "en" : {
@@ -2361,6 +2380,9 @@
           }
         }
       }
+    },
+    "Home" : {
+
     },
     "Identifier" : {
       "localizations" : {
@@ -4426,6 +4448,9 @@
         }
       }
     },
+    "Select Working Hours" : {
+
+    },
     "Select Year" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -4900,6 +4925,9 @@
           }
         }
       }
+    },
+    "To" : {
+
     },
     "Total Cost" : {
       "localizations" : {

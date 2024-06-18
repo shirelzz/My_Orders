@@ -34,7 +34,7 @@ struct User: Codable, Identifiable {
     
     func dictionaryRepresentation() -> [String: Any] {
 
-        var userDict: [String: Any] = [
+        let userDict: [String: Any] = [
             
             "uid": uid,
             "role": role.rawValue,

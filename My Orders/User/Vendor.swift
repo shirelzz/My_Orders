@@ -47,7 +47,7 @@ struct Vendor: Codable, Identifiable {
     
     func dictionaryRepresentation() -> [String: Any] {
 
-        var vendorDict: [String: Any] = [
+        let vendorDict: [String: Any] = [
             
             "uid": uid,
             "businessID": businessID,
@@ -170,14 +170,14 @@ class VendorManager: ObservableObject {
     }
     
     func saveVendorDisplayedName(_ name: String, vendorID: String) {
-        if let currentUser = Auth.auth().currentUser {
+        if Auth.auth().currentUser != nil {
             let path = "vendors/\(vendorID)/name"
             VendorDatabaseManager.shared.saveVendorDisplayedName(name, path: path)
         }
     }
     
     func saveBusinessHours(businessHours: [WorkingDay]) {
-        if let currentUser = Auth.auth().currentUser {
+        if Auth.auth().currentUser != nil {
             let path = "vendors/\(vendor.id)/businessHours"
             VendorDatabaseManager.shared.saveBusinessHours(businessHours, path: path)
         }

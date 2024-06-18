@@ -18,7 +18,7 @@ class VendorDatabaseManager: DatabaseManager {
         let vendorRef = databaseRef.child(path)
         
         vendorRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let value = snapshot.value as? [String: Any] else {
+            guard snapshot.value is [String: Any] else { // guard let value = snapshot.value as? [String: Any] else {
                 print("No vendor data found")
                 completion(nil)
                 return

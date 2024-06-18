@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-
+import FirebaseAuth
 
 class HelperFunctions {
     
@@ -16,6 +16,10 @@ class HelperFunctions {
             return windowScene.traitCollection.userInterfaceStyle == .dark
         }
         return false
+    }
+    
+    static func isUserSignedIn() -> Bool {
+        return Auth.auth().currentUser != nil
     }
     
     static func closeKeyboard() {

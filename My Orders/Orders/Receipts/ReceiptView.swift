@@ -220,7 +220,7 @@ struct ReceiptView: View {
             paymentDate: selectedPaymentDate
         )
         
-        if let _pdfData = ReceiptUtils.generatePDF(order: order, receipt: receipt) {
+        if ReceiptUtils.generatePDF(order: order, receipt: receipt) != nil {
             showSuccessMessage = true
         }
     }

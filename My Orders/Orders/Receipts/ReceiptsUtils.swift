@@ -476,7 +476,7 @@ class ReceiptUtils {
                 
                 //  signature
                 var x_sign = pageRect.width - 150
-                var y_sign = pageRect.height - 150
+                let y_sign = pageRect.height - 150
                 if en {
                     x_sign = 50
                 }
