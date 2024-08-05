@@ -34,7 +34,7 @@ class UserDatabaseManager: DatabaseManager {
         let userRef = databaseRef.child(path)
         
         userRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let value = snapshot.value as? [String: Any] else {
+            guard snapshot.value is [String: Any] else { // guard let value = snapshot.value as? [String: Any] else {
                 print("No user data found")
                 completion(nil)
                 return

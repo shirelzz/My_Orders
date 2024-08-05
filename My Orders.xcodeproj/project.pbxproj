@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D614BEEE2C21DDE2003F9961 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D614BEED2C21DDE2003F9961 /* GoogleService-Info.plist */; };
 		D64DD7502B1B8C910066BB7E /* Whatsapp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DD74F2B1B8C910066BB7E /* Whatsapp.swift */; };
 		D64DD75B2B2273470066BB7E /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DD75A2B2273470066BB7E /* DashboardView.swift */; };
 		D64DD75E2B22743D0066BB7E /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = D64DD75D2B22743D0066BB7E /* SwiftUICharts */; };
@@ -108,7 +109,6 @@
 		D6F8CA672B2F7F870031A7A2 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = D6F8CA662B2F7F870031A7A2 /* FirebaseDatabase */; };
 		D6F8CA692B2F7F870031A7A2 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D6F8CA682B2F7F870031A7A2 /* FirebaseDatabaseSwift */; };
 		D6F8CA732B31C40E0031A7A2 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F8CA722B31C40E0031A7A2 /* DatabaseManager.swift */; };
-		D6F8CA752B32C62F0031A7A2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D6F8CA742B32C62F0031A7A2 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,6 +129,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D614BEED2C21DDE2003F9961 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D64DD74F2B1B8C910066BB7E /* Whatsapp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Whatsapp.swift; sourceTree = "<group>"; };
 		D64DD75A2B2273470066BB7E /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		D657A2812B516CF60009FCD6 /* ShoppingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingList.swift; sourceTree = "<group>"; };
@@ -222,7 +223,6 @@
 		D6F6A3642AC5B058002ECA81 /* AllOrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllOrdersView.swift; sourceTree = "<group>"; };
 		D6F8CA642B2F55050031A7A2 /* ReceiptsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptsUtils.swift; sourceTree = "<group>"; };
 		D6F8CA722B31C40E0031A7A2 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
-		D6F8CA742B32C62F0031A7A2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -439,7 +439,7 @@
 				D6F435672BDBE7650038938F /* WorkingHours */,
 				D67557DA2B4E1D8900F4036E /* My Orders.entitlements */,
 				D66A36E62B26F0DE00A921CF /* My-Orders-Info.plist */,
-				D6F8CA742B32C62F0031A7A2 /* GoogleService-Info.plist */,
+				D614BEED2C21DDE2003F9961 /* GoogleService-Info.plist */,
 				D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */,
 				D6E7D2DB2B6A556C0027DF29 /* AppDelegate.swift */,
 				D6AF62EB2B13A7D20056C973 /* AppManager.swift */,
@@ -578,7 +578,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					D6F6A32C2AC593F8002ECA81 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -628,9 +628,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6F6A3382AC593FA002ECA81 /* Preview Assets.xcassets in Resources */,
-				D6F8CA752B32C62F0031A7A2 /* GoogleService-Info.plist in Resources */,
 				D6F6A3352AC593FA002ECA81 /* Assets.xcassets in Resources */,
 				D6AF630A2B1972620056C973 /* Localizable.xcstrings in Resources */,
+				D614BEEE2C21DDE2003F9961 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -777,6 +777,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -809,6 +810,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -837,6 +839,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -869,6 +872,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

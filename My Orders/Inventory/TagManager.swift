@@ -13,16 +13,27 @@ class TagManager: ObservableObject {
     static var shared = TagManager()
     @Published var tags: [String] = []
     private var isUserSignedIn = HelperFunctions.isUserSignedIn()
+    
+    init() {
+        if isUserSignedIn{
+            fetchTagsFromDB()
+        }
+//        else{
+//            loadItemsFromUD()
+//        }
+    }
 
     func addTag(_ tag: String) {
         if !tags.contains(tag) {
             tags.append(tag)
+            saveTag2DB(tag)
         }
     }
     
     func removeTag(_ tag: String) {
         if let index = tags.firstIndex(of: tag) {
             tags.remove(at: index)
+            deleteTagFromDB(tag: tag)
         }
     }
     
@@ -61,4 +72,5 @@ class TagManager: ObservableObject {
             TagsDatabaseManager.shared.deleteTag(tag: tag, path: path)
         }
     }
+
 }

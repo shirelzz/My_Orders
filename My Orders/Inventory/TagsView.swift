@@ -27,6 +27,7 @@ struct TagsView: View {
                         newTag = ""
                     }
                     .buttonStyle(.borderedProminent)
+                    .disabled(newTag.isEmpty)
                 }
 
             }

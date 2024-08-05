@@ -87,6 +87,7 @@ struct AddItemView: View {
                     }
                     
                     if isAddingTag {
+
                         HStack {
                             TextField("Enter new tag", text: $newTagText, onCommit: {
                                 // Save the new tag when user presses return/enter
@@ -96,6 +97,9 @@ struct AddItemView: View {
                                     newTagText = ""
                                     isAddingTag = false
                                 }
+                            })
+                            .onAppear(perform: {
+                                newTagText = ""
                             })
                             //                        .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
@@ -117,7 +121,7 @@ struct AddItemView: View {
                             isAddingTag = true
                         }) {
                             Image(systemName: "plus.square.fill")
-                                .font(.system(size: 20))
+                                .font(.system(size: 18))
                             
                         }
                     }
@@ -198,7 +202,7 @@ struct AddItemView: View {
                         Text("Add Item")
                     }
                     .disabled(quantityError)
-                    .buttonStyle(.borderless)
+                    .buttonStyle(.borderedProminent)
                 }
             }
         }
