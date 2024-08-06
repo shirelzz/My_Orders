@@ -64,12 +64,12 @@ struct SettingsView: View {
 //                    Text("You might need to relaunch the app before you see this change through all screens")
                 }
                 
-                Section(header: Text("Notification center")) {
-                    
-                    NavigationLink(destination: NotificationSettingsView()) {
-                        Label("Notifications", systemImage: "bell")
-                    }
-                }
+//                Section(header: Text("Notification center")) {
+//                    
+//                    NavigationLink(destination: NotificationSettingsView()) {
+//                        Label("Notifications", systemImage: "bell")
+//                    }
+//                }
                 
                 Section(header: Text("Receipt center")) {
                     

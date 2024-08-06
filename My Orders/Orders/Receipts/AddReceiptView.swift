@@ -16,7 +16,11 @@ enum DiscountType {
 struct AddReceiptView: View {
     @ObservedObject var orderManager: OrderManager
     @Binding var isPresented: Bool
-    
+  
+    @State private var order: Order = Order()
+    @State private var receipt: Receipt = Receipt()
+    @State private var pdfData: Data? = nil
+    @State private var showingPDFPreview = false
     @State private var currency = HelperFunctions.getCurrencySymbol()
     @State private var customerName = ""
     @State private var customerPhone = ""
@@ -282,6 +286,30 @@ struct AddReceiptView: View {
                         Text("Cheque").tag("Cheque")
                     }
                 }
+                
+                Section(header: Text("Preview")) {
+                    
+                    Button(action: {
+                        createOrder()
+                        createReceipt()
+                        print(receipt)
+                        pdfData = ReceiptUtils.drawPreviewPDF(for: order)
+                        showingPDFPreview = true
+                    }) {
+                        HStack {
+                            Text("See receipt preview")
+                            Image(systemName: "eye.circle.fill")
+                        }
+                    }
+                    .sheet(isPresented: $showingPDFPreview) {
+                        if let pdfData = pdfData {
+                            PDFPreviewView(pdfData: pdfData)
+                        } else {
+                            Text("No PDF available")
+                        }
+                    }
+
+                }
             }
             .navigationBarTitle("Create New Receipt")
             .navigationBarItems(
@@ -389,7 +417,7 @@ struct AddReceiptView: View {
         }
     }
     
-    private func saveReceipt() {
+    private func createOrder() {
         
         var orderItems: [OrderItem] = []
         for item in receiptItems {
@@ -398,13 +426,17 @@ struct AddReceiptView: View {
         }
         
         let order = Order(orderID: UUID().uuidString,
-                          customer: Customer(name: customerName, phoneNumber: "0"),
+                          customer: Customer(name: customerName, phoneNumber: customerPhone),
                           orderItems: orderItems,
                           orderDate: Date(),
                           delivery: Delivery(address: deliveryAddress, cost: selectedDeliveryCost),
                           isDelivered: true,
                           isPaid: true)
-                
+        
+        self.order = order
+    }
+    
+    private func createReceipt() {
         // Create a new receipt with the entered details
         let newReceipt = Receipt(
             id: UUID().uuidString,
@@ -415,8 +447,17 @@ struct AddReceiptView: View {
             paymentDate: selectedPaymentDate
         )
         
+        self.receipt = newReceipt
+        self.order.receipt = newReceipt
+    }
+    
+    private func saveReceipt() {
+        
+        createOrder()
+        createReceipt()
+        
         orderManager.addOrder(order: order)
-        orderManager.addReceipt(receipt: newReceipt) // remove if using this line:
+        orderManager.addReceipt(receipt: receipt) // remove if using this line:
 //        if let _pdfData = ReceiptUtils.generatePDF(order: order, receipt: receipt) {
 //            showSuccessMessage = true
 //        }

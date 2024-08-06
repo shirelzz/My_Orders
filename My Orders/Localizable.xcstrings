@@ -553,7 +553,20 @@
       }
     },
     "Add Working Hours" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Working Hours"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הוספ.י שעות פעילות"
+          }
+        }
+      }
     },
     "Added Items" : {
       "localizations" : {
@@ -600,6 +613,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "כתובת"
+          }
+        }
+      }
+    },
+    "Address: " : {
+      "comment" : "Business address prefix",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "כתובת:"
           }
         }
       }
@@ -1090,7 +1114,20 @@
       }
     },
     "Clear" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "נקה"
+          }
+        }
+      }
     },
     "Clear Out of Stock" : {
       "extractionState" : "stale",
@@ -1110,7 +1147,14 @@
       }
     },
     "Clear Out of Stock Items" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "נקה פריטים שלא במלאי"
+          }
+        }
+      }
     },
     "Close Menu" : {
       "extractionState" : "stale",
@@ -2032,6 +2076,17 @@
         }
       }
     },
+    "Draft" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "טיוטה"
+          }
+        }
+      }
+    },
     "Edit" : {
       "localizations" : {
         "en" : {
@@ -2081,7 +2136,20 @@
       }
     },
     "Enter a tag" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a tag"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הקלד.י תגית"
+          }
+        }
+      }
     },
     "Enter code" : {
       "localizations" : {
@@ -2100,7 +2168,20 @@
       }
     },
     "Enter new tag" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter new tag"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הקלד.י תגית חדשה"
+          }
+        }
+      }
     },
     "Enter Price" : {
       "localizations" : {
@@ -2384,6 +2465,17 @@
     "Home" : {
 
     },
+    "ID: " : {
+      "comment" : "Business ID prefix",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מזהה:"
+          }
+        }
+      }
+    },
     "Identifier" : {
       "localizations" : {
         "en" : {
@@ -2563,7 +2655,7 @@
       }
     },
     "Item" : {
-      "extractionState" : "stale",
+      "comment" : "Table header for item",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2791,6 +2883,23 @@
         }
       }
     },
+    "Name: " : {
+      "comment" : "Business name prefix",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name: "
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שם:"
+          }
+        }
+      }
+    },
     "Name: %@" : {
       "localizations" : {
         "en" : {
@@ -2937,6 +3046,16 @@
         }
       }
     },
+    "No PDF available" : {
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "אין קובץ זמין"
+          }
+        }
+      }
+    },
     "No tags available" : {
       "localizations" : {
         "en" : {
@@ -3070,6 +3189,7 @@
       }
     },
     "Notification center" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3102,6 +3222,7 @@
       }
     },
     "Notifications" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3615,7 +3736,7 @@
       }
     },
     "Phone: " : {
-      "extractionState" : "stale",
+      "comment" : "Business phone prefix",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3705,6 +3826,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "הכנס כמות תקינה"
+          }
+        }
+      }
+    },
+    "Preview" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preview"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "תצוגה מקדימה"
           }
         }
       }
@@ -3892,6 +4029,7 @@
       }
     },
     "Quantity" : {
+      "comment" : "Table header for quantity",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4166,6 +4304,16 @@
         }
       }
     },
+    "Receipt No. %@" : {
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "קבלה מספר  %@"
+          }
+        }
+      }
+    },
     "Receipt No. %lld" : {
       "localizations" : {
         "en" : {
@@ -4365,6 +4513,16 @@
         }
       }
     },
+    "See receipt preview" : {
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "תצוגה מקדימה של הקבלה"
+          }
+        }
+      }
+    },
     "Select currency" : {
       "localizations" : {
         "en" : {
@@ -4449,7 +4607,14 @@
       }
     },
     "Select Working Hours" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "בחר שעות פעילות"
+          }
+        }
+      }
     },
     "Select Year" : {
       "extractionState" : "stale",

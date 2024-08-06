@@ -68,6 +68,7 @@
 		D6AF62F82B151CE80056C973 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F72B151CE80056C973 /* NotificationSettingsView.swift */; };
 		D6AF62FA2B1752140056C973 /* ReceiptSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62F92B1752130056C973 /* ReceiptSettingsView.swift */; };
 		D6AF630A2B1972620056C973 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D6AF63092B1972620056C973 /* Localizable.xcstrings */; };
+		D6B717BD2C6155CB00113ADB /* PDFPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B717BC2C6155CB00113ADB /* PDFPreviewView.swift */; };
 		D6B7A7AE2B4E8CE900E7D941 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B7A7AD2B4E8CE900E7D941 /* NotificationManager.swift */; };
 		D6C037872B44598600CFF67E /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C037862B44598600CFF67E /* AuthState.swift */; };
 		D6E7D2D02B6284AA0027DF29 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7D2CF2B6284AA0027DF29 /* HelperFunctions.swift */; };
@@ -183,6 +184,7 @@
 		D6AF62F72B151CE80056C973 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 		D6AF62F92B1752130056C973 /* ReceiptSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptSettingsView.swift; sourceTree = "<group>"; };
 		D6AF63092B1972620056C973 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		D6B717BC2C6155CB00113ADB /* PDFPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPreviewView.swift; sourceTree = "<group>"; };
 		D6B7A7AD2B4E8CE900E7D941 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		D6C037862B44598600CFF67E /* AuthState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
 		D6E7D2CF2B6284AA0027DF29 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
@@ -477,6 +479,7 @@
 				D6674D022ACB9B75003DE4BB /* SharePDFView.swift */,
 				D6F8CA642B2F55050031A7A2 /* ReceiptsUtils.swift */,
 				D69B4A912BA7138800C7FC33 /* AddReceiptView.swift */,
+				D6B717BC2C6155CB00113ADB /* PDFPreviewView.swift */,
 			);
 			path = Receipts;
 			sourceTree = "<group>";
@@ -655,6 +658,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6B717BD2C6155CB00113ADB /* PDFPreviewView.swift in Sources */,
 				D657A2842B516D5F0009FCD6 /* ShoppingListView.swift in Sources */,
 				D69E2A6E2B60564E004F0D5C /* CustomCheckBox.swift in Sources */,
 				D6E7D2D22B62AE8C0027DF29 /* SeeBusinessDetails.swift in Sources */,
@@ -898,7 +902,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "My Orders/My Orders.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "\"My Orders/Preview Content\"";
 				DEVELOPMENT_TEAM = 5M6RD9L4AH;
 				ENABLE_PREVIEWS = YES;
@@ -933,7 +937,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "My Orders/My Orders.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "\"My Orders/Preview Content\"";
 				DEVELOPMENT_TEAM = 5M6RD9L4AH;
 				ENABLE_PREVIEWS = YES;
