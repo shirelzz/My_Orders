@@ -15,6 +15,7 @@ struct AllReceiptsView: View {
     @ObservedObject var orderManager: OrderManager
 
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())  // Date = Date()
+    @State private var isExporting: Bool = false // State variable for loading indicator
     @State private var searchText = ""
     @State private var isAddItemViewPresented = false
     @State private var sortOption: SortOption = .date_new
@@ -132,11 +133,21 @@ struct AllReceiptsView: View {
                             }
                         }
                         ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Export") {
-                                ReceiptUtils.exportReceiptAsPDF(orderManager: orderManager, selectedYear: selectedYear)
+                            
+                            Button(action: {
+                                if !isExporting {
+                                    isExporting = true
+                                    ReceiptUtils.exportReceiptAsPDF(orderManager: orderManager, selectedYear: selectedYear) {
+                                        isExporting = false // Reset loading state
+                                    }
+                                }
+                            }) {
+                                Text("Export")
                             }
                             .foregroundColor(.accentColor)
+                            .disabled(isExporting) // Disable button while exporting
                         }
+                        
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button(action: {
                                 isAddItemViewPresented = true

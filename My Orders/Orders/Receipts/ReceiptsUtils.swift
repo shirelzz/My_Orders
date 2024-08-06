@@ -32,7 +32,7 @@ class ReceiptUtils {
             
             // Log the file path
             print("PDF file saved to: \(fileURL)")
-                        
+            
             if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
                 do {
                     let files = try FileManager.default.contentsOfDirectory(atPath: documentDirectory.path)
@@ -41,7 +41,7 @@ class ReceiptUtils {
                     print("Error listing files in document directory: \(error.localizedDescription)")
                 }
             }
-                        
+            
         } catch {
             print("Error saving PDF: \(error.localizedDescription)")
         }
@@ -55,7 +55,7 @@ class ReceiptUtils {
         // Fetch the preferred localization
         let preferredLanguage = Bundle.main.preferredLocalizations.first ?? "en"
         let isEnglish = preferredLanguage == "en"
-
+        
         // Create a PDF context
         let pdfMetaData = [
             kCGPDFContextCreator: "My Orders",
@@ -63,7 +63,7 @@ class ReceiptUtils {
         ]
         let pdfFormat = UIGraphicsPDFRendererFormat()
         pdfFormat.documentInfo = pdfMetaData as [String: Any]
-
+        
         let pageRect = CGRect(x: 0, y: 0, width: 612, height: 792)
         let renderer = UIGraphicsPDFRenderer(bounds: pageRect, format: pdfFormat)
         
@@ -82,7 +82,7 @@ class ReceiptUtils {
             if let logoImage = UIImage(data: AppManager.shared.getLogoImage()) {
                 logoImage.draw(in: logoRect)
             }
-
+            
             let businessDetails = [
                 "Name": VendorManager.shared.vendor.businessName,
                 "ID": VendorManager.shared.vendor.businessID,
@@ -103,7 +103,7 @@ class ReceiptUtils {
             
             currentY += 50
             drawSectionHeader(NSLocalizedString("Customer Details", comment: "Section header for customer details"), at: CGPoint(x: 50, y: currentY))
-
+            
             currentY += 25
             let contactDetails = [
                 NSLocalizedString("Name", comment: "Customer name label"): order.customer.name,
@@ -113,7 +113,7 @@ class ReceiptUtils {
             
             currentY += 50
             drawSectionHeader(NSLocalizedString("Order Details", comment: "Section header for order details"), at: CGPoint(x: 50, y: currentY))
-
+            
             currentY += 25
             drawTableHeaders(at: CGPoint(x: 50, y: currentY))
             
@@ -122,7 +122,7 @@ class ReceiptUtils {
             
             currentY += orderItemsHeight
             if order.delivery.cost != 0 {
-//                currentY += CGFloat(order.orderItems.count * 20)
+                //                currentY += CGFloat(order.orderItems.count * 20)
                 drawDeliveryCost(order.delivery.cost, at: CGPoint(x: 50, y: currentY))
             }
             
@@ -130,7 +130,7 @@ class ReceiptUtils {
             var totalCost = order.totalPrice
             if receipt.discountAmount != 0 {
                 totalCost -= receipt.discountAmount ?? 0.0
-//                currentY += CGFloat(order.orderItems.count * 20)
+                //                currentY += CGFloat(order.orderItems.count * 20)
                 drawDiscountAmount(receipt.discountAmount, at: CGPoint(x: 50, y: currentY))
             }
             
@@ -139,7 +139,7 @@ class ReceiptUtils {
                 let percentage = (receipt.discountPercentage ?? 0.0) / 100.0
                 let discountAmount = totalCost * percentage
                 totalCost -= discountAmount
-//                currentY += CGFloat(order.orderItems.count * 20)
+                //                currentY += CGFloat(order.orderItems.count * 20)
                 drawDiscountPercentage(receipt.discountPercentage, at: CGPoint(x: 50, y: currentY))
             }
             
@@ -148,7 +148,7 @@ class ReceiptUtils {
             
             currentY += 50
             drawSectionHeader(NSLocalizedString("Payment Details", comment: "Section header for payment details"), at: CGPoint(x: 50, y: currentY))
-
+            
             currentY += 25
             let paymentDetails = [
                 "Payment Method": receipt.paymentMethod,
@@ -167,33 +167,33 @@ class ReceiptUtils {
         
         return pdfData
     }
-
+    
     // For an already generated receipt
     static func drawPDF(for order: Order) -> Data {
         
-            let receipt_ = OrderManager.shared.getReceipt(forOrderID: order.orderID)
-            let receiptExists = OrderManager.shared.receiptExists(forOrderID: order.orderID)
-            
+        let receipt_ = OrderManager.shared.getReceipt(forOrderID: order.orderID)
+        let receiptExists = OrderManager.shared.receiptExists(forOrderID: order.orderID)
+        
         let receiptPdfData = drawReceiptPDF(for: order, receipt: receipt_, receiptExists: receiptExists, isDraft: false)
-            return receiptPdfData
+        return receiptPdfData
     }
     
     // For a not yet generated receipt
     static func drawPreviewPDF(for order: Order) -> Data {
         let receipt_ = order.receipt!
         let receiptExists = true
-
+        
         let receiptPdfData = drawReceiptPDF(for: order, receipt: receipt_, receiptExists: receiptExists, isDraft: true)
         return receiptPdfData
     }
-
+    
     // Helper methods (for better readability and maintainability)
     
     static func textAlignment() -> NSTextAlignment {
         let locale = Locale.current
         return Locale.characterDirection(forLanguage: locale.identifier) == .rightToLeft ? .right : .left
     }
-
+    
     static func formatBusinessDetails(_ details: [String: String]) -> String {
         let namePrefix = NSLocalizedString("Name: ", comment: "Business name prefix")
         let idPrefix = NSLocalizedString("ID: ", comment: "Business ID prefix")
@@ -207,14 +207,14 @@ class ReceiptUtils {
         \(phonePrefix) \(details["Phone"] ?? "")
         """
     }
-
+    
     static func formatDocumentDate(receipt: Receipt, receiptExists: Bool) -> String {
         let date = receiptExists ? HelperFunctions.formatToDate(receipt.dateGenerated) : HelperFunctions.formatToDate(Date())
         let datePrefix = NSLocalizedString("Date created: ", comment: "Document date created prefix")
         
         return "\(datePrefix) \(date)"
     }
-
+    
     static func drawText(_ text: String, at point: CGPoint, width: CGFloat, fontSize: CGFloat, isBold: Bool = false) {
         let attributes: [NSAttributedString.Key: Any] = [
             .font: isBold ? UIFont.boldSystemFont(ofSize: fontSize) : UIFont.systemFont(ofSize: fontSize),
@@ -225,7 +225,7 @@ class ReceiptUtils {
                 return paragraphStyle
             }()
         ]
-
+        
         let textStorage = NSTextStorage(string: text, attributes: attributes)
         let textContainer = NSTextContainer(size: CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
         textContainer.lineBreakMode = .byWordWrapping
@@ -233,17 +233,17 @@ class ReceiptUtils {
         let layoutManager = NSLayoutManager()
         layoutManager.addTextContainer(textContainer)
         textStorage.addLayoutManager(layoutManager)
-
+        
         // Define the rectangle where text should be drawn
         let rect = CGRect(origin: point, size: CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
         layoutManager.drawGlyphs(forGlyphRange: layoutManager.glyphRange(for: textContainer), at: point)
     }
-
-
+    
+    
     static func drawSectionHeader(_ header: String, at point: CGPoint) {
         drawText(header, at: point, width: 512, fontSize: 14, isBold: true)
     }
-
+    
     static func drawContactDetails(_ details: [String: String], at point: CGPoint) {
         var y = point.y
         let keysInOrder = [
@@ -281,7 +281,7 @@ class ReceiptUtils {
                 return paragraphStyle
             }()
         ]
-
+        
         let textStorage = NSTextStorage(string: text, attributes: attributes)
         let textContainer = NSTextContainer(size: CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
         textContainer.lineBreakMode = .byWordWrapping
@@ -293,7 +293,7 @@ class ReceiptUtils {
         let textHeight = layoutManager.usedRect(for: textContainer).height
         return textHeight
     }
-
+    
     static func drawOrderItems(_ items: [OrderItem], at point: CGPoint) -> CGFloat {
         var y = point.y
         let itemWidth: CGFloat = 200
@@ -302,7 +302,7 @@ class ReceiptUtils {
         let rowHeight: CGFloat = 40 // Increased to accommodate multi-line text
         
         var totalHeight: CGFloat = 0
-
+        
         for item in items {
             let itemName = item.inventoryItem.name
             let itemQuantity = String(item.quantity)
@@ -327,7 +327,7 @@ class ReceiptUtils {
         let discountText = String(format: NSLocalizedString("Discount Amount: %.2f %@", comment: "Label for discount amount"), discountAmount, HelperFunctions.getCurrencySymbol())
         drawText(discountText, at: CGPoint(x: point.x, y: point.y), width: 300, fontSize: 12)
     }
-
+    
     // Function to draw the discount percentage
     static func drawDiscountPercentage(_ discountPercentage: Double?, at point: CGPoint) {
         guard let discountPercentage = discountPercentage else { return }
@@ -335,13 +335,13 @@ class ReceiptUtils {
         let discountText = String(format: NSLocalizedString("Discount Percentage: %.2f%%", comment: "Label for discount percentage"), discountPercentage)
         drawText(discountText, at: CGPoint(x: point.x, y: point.y), width: 300, fontSize: 12)
     }
-
+    
     static func drawDeliveryCost(_ cost: Double, at point: CGPoint) {
         let deliveryText = NSLocalizedString("Delivery", comment: "Delivery cost label")
         drawText(deliveryText, at: CGPoint(x: 50, y: point.y), width: 200, fontSize: 12)
         drawText(String(format: "%.2f", cost) + HelperFunctions.getCurrencySymbol(), at: CGPoint(x: 350, y: point.y), width: 100, fontSize: 12)
     }
-
+    
     static func drawTotalCost(_ totalCost: Double, at point: CGPoint) {
         let totalCostFormat = NSLocalizedString("Total Cost: %@ %@", comment: "Label for total cost with value and currency")
         let formattedTotalCost = String(format: "%.2f", totalCost)
@@ -349,7 +349,7 @@ class ReceiptUtils {
         let totalCostText = String(format: totalCostFormat, formattedTotalCost, currencySymbol)
         drawText(totalCostText, at: CGPoint(x: 50, y: point.y), width: 512, fontSize: 12, isBold: true)
     }
-
+    
     
     static func drawPaymentDetails(_ details: [String: String], at point: CGPoint) {
         var y = point.y
@@ -358,7 +358,7 @@ class ReceiptUtils {
             y += 20
         }
     }
-
+    
     static func drawWatermark(in context: UIGraphicsPDFRendererContext, pageRect: CGRect) {
         let watermarkText = NSLocalizedString("Draft", comment: "Watermark text for draft")
         let fontSize: CGFloat = 72
@@ -395,7 +395,8 @@ class ReceiptUtils {
     }
     
     
-    static func exportReceiptAsPDF(orderManager: OrderManager, selectedYear: Int) {
+    static func exportReceiptAsPDF(orderManager: OrderManager, selectedYear: Int, completion: @escaping () -> Void) {
+        
         let fileManager = FileManager.default
         let tempDirectory = fileManager.temporaryDirectory
         
@@ -409,24 +410,25 @@ class ReceiptUtils {
             }
         } catch {
             print("Error creating temporary PDF directory: \(error.localizedDescription)")
+            completion() // Call completion handler in case of an error
             return
         }
-
+        
         // Filter receipts by the selected year
         let filteredReceipts = orderManager.receipts.filter { receipt in
             let receiptYear = Calendar.current.component(.year, from: receipt.dateGenerated)
             return receiptYear == selectedYear
         }
-
+        
         // Create a PDF for each receipt and save it in the temporary directory
         for (index, receipt) in filteredReceipts.enumerated() {
             let order = orderManager.getOrder(orderID: receipt.orderID)
-
+            
             if order.orderID != "" {
                 let pdfData = ReceiptUtils.drawPDF(for: order)
                 let pdfFileName = "Receipt-\(index + 1).pdf"
                 let pdfFileURL = tempPDFDirectory.appendingPathComponent(pdfFileName)
-
+                
                 do {
                     try pdfData.write(to: pdfFileURL)
                 } catch {
@@ -434,32 +436,37 @@ class ReceiptUtils {
                 }
             }
         }
-
+        
         // Create a zip file name for the exported file
         let zipFileName = "Receipts-\(selectedYear).zip"
         let zipFileURL = tempDirectory.appendingPathComponent(zipFileName)
-
+        
         // Create a zip archive containing all PDFs in the temporary directory
         SSZipArchive.createZipFile(atPath: zipFileURL.path, withContentsOfDirectory: tempPDFDirectory.path)
-
+        
         // Clean up the temporary directory after creating the zip
         do {
             try fileManager.removeItem(at: tempPDFDirectory)
         } catch {
             print("Error cleaning up temporary directory: \(error.localizedDescription)")
         }
-
+        
         // Create a share activity view controller
         let activityViewController = UIActivityViewController(activityItems: [zipFileURL], applicationActivities: nil)
-
+        
         // Present the share view controller
-        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        let window = windowScene?.windows.first
-
-        if let topViewController = window?.rootViewController {
-            topViewController.present(activityViewController, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            let window = windowScene?.windows.first
+            
+            if let topViewController = window?.rootViewController {
+                topViewController.present(activityViewController, animated: true, completion: nil)
+            }
+            
+            // Call completion handler after presenting the share view controller
+            completion()
         }
     }
-
+    
 }
 
