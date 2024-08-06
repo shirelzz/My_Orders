@@ -9,6 +9,7 @@ import SwiftUI
 import GoogleMobileAds
 import ZipArchive
 
+
 struct AllReceiptsView: View {
     
     @ObservedObject var orderManager: OrderManager
@@ -121,127 +122,42 @@ struct AllReceiptsView: View {
                 }
                 .navigationTitle("All Receipts")
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Picker("", selection: $selectedYear) {
-                            ForEach(2020...2030, id: \.self) {
-                                Text(String($0)).bold()
+                    Group {
+                        
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Picker("", selection: $selectedYear) {
+                                ForEach(2020...2030, id: \.self) {
+                                    Text(String($0)).bold()
+                                }
+                            }
+                        }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button("Export") {
+                                ReceiptUtils.exportReceiptAsPDF(orderManager: orderManager, selectedYear: selectedYear)
+                            }
+                            .foregroundColor(.accentColor)
+                        }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button(action: {
+                                isAddItemViewPresented = true
+                            }) {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.system(size: 20))
+                                //.padding()
+                                //  .shadow(radius: 1)
+                            }
+                            .sheet(isPresented: $isAddItemViewPresented) {
+                                AddReceiptView(orderManager: orderManager, isPresented: $isAddItemViewPresented)
                             }
                         }
                     }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Export") {
-                            exportReceiptsZip()
-                        }
-                        .foregroundColor(.accentColor)
-                    }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            isAddItemViewPresented = true
-                        }) {
-                            Image(systemName: "plus.circle.fill")
-                                .font(.system(size: 20))
-                            //.padding()
-//                                .shadow(radius: 1)
-                        }
-                        .sheet(isPresented: $isAddItemViewPresented) {
-                            AddReceiptView(orderManager: orderManager, isPresented: $isAddItemViewPresented)
-                        }
-                    }
                 }
             }
+            
         }
 
     }
     
-    private func exportReceiptsZip() {
-        // Filter receipts by the selected year
-        let filteredReceipts = orderManager.receipts.filter { receipt in
-            let receiptYear = Calendar.current.component(.year, from: receipt.dateGenerated)
-            return receiptYear == selectedYear
-        }
-
-        // Create a temporary directory to store individual PDFs
-        let tempDirectory = FileManager.default.temporaryDirectory
-
-        // Create a zip file name for the exported file
-        let zipFileName = "Receipts-\(selectedYear).zip"
-        let zipFileURL = tempDirectory.appendingPathComponent(zipFileName)
-
-        // Create a PDF for each receipt and save it in the temporary directory
-        for (index, receipt) in filteredReceipts.enumerated() {
-            
-            let order = orderManager.getOrder(orderID: receipt.orderID)
-            
-            if order.orderID != "" {
-                    let pdfData = ReceiptUtils.drawPDF(for: order)
-                    let pdfFileName = "Receipt-\(index + 1).pdf"
-                    let pdfFileURL = tempDirectory.appendingPathComponent(pdfFileName)
-                    
-                    do {
-                        try pdfData.write(to: pdfFileURL)
-                    } catch {
-                        print("Error saving PDF: \(error.localizedDescription)")
-                    }
-            }
-        }
-
-        // Create a zip archive containing all PDFs
-        SSZipArchive.createZipFile(atPath: zipFileURL.path, withContentsOfDirectory: tempDirectory.path)
-
-        // Create a share activity view controller
-        let activityViewController = UIActivityViewController(activityItems: [zipFileURL], applicationActivities: nil)
-
-        // Present the share view controller
-        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        let window = windowScene?.windows.first
-
-        if let topViewController = window?.rootViewController {
-            topViewController.present(activityViewController, animated: true, completion: nil)
-        }
-    }
-
-    
-    private func exportReceiptsJson() {
-        // Filter receipts by the selected year
-        let filteredReceipts = orderManager.receipts.filter { receipt in
-            let receiptYear = Calendar.current.component(.year, from: receipt.dateGenerated)
-            return receiptYear == selectedYear
-        }
-        
-        // Create a file name for the exported file
-        let fileName = "Receipts-\(selectedYear).json"
-        
-        // Get the documents directory URL
-        if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            let fileURL = documentsDirectory.appendingPathComponent(fileName)
-            
-            do {
-                // Encode the filtered receipts as JSON data
-                let encoder = JSONEncoder()
-                let jsonData = try encoder.encode(filteredReceipts)
-                
-                // Write the JSON data to the file
-                try jsonData.write(to: fileURL)
-                
-                // Create a URL to the exported file
-                let exportURL = fileURL
-                
-                // Create a share activity view controller
-                let activityViewController = UIActivityViewController(activityItems: [exportURL], applicationActivities: nil)
-                
-                // Present the share view controller
-                let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-                let window = windowScene?.windows.first
-                
-                if let topViewController = window?.rootViewController {
-                    topViewController.present(activityViewController, animated: true, completion: nil)
-                }
-            } catch {
-                // Handle any errors that may occur during the export
-                print("Error exporting receipts: \(error.localizedDescription)")
-            }
-        }
-    }
     
     
 }

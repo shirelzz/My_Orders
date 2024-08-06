@@ -1401,6 +1401,7 @@
       }
     },
     "Customer Details" : {
+      "comment" : "Section header for customer details",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2851,6 +2852,7 @@
       }
     },
     "Name" : {
+      "comment" : "Customer name label",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3374,6 +3376,7 @@
       }
     },
     "Order Details" : {
+      "comment" : "Section header for order details",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3573,6 +3576,7 @@
       }
     },
     "Payment Details" : {
+      "comment" : "Section header for payment details",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3671,6 +3675,7 @@
       }
     },
     "Phone" : {
+      "comment" : "Customer phone label",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5095,6 +5100,7 @@
 
     },
     "Total Cost" : {
+      "comment" : "Label for total cost",
       "localizations" : {
         "en" : {
           "stringUnit" : {

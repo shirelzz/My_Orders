@@ -183,8 +183,8 @@
             filePath = "My Orders/Orders/Receipts/ReceiptsUtils.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
             landmarkName = "drawPDF(for:)"
             landmarkType = "7">
          </BreakpointContent>
