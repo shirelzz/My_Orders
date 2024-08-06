@@ -620,6 +620,12 @@
     "Address: " : {
       "comment" : "Business address prefix",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address: "
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1148,6 +1154,12 @@
     },
     "Clear Out of Stock Items" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear Out of Stock Items"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2034,6 +2046,17 @@
         }
       }
     },
+    "Discount Amount: %.2f %@" : {
+      "comment" : "Label for discount amount",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Discount Amount: %1$.2f %2$@"
+          }
+        }
+      }
+    },
     "Discount Percentage" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2044,6 +2067,9 @@
           }
         }
       }
+    },
+    "Discount Percentage: %.2f%%" : {
+      "comment" : "Label for discount percentage"
     },
     "Discount Type" : {
       "localizations" : {
@@ -2348,7 +2374,14 @@
       }
     },
     "From" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From"
+          }
+        }
+      }
     },
     "GBP" : {
       "localizations" : {
@@ -2464,11 +2497,24 @@
       }
     },
     "Home" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home"
+          }
+        }
+      }
     },
     "ID: " : {
       "comment" : "Business ID prefix",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID: "
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3050,6 +3096,12 @@
     },
     "No PDF available" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No PDF available"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3367,6 +3419,12 @@
     },
     "Order Date: %@" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order Date: %@"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4311,6 +4369,12 @@
     },
     "Receipt No. %@" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Receipt No. %@"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4520,6 +4584,12 @@
     },
     "See receipt preview" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See receipt preview"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4613,6 +4683,12 @@
     },
     "Select Working Hours" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Working Hours"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5097,7 +5173,14 @@
       }
     },
     "To" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To"
+          }
+        }
+      }
     },
     "Total Cost" : {
       "comment" : "Label for total cost",
@@ -5112,6 +5195,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "עלות כוללת:"
+          }
+        }
+      }
+    },
+    "Total Cost: %@ %@" : {
+      "comment" : "Label for total cost with value and currency",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Total Cost: %1$@ %2$@"
           }
         }
       }

@@ -41,14 +41,18 @@ class ReceiptsDatabaseManager: DatabaseManager {
                 let dateGenerate = self.convertStringToDate(dateGeneratedStr)
                 let paymentDate =  self.convertStringToDate(paymentDateStr)
                 
+                let discountAmount = receiptDict["discountAmount"] as? Double
+                let discountPercentage = receiptDict["discountPercentage"] as? Double
+                
                 let receipt = Receipt(
                     id: id,
                     myID: myID,
                     orderID: orderID,
-                    //                    pdfData: pdfData,
                     dateGenerated: dateGenerate,
                     paymentMethod: paymentMethod,
-                    paymentDate: paymentDate
+                    paymentDate: paymentDate,
+                    discountAmount: discountAmount,
+                    discountPercentage: discountPercentage
                 )
                 
                 receipts.append(receipt)

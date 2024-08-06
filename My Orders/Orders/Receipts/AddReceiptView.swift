@@ -397,7 +397,7 @@ struct AddReceiptView: View {
 
         if discountType == .fixedAmount {
             totalCost -= discountValue
-        } else {
+        } else if discountType == .percentage {
             let percentage = discountValue / 100.0
             let discountAmount = totalCost * percentage
             totalCost -= discountAmount
@@ -437,6 +437,17 @@ struct AddReceiptView: View {
     }
     
     private func createReceipt() {
+        var disAmount: Double? = nil
+        var disPrecentage: Double? = nil
+
+        if discountValue != 0.0 {
+            if discountType == .fixedAmount {
+                disAmount = discountValue
+            }
+            else if discountType == .percentage {
+                disPrecentage = discountValue
+            }
+        }
         // Create a new receipt with the entered details
         let newReceipt = Receipt(
             id: UUID().uuidString,
@@ -444,7 +455,9 @@ struct AddReceiptView: View {
             orderID: order.orderID,
             dateGenerated: Date(),
             paymentMethod: selectedPaymentMethod,
-            paymentDate: selectedPaymentDate
+            paymentDate: selectedPaymentDate,
+            discountAmount: disAmount,
+            discountPercentage: disPrecentage
         )
         
         self.receipt = newReceipt

@@ -255,9 +255,13 @@ struct Receipt: Identifiable, Codable, Hashable {
     var paymentMethod: String
     var paymentDate: Date
     
+    // Optional discount fields
+    var discountAmount: Double?
+    var discountPercentage: Double?
+    
     // Default constructor
     init(id: String = "", myID: Int = 0, orderID: String = "",
-         dateGenerated: Date = Date(), paymentMethod: String = "", paymentDate: Date = Date()) //, pdfData: Data? = nil
+         dateGenerated: Date = Date(), paymentMethod: String = "", paymentDate: Date = Date(), discountAmount: Double? = nil, discountPercentage: Double? = nil) //, pdfData: Data? = nil
     {
         self.id = id
         self.myID = myID
@@ -265,6 +269,8 @@ struct Receipt: Identifiable, Codable, Hashable {
         self.dateGenerated = dateGenerated
         self.paymentMethod = paymentMethod
         self.paymentDate = paymentDate
+        self.discountAmount = discountAmount
+        self.discountPercentage = discountPercentage
     }
     
     init?(dictionary: [String: Any]) {
@@ -274,7 +280,9 @@ struct Receipt: Identifiable, Codable, Hashable {
               let orderID = dictionary["orderID"] as? String,
               let dateGenerated = dictionary["dateGenerated"] as? Date,
               let paymentMethod = dictionary["paymentMethod"] as? String,
-              let paymentDate = dictionary["paymentDate"] as? Date
+              let paymentDate = dictionary["paymentDate"] as? Date,
+              let discountAmount = dictionary["discountAmount"] as? Double,
+              let discountPercentage = dictionary["discountPercentage"] as? Double
 
         else {
             return nil
@@ -285,13 +293,15 @@ struct Receipt: Identifiable, Codable, Hashable {
         self.dateGenerated = dateGenerated
         self.paymentMethod = paymentMethod
         self.paymentDate = paymentDate
+        self.discountAmount = discountAmount
+        self.discountPercentage = discountPercentage
     }
     
     func dictionaryRepresentation() -> [String: Any] {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-
-        let receiptDict: [String: Any] = [
+        
+        var receiptDict: [String: Any] = [
             
             "id": id, // new
             "myID": myID,
@@ -299,8 +309,17 @@ struct Receipt: Identifiable, Codable, Hashable {
             "dateGenerated": dateFormatter.string(from: dateGenerated),
             "paymentMethod": paymentMethod,
             "paymentDate": dateFormatter.string(from: paymentDate)
-
+            
         ]
+        
+        if let discountAmount = discountAmount {
+            receiptDict["discountAmount"] = discountAmount
+        }
+        
+        if let discountPercentage = discountPercentage {
+            receiptDict["discountPercentage"] = discountPercentage
+        }
+        
         return receiptDict
     }
 }
