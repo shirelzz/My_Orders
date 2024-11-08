@@ -111,6 +111,9 @@ struct AllOrdersView: View {
                             }
                         }
                         .listStyle(.plain)
+                        .refreshable {
+                            await refreshOrders()
+                        }
                     }
                     
                     AdBannerView(adUnitID: "ca-app-pub-3940256099942544/2934735716")
@@ -128,6 +131,11 @@ struct AllOrdersView: View {
     
     private func deleteOrder(orderID: String) {
         orderManager.removeOrder(with: orderID)
+    }
+    
+    func refreshOrders() async {
+        AppManager.shared.refreshCurrency()
+        orderManager.fetchOrders()
     }
     
 }

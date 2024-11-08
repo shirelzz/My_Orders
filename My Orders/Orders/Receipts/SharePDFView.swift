@@ -21,10 +21,3 @@ struct SharePDFView: UIViewControllerRepresentable {
         // Not needed for this example
     }
 }
-
-
-//struct SharePDFView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SharePDFView(pdfData: Data())
-//    }
-//}

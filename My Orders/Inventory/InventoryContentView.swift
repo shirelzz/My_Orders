@@ -154,6 +154,10 @@ struct InventoryContentView: View {
                             }
                         }
                         .listStyle(.plain)
+                        .refreshable {
+                            await refreshItems()
+                            
+                        }
                         .alert(isPresented: $showDeleteAlert) {
                             Alert(
                                 title: Text("Confirm Deletion"),
@@ -249,6 +253,11 @@ struct InventoryContentView: View {
     
     var inventoryItems: [InventoryItem] {
         return inventoryManager.items
+    }
+    
+    func refreshItems() async {
+        AppManager.shared.refreshCurrency()
+        inventoryManager.fetchItemsFromDB()
     }
     
 }

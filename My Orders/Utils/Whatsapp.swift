@@ -9,6 +9,7 @@ import SwiftUI
 
 
 struct WhatsAppChatButton: View {
+    
     var phoneNumber: String
 
     var body: some View {
@@ -21,10 +22,16 @@ struct WhatsAppChatButton: View {
                         }
         }) {
             HStack {
-                Image(systemName: "message")
+//                Image(systemName: "message")
+                
+                Text(phoneNumber)
+                                .underline() // Optional: underlines the phone number
+//                                .foregroundColor(.gray)
+                                .font(.subheadline)
             }
         }
     }
+    
     private func formatPhoneNumber(_ number: String) -> String? {
             // Remove non-digit characters
             let digitOnlyPhoneNumber = number.replacingOccurrences(of: "\\D", with: "", options: .regularExpression)

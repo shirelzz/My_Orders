@@ -30,147 +30,10 @@
             filePath = "My Orders/Orders/OrdersManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "364"
-            endingLineNumber = "364"
+            startingLineNumber = "367"
+            endingLineNumber = "367"
             landmarkName = "OrderManager"
             landmarkType = "3">
-            <Locations>
-               <Location
-                  uuid = "E94186BD-7518-4A52-8AEE-234B6E4F5085 - 28d19d5e3f4b4039"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "property wrapper backing initializer of My_Orders.OrderManager.orders : Swift.Array&lt;My_Orders.Order&gt;"
-                  moduleName = "My Orders"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/syrlzkryh/Desktop/XcodeProjects/My_Orders/My%20Orders/Orders/OrdersManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "24">
-               </Location>
-               <Location
-                  uuid = "E94186BD-7518-4A52-8AEE-234B6E4F5085 - 4add497c01159ed"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "My_Orders.OrderManager.orders.getter : Swift.Array&lt;My_Orders.Order&gt;"
-                  moduleName = "My Orders"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/syrlzkryh/Desktop/XcodeProjects/My_Orders/My%20Orders/Orders/OrdersManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "28">
-               </Location>
-               <Location
-                  uuid = "E94186BD-7518-4A52-8AEE-234B6E4F5085 - c4b271e6fa399340"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "My_Orders.OrderManager.orders.setter : Swift.Array&lt;My_Orders.Order&gt;"
-                  moduleName = "My Orders"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/syrlzkryh/Desktop/XcodeProjects/My_Orders/My%20Orders/Orders/OrdersManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "199"
-                  endingLineNumber = "199"
-                  offsetFromSymbolStart = "0">
-               </Location>
-               <Location
-                  uuid = "E94186BD-7518-4A52-8AEE-234B6E4F5085 - 1896585a4de306c9"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "My_Orders.OrderManager.orders.modify : Swift.Array&lt;My_Orders.Order&gt;"
-                  moduleName = "My Orders"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/syrlzkryh/Desktop/XcodeProjects/My_Orders/My%20Orders/Orders/OrdersManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "199"
-                  endingLineNumber = "199"
-                  offsetFromSymbolStart = "0">
-               </Location>
-               <Location
-                  uuid = "E94186BD-7518-4A52-8AEE-234B6E4F5085 - ba9ce5ceb9755c06"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "My_Orders.OrderManager.orders.modify : Swift.Array&lt;My_Orders.Order&gt; with unmangled suffix &quot;.resume.0&quot;"
-                  moduleName = "My Orders"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/syrlzkryh/Desktop/XcodeProjects/My_Orders/%3Ccompiler-generated%3E"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "20">
-               </Location>
-               <Location
-                  uuid = "E94186BD-7518-4A52-8AEE-234B6E4F5085 - d36675d6ec25c63a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "My_Orders.OrderManager.$orders.getter : Combine.Published&lt;Swift.Array&lt;My_Orders.Order&gt;&gt;.Publisher"
-                  moduleName = "My Orders"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/syrlzkryh/Desktop/XcodeProjects/My_Orders/My%20Orders/Orders/OrdersManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "199"
-                  endingLineNumber = "199"
-                  offsetFromSymbolStart = "0">
-               </Location>
-               <Location
-                  uuid = "E94186BD-7518-4A52-8AEE-234B6E4F5085 - 58115a64911044aa"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "My_Orders.OrderManager.$orders.setter : Combine.Published&lt;Swift.Array&lt;My_Orders.Order&gt;&gt;.Publisher"
-                  moduleName = "My Orders"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/syrlzkryh/Desktop/XcodeProjects/My_Orders/%3Ccompiler-generated%3E"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "36">
-               </Location>
-               <Location
-                  uuid = "E94186BD-7518-4A52-8AEE-234B6E4F5085 - d6f2f2606c6e5779"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "My_Orders.OrderManager.$orders.modify : Combine.Published&lt;Swift.Array&lt;My_Orders.Order&gt;&gt;.Publisher"
-                  moduleName = "My Orders"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/syrlzkryh/Desktop/XcodeProjects/My_Orders/%3Ccompiler-generated%3E"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "64">
-               </Location>
-               <Location
-                  uuid = "E94186BD-7518-4A52-8AEE-234B6E4F5085 - 9c245b71d91ff667"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "My_Orders.OrderManager.$orders.modify : Combine.Published&lt;Swift.Array&lt;My_Orders.Order&gt;&gt;.Publisher with unmangled suffix &quot;.resume.0&quot;"
-                  moduleName = "My Orders"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/syrlzkryh/Desktop/XcodeProjects/My_Orders/%3Ccompiler-generated%3E"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "24">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -183,8 +46,8 @@
             filePath = "My Orders/Orders/Receipts/ReceiptsUtils.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
             landmarkName = "drawPDF(for:)"
             landmarkType = "7">
          </BreakpointContent>

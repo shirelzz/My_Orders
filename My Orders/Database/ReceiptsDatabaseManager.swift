@@ -31,6 +31,7 @@ class ReceiptsDatabaseManager: DatabaseManager {
                       let orderID = receiptDict["orderID"] as? String,
                       let dateGeneratedStr = receiptDict["dateGenerated"] as? String,
                       let paymentMethod = receiptDict["paymentMethod"] as? String,
+                      let paymentDetails = receiptDict["paymentDetails"] as? String,
                       let paymentDateStr = receiptDict["paymentDate"] as? String
                         
                 else {
@@ -38,6 +39,8 @@ class ReceiptsDatabaseManager: DatabaseManager {
                     continue
                 }
                 
+//                let paymentDetails = receiptDict["paymentDetails"] as? String ?? ""
+
                 let dateGenerate = self.convertStringToDate(dateGeneratedStr)
                 let paymentDate =  self.convertStringToDate(paymentDateStr)
                 
@@ -50,6 +53,7 @@ class ReceiptsDatabaseManager: DatabaseManager {
                     orderID: orderID,
                     dateGenerated: dateGenerate,
                     paymentMethod: paymentMethod,
+                    paymentDetails: paymentDetails,
                     paymentDate: paymentDate,
                     discountAmount: discountAmount,
                     discountPercentage: discountPercentage
@@ -82,6 +86,53 @@ class ReceiptsDatabaseManager: DatabaseManager {
             completion(recValues)
         })
     }
+    
+    func migrateReceiptsToAddPaymentDetails(path: String, defaultPaymentDetails: String = "") {
+        let receiptsRef = databaseRef.child(path)
+        
+        receiptsRef.observeSingleEvent(of: .value, with: { snapshot in
+            guard let value = snapshot.value as? [String: Any] else {
+                print("No receipts data found")
+                return
+            }
+            
+            for (receiptID, receiptData) in value {
+                if var receiptDict = receiptData as? [String: Any] {
+                    
+                    // Check if `paymentDetails` is missing
+                    if receiptDict["paymentDetails"] == nil {
+                        var updatedPaymentDetails = defaultPaymentDetails
+                        
+                        // Check if paymentMethod is "Paybox" or "Bit"
+                        if let paymentMethod = receiptDict["paymentMethod"] as? String,
+                           paymentMethod == "Paybox" || paymentMethod == "Bit" {
+                            
+                            // Set paymentDetails to the payment method (e.g., "Paybox" or "Bit")
+                            updatedPaymentDetails = "Supplier: \(paymentMethod) /"
+                            
+                            // Change paymentMethod to "Payment App"
+                            receiptDict["paymentMethod"] = "Payment App"
+                        }
+                        
+                        // Update paymentDetails with either the method or the default value
+                        receiptDict["paymentDetails"] = updatedPaymentDetails
+                        
+                        // Update the receipt in the database
+                        receiptsRef.child(receiptID).setValue(receiptDict) { error, _ in
+                            if let error = error {
+                                print("Failed to update receipt \(receiptID): \(error)")
+                            } else {
+                                print("Successfully updated receipt \(receiptID) with payment details")
+                            }
+                        }
+                    }
+                }
+            }
+            
+        })
+    }
+
+
     
     // MARK: - Writing data
 

@@ -9,214 +9,179 @@ import SwiftUI
 import PDFKit
 import UIKit
 
+
+import SwiftUI
+import PDFKit
+import UIKit
+
 struct ReceiptView: View {
     
     @ObservedObject var orderManager: OrderManager
-    
     @State var order: Order
     @Binding var showGenerationAlert: Bool
+    
     @State private var pdfData: Data?
     @State private var showConfirmationAlert = false
-    @State private var selectedPaymentMethod = "Paybox"
-    @State private var selectedPaymentDate: Date = Date()
     @State private var showSuccessMessage = false
-    @State private var lastReceipttID = OrderManager.shared.getLastReceiptID()
-    @State private var receiptExists = false
+    @State private var lastReceiptID = OrderManager.shared.getLastReceiptID()
     @State private var isRewardedAdPresented = false
     @State private var currency = HelperFunctions.getCurrencySymbol()
     
+    @State private var selectedPaymentDate: Date = Date()
+    @State private var selectedPaymentMethod = "Payment App"
+    @State private var selectedPaymentApp = "Paybox"
+    @State private var selectedPaymentDetails = ""
+    @State private var additionalDetails = ""
+    
+    @Environment(\.layoutDirection) var layoutDirection  // Environment variable for detecting LTR or RTL
+    
     var body: some View {
         
-        VStack(alignment: .leading, spacing: 10) {
-            
-            Text("Receipt")
-                .font(.title)
-                .bold()
-                .padding(.bottom, 20)
-            
-            HStack{
-                Text("Receipt No.")
-                Text(" \(lastReceipttID + 1)")
+        Form {
+            // Receipt Header Section
+            Section(header: Text("Receipt Information")) {
+                HStack {
+                    Text("Receipt No:")
+                    Spacer()
+                    Text("\(lastReceiptID + 1)")
+                        .multilineTextAlignment(layoutDirection == .rightToLeft ? .leading : .trailing)
+                }
+                
+                HStack {
+                    Text("Date Created:")
+                    Spacer()
+                    Text(HelperFunctions.formatToDate(Date()))
+                        .multilineTextAlignment(layoutDirection == .rightToLeft ? .leading : .trailing)
+                }
+                
+                HStack {
+                    Text("For:")
+                    Spacer()
+                    Text(order.customer.name)
+                        .multilineTextAlignment(layoutDirection == .rightToLeft ? .leading : .trailing)
+                }
             }
-            .padding(.leading)
             
-            
-            HStack{
-                Text("Date created:")
-                Text(HelperFunctions.formatToDate(Date()))
-            }
-            .padding(.leading)
-
-            HStack{
-                Text("For: ")
-                Text(order.customer.name)
-            }
-            .padding(.leading)
-            
-            Section(header: Text("Order Details:")
-                .font(.headline)
-                .fontWeight(.bold)
-                .padding(.leading)
-            ) {
-                List(order.orderItems, id: \.inventoryItem.name) { dessert in
+            // Order Details Section
+            Section(header: Text("Order Details")) {
+                ForEach(order.orderItems, id: \.inventoryItem.name) { dessert in
                     HStack {
-                        Text("\(dessert.inventoryItem.name)")
+                        Text(dessert.inventoryItem.name)
                         Spacer()
                         Text("Q: \(dessert.quantity)")
-                        // Text("₪\(dessert.price, specifier: "%.2f")")
+                    }
+                    .multilineTextAlignment(layoutDirection == .rightToLeft ? .leading : .trailing)
+                }
+            }
+            
+            // Delivery Cost Section
+            if !order.delivery.address.isEmpty || order.delivery.cost != 0 {
+                Section(header: Text("Delivery")) {
+                    HStack {
+                        Text("Delivery Cost:")
+                        Spacer()
+                        Text("\(currency)\(String(format: "%.2f", order.delivery.cost))")
+                            .multilineTextAlignment(layoutDirection == .rightToLeft ? .leading : .trailing)
                     }
                 }
-                
             }
             
-            if((order.delivery.address != "") || (order.delivery.cost != 0)){
+            // Total Price Section
+            Section(header: Text("Total Price")) {
                 HStack {
-                    Text("Delivery Cost:")
-                        .font(.headline)
-                    Text(currency)
-                    Text(String(format: "%.2f", order.delivery.cost))
+                    Text("Amount:")
+                    Spacer()
+                    Text("\(currency)\(String(format: "%.2f", order.totalPrice))")
+                        .multilineTextAlignment(layoutDirection == .rightToLeft ? .leading : .trailing)
                 }
             }
             
-            HStack{
-                Text("Price:").font(.headline)
-                Text(currency)
-                Text(String(format: "%.2f", order.totalPrice))
-                
-            }
-            .padding(.leading)
-
+            // Payment Details Section
+            PaymentDetailsView(
+                selectedPaymentMethod: $selectedPaymentMethod,
+                selectedPaymentApp: $selectedPaymentApp,
+                selectedPaymentDetails: $selectedPaymentDetails,
+                additionalDetails: $additionalDetails,
+                selectedPaymentDate: $selectedPaymentDate
+            )
             
-            HStack(alignment: .center, spacing: 5) {
-                Text("Payment method:")
-                    .font(.headline)
-                
-                Spacer()
-                
-                Picker(selection: $selectedPaymentMethod, label: Text("Payment Method")) {
-                    Text("Paybox").tag("Paybox")
-                    Text("Bit").tag("Bit")
-                    Text("Bank transfer").tag("Bank transfer")
-                    Text("Cash").tag("Cash")
-                    Text("Cheque").tag("Cheque")
-                }
-                
-            }
-            .padding(.leading)
-
-            HStack(alignment: .center, spacing: 5){
-                Text("Payment date:")
-                    .font(.headline)
-                
-                DatePicker("", selection: $selectedPaymentDate, displayedComponents: .date)
-                    .datePickerStyle(DefaultDatePickerStyle())
-                    .previewLayout(.sizeThatFits)
-
-                
-            }
-            .padding(.leading)
-            
+            // Generate PDF Button
             if !OrderManager.shared.receiptExists(forOrderID: order.orderID) {
-               
-                Button("Generate PDF Receipt") {
-                    showConfirmationAlert = true
-                }
-                .padding(.top, 20)
-                .alert(isPresented: $showConfirmationAlert) {
-                    Alert(
-                        title: Text("Generate Receipt"),
-                        message: Text("Are you sure you want to generate this receipt? Once a receipt is generated it cannot be deleted."),
-                        primaryButton: .default(Text("Generate").foregroundColor(Color.accentColor)) {
-                            isRewardedAdPresented = true
-                            generatePDF()
-                            
-                            if showSuccessMessage {
-                                orderManager.forceReceiptNumberReset(value: 0)
-                                Toast.showToast(message: "Receipt generated successfully")
-                            }
-                            
-                        },
-                        secondaryButton: .cancel(Text("Cancel").foregroundColor(Color.accentColor)) {
-                        }
-                    )
-                }
-                
-//                RewardedAdView(adUnitID: "ca-app-pub-3940256099942544/1712485313", isPresented: $isRewardedAdPresented)
-                // test: ca-app-pub-3940256099942544/1712485313
-                // mine: ca-app-pub-1213016211458907/4894339659
-
-            }
-            
-        }
-        .padding()
-        .toolbar {
-   
-            if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    
-                    Button {
-                        
-                        pdfData = ReceiptUtils.drawPDF(for: order)
-                        guard let pdfData = self.pdfData else {
-                            Toast.showToast(message: "cant find data")
-                            return
-                        }
-                        
-                        if let windowScene = UIApplication.shared.connectedScenes
-                            .first(where: { $0 is UIWindowScene }) as? UIWindowScene {
-                            
-                            let pdfShareView = SharePDFView(pdfData: pdfData)
-                            let hostingController = UIHostingController(rootView: pdfShareView)
-                            
-                            if let rootViewController = windowScene.windows.first?.rootViewController {
-                                // Dismiss any existing presented view controller
-                                if let presentedViewController = rootViewController.presentedViewController {
-                                    presentedViewController.dismiss(animated: true) {
-                                        // Present the new view controller
-                                        rootViewController.present(hostingController, animated: true, completion: nil)
-                                    }
-                                } else {
-                                    // No view controller is currently presented, so present the new one
-                                    rootViewController.present(hostingController, animated: true, completion: nil)
+//                Section {
+                    Button(action: {
+                        showConfirmationAlert = true
+                    }) {
+                        Text("Generate Receipt")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .foregroundColor(.white)
+                            .background(Color.accentColor)
+                            .cornerRadius(10)
+                    }
+                    .alert(isPresented: $showConfirmationAlert) {
+                        Alert(
+                            title: Text("Generate Receipt"),
+                            message: Text("Are you sure you want to generate this receipt? Once generated, it cannot be deleted."),
+                            primaryButton: .default(Text("Generate").foregroundColor(.accentColor)) {
+                                isRewardedAdPresented = true
+                                generatePDF()
+                                if showSuccessMessage {
+                                    orderManager.forceReceiptNumberReset(value: 0)
+                                    Toast.showToast(message: "Receipt generated successfully")
                                 }
-                            }
-                        }
-                        
-                        
-                        
+                            },
+                            secondaryButton: .cancel(Text("Cancel").foregroundColor(.red))
+                        )
+                    }
+//                }
+            }
+        }
+        .navigationTitle("Receipt")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
+                    Button {
+                        pdfData = ReceiptUtils.drawPDF(for: order)
+                        sharePDF()
                     } label: {
                         Image(systemName: "square.and.arrow.up")
                     }
-                    
                 }
             }
         }
     }
     
-    private func checkIfReceiptExist() -> Bool {
-        if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
-            Toast.showToast(message: "Receipt already exists")
-            return true
+    private func sharePDF() {
+        guard let pdfData = self.pdfData else {
+            Toast.showToast(message: "Cannot find PDF data")
+            return
         }
-        return false
+        if let windowScene = UIApplication.shared.connectedScenes.first(where: { $0 is UIWindowScene }) as? UIWindowScene,
+           let rootViewController = windowScene.windows.first?.rootViewController {
+            
+            let pdfShareView = SharePDFView(pdfData: pdfData)
+            let hostingController = UIHostingController(rootView: pdfShareView)
+            
+            if let presentedViewController = rootViewController.presentedViewController {
+                presentedViewController.dismiss(animated: true) {
+                    rootViewController.present(hostingController, animated: true)
+                }
+            } else {
+                rootViewController.present(hostingController, animated: true)
+            }
+        }
     }
     
     private func generatePDF() {
-        
-        if checkIfReceiptExist() {
-            return
-        }
+        if checkIfReceiptExists() { return }
         
         showGenerationAlert = true
-
-        // Create a Receipt instance
         let receipt = Receipt(
             id: UUID().uuidString,
-            myID: lastReceipttID + 1,
+            myID: lastReceiptID + 1,
             orderID: order.orderID,
             dateGenerated: Date(),
-            paymentMethod: selectedPaymentMethod ,
+            paymentMethod: selectedPaymentMethod,
             paymentDate: selectedPaymentDate
         )
         
@@ -225,7 +190,15 @@ struct ReceiptView: View {
         }
     }
     
+    private func checkIfReceiptExists() -> Bool {
+        if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
+            Toast.showToast(message: "Receipt already exists")
+            return true
+        }
+        return false
+    }
 }
+
 
 struct ReceiptView_Previews: PreviewProvider {
     static var previews: some View {

@@ -7,7 +7,6 @@
 
 import Foundation
 import Combine
-//import Firebase
 import FirebaseDatabase
 import FirebaseDatabaseSwift
 import FirebaseAuth
@@ -115,7 +114,6 @@ struct Order: Identifiable, Codable {
     var orderID: String
     var customer: Customer
     var orderItems: [OrderItem]
-//    var receiptItems: [ReceiptItem]?
     var orderDate: Date
     var delivery: Delivery
     var notes: String
@@ -253,6 +251,7 @@ struct Receipt: Identifiable, Codable, Hashable {
     var orderID: String
     var dateGenerated: Date
     var paymentMethod: String
+    var paymentDetails: String
     var paymentDate: Date
     
     // Optional discount fields
@@ -261,13 +260,14 @@ struct Receipt: Identifiable, Codable, Hashable {
     
     // Default constructor
     init(id: String = "", myID: Int = 0, orderID: String = "",
-         dateGenerated: Date = Date(), paymentMethod: String = "", paymentDate: Date = Date(), discountAmount: Double? = nil, discountPercentage: Double? = nil) //, pdfData: Data? = nil
+         dateGenerated: Date = Date(), paymentMethod: String = "", paymentDetails: String = "", paymentDate: Date = Date(), discountAmount: Double? = nil, discountPercentage: Double? = nil) //, pdfData: Data? = nil
     {
         self.id = id
         self.myID = myID
         self.orderID = orderID
         self.dateGenerated = dateGenerated
         self.paymentMethod = paymentMethod
+        self.paymentDetails = paymentDetails
         self.paymentDate = paymentDate
         self.discountAmount = discountAmount
         self.discountPercentage = discountPercentage
@@ -280,6 +280,7 @@ struct Receipt: Identifiable, Codable, Hashable {
               let orderID = dictionary["orderID"] as? String,
               let dateGenerated = dictionary["dateGenerated"] as? Date,
               let paymentMethod = dictionary["paymentMethod"] as? String,
+              let paymentDetails = dictionary["paymentDetails"] as? String,
               let paymentDate = dictionary["paymentDate"] as? Date,
               let discountAmount = dictionary["discountAmount"] as? Double,
               let discountPercentage = dictionary["discountPercentage"] as? Double
@@ -292,6 +293,7 @@ struct Receipt: Identifiable, Codable, Hashable {
         self.orderID = orderID
         self.dateGenerated = dateGenerated
         self.paymentMethod = paymentMethod
+        self.paymentDetails = paymentDetails
         self.paymentDate = paymentDate
         self.discountAmount = discountAmount
         self.discountPercentage = discountPercentage
@@ -308,6 +310,7 @@ struct Receipt: Identifiable, Codable, Hashable {
             "orderID": orderID,
             "dateGenerated": dateFormatter.string(from: dateGenerated),
             "paymentMethod": paymentMethod,
+            "paymentDetails": paymentDetails,
             "paymentDate": dateFormatter.string(from: paymentDate)
             
         ]
@@ -367,10 +370,12 @@ class OrderManager: ObservableObject {
     var receiptValues: ReceiptValues = ReceiptValues(receiptNumber: 0, receiptNumberReset: 0) // reset: 0 = false, 1 = true
 
     private var isUserSignedIn = Auth.auth().currentUser != nil
-
+    private var userID = ""
 
     init() {
         if isUserSignedIn{
+            userID = Auth.auth().currentUser?.uid ?? ""
+            performMigrationIfNeeded()
             fetchOrders()
             fetchReceipts()
             fetchReceiptValues()
@@ -385,92 +390,87 @@ class OrderManager: ObservableObject {
     // MARK: - For signed in users (Firebase)
     
     func fetchOrders() {
-        if let currentUser = Auth.auth().currentUser {
-            let userID = currentUser.uid
-            let path = "users/\(userID)/orders"
-
-            OrderDatabaseManager.shared.fetchOrders(path: path, completion: { fetchedOrders in
-
-                DispatchQueue.main.async {
-                    self.orders = fetchedOrders
-                    print("Success fetching orders")
-                    
-                    for order in fetchedOrders {
-                        self.printOrder(order: order)
-                    }
+        
+        let path = "users/\(userID)/orders"
+        
+        OrderDatabaseManager.shared.fetchOrders(path: path, completion: { fetchedOrders in
+            
+            DispatchQueue.main.async {
+                self.orders = fetchedOrders
+                print("Success fetching orders")
+                
+                for order in fetchedOrders {
+                    self.printOrder(order: order)
                 }
-
-
-            })
-        }
+            }
+            
+            
+        })
     }
     
     func fetchReceiptValues() {
         
-        if let currentUser = Auth.auth().currentUser {
-            let userID = currentUser.uid
-            let path = "users/\(userID)/receiptSettings"
-
-            ReceiptsDatabaseManager.shared.fetchReceiptValues(path: path, completion: { fetchedReceiptValues in
-                DispatchQueue.main.async {
-                    self.receiptValues = fetchedReceiptValues
-                    print("Success fetching receipts values")
-                }
-            })
-            
-            if self.receiptValues.receiptNumberReset == -1 {
-                let lastReceiptID = getLastReceiptID()
-                self.receiptValues = ReceiptValues(receiptNumber: lastReceiptID, receiptNumberReset: 0)
-                saveReceiptValues()
+        let path = "users/\(userID)/receiptSettings"
+        
+        ReceiptsDatabaseManager.shared.fetchReceiptValues(path: path, completion: { fetchedReceiptValues in
+            DispatchQueue.main.async {
+                self.receiptValues = fetchedReceiptValues
+                print("Success fetching receipts values")
             }
+        })
+        
+        if self.receiptValues.receiptNumberReset == -1 {
+            let lastReceiptID = getLastReceiptID()
+            self.receiptValues = ReceiptValues(receiptNumber: lastReceiptID, receiptNumberReset: 0)
+            saveReceiptValues()
         }
+        
     }
 
     
     func fetchReceipts() {
-        if let currentUser = Auth.auth().currentUser {
-            let userID = currentUser.uid
-            let path = "users/\(userID)/receipts"
-
-            ReceiptsDatabaseManager.shared.fetchReceipts(path: path, completion: { fetchedReceipts in
-                DispatchQueue.main.async {
-                    self.receipts = fetchedReceipts // Set(fetchedReceipts)
-                    print("Success fetching receipts")
-                }
-            })
+        
+        let path = "users/\(userID)/receipts"
+        
+        ReceiptsDatabaseManager.shared.fetchReceipts(path: path, completion: { fetchedReceipts in
+            DispatchQueue.main.async {
+                self.receipts = fetchedReceipts // Set(fetchedReceipts)
+                print("Success fetching receipts")
+            }
+        })
+        
+    }
+    
+    func performMigrationIfNeeded() {
+        let migrationCompleted = UserDefaults.standard.bool(forKey: "migrationCompletedForPaymentDetails2")
+        
+        if !migrationCompleted {
+            ReceiptsDatabaseManager.shared.migrateReceiptsToAddPaymentDetails(path: "users/\(userID)/receipts")
+            print("migrate called")
+            
+            // Mark migration as complete
+            UserDefaults.standard.set(true, forKey: "migrationCompletedForPaymentDetails2")
         }
     }
     
     func saveOrder2DB(_ order: Order) {
-        if let currentUser = Auth.auth().currentUser {
-            let userID = currentUser.uid
-            let path = "users/\(userID)/orders"
-            OrderDatabaseManager.shared.saveOrder(order, path: path)
-        }
+        let path = "users/\(userID)/orders"
+        OrderDatabaseManager.shared.saveOrder(order, path: path)
     }
 
     func saveReceipt2DB(_ receipt: Receipt) {
-        if let currentUser = Auth.auth().currentUser {
-            let userID = currentUser.uid
-            let path = "users/\(userID)/receipts"
-            ReceiptsDatabaseManager.shared.saveReceipt(receipt, path: path)
-        }
+        let path = "users/\(userID)/receipts"
+        ReceiptsDatabaseManager.shared.saveReceipt(receipt, path: path)
     }
     
     func deleteOrderFromDB(orderID: String) {
-        if let currentUser = Auth.auth().currentUser {
-            let userID = currentUser.uid
-            let path = "users/\(userID)/orders"
-            OrderDatabaseManager.shared.deleteOrder(orderID: orderID, path: path)
-        }
+        let path = "users/\(userID)/orders"
+        OrderDatabaseManager.shared.deleteOrder(orderID: orderID, path: path)
     }
 
     func deleteReceiptFromDB(orderID: String) {
-        if let currentUser = Auth.auth().currentUser {
-            let userID = currentUser.uid
-            let path = "users/\(userID)/receipts"
-            ReceiptsDatabaseManager.shared.deleteReceipt(orderID: orderID, path: path) // orderId?
-        }
+        let path = "users/\(userID)/receipts"
+        ReceiptsDatabaseManager.shared.deleteReceipt(orderID: orderID, path: path) // orderId?
     }
 
     
@@ -590,16 +590,14 @@ class OrderManager: ObservableObject {
             orders[index] = order
 
             if isUserSignedIn {
-                if let currentUser = Auth.auth().currentUser {
-                    let userID = currentUser.uid
-                    let path = "users/\(userID)/orders/\(orders[index].orderID)"
-                    
-                    OrderDatabaseManager.shared.updateOrderInDB(order, path: path) { success in
-                        if !success {
-                            print("updating in the database failed")
-                        }
+                let path = "users/\(userID)/orders/\(orders[index].orderID)"
+                
+                OrderDatabaseManager.shared.updateOrderInDB(order, path: path) { success in
+                    if !success {
+                        print("updating in the database failed")
                     }
                 }
+                
             } else {
                 saveOrders2UD()
             }
@@ -613,16 +611,14 @@ class OrderManager: ObservableObject {
             orders[index].isDelivered = isDelivered
             
             if isUserSignedIn {
-                if let currentUser = Auth.auth().currentUser {
-                    let userID = currentUser.uid
-                    let path = "users/\(userID)/orders/\(orders[index].orderID)"
-                    
-                    OrderDatabaseManager.shared.updateOrderInDB(orders[index], path: path) { success in
-                        if !success {
-                            print("updating in the database failed")
-                        }
+                let path = "users/\(userID)/orders/\(orders[index].orderID)"
+                
+                OrderDatabaseManager.shared.updateOrderInDB(orders[index], path: path) { success in
+                    if !success {
+                        print("updating in the database failed")
                     }
                 }
+                
             } else {
                 saveOrders2UD()
             }
@@ -635,16 +631,15 @@ class OrderManager: ObservableObject {
                 orders[index].isPaid = isPaid
                 
                 if isUserSignedIn {
-                    if let currentUser = Auth.auth().currentUser {
-                        let userID = currentUser.uid
-                        let path = "users/\(userID)/orders/\(orders[index].orderID)"
-                        
-                        OrderDatabaseManager.shared.updateOrderInDB(orders[index], path: path) { success in
-                            if !success {
-                                print("updating in the database failed")
-                            }
+                    
+                    let path = "users/\(userID)/orders/\(orders[index].orderID)"
+                    
+                    OrderDatabaseManager.shared.updateOrderInDB(orders[index], path: path) { success in
+                        if !success {
+                            print("updating in the database failed")
                         }
                     }
+                    
                 } else {
                     saveOrders2UD()
                 }
@@ -675,6 +670,7 @@ class OrderManager: ObservableObject {
             print("> orderID: \(receipt.orderID)")
             print("> dateGenerated: \(receipt.dateGenerated)")
             print("> paymentMethod: \(receipt.paymentMethod)")
+            print("> paymentDetails: \(receipt.paymentDetails)")
             print("> paymentDate: \(receipt.paymentDate)")
         } else {
             print("> Receipt is nil")
@@ -737,7 +733,7 @@ class OrderManager: ObservableObject {
             return lastReceipt
         }
         else{
-            return Receipt(id: "000", myID: 000, orderID: "000" , dateGenerated: Date(), paymentMethod: "", paymentDate: Date())
+            return Receipt(id: "000", myID: 000, orderID: "000" , dateGenerated: Date(), paymentMethod: "", paymentDetails: "", paymentDate: Date())
         }
     }
     
@@ -778,13 +774,11 @@ class OrderManager: ObservableObject {
     }
     
     func updateReceiptValues() {
-        if let currentUser = Auth.auth().currentUser {
-            let userID = currentUser.uid
-            let path = "users/\(userID)/receiptSettings"
-
-            ReceiptsDatabaseManager.shared.saveOrUpdateReceiptValuesInDB(self.receiptValues, path: path, completion: { _ in
-            })
-        }
+        let path = "users/\(userID)/receiptSettings"
+        
+        ReceiptsDatabaseManager.shared.saveOrUpdateReceiptValuesInDB(self.receiptValues, path: path, completion: { _ in
+        })
+        
     }
     
     func setStartingReceiptNumber(_ newNumber: Int) {
@@ -826,6 +820,7 @@ class OrderManager: ObservableObject {
         print("orderID: \(receipt.orderID)")
         print("dateGenerated: \(receipt.dateGenerated)")
         print("paymentMethod: \(receipt.paymentMethod)")
+        print("paymentDetails: \(receipt.paymentDetails)")
         print("paymentDate: \(receipt.paymentDate)")
     }
     

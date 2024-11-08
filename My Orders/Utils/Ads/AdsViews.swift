@@ -46,23 +46,40 @@ struct AppOpenAdView: UIViewControllerRepresentable {
         GADAppOpenAd.load(
             withAdUnitID: "ca-app-pub-3940256099942544/5575463023",
             request: GADRequest(),
-            orientation: window?.windowScene?.interfaceOrientation ?? .unknown
-        ) { (ad, error) in
-            if let error = error {
-                print("Failed to load app open ad with error: \(error.localizedDescription)")
-                return
-            }
-            // ca-app-pub-3940256099942544/5575463023 // test
-
-            
-            if let appOpenAd = ad {
-                appOpenAd.fullScreenContentDelegate = context.coordinator
+            completionHandler: { (ad, error) in
+                if let error = error {
+                    print("Failed to load app open ad with error: \(error.localizedDescription)")
+                    return
+                }
                 
-                do {
+                // Handle the ad if it successfully loads
+                if let appOpenAd = ad {
+                    appOpenAd.fullScreenContentDelegate = context.coordinator
                     appOpenAd.present(fromRootViewController: adViewController)
                 }
             }
-        }
+        )
+
+//        GADAppOpenAd.load(
+//            withAdUnitID: "ca-app-pub-3940256099942544/5575463023",
+//            request: GADRequest(),
+//            orientation: window?.windowScene?.interfaceOrientation ?? .unknown
+//        ) { (ad, error) in
+//            if let error = error {
+//                print("Failed to load app open ad with error: \(error.localizedDescription)")
+//                return
+//            }
+//            // ca-app-pub-3940256099942544/5575463023 // test
+//
+//            
+//            if let appOpenAd = ad {
+//                appOpenAd.fullScreenContentDelegate = context.coordinator
+//                
+//                do {
+//                    appOpenAd.present(fromRootViewController: adViewController)
+//                }
+//            }
+//        }
         
         return adViewController
     }

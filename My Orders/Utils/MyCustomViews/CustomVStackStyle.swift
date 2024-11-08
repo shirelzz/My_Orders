@@ -29,7 +29,7 @@ struct CustomGraySectionVStyle: ViewModifier {
             .padding(.vertical, 10)
             .background(
                 RoundedRectangle(cornerRadius: 15)
-                    .fill(Color.gray.opacity(0.1))
+                    .fill(Color.white)
             )
     }
 }

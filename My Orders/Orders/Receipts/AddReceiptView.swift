@@ -41,8 +41,12 @@ struct AddReceiptView: View {
     
     @State private var receiptItems: [InventoryItem] = []
     @State private var totalCost: Double = 0
-    @State private var selectedPaymentMethod = "Paybox"
+    
     @State private var selectedPaymentDate: Date = Date()
+    @State private var selectedPaymentMethod = "Payment App"
+    @State private var selectedPaymentApp = "Paybox"
+    @State private var selectedPaymentDetails = ""
+    @State private var additionalDetails = ""
     
     @State private var lastReceipttID = OrderManager.shared.getLastReceiptID()
     @State private var showSuccessMessage = false
@@ -274,18 +278,13 @@ struct AddReceiptView: View {
 
                 }
                 
-                Section(header: Text("Payment Details")) {
-                    
-                    DatePicker("Payment Date", selection: $selectedPaymentDate, in: ...Date(), displayedComponents: .date)
-                    
-                    Picker("Payment Method", selection: $selectedPaymentMethod) {
-                        Text("Paybox").tag("Paybox")
-                        Text("Bit").tag("Bit")
-                        Text("Bank transfer").tag("Bank transfer")
-                        Text("Cash").tag("Cash")
-                        Text("Cheque").tag("Cheque")
-                    }
-                }
+                PaymentDetailsView (
+                    selectedPaymentMethod: $selectedPaymentMethod,
+                    selectedPaymentApp: $selectedPaymentApp,
+                    selectedPaymentDetails: $selectedPaymentDetails,
+                    additionalDetails: $additionalDetails,
+                    selectedPaymentDate: $selectedPaymentDate
+                )
                 
                 Section(header: Text("Preview")) {
                     

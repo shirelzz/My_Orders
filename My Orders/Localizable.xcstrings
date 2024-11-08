@@ -143,6 +143,7 @@
       }
     },
     "%.2f %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -218,6 +219,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@%2$.2f"
+          }
+        }
+      }
+    },
+    "%@%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$@"
           }
         }
       }
@@ -601,6 +612,9 @@
         }
       }
     },
+    "Additional Payment Details" : {
+
+    },
     "Address" : {
       "localizations" : {
         "en" : {
@@ -771,6 +785,7 @@
       }
     },
     "Allergies:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -785,6 +800,9 @@
           }
         }
       }
+    },
+    "Amount:" : {
+
     },
     "Are you sure you want to delete all items with quantity 0?" : {
       "localizations" : {
@@ -865,6 +883,9 @@
           }
         }
       }
+    },
+    "Are you sure you want to generate this receipt? Once generated, it cannot be deleted." : {
+
     },
     "Back" : {
       "localizations" : {
@@ -1283,6 +1304,7 @@
       }
     },
     "Copy Phone Number" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1656,6 +1678,9 @@
         }
       }
     },
+    "Date Created:" : {
+
+    },
     "Date created: " : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1903,6 +1928,9 @@
         }
       }
     },
+    "Delivery Cost " : {
+
+    },
     "Delivery Cost:" : {
       "localizations" : {
         "en" : {
@@ -1920,6 +1948,7 @@
       }
     },
     "Delivery Cost: " : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2357,7 +2386,11 @@
         }
       }
     },
+    "For:" : {
+
+    },
     "For: " : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2416,6 +2449,7 @@
       }
     },
     "Generate PDF Receipt" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3534,6 +3568,9 @@
         }
       }
     },
+    "Other" : {
+
+    },
     "Paid" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3566,6 +3603,9 @@
           }
         }
       }
+    },
+    "Payment App" : {
+
     },
     "Payment Date" : {
       "localizations" : {
@@ -4322,6 +4362,9 @@
         }
       }
     },
+    "Receipt Information" : {
+
+    },
     "Receipt Items" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -4332,6 +4375,9 @@
           }
         }
       }
+    },
+    "Receipt No:" : {
+
     },
     "Receipt No." : {
       "extractionState" : "manual",
@@ -4664,6 +4710,9 @@
         }
       }
     },
+    "Select Payment App" : {
+
+    },
     "Select signature image" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -4815,7 +4864,11 @@
         }
       }
     },
+    "Show Receipt Details" : {
+
+    },
     "Show Receipt Preview" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5210,7 +5263,14 @@
         }
       }
     },
+    "Total Price" : {
+
+    },
+    "Total Price " : {
+
+    },
     "Total Price: " : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

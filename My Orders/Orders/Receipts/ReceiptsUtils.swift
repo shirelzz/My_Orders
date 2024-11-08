@@ -152,6 +152,7 @@ class ReceiptUtils {
             currentY += 25
             let paymentDetails = [
                 "Payment Method": receipt.paymentMethod,
+                "Payment Details": receipt.paymentDetails,
                 "Payment Date": HelperFunctions.formatToDate(receipt.paymentDate)
             ]
             drawPaymentDetails(paymentDetails, at: CGPoint(x: 50, y: currentY))
@@ -235,7 +236,7 @@ class ReceiptUtils {
         textStorage.addLayoutManager(layoutManager)
         
         // Define the rectangle where text should be drawn
-        let rect = CGRect(origin: point, size: CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
+        _ = CGRect(origin: point, size: CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
         layoutManager.drawGlyphs(forGlyphRange: layoutManager.glyphRange(for: textContainer), at: point)
     }
     
@@ -467,6 +468,69 @@ class ReceiptUtils {
             completion()
         }
     }
+    
+
+    static func exportReceiptsAsCSV(orderManager: OrderManager,
+                                    selectedYear: Int,
+                                    viewController: UIViewController,
+                                    completion: @escaping (Bool, Error?) -> Void) {
+        
+        // Define the CSV headers and the data string
+//        var csvText = "ReceiptID, OrderID, Date, Amount\n"
+        var csvText = "Document Date, Document Number, Document Type, Value Date, Payment Method, Payment Details, Customer Name, Payment Amount\n"
+
+        // Filter receipts by the selected year
+        let filteredReceipts = orderManager.receipts.filter { receipt in
+            let receiptYear = Calendar.current.component(.year, from: receipt.dateGenerated)
+            return receiptYear == selectedYear
+        }
+        
+        // Iterate over each receipt and extract relevant details
+        for (_, receipt) in filteredReceipts.enumerated() {
+            let order = orderManager.getOrder(orderID: receipt.orderID)
+            
+            if order.orderID != "" {
+                
+                let documentDate = HelperFunctions.formatToDate(receipt.dateGenerated)
+                let documentNumber = receipt.myID
+                let documentType = "receipt"
+                let valueDate = HelperFunctions.formatToDate(receipt.paymentDate)
+                let paymentMethod = receipt.paymentMethod
+                let paymentDetails = receipt.paymentDetails
+                let customerName = order.customer.name
+                let paymentAmount = String(format: "%.2f", order.totalPrice)
+                
+                // Format each line of CSV with values separated by commas
+                let csvLine = "\(documentDate), \(documentNumber), \(documentType), \(valueDate), \(paymentMethod), \(paymentDetails), \(customerName), \(paymentAmount)\n"
+                csvText += csvLine
+            }
+        }
+        
+        // Create a temporary file URL for the CSV
+        let fileName = "receipts_" + selectedYear.description + ".csv"
+        let tempDirectory = FileManager.default.temporaryDirectory
+        let fileURL = tempDirectory.appendingPathComponent(fileName)
+        
+        // Write the CSV data to the temporary file
+        do {
+            try csvText.write(to: fileURL, atomically: true, encoding: .utf8)
+            
+            // Use UIActivityViewController to share the CSV file
+            let activityViewController = UIActivityViewController(activityItems: [fileURL], applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = viewController.view
+            
+            // Present the share sheet
+            viewController.present(activityViewController, animated: true) {
+                // Call completion with success once the UIActivityViewController is presented
+                completion(true, nil)
+            }
+            
+        } catch {
+            // Call completion with failure and error if writing to the file fails
+            completion(false, error)
+        }
+    }
+
     
 }
 
