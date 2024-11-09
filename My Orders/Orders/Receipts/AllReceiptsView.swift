@@ -9,12 +9,12 @@ struct AllReceiptsView: View {
     @State private var isExporting: Bool = false
     @State private var searchText = ""
     @State private var isAddItemViewPresented = false
-    @State private var sortOption: SortOption = .date_new
+    @State private var sortOption: SortOption = .newest
     
     enum SortOption: String, CaseIterable {
         case name = "Name"
-        case date_new = "Date Created (newest first)"
-        case date_old = "Date Created (oldest first)"
+        case newest = "New to Old"
+        case oldest = "Old to New"
     }
     
     var body: some View {
@@ -45,6 +45,7 @@ struct AllReceiptsView: View {
                 } label: {
                     Image(systemName: "arrow.up.arrow.down")
                 }
+                
                 SearchBar(searchText: $searchText)
             }
             .padding(8)
@@ -128,16 +129,24 @@ struct AllReceiptsView: View {
         let filtered = orderManager.getReceipts(forYear: selectedYear)
             .filter { receipt in
                 let order = orderManager.getOrderFromID(forOrderID: receipt.orderID)
-                return searchText.isEmpty || order.customer.name.localizedCaseInsensitiveContains(searchText)
+                
+                // Check if searchText is a number
+                if let searchAmount = Double(searchText) {
+                    // Filter by totalPrice if searchText is a number
+                    return order.totalPrice == searchAmount
+                } else {
+                    // Otherwise, filter by customer name
+                    return searchText.isEmpty || order.customer.name.localizedCaseInsensitiveContains(searchText)
+                }
             }
         
         switch sortOption {
         case .name:
             return filtered.sorted { orderManager.getOrderFromID(forOrderID: $0.orderID).customer.name < orderManager.getOrderFromID(forOrderID: $1.orderID).customer.name }
-        case .date_new:
-            return filtered.sorted { $0.dateGenerated > $1.dateGenerated }
-        case .date_old:
-            return filtered.sorted { $0.dateGenerated < $1.dateGenerated }
+        case .newest:
+            return filtered.sorted { $0.myID > $1.myID }
+        case .oldest:
+            return filtered.sorted { $0.myID < $1.myID }
         }
     }
     

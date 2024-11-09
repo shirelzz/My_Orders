@@ -87,6 +87,7 @@ class ReceiptsDatabaseManager: DatabaseManager {
         })
     }
     
+    
     func migrateReceiptsToAddPaymentDetails(path: String, defaultPaymentDetails: String = "") {
         let receiptsRef = databaseRef.child(path)
         
@@ -99,8 +100,9 @@ class ReceiptsDatabaseManager: DatabaseManager {
             for (receiptID, receiptData) in value {
                 if var receiptDict = receiptData as? [String: Any] {
                     
-                    // Check if `paymentDetails` is missing
-                    if receiptDict["paymentDetails"] == nil {
+                    // Check if `paymentDetails` is missing or empty
+                    let paymentDetails = receiptDict["paymentDetails"] as? String
+                    if paymentDetails == nil || paymentDetails == "" {
                         var updatedPaymentDetails = defaultPaymentDetails
                         
                         // Check if paymentMethod is "Paybox" or "Bit"
