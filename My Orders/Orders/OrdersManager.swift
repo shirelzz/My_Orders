@@ -375,7 +375,7 @@ class OrderManager: ObservableObject {
     init() {
         if isUserSignedIn{
             userID = Auth.auth().currentUser?.uid ?? ""
-            performMigrationIfNeeded()
+//            performMigrationIfNeeded()
             fetchOrders()
             fetchReceipts()
             fetchReceiptValues()
@@ -442,14 +442,14 @@ class OrderManager: ObservableObject {
     }
     
     func performMigrationIfNeeded() {
-        let migrationCompleted = UserDefaults.standard.bool(forKey: "migrationCompletedForPaymentDetails2")
+        let migrationCompleted = UserDefaults.standard.bool(forKey: "migrationCompletedForPaymentDetails5")
         
         if !migrationCompleted {
             ReceiptsDatabaseManager.shared.migrateReceiptsToAddPaymentDetails(path: "users/\(userID)/receipts")
             print("migrate called")
             
             // Mark migration as complete
-            UserDefaults.standard.set(true, forKey: "migrationCompletedForPaymentDetails2")
+            UserDefaults.standard.set(true, forKey: "migrationCompletedForPaymentDetails5")
         }
     }
     

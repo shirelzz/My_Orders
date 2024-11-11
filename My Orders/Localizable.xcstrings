@@ -230,6 +230,12 @@
             "state" : "new",
             "value" : "%1$@%2$@"
           }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@%2$@"
+          }
         }
       }
     },
@@ -613,7 +619,14 @@
       }
     },
     "Additional Payment Details" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פרטי תשלום"
+          }
+        }
+      }
     },
     "Address" : {
       "localizations" : {
@@ -801,9 +814,6 @@
         }
       }
     },
-    "Amount:" : {
-
-    },
     "Are you sure you want to delete all items with quantity 0?" : {
       "localizations" : {
         "en" : {
@@ -885,7 +895,14 @@
       }
     },
     "Are you sure you want to generate this receipt? Once generated, it cannot be deleted." : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "האם הנך בטוח/ה שברצונך לייצר קבלה זו? ברגע שקבלה נוצרת לא ניתן למחוק אותה"
+          }
+        }
+      }
     },
     "Back" : {
       "localizations" : {
@@ -1679,7 +1696,14 @@
       }
     },
     "Date Created:" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "תאריך יצירה:"
+          }
+        }
+      }
     },
     "Date created: " : {
       "extractionState" : "manual",
@@ -1929,7 +1953,14 @@
       }
     },
     "Delivery Cost " : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות משלוח"
+          }
+        }
+      }
     },
     "Delivery Cost:" : {
       "localizations" : {
@@ -2083,6 +2114,12 @@
             "state" : "new",
             "value" : "Discount Amount: %1$.2f %2$@"
           }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "סכום הנחה: %1$.2f %2$@"
+          }
         }
       }
     },
@@ -2098,7 +2135,15 @@
       }
     },
     "Discount Percentage: %.2f%%" : {
-      "comment" : "Label for discount percentage"
+      "comment" : "Label for discount percentage",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "אחוז הנחה: %.2f%%"
+          }
+        }
+      }
     },
     "Discount Type" : {
       "localizations" : {
@@ -2387,7 +2432,14 @@
       }
     },
     "For:" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עבור:"
+          }
+        }
+      }
     },
     "For: " : {
       "extractionState" : "stale",
@@ -2412,6 +2464,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "From"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מאת"
           }
         }
       }
@@ -2536,6 +2594,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Home"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "בית"
           }
         }
       }
@@ -3569,7 +3633,14 @@
       }
     },
     "Other" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "אחר"
+          }
+        }
+      }
     },
     "Paid" : {
       "extractionState" : "manual",
@@ -3605,7 +3676,14 @@
       }
     },
     "Payment App" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "אפליקציית תשלום"
+          }
+        }
+      }
     },
     "Payment Date" : {
       "localizations" : {
@@ -3686,6 +3764,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "פרטי תשלום"
+          }
+        }
+      }
+    },
+    "Payment Details:" : {
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פרטי תשלום:"
           }
         }
       }
@@ -4363,7 +4451,14 @@
       }
     },
     "Receipt Information" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פרטי קבלה"
+          }
+        }
+      }
     },
     "Receipt Items" : {
       "extractionState" : "stale",
@@ -4377,7 +4472,20 @@
       }
     },
     "Receipt No:" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Receipt No:"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מספר קבלה"
+          }
+        }
+      }
     },
     "Receipt No." : {
       "extractionState" : "manual",
@@ -4414,6 +4522,7 @@
       }
     },
     "Receipt No. %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4711,7 +4820,14 @@
       }
     },
     "Select Payment App" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "בחר אפליקציית תשלום"
+          }
+        }
+      }
     },
     "Select signature image" : {
       "extractionState" : "stale",
@@ -4865,7 +4981,14 @@
       }
     },
     "Show Receipt Details" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הראה פרטי קבלה"
+          }
+        }
+      }
     },
     "Show Receipt Preview" : {
       "extractionState" : "stale",
@@ -5232,6 +5355,12 @@
             "state" : "translated",
             "value" : "To"
           }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עבור"
+          }
         }
       }
     },
@@ -5260,14 +5389,44 @@
             "state" : "new",
             "value" : "Total Cost: %1$@ %2$@"
           }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות כוללת: %1$@ %2$@"
+          }
         }
       }
     },
     "Total Price" : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות כוללת"
+          }
+        }
+      }
     },
     "Total Price " : {
-
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות כוללת"
+          }
+        }
+      }
+    },
+    "Total Price:" : {
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלות כוללת:"
+          }
+        }
+      }
     },
     "Total Price: " : {
       "extractionState" : "stale",

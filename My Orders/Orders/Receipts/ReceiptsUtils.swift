@@ -9,8 +9,13 @@ import Foundation
 import PDFKit
 import UIKit
 import ZipArchive
+import SwiftUI
 
 class ReceiptUtils {
+    
+    static let alignment: NSTextAlignment = {
+        return UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .right : .left
+    }()
     
     static func generatePDF(order: Order, receipt: Receipt) -> Data? {
         
@@ -52,11 +57,9 @@ class ReceiptUtils {
     // The actual drawing of the pdf file
     static func drawReceiptPDF(for order: Order, receipt: Receipt, receiptExists: Bool, isDraft: Bool) -> Data {
         
-        // Fetch the preferred localization
-        let preferredLanguage = Bundle.main.preferredLocalizations.first ?? "en"
-        let isEnglish = preferredLanguage == "en"
+        let isRightToLeft = alignment == .right
+        let pageRect = CGRect(x: 0, y: 0, width: 612, height: 792)
         
-        // Create a PDF context
         let pdfMetaData = [
             kCGPDFContextCreator: "My Orders",
             kCGPDFContextAuthor: "Shirel Turgeman"
@@ -64,25 +67,29 @@ class ReceiptUtils {
         let pdfFormat = UIGraphicsPDFRendererFormat()
         pdfFormat.documentInfo = pdfMetaData as [String: Any]
         
-        let pageRect = CGRect(x: 0, y: 0, width: 612, height: 792)
         let renderer = UIGraphicsPDFRenderer(bounds: pageRect, format: pdfFormat)
         
-        let pdfData = renderer.pdfData { (context) in
+        let pdfData = renderer.pdfData { context in
             context.beginPage()
             
+            // Draw watermark for draft version
             if isDraft {
-                // Draw watermark
                 drawWatermark(in: context, pageRect: pageRect)
             }
             
-            var currentY: CGFloat = 50
-            let xLogo = isEnglish ? pageRect.width - 100 : 50
-            let logoRect = CGRect(x: xLogo, y: 50, width: 50, height: 50)
+            // Logo and text positions based on direction
+            let logoXPosition: CGFloat = isRightToLeft ? 50 : pageRect.width - 100
+            let textXPosition: CGFloat = isRightToLeft ? pageRect.width - 562 : 50
             
+            // Draw Logo
+            let logoRect = CGRect(x: logoXPosition, y: 50, width: 50, height: 50)
             if let logoImage = UIImage(data: AppManager.shared.getLogoImage()) {
                 logoImage.draw(in: logoRect)
             }
             
+            var currentY: CGFloat = 50
+            
+            // Business Details
             let businessDetails = [
                 "Name": VendorManager.shared.vendor.businessName,
                 "ID": VendorManager.shared.vendor.businessID,
@@ -90,64 +97,76 @@ class ReceiptUtils {
                 "Phone": VendorManager.shared.vendor.businessPhone
             ]
             let businessDetailsText = formatBusinessDetails(businessDetails)
-            drawText(businessDetailsText, at: CGPoint(x: 50, y: currentY), width: 512, fontSize: 12)
+            drawText(businessDetailsText, at: CGPoint(x: textXPosition, y: currentY), width: 512, fontSize: 12, isBold: false)
             
             currentY += 80
-            let receiptID = String(receipt.myID)
-            let receiptTitle = String(format: NSLocalizedString("Receipt No. %@", comment: ""), receiptID)
-            drawText(receiptTitle, at: CGPoint(x: 50, y: currentY), width: 512, fontSize: 24, isBold: true)
+            
+            // Receipt Title
+            let receiptTitlePart1 = NSLocalizedString("Receipt No.", comment: "")
+            let receiptTitle = "\(receiptTitlePart1) \(receipt.myID)"
+            drawText(receiptTitle, at: CGPoint(x: textXPosition, y: currentY), width: 512, fontSize: 24, isBold: true)
             
             currentY += 50
+            
+            // Document Date
             let documentDateText = formatDocumentDate(receipt: receipt, receiptExists: receiptExists)
-            drawText(documentDateText, at: CGPoint(x: 50, y: currentY), width: 512, fontSize: 12)
+            drawText(documentDateText, at: CGPoint(x: textXPosition, y: currentY), width: 512, fontSize: 12)
             
             currentY += 50
-            drawSectionHeader(NSLocalizedString("Customer Details", comment: "Section header for customer details"), at: CGPoint(x: 50, y: currentY))
+            
+            // Customer Details
+            drawSectionHeader("Customer Details", at: CGPoint(x: textXPosition, y: currentY))
             
             currentY += 25
             let contactDetails = [
                 NSLocalizedString("Name", comment: "Customer name label"): order.customer.name,
                 NSLocalizedString("Phone", comment: "Customer phone label"): order.customer.phoneNumber
             ]
-            drawContactDetails(contactDetails, at: CGPoint(x: 50, y: currentY))
+            drawContactDetails(contactDetails, at: CGPoint(x: textXPosition, y: currentY))
             
             currentY += 50
-            drawSectionHeader(NSLocalizedString("Order Details", comment: "Section header for order details"), at: CGPoint(x: 50, y: currentY))
+            
+            // Order Details Header
+            drawSectionHeader("Order Details", at: CGPoint(x: textXPosition, y: currentY))
             
             currentY += 25
-            drawTableHeaders(at: CGPoint(x: 50, y: currentY))
+            drawTableHeaders(at: CGPoint(x: textXPosition, y: currentY))
             
             currentY += 20
-            let orderItemsHeight = drawOrderItems(order.orderItems, at: CGPoint(x: 50, y: currentY))
+            let orderItemsHeight = drawOrderItems(order.orderItems, at: CGPoint(x: textXPosition, y: currentY))
             
             currentY += orderItemsHeight
+            
+            // Delivery Cost
             if order.delivery.cost != 0 {
-                //                currentY += CGFloat(order.orderItems.count * 20)
-                drawDeliveryCost(order.delivery.cost, at: CGPoint(x: 50, y: currentY))
+                currentY += 20
+                drawDeliveryCost(order.delivery.cost, at: CGPoint(x: textXPosition, y: currentY))
             }
             
             currentY += 20
+            
+            // Discount Amount and Percentage
             var totalCost = order.totalPrice
             if receipt.discountAmount != 0 {
                 totalCost -= receipt.discountAmount ?? 0.0
-                //                currentY += CGFloat(order.orderItems.count * 20)
-                drawDiscountAmount(receipt.discountAmount, at: CGPoint(x: 50, y: currentY))
+                drawDiscountAmount(receipt.discountAmount, at: CGPoint(x: textXPosition, y: currentY))
+                currentY += 20
             }
             
-            currentY += 20
             if receipt.discountPercentage != 0 {
-                let percentage = (receipt.discountPercentage ?? 0.0) / 100.0
-                let discountAmount = totalCost * percentage
-                totalCost -= discountAmount
-                //                currentY += CGFloat(order.orderItems.count * 20)
-                drawDiscountPercentage(receipt.discountPercentage, at: CGPoint(x: 50, y: currentY))
+                let discountValue = (receipt.discountPercentage ?? 0.0) / 100.0 * totalCost
+                totalCost -= discountValue
+                drawDiscountPercentage(receipt.discountPercentage, at: CGPoint(x: textXPosition, y: currentY))
+                currentY += 20
             }
             
-            currentY += 20
-            drawTotalCost(totalCost, at: CGPoint(x: 50, y: currentY))
+            // Total Cost
+            drawTotalCost(totalCost, at: CGPoint(x: textXPosition, y: currentY))
             
             currentY += 50
-            drawSectionHeader(NSLocalizedString("Payment Details", comment: "Section header for payment details"), at: CGPoint(x: 50, y: currentY))
+            
+            // Payment Details
+            drawSectionHeader("Payment Details", at: CGPoint(x: textXPosition, y: currentY))
             
             currentY += 25
             let paymentDetails = [
@@ -155,12 +174,11 @@ class ReceiptUtils {
                 "Payment Details": receipt.paymentDetails,
                 "Payment Date": HelperFunctions.formatToDate(receipt.paymentDate)
             ]
-            drawPaymentDetails(paymentDetails, at: CGPoint(x: 50, y: currentY))
+            drawPaymentDetails(paymentDetails, at: CGPoint(x: textXPosition, y: currentY))
             
-            // Draw signature
-            let xSignature = isEnglish ? 50 : pageRect.width - 150
-            let signatureRect = CGRect(x: xSignature, y: pageRect.height - 150, width: 50, height: 50)
-            
+            // Signature
+            let signatureXPosition: CGFloat = isRightToLeft ? pageRect.width - 150 : 50
+            let signatureRect = CGRect(x: signatureXPosition, y: pageRect.height - 150, width: 50, height: 50)
             if let signatureImage = UIImage(data: AppManager.shared.getSignatureImage()) {
                 signatureImage.draw(in: signatureRect)
             }
@@ -168,6 +186,28 @@ class ReceiptUtils {
         
         return pdfData
     }
+    
+    static func drawText(_ text: String, at point: CGPoint, width: CGFloat, fontSize: CGFloat, isBold: Bool = false) {
+         let paragraphStyle = NSMutableParagraphStyle()
+         paragraphStyle.alignment = alignment
+         paragraphStyle.lineBreakMode = .byWordWrapping
+         
+         let attributes: [NSAttributedString.Key: Any] = [
+             .font: isBold ? UIFont.boldSystemFont(ofSize: fontSize) : UIFont.systemFont(ofSize: fontSize),
+             .paragraphStyle: paragraphStyle
+         ]
+         
+        let textStorage = NSTextStorage(string: NSLocalizedString(text, comment: ""), attributes: attributes)
+         let textContainer = NSTextContainer(size: CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
+         textContainer.lineBreakMode = .byWordWrapping
+         
+         let layoutManager = NSLayoutManager()
+         layoutManager.addTextContainer(textContainer)
+         textStorage.addLayoutManager(layoutManager)
+         
+         layoutManager.drawGlyphs(forGlyphRange: layoutManager.glyphRange(for: textContainer), at: point)
+     }
+
     
     // For an already generated receipt
     static func drawPDF(for order: Order) -> Data {
@@ -188,12 +228,8 @@ class ReceiptUtils {
         return receiptPdfData
     }
     
-    // Helper methods (for better readability and maintainability)
     
-    static func textAlignment() -> NSTextAlignment {
-        let locale = Locale.current
-        return Locale.characterDirection(forLanguage: locale.identifier) == .rightToLeft ? .right : .left
-    }
+    // Helper methods
     
     static func formatBusinessDetails(_ details: [String: String]) -> String {
         let namePrefix = NSLocalizedString("Name: ", comment: "Business name prefix")
@@ -216,31 +252,6 @@ class ReceiptUtils {
         return "\(datePrefix) \(date)"
     }
     
-    static func drawText(_ text: String, at point: CGPoint, width: CGFloat, fontSize: CGFloat, isBold: Bool = false) {
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: isBold ? UIFont.boldSystemFont(ofSize: fontSize) : UIFont.systemFont(ofSize: fontSize),
-            .paragraphStyle: {
-                let paragraphStyle = NSMutableParagraphStyle()
-                paragraphStyle.alignment = .left
-                paragraphStyle.lineBreakMode = .byWordWrapping
-                return paragraphStyle
-            }()
-        ]
-        
-        let textStorage = NSTextStorage(string: text, attributes: attributes)
-        let textContainer = NSTextContainer(size: CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
-        textContainer.lineBreakMode = .byWordWrapping
-        
-        let layoutManager = NSLayoutManager()
-        layoutManager.addTextContainer(textContainer)
-        textStorage.addLayoutManager(layoutManager)
-        
-        // Define the rectangle where text should be drawn
-        _ = CGRect(origin: point, size: CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
-        layoutManager.drawGlyphs(forGlyphRange: layoutManager.glyphRange(for: textContainer), at: point)
-    }
-    
-    
     static func drawSectionHeader(_ header: String, at point: CGPoint) {
         drawText(header, at: point, width: 512, fontSize: 14, isBold: true)
     }
@@ -261,15 +272,59 @@ class ReceiptUtils {
     }
     
     static func drawTableHeaders(at point: CGPoint) {
-        let headers = [
-            NSLocalizedString("Item", comment: "Table header for item"): CGRect(x: 50, y: point.y, width: 200, height: 20),
-            NSLocalizedString("Quantity", comment: "Table header for quantity"): CGRect(x: 250, y: point.y, width: 100, height: 20),
-            NSLocalizedString("Price", comment: "Table header for price"): CGRect(x: 350, y: point.y, width: 150, height: 20)
-        ]
+        let isRightToLeft = alignment == .right
+        
+        // Arrange headers based on text direction
+        let headers = isRightToLeft
+            ? [
+                NSLocalizedString("Item", comment: "Table header for item"): CGRect(x: 350, y: point.y, width: 200, height: 20),
+                NSLocalizedString("Quantity", comment: "Table header for quantity"): CGRect(x: 200, y: point.y, width: 100, height: 20),
+                NSLocalizedString("Price", comment: "Table header for price"): CGRect(x: 50, y: point.y, width: 150, height: 20)
+            ]
+            : [
+                NSLocalizedString("Item", comment: "Table header for item"): CGRect(x: 50, y: point.y, width: 150, height: 20),
+                NSLocalizedString("Quantity", comment: "Table header for quantity"): CGRect(x: 200, y: point.y, width: 100, height: 20),
+                NSLocalizedString("Price", comment: "Table header for price"): CGRect(x: 350, y: point.y, width: 200, height: 20)
+            ]
         
         for (text, rect) in headers {
             drawText(text, at: CGPoint(x: rect.origin.x, y: rect.origin.y), width: rect.width, fontSize: 12, isBold: true)
         }
+    }
+    
+    static func drawOrderItems(_ items: [OrderItem], at point: CGPoint) -> CGFloat {
+        var y = point.y
+        let itemWidth: CGFloat = 200
+        let quantityWidth: CGFloat = 100
+        let priceWidth: CGFloat = 150
+        let rowHeight: CGFloat = 40 // Increased to accommodate multi-line text
+        
+        let isRightToLeft = alignment == .right
+        
+        // Define X positions based on language direction
+        let itemXPosition: CGFloat = isRightToLeft ? 350 : 50
+        let quantityXPosition: CGFloat = isRightToLeft ? 200 : 250
+        let priceXPosition: CGFloat = isRightToLeft ? 50 : 350
+        
+        var totalHeight: CGFloat = 0
+        
+        for item in items {
+            let itemName = item.inventoryItem.name
+            let itemQuantity = String(item.quantity)
+            let itemPrice = String(format: "%.2f", item.price) + HelperFunctions.getCurrencySymbol()
+            
+            let itemHeight = max(calculateTextHeight(for: itemName, width: itemWidth, fontSize: 12), rowHeight)
+            
+            // Draw each field in the appropriate position
+            drawText(itemName, at: CGPoint(x: itemXPosition, y: y), width: itemWidth, fontSize: 12)
+            drawText(itemQuantity, at: CGPoint(x: quantityXPosition, y: y), width: quantityWidth, fontSize: 12)
+            drawText(itemPrice, at: CGPoint(x: priceXPosition, y: y), width: priceWidth, fontSize: 12)
+            
+            y += itemHeight
+            totalHeight += itemHeight
+        }
+        
+        return totalHeight
     }
     
     static func calculateTextHeight(for text: String, width: CGFloat, fontSize: CGFloat) -> CGFloat {
@@ -294,32 +349,7 @@ class ReceiptUtils {
         let textHeight = layoutManager.usedRect(for: textContainer).height
         return textHeight
     }
-    
-    static func drawOrderItems(_ items: [OrderItem], at point: CGPoint) -> CGFloat {
-        var y = point.y
-        let itemWidth: CGFloat = 200
-        let quantityWidth: CGFloat = 100
-        let priceWidth: CGFloat = 150
-        let rowHeight: CGFloat = 40 // Increased to accommodate multi-line text
-        
-        var totalHeight: CGFloat = 0
-        
-        for item in items {
-            let itemName = item.inventoryItem.name
-            let itemQuantity = String(item.quantity)
-            let itemPrice = String(format: "%.2f", item.price) + HelperFunctions.getCurrencySymbol()
-            
-            let itemHeight = max(calculateTextHeight(for: itemName, width: itemWidth, fontSize: 12), rowHeight)
-            drawText(itemName, at: CGPoint(x: 50, y: y), width: itemWidth, fontSize: 12)
-            drawText(itemQuantity, at: CGPoint(x: 250, y: y), width: quantityWidth, fontSize: 12)
-            drawText(itemPrice, at: CGPoint(x: 350, y: y), width: priceWidth, fontSize: 12)
-            
-            y += itemHeight
-            totalHeight += itemHeight
-        }
-        
-        return totalHeight
-    }
+
     
     // Function to draw the discount amount
     static func drawDiscountAmount(_ discountAmount: Double?, at point: CGPoint) {
@@ -355,7 +385,7 @@ class ReceiptUtils {
     static func drawPaymentDetails(_ details: [String: String], at point: CGPoint) {
         var y = point.y
         for (key, value) in details {
-            drawText(NSLocalizedString(key, comment: "Payment detail key") + ": " + value, at: CGPoint(x: 50, y: y), width: 512, fontSize: 12)
+            drawText(NSLocalizedString(key, comment: "Payment detail key") + ": " + NSLocalizedString(value, comment: "Payment detail value"), at: CGPoint(x: 50, y: y), width: 512, fontSize: 12)
             y += 20
         }
     }
@@ -531,6 +561,9 @@ class ReceiptUtils {
         }
     }
 
-    
+
 }
 
+#Preview(body: {
+    AllReceiptsView(orderManager: OrderManager.shared)
+})

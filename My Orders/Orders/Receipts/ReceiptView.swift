@@ -64,11 +64,19 @@ struct ReceiptView: View {
             
             // Order Details Section
             Section(header: Text("Order Details")) {
-                ForEach(order.orderItems, id: \.inventoryItem.name) { dessert in
+                ForEach(order.orderItems, id: \.inventoryItem.name) { orderItem in
                     HStack {
-                        Text(dessert.inventoryItem.name)
+                        Text(orderItem.inventoryItem.name)
+                        
                         Spacer()
-                        Text("Q: \(dessert.quantity)")
+                        
+                        Text("Q: \(orderItem.quantity)")
+                        
+                        Spacer(minLength: 12)
+                        
+                        Text("\(currency)\(String(format: "%.2f", orderItem.price))")
+
+
                     }
                     .multilineTextAlignment(layoutDirection == .rightToLeft ? .leading : .trailing)
                 }
@@ -89,7 +97,7 @@ struct ReceiptView: View {
             // Total Price Section
             Section(header: Text("Total Price")) {
                 HStack {
-                    Text("Amount:")
+                    Text("Total Price:")
                     Spacer()
                     Text("\(currency)\(String(format: "%.2f", order.totalPrice))")
                         .multilineTextAlignment(layoutDirection == .rightToLeft ? .leading : .trailing)

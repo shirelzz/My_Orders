@@ -100,23 +100,13 @@ class ReceiptsDatabaseManager: DatabaseManager {
             for (receiptID, receiptData) in value {
                 if var receiptDict = receiptData as? [String: Any] {
                     
-                    // Check if `paymentDetails` is missing or empty
-                    let paymentDetails = receiptDict["paymentDetails"] as? String
-                    if paymentDetails == nil || paymentDetails == "" {
-                        var updatedPaymentDetails = defaultPaymentDetails
+                    // Check if `paymentDetails` exists and contains "Supplier: "
+                    if let paymentDetails = receiptDict["paymentDetails"] as? String, paymentDetails.contains("Supplier:") {
                         
-                        // Check if paymentMethod is "Paybox" or "Bit"
-                        if let paymentMethod = receiptDict["paymentMethod"] as? String,
-                           paymentMethod == "Paybox" || paymentMethod == "Bit" {
-                            
-                            // Set paymentDetails to the payment method (e.g., "Paybox" or "Bit")
-                            updatedPaymentDetails = "Supplier: \(paymentMethod) /"
-                            
-                            // Change paymentMethod to "Payment App"
-                            receiptDict["paymentMethod"] = "Payment App"
-                        }
+                        // Remove "Supplier: " prefix if it exists
+                        let updatedPaymentDetails = paymentDetails.replacingOccurrences(of: "Supplier: ", with: "")
                         
-                        // Update paymentDetails with either the method or the default value
+                        // Update `paymentDetails` in `receiptDict`
                         receiptDict["paymentDetails"] = updatedPaymentDetails
                         
                         // Update the receipt in the database
@@ -124,13 +114,12 @@ class ReceiptsDatabaseManager: DatabaseManager {
                             if let error = error {
                                 print("Failed to update receipt \(receiptID): \(error)")
                             } else {
-                                print("Successfully updated receipt \(receiptID) with payment details")
+                                print("Successfully updated receipt \(receiptID) by removing 'Supplier:' from payment details")
                             }
                         }
                     }
                 }
             }
-            
         })
     }
 

@@ -36,12 +36,10 @@ struct GeneratedReceiptView: View {
                 
         VStack(alignment: .leading, spacing: 10) { //
             
-            Text("Receipt")
+            Text("Receipt No. \(receipt.myID)")
                 .font(.title)
                 .bold()
                 .padding(.bottom, 20)
-            
-            Text("Receipt No. \(receipt.myID)")
 
             HStack{
                 Text("Date Generated:")
@@ -65,12 +63,13 @@ struct GeneratedReceiptView: View {
                 .fontWeight(.bold)
                 .padding(.top)
             ) {
-                List(order.orderItems, id: \.inventoryItem.name) { dessert in
+                List(order.orderItems, id: \.inventoryItem.name) { orderItem in
                     HStack {
-                        Text("\(dessert.inventoryItem.name)")
+                        Text("\(orderItem.inventoryItem.name)")
                         Spacer()
-                        Text("Q: \(dessert.quantity)")
-                        // Text("₪\(dessert.price, specifier: "%.2f")")
+                        Text("Q: \(orderItem.quantity)")
+                        Spacer()
+                        Text("\(currency)\(orderItem.price, specifier: "%.2f")")
                     }
                 }
             }
@@ -79,15 +78,19 @@ struct GeneratedReceiptView: View {
                 HStack {
                     Text("Delivery Cost:")
                         .font(.headline)
-                    Text(currency)
-                    Text(String(format: "%.2f", order.delivery.cost))
+                    
+                    let deliveryCostStr = String(format: "%.2f", order.delivery.cost)
+                    let deliveryCost = currency + deliveryCostStr
+                    
+                    Text(deliveryCost)
                 }
             }
             
             HStack{
-                Text("Price:").font(.headline)
-                Text(currency)
-                Text(String(format: "%.2f", order.totalPrice))
+                Text("Total Price:").font(.headline)
+                let totalPriceStr = String(format: "%.2f", order.totalPrice)
+                let totalPrice = currency + totalPriceStr
+                Text(totalPrice)
                 
             }
             
@@ -95,7 +98,15 @@ struct GeneratedReceiptView: View {
                 
                 Text("Payment Method:")
                     .font(.headline)
-                Text("\(receipt.paymentMethod)")
+                Text(NSLocalizedString(receipt.paymentMethod, comment: "Localized payment method"))
+
+            }
+            
+            HStack(alignment: .center, spacing: 5) {
+                
+                Text("Payment Details:")
+                    .font(.headline)
+                Text("\(receipt.paymentDetails)")
 
             }
 
@@ -155,41 +166,7 @@ struct GeneratedReceiptView: View {
 
 struct GeneratedReceiptView_Previews: PreviewProvider {
     static var previews: some View {
-        
-        let sampleItem = InventoryItem(itemID: "1234",
-                                       name: "Chocolate cake",
-                                       itemPrice: 20,
-                                       itemQuantity: 20,
-                                       size: "20",
-                                       AdditionDate: Date(),
-                                       itemNotes: ""
-                                       )
-        
-        let sampleItem_ = InventoryItem(itemID: "4321",
-                                        name: "Raspberry pie",
-                                       itemPrice: 120,
-                                       itemQuantity: 3,
-                                        size: "",
-                                        AdditionDate: Date(),
-                                       itemNotes: ""
-                                        )
-        
-        let sampleOrder = Order(
-            orderID: "1234",
-            customer: Customer(name: "John Doe", phoneNumber: "0546768900"),
-            orderItems: [OrderItem(inventoryItem: sampleItem, quantity: 2,price: sampleItem.itemPrice),
-                       OrderItem(inventoryItem: sampleItem_, quantity: 1, price: sampleItem_.itemPrice)],
-            orderDate: Date(),
-            delivery: Delivery(address: "yefe nof 18, peduel", cost: 10),
-            notes: "",
-            allergies: "",
-            isDelivered: false,
-            isPaid: false
             
-        )
-        
-        return GeneratedReceiptView(orderManager: OrderManager.shared, order: sampleOrder, isPresented: .constant(false))
-            .previewLayout(.sizeThatFits)
-                        .padding()
+        return AllReceiptsView(orderManager: OrderManager.shared)
     }
 }

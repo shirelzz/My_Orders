@@ -454,6 +454,7 @@ struct AddReceiptView: View {
             orderID: order.orderID,
             dateGenerated: Date(),
             paymentMethod: selectedPaymentMethod,
+            paymentDetails: selectedPaymentDetails,
             paymentDate: selectedPaymentDate,
             discountAmount: disAmount,
             discountPercentage: disPrecentage

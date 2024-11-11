@@ -48,7 +48,7 @@ struct PaymentDetailsView: View {
     // Helper function to update `selectedPaymentDetails`
     private func updatePaymentDetails() {
         if selectedPaymentMethod == "Payment App" {
-            selectedPaymentDetails = "Supplier: \(selectedPaymentApp) \\ \(additionalDetails)"
+            selectedPaymentDetails = "\(selectedPaymentApp). \(additionalDetails)"
         } else {
             selectedPaymentDetails = additionalDetails
         }
