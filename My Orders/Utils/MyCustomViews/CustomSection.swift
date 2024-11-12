@@ -44,8 +44,8 @@ struct CustomSection<Content: View>: View {
 
 
 
-#Preview {
-    CustomSection(header: "String", headerColor: Color.primary, content: {
-        Text("something hvjvhjvjhvhjvhjvhvhvhhv")
-    })
-}
+//#Preview {
+//    CustomSection(header: "String", headerColor: Color.primary, content: {
+//        Text("something hvjvhjvjhvhjvhjvhvhvhhv")
+//    })
+//}

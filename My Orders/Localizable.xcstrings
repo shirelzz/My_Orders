@@ -1321,7 +1321,6 @@
       }
     },
     "Copy Phone Number" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1953,6 +1952,7 @@
       }
     },
     "Delivery Cost " : {
+      "extractionState" : "stale",
       "localizations" : {
         "he" : {
           "stringUnit" : {
@@ -5120,6 +5120,9 @@
         }
       }
     },
+    "something hvjvhjvjhvhjvhjvhvhvhhv" : {
+
+    },
     "Soon 🩵" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -5409,6 +5412,7 @@
       }
     },
     "Total Price " : {
+      "extractionState" : "stale",
       "localizations" : {
         "he" : {
           "stringUnit" : {

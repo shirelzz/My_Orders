@@ -13,6 +13,7 @@ struct WhatsAppChatButton: View {
     var phoneNumber: String
 
     var body: some View {
+        
         Button(action: {
             
             if let formattedNumber = formatPhoneNumber(phoneNumber) {
@@ -21,15 +22,11 @@ struct WhatsAppChatButton: View {
                 }
             }
         }) {
-            HStack {
-                //                Image(systemName: "message")
-                
-                Text(phoneNumber)
-//                    .underline() // Optional: underlines the phone number
-                //                                .foregroundColor(.gray)
-                //                                .font(.subheadline)
+            HStack {                
+                Image(systemName: "message")
             }
         }
+        
     }
     
     private func formatPhoneNumber(_ number: String) -> String? {

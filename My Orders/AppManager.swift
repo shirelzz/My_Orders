@@ -65,7 +65,6 @@ class AppManager: ObservableObject {
     func fetchCurrencyFromDB() {
         if let currentUser = Auth.auth().currentUser {
             let userID = currentUser.uid
-            print("Current UserID: \(userID)")
             let path = "users/\(userID)/currency"
 
             CurrencyDatabaseManager.shared.fetchCurrency(path: path, completion: { currency in
@@ -217,6 +216,7 @@ class AppManager: ObservableObject {
     // MARK: - All Users
 
     func getCurrencySymbol() -> String {
+        refreshCurrency()
         return self.currencySymbol(for: currency)
     }
     

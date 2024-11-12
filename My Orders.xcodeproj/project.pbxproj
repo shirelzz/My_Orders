@@ -52,7 +52,6 @@
 		D69E2A6E2B60564E004F0D5C /* CustomCheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69E2A6D2B60564E004F0D5C /* CustomCheckBox.swift */; };
 		D69E2A752B615EFC004F0D5C /* CustomPopUpWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69E2A742B615EFC004F0D5C /* CustomPopUpWindow.swift */; };
 		D6A4C9412CDE154900B2BA6D /* PaymentDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A4C9402CDE154900B2BA6D /* PaymentDetailsView.swift */; };
-		D6A4C9432CE28E2300B2BA6D /* OrderDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A4C9422CE28E2300B2BA6D /* OrderDetailsViewController.swift */; };
 		D6A4C9452CE385A800B2BA6D /* BottomRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A4C9442CE385A800B2BA6D /* BottomRoundedRectangle.swift */; };
 		D6A4C9472CE3A26500B2BA6D /* CustomSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A4C9462CE3A26500B2BA6D /* CustomSection.swift */; };
 		D6AF62C42B126DCA0056C973 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62C32B126DCA0056C973 /* Toast.swift */; };
@@ -176,7 +175,6 @@
 		D69E2A6D2B60564E004F0D5C /* CustomCheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCheckBox.swift; sourceTree = "<group>"; };
 		D69E2A742B615EFC004F0D5C /* CustomPopUpWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopUpWindow.swift; sourceTree = "<group>"; };
 		D6A4C9402CDE154900B2BA6D /* PaymentDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentDetailsView.swift; sourceTree = "<group>"; };
-		D6A4C9422CE28E2300B2BA6D /* OrderDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsViewController.swift; sourceTree = "<group>"; };
 		D6A4C9442CE385A800B2BA6D /* BottomRoundedRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomRoundedRectangle.swift; sourceTree = "<group>"; };
 		D6A4C9462CE3A26500B2BA6D /* CustomSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSection.swift; sourceTree = "<group>"; };
 		D6AF62C32B126DCA0056C973 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Toast.swift; path = "My Orders/Utils/Toast.swift"; sourceTree = SOURCE_ROOT; };
@@ -387,7 +385,6 @@
 				D6F6A35E2AC59CEF002ECA81 /* OrderDetailsView.swift */,
 				D6F6A3642AC5B058002ECA81 /* AllOrdersView.swift */,
 				D69B4A8D2BA6567900C7FC33 /* UpcomingOrders.swift */,
-				D6A4C9422CE28E2300B2BA6D /* OrderDetailsViewController.swift */,
 			);
 			path = Orders;
 			sourceTree = "<group>";
@@ -724,7 +721,6 @@
 				D69B4A922BA7138800C7FC33 /* AddReceiptView.swift in Sources */,
 				D6F4357A2BE4FDD40038938F /* TagsDatabaseManager.swift in Sources */,
 				D684DC652BB4919100018186 /* AnimatedSideMenu.swift in Sources */,
-				D6A4C9432CE28E2300B2BA6D /* OrderDetailsViewController.swift in Sources */,
 				D66A36DF2B26275C00A921CF /* WelcomeView.swift in Sources */,
 				D6F435582BDBD7DA0038938F /* InventoryDatabaseManager.swift in Sources */,
 				D6A4C9472CE3A26500B2BA6D /* CustomSection.swift in Sources */,

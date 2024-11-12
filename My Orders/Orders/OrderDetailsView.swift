@@ -38,8 +38,8 @@ struct OrderDetailsView: View {
     var body: some View {
         
         ZStack(alignment: .top) {
-
-            BottomRoundedRectangle(cornerRadius: 40)
+            
+            BottomRoundedRectangle(cornerRadius: 20)
                 .fill(colorScheme == .light ? Color.black : Color.white)
                 .frame(height: UIScreen.main.bounds.height / 2.5)
                 .edgesIgnoringSafeArea(.top)
@@ -49,11 +49,14 @@ struct OrderDetailsView: View {
                 VStack(spacing: 12) {
                     // Spacer to create initial offset, making content start lower
                     Spacer()
-                        .frame(height: UIScreen.main.bounds.height / 20)
+                        .frame(height: UIScreen.main.bounds.height / 25)
                     
                     // Customer Information Section
                     customerInformationSection
                         .cornerRadius(12)
+                    
+                    Spacer()
+                        .frame(height: UIScreen.main.bounds.height / 35)
                     
                     // Order Information Section
                     orderInformationSection
@@ -76,13 +79,10 @@ struct OrderDetailsView: View {
                 .padding(.bottom, 20) // Padding at the bottom for spacing
             }
         }
-//        .onChange(of: colorScheme, {
-//            setupNavigationBarAppearance()
-//        })
         .background(colorScheme == .light ? Color.white : Color.black)
         .navigationBarTitle(
             Text("Order Details")
-            .foregroundColor((colorScheme == .light ? Color.white : Color.black))
+                .foregroundColor((colorScheme == .light ? Color.white : Color.black))
             , displayMode: .inline)
         .navigationBarItems(
             trailing:
@@ -97,44 +97,47 @@ struct OrderDetailsView: View {
         .sheet(isPresented: $isEditing) {
             EditOrderView(orderManager: orderManager, inventoryManager: inventoryManager, order: $order, editedOrder: order)
         }
+        .overlay(content: {
+            if showInfo  {
+                CustomPopUpWindow(isActive: $showInfo, item: $selectedItemForDetails, title: "Details", buttonTitle: "Close")
+                    .onAppear {
+                        HelperFunctions.closeKeyboard()
+                    }
+            }
+        })
     }
-    
-    private func setupNavigationBarAppearance() {
-           let appearance = UINavigationBarAppearance()
-           appearance.configureWithTransparentBackground() // Set background to transparent or customize
-           
-           // Set title color based on the color scheme
-           if colorScheme == .light {
-               appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-           } else {
-               appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
-           }
-           
-           // Apply the appearance
-           UINavigationBar.appearance().standardAppearance = appearance
-           UINavigationBar.appearance().scrollEdgeAppearance = appearance
-       }
+
     
     private var customerInformationSection: some View {
-//        CustomSection(header: "Customer Information") {
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Text(order.customer.name)
-                        .font(.title3)
-                        .bold()
-                        .foregroundStyle(colorScheme == .light ? Color.white : Color.black)
-                        
-                    Spacer()
-                }
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text(order.customer.name)
+                    .font(.title3)
+                    .bold()
+                    .foregroundStyle(colorScheme == .light ? Color.white : Color.black)
                 
-                HStack {
-                    WhatsAppChatButton(phoneNumber: order.customer.phoneNumber)
-                        .tint(colorScheme == .light ? Color.white : Color.black)
-                    
-                    Spacer()
-                }
-              
-//            }
+                Spacer()
+            }
+            
+            HStack {
+                
+                Text(order.customer.phoneNumber)
+                    .foregroundStyle(colorScheme == .light ? Color.white : Color.black)
+                    .contextMenu {
+                        Button(action: {
+                            UIPasteboard.general.string = order.customer.phoneNumber
+                        }) {
+                            Text("Copy Phone Number")
+                            Image(systemName: "doc.on.doc")
+                        }
+                    }
+
+                WhatsAppChatButton(phoneNumber: order.customer.phoneNumber)
+                    .tint(colorScheme == .light ? Color.white : Color.black)
+                
+                Spacer()
+            }
+            
         }
         .padding(.horizontal)
         .padding()
@@ -142,18 +145,19 @@ struct OrderDetailsView: View {
     
     private var orderInformationSection: some View {
         CustomSection(header: "Order Information", headerColor: orderInformationSectionHeaderColor) {
-            HStack {
+            HStack(alignment: .center) {
                 Image(systemName: "calendar")
                     .foregroundColor(.accentColor)
-                Text("Order Date: \(order.orderDate.formatted(date: .abbreviated, time: .shortened))")
+                
+                Text(order.orderDate.formatted(date: .abbreviated, time: .shortened))
                     .font(.subheadline)
                     .foregroundColor(.secondary)
+                
+                Spacer()
             }
-//            .padding(.vertical, 8)
             .background(Color(.systemGray6))
             .cornerRadius(8)
-            .padding(.horizontal)
-            .padding()
+            .padding(.vertical, 8)
             
             ForEach(order.orderItems, id: \.inventoryItem.name) { orderItem in
                 HStack {
@@ -186,9 +190,6 @@ struct OrderDetailsView: View {
                     }
                     .animation(.easeInOut, value: showInfo)
                 }
-//                .background(Color(.systemBackground))
-//                .cornerRadius(12)
-//                .shadow(color: Color(.black).opacity(0.1), radius: 4, x: 0, y: 2)
             }
         }
         .cornerRadius(12)
@@ -200,23 +201,40 @@ struct OrderDetailsView: View {
                 if !order.delivery.address.isEmpty || order.delivery.cost != 0 {
                     CustomSectionView(
                         title: "Deliver to",
-                        address: order.delivery.address,
+                        description: order.delivery.address,
                         sfSymbol: "mappin.and.ellipse"
                     )
+                    
+                    if !order.notes.isEmpty {
+                        Divider()
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 8)
+
+                    }
+
                 }
                 
                 if !order.notes.isEmpty {
                     CustomSectionView(
                         title: "Notes",
-                        address: order.notes,
+                        description: order.notes,
                         sfSymbol: "note.text"
                     )
+                    
+                    if !order.allergies.isEmpty {
+                        Divider()
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 8)
+
+                    }
+                    
                 }
                 
                 if !order.allergies.isEmpty {
+                    
                     CustomSectionView(
                         title: "Allergies",
-                        address: order.allergies,
+                        description: order.allergies,
                         sfSymbol: "allergens"
                     )
                 }
@@ -257,13 +275,13 @@ struct OrderDetailsView: View {
                     }
                 }
             }
-//            .customGraySectionVStyle()
         }
     }
     
     private var priceSection: some View {
         CustomSection(header: "Price", headerColor: sectionHeadersColor) {
             VStack(alignment: .leading) {
+                
                 HStack {
                     Text("Delivery Cost")
                     Spacer()
@@ -271,6 +289,8 @@ struct OrderDetailsView: View {
                         .bold()
                 }
                 .padding(8)
+                
+                Divider().padding(.horizontal, 8)
                 
                 HStack {
                     Text("Total Price")
@@ -280,14 +300,53 @@ struct OrderDetailsView: View {
                 }
                 .padding(8)
             }
-//            .customGraySectionVStyle()
         }
     }
 }
 
 
-#Preview {
-
-    UpcomingOrders(orderManager: OrderManager.shared, inventoryManager: InventoryManager.shared)
-
+struct OrderDetailsView_Previews: PreviewProvider {
+    static var previews: some View {
+        
+        let sampleItem = InventoryItem(itemID: "1234",
+                                       name: "Chocolate cake",
+                                       itemPrice: 20,
+                                       itemQuantity: 20,
+                                       size: "",
+                                       AdditionDate: Date(),
+                                       itemNotes: ""
+        )
+        
+        let sampleItem_ = InventoryItem(itemID: "4321",
+                                        name: "Raspberry pie",
+                                        itemPrice: 120,
+                                        itemQuantity: 3,
+                                        size: "",
+                                        AdditionDate: Date(),
+                                        itemNotes: ""
+        )
+        
+        let sampleOrder = Order(
+            orderID: "1234",
+            customer: Customer(name: "John Doe", phoneNumber: "0546768900"),
+            orderItems: [OrderItem(inventoryItem: sampleItem, quantity: 2,price: sampleItem.itemPrice),
+                         OrderItem(inventoryItem: sampleItem_, quantity: 1, price: sampleItem_.itemPrice)],
+            orderDate: Date(),
+            delivery: Delivery(address: "yefe nof 18, peduel", cost: 10),
+            notes: "Blessing to me!!",
+            allergies: "",
+            isDelivered: false,
+            isPaid: false
+            
+        )
+        
+        return OrderDetailsView(orderManager: OrderManager(), inventoryManager: InventoryManager(), order: sampleOrder)
+        
+        
+    }
 }
+
+//
+//#Preview {
+//    UpcomingOrders(orderManager: OrderManager.shared, inventoryManager: InventoryManager.shared)
+//}
