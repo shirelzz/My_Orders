@@ -1,13 +1,6 @@
-//
-//  OrderDetailsView.swift
-//  My Orders
-//
-//  Created by שיראל זכריה on 28/09/2023.
-//
-
 import SwiftUI
 
-struct OrderDetailsView: View {
+struct OrderDetailsView1: View {
     @ObservedObject var orderManager: OrderManager
     @ObservedObject var inventoryManager: InventoryManager
     @State private var currency = HelperFunctions.getCurrencySymbol()
@@ -24,66 +17,48 @@ struct OrderDetailsView: View {
     @State private var phoneNumberToCopy = ""
     
     @Environment(\.presentationMode) var presentationMode
-    @Environment(\.colorScheme) var colorScheme // Detects light or dark mode
     
-    // Set the color based on the color scheme
-    var orderInformationSectionHeaderColor: Color {
-        colorScheme == .light ? Color.gray : Color.gray
-    }
-    
-    var sectionHeadersColor: Color {
-        colorScheme == .light ? Color.gray : Color.gray
-    }
-
     var body: some View {
-        
-        ZStack(alignment: .top) {
-
-            BottomRoundedRectangle(cornerRadius: 40)
-                .fill(colorScheme == .light ? Color.black : Color.white)
-                .frame(height: UIScreen.main.bounds.height / 2.5)
-                .edgesIgnoringSafeArea(.top)
-            
+        GeometryReader { geometry in
             ScrollView {
-                
-                VStack(spacing: 12) {
-                    // Spacer to create initial offset, making content start lower
-                    Spacer()
-                        .frame(height: UIScreen.main.bounds.height / 20)
+                VStack(spacing: 0) {
+                    // Half-Circle Background
+                    RoundedRectangle(cornerRadius: geometry.size.width / 2)
+                        .fill(Color.blue)
+                        .frame(width: geometry.size.width, height: 200)
+                        .overlay(
+                            VStack {
+                                Text("Order Details")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding(.top, 50)
+                            }
+                        )
+                        .edgesIgnoringSafeArea(.top)
                     
-                    // Customer Information Section
-                    customerInformationSection
+                    // Content Sections
+                    VStack(spacing: 16) {
+                        Form {
+                            customerInformationSection
+                            orderInformationSection
+                            
+                            if !order.delivery.address.isEmpty || !order.notes.isEmpty || !order.allergies.isEmpty || order.delivery.cost != 0 {
+                                additionalDetailsSection
+                            }
+                            
+                            orderStatusSection
+                            priceSection
+                        }
+                        .background(Color(.systemBackground)) // Matches the form background color
                         .cornerRadius(12)
-                    
-                    // Order Information Section
-                    orderInformationSection
-                        .cornerRadius(12)
-                    
-                    // Additional Details Section (if any details are present)
-                    if !order.delivery.address.isEmpty || !order.notes.isEmpty || !order.allergies.isEmpty || order.delivery.cost != 0 {
-                        additionalDetailsSection
-                            .cornerRadius(12)
+                        .padding(.top, -40) // Moves the form up slightly to overlap with the background
+                        .padding(.horizontal)
                     }
-                    
-                    // Order Status Section
-                    orderStatusSection
-                        .cornerRadius(12)
-                    
-                    // Price Section
-                    priceSection
-                        .cornerRadius(12)
                 }
-                .padding(.bottom, 20) // Padding at the bottom for spacing
             }
         }
-//        .onChange(of: colorScheme, {
-//            setupNavigationBarAppearance()
-//        })
-        .background(colorScheme == .light ? Color.white : Color.black)
-        .navigationBarTitle(
-            Text("Order Details")
-            .foregroundColor((colorScheme == .light ? Color.white : Color.black))
-            , displayMode: .inline)
+        .navigationBarTitle("Order Details", displayMode: .inline)
         .navigationBarItems(
             trailing:
                 Button(action: {
@@ -91,57 +66,38 @@ struct OrderDetailsView: View {
                 }) {
                     Image(systemName: isEditing ? "pencil.slash" : "pencil")
                         .font(.system(size: 18))
-                        .foregroundColor(isEditing ? .red : (colorScheme == .light ? .white : .black))
+                        .foregroundColor(isEditing ? .red : .white)
                 }
         )
         .sheet(isPresented: $isEditing) {
             EditOrderView(orderManager: orderManager, inventoryManager: inventoryManager, order: $order, editedOrder: order)
         }
+        .overlay(content: {
+            if showInfo {
+                CustomPopUpWindow(isActive: $showInfo, item: $selectedItemForDetails, title: "Details", buttonTitle: "Close")
+                    .onAppear {
+                        HelperFunctions.closeKeyboard()
+                    }
+            }
+        })
     }
     
-    private func setupNavigationBarAppearance() {
-           let appearance = UINavigationBarAppearance()
-           appearance.configureWithTransparentBackground() // Set background to transparent or customize
-           
-           // Set title color based on the color scheme
-           if colorScheme == .light {
-               appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-           } else {
-               appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
-           }
-           
-           // Apply the appearance
-           UINavigationBar.appearance().standardAppearance = appearance
-           UINavigationBar.appearance().scrollEdgeAppearance = appearance
-       }
-    
     private var customerInformationSection: some View {
-//        CustomSection(header: "Customer Information") {
-            VStack(alignment: .leading, spacing: 8) {
+        Section(header: Text("Customer Information")) {
+            VStack {
                 HStack {
+                    Text("Name:")
                     Text(order.customer.name)
-                        .font(.title3)
-                        .bold()
-                        .foregroundStyle(colorScheme == .light ? Color.white : Color.black)
-                        
-                    Spacer()
                 }
-                
-                HStack {
-                    WhatsAppChatButton(phoneNumber: order.customer.phoneNumber)
-                        .tint(colorScheme == .light ? Color.white : Color.black)
-                    
-                    Spacer()
-                }
-              
-//            }
+                WhatsAppChatButton(phoneNumber: order.customer.phoneNumber)
+                    .padding()
+                    .tint(.accentColor)
+            }
         }
-        .padding(.horizontal)
-        .padding()
     }
     
     private var orderInformationSection: some View {
-        CustomSection(header: "Order Information", headerColor: orderInformationSectionHeaderColor) {
+        Section(header: Text("Order Information")) {
             HStack {
                 Image(systemName: "calendar")
                     .foregroundColor(.accentColor)
@@ -149,11 +105,11 @@ struct OrderDetailsView: View {
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
-//            .padding(.vertical, 8)
+            .padding(.vertical, 8)
+            .padding(.horizontal)
             .background(Color(.systemGray6))
             .cornerRadius(8)
             .padding(.horizontal)
-            .padding()
             
             ForEach(order.orderItems, id: \.inventoryItem.name) { orderItem in
                 HStack {
@@ -186,16 +142,16 @@ struct OrderDetailsView: View {
                     }
                     .animation(.easeInOut, value: showInfo)
                 }
-//                .background(Color(.systemBackground))
-//                .cornerRadius(12)
-//                .shadow(color: Color(.black).opacity(0.1), radius: 4, x: 0, y: 2)
+                .background(Color(.systemBackground))
+                .cornerRadius(12)
+                .shadow(color: Color(.black).opacity(0.1), radius: 4, x: 0, y: 2)
             }
         }
         .cornerRadius(12)
     }
     
     private var additionalDetailsSection: some View {
-        CustomSection(header: "Additional Details", headerColor: sectionHeadersColor) {
+        Section(header: Text("Additional Details")) {
             VStack {
                 if !order.delivery.address.isEmpty || order.delivery.cost != 0 {
                     CustomSectionView(
@@ -225,7 +181,7 @@ struct OrderDetailsView: View {
     }
     
     private var orderStatusSection: some View {
-        CustomSection(header: "Order Status", headerColor: sectionHeadersColor) {
+        Section(header: Text("Order Status")) {
             VStack(alignment: .leading) {
                 Toggle("Paid", isOn: $order.isPaid)
                     .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
@@ -257,12 +213,12 @@ struct OrderDetailsView: View {
                     }
                 }
             }
-//            .customGraySectionVStyle()
+            .customGraySectionVStyle()
         }
     }
     
     private var priceSection: some View {
-        CustomSection(header: "Price", headerColor: sectionHeadersColor) {
+        Section(header: Text("Price")) {
             VStack(alignment: .leading) {
                 HStack {
                     Text("Delivery Cost")
@@ -280,14 +236,15 @@ struct OrderDetailsView: View {
                 }
                 .padding(8)
             }
-//            .customGraySectionVStyle()
+            .customGraySectionVStyle()
         }
     }
 }
 
-
 #Preview {
-
-    UpcomingOrders(orderManager: OrderManager.shared, inventoryManager: InventoryManager.shared)
+    
+    OrderDetailsView1(orderManager: OrderManager.shared, inventoryManager: InventoryManager.shared,
+                      order: Order(orderID: "123", customer: Customer(name: "Shir", phoneNumber: "076"), orderItems: [OrderItem(inventoryItem: InventoryItem(itemID: "111", name: "Cake", itemPrice: 120, itemQuantity: 4, size: "medium", AdditionDate: Date(), itemNotes: ""), quantity: 1, price: 120)], orderDate: Date(), delivery: Delivery(address: "Ariel", cost: 25), notes: "", allergies: "", isDelivered: false, isPaid: true)
+                      )
 
 }

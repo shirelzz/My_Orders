@@ -19,7 +19,7 @@ struct CustomSectionView: View {
         HStack(spacing: 8) {
             // SF Symbol with wiggle animation
             Image(systemName: sfSymbol)
-                .foregroundColor(.red)
+                .foregroundColor(.yellow)
                 .rotationEffect(.degrees(isWiggling ? -10 : 10))
                 .animation(
                     Animation.easeInOut(duration: 0.15)
@@ -48,7 +48,7 @@ struct CustomSectionView: View {
             RoundedRectangle(cornerRadius: 10)
                 .stroke(Color.gray.opacity(0.3), lineWidth: 1)
         )
-        .padding(.horizontal)
+//        .padding(.horizontal)
     }
 }
 

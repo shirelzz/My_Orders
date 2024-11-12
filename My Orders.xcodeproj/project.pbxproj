@@ -53,6 +53,8 @@
 		D69E2A752B615EFC004F0D5C /* CustomPopUpWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69E2A742B615EFC004F0D5C /* CustomPopUpWindow.swift */; };
 		D6A4C9412CDE154900B2BA6D /* PaymentDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A4C9402CDE154900B2BA6D /* PaymentDetailsView.swift */; };
 		D6A4C9432CE28E2300B2BA6D /* OrderDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A4C9422CE28E2300B2BA6D /* OrderDetailsViewController.swift */; };
+		D6A4C9452CE385A800B2BA6D /* BottomRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A4C9442CE385A800B2BA6D /* BottomRoundedRectangle.swift */; };
+		D6A4C9472CE3A26500B2BA6D /* CustomSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A4C9462CE3A26500B2BA6D /* CustomSection.swift */; };
 		D6AF62C42B126DCA0056C973 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62C32B126DCA0056C973 /* Toast.swift */; };
 		D6AF62D02B12BCB90056C973 /* InventoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62CF2B12BCB90056C973 /* InventoryItem.swift */; };
 		D6AF62D42B12BDAB0056C973 /* InventoryContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF62D32B12BDAB0056C973 /* InventoryContentView.swift */; };
@@ -175,6 +177,8 @@
 		D69E2A742B615EFC004F0D5C /* CustomPopUpWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopUpWindow.swift; sourceTree = "<group>"; };
 		D6A4C9402CDE154900B2BA6D /* PaymentDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentDetailsView.swift; sourceTree = "<group>"; };
 		D6A4C9422CE28E2300B2BA6D /* OrderDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsViewController.swift; sourceTree = "<group>"; };
+		D6A4C9442CE385A800B2BA6D /* BottomRoundedRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomRoundedRectangle.swift; sourceTree = "<group>"; };
+		D6A4C9462CE3A26500B2BA6D /* CustomSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSection.swift; sourceTree = "<group>"; };
 		D6AF62C32B126DCA0056C973 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Toast.swift; path = "My Orders/Utils/Toast.swift"; sourceTree = SOURCE_ROOT; };
 		D6AF62CF2B12BCB90056C973 /* InventoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryItem.swift; sourceTree = "<group>"; };
 		D6AF62D32B12BDAB0056C973 /* InventoryContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryContentView.swift; sourceTree = "<group>"; };
@@ -352,6 +356,8 @@
 				D69E2A742B615EFC004F0D5C /* CustomPopUpWindow.swift */,
 				D69B4A8F2BA70A9A00C7FC33 /* CustomVStackStyle.swift */,
 				D6F52FB22C9D815D00250826 /* CustomSectionView.swift */,
+				D6A4C9442CE385A800B2BA6D /* BottomRoundedRectangle.swift */,
+				D6A4C9462CE3A26500B2BA6D /* CustomSection.swift */,
 			);
 			path = MyCustomViews;
 			sourceTree = "<group>";
@@ -721,6 +727,7 @@
 				D6A4C9432CE28E2300B2BA6D /* OrderDetailsViewController.swift in Sources */,
 				D66A36DF2B26275C00A921CF /* WelcomeView.swift in Sources */,
 				D6F435582BDBD7DA0038938F /* InventoryDatabaseManager.swift in Sources */,
+				D6A4C9472CE3A26500B2BA6D /* CustomSection.swift in Sources */,
 				D6F435762BDD73700038938F /* TagsView.swift in Sources */,
 				D6E7D2D82B6332C80027DF29 /* AddBusinessView.swift in Sources */,
 				D6AF62F82B151CE80056C973 /* NotificationSettingsView.swift in Sources */,
@@ -761,6 +768,7 @@
 				D6F4356D2BDBE7650038938F /* SelectWorkingHoursView.swift in Sources */,
 				D69E2A752B615EFC004F0D5C /* CustomPopUpWindow.swift in Sources */,
 				D6AF62E82B1392FD0056C973 /* CustomizedDataView.swift in Sources */,
+				D6A4C9452CE385A800B2BA6D /* BottomRoundedRectangle.swift in Sources */,
 				D6F435642BDBDAF10038938F /* UserDatabaseManager.swift in Sources */,
 				D6F6A3652AC5B058002ECA81 /* AllOrdersView.swift in Sources */,
 				D6B7A7AE2B4E8CE900E7D941 /* NotificationManager.swift in Sources */,

@@ -14,20 +14,20 @@ struct WhatsAppChatButton: View {
 
     var body: some View {
         Button(action: {
-
+            
             if let formattedNumber = formatPhoneNumber(phoneNumber) {
-                            if let url = URL(string: "https://wa.me/\(formattedNumber)") {
-                                UIApplication.shared.open(url)
-                            }
-                        }
+                if let url = URL(string: "https://wa.me/\(formattedNumber)") {
+                    UIApplication.shared.open(url)
+                }
+            }
         }) {
             HStack {
-//                Image(systemName: "message")
+                //                Image(systemName: "message")
                 
                 Text(phoneNumber)
-                                .underline() // Optional: underlines the phone number
-//                                .foregroundColor(.gray)
-                                .font(.subheadline)
+//                    .underline() // Optional: underlines the phone number
+                //                                .foregroundColor(.gray)
+                //                                .font(.subheadline)
             }
         }
     }
