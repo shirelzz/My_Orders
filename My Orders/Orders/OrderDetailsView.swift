@@ -168,7 +168,7 @@ struct OrderDetailsView: View {
                             .foregroundColor(.primary)
                             .bold()
                         
-                        Text("Quantity: \(orderItem.quantity)")
+                        Text("Q: \(orderItem.quantity)")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                         
