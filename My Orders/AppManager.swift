@@ -216,7 +216,6 @@ class AppManager: ObservableObject {
     // MARK: - All Users
 
     func getCurrencySymbol() -> String {
-        refreshCurrency()
         return self.currencySymbol(for: currency)
     }
     

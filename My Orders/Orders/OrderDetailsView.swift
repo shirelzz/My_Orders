@@ -47,6 +47,7 @@ struct OrderDetailsView: View {
             ScrollView {
                 
                 VStack(spacing: 12) {
+                    
                     // Spacer to create initial offset, making content start lower
                     Spacer()
                         .frame(height: UIScreen.main.bounds.height / 25)
@@ -110,6 +111,7 @@ struct OrderDetailsView: View {
     
     private var customerInformationSection: some View {
         VStack(alignment: .leading, spacing: 8) {
+            
             HStack {
                 Text(order.customer.name)
                     .font(.title3)
@@ -202,7 +204,8 @@ struct OrderDetailsView: View {
                     CustomSectionView(
                         title: "Deliver to",
                         description: order.delivery.address,
-                        sfSymbol: "mappin.and.ellipse"
+                        sfSymbol: "mappin.and.ellipse",
+                        sfSymbolColor: Color.yellow
                     )
                     
                     if !order.notes.isEmpty {
@@ -218,7 +221,8 @@ struct OrderDetailsView: View {
                     CustomSectionView(
                         title: "Notes",
                         description: order.notes,
-                        sfSymbol: "note.text"
+                        sfSymbol: "note.text",
+                        sfSymbolColor: Color.yellow
                     )
                     
                     if !order.allergies.isEmpty {
@@ -235,7 +239,8 @@ struct OrderDetailsView: View {
                     CustomSectionView(
                         title: "Allergies",
                         description: order.allergies,
-                        sfSymbol: "allergens"
+                        sfSymbol: "allergens",
+                        sfSymbolColor: Color.yellow
                     )
                 }
             }

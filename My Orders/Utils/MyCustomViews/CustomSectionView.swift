@@ -12,6 +12,8 @@ struct CustomSectionView: View {
     var title: String
     var description: String
     var sfSymbol: String
+    var sfSymbolColor: Color
+
     
     @State private var isWiggling = false
     
@@ -27,11 +29,12 @@ struct CustomSectionView: View {
             
             // SF Symbol with wiggle animation
             Image(systemName: sfSymbol)
-                .foregroundColor(.yellow)
+                .foregroundColor(sfSymbolColor)
                 .rotationEffect(.degrees(isWiggling ? -10 : 10))
                 .animation(
                     Animation.easeInOut(duration: 0.15)
-                        .repeatForever(autoreverses: true),
+//                        .repeatForever(autoreverses: true),
+                        .repeatCount(6, autoreverses: true),
                     value: isWiggling
                 )
                 .onAppear {
@@ -71,7 +74,8 @@ struct CustomSectionView_Previews: PreviewProvider {
         CustomSectionView(
             title: "Deliver to",
             description: "221B Baker Street, London, United Kingdom",
-            sfSymbol: "mappin.and.ellipse"
+            sfSymbol: "mappin.and.ellipse",
+            sfSymbolColor: Color.yellow
         )
     }
 }

@@ -82,9 +82,10 @@ struct ReceiptView: View {
                 }
             }
             
-            // Delivery Cost Section
-            if !order.delivery.address.isEmpty || order.delivery.cost != 0 {
-                Section(header: Text("Delivery")) {
+            // Total Price Section
+            Section(header: Text("Total Price")) {
+                
+                if !order.delivery.address.isEmpty || order.delivery.cost != 0 {
                     HStack {
                         Text("Delivery Cost:")
                         Spacer()
@@ -92,10 +93,7 @@ struct ReceiptView: View {
                             .multilineTextAlignment(layoutDirection == .rightToLeft ? .leading : .trailing)
                     }
                 }
-            }
-            
-            // Total Price Section
-            Section(header: Text("Total Price")) {
+                
                 HStack {
                     Text("Total Price:")
                     Spacer()
@@ -248,4 +246,6 @@ struct ReceiptView_Previews: PreviewProvider {
                         .padding()
     }
 }
+
+
 

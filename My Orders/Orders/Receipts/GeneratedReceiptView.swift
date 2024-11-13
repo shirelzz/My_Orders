@@ -20,6 +20,8 @@ struct GeneratedReceiptView: View {
     @State private var pdfData: Data?
     @State private var showConfirmationAlert = false
     @State private var showSuccessMessage = false
+    
+    @Environment(\.colorScheme) var colorScheme
 
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -31,94 +33,36 @@ struct GeneratedReceiptView: View {
     
     var body: some View {
         
-        let receipt = OrderManager.shared.getReceipt(forOrderID: order.orderID)
-
-                
-        VStack(alignment: .leading, spacing: 10) { //
+        ZStack(alignment: .top) {
             
-            Text("Receipt No. \(receipt.myID)")
-                .font(.title)
-                .bold()
-                .padding(.bottom, 20)
-
-            HStack{
-                Text("Date Generated:")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .padding(.bottom)
+            BottomRoundedRectangle(cornerRadius: 20)
+                .fill(colorScheme == .light ? Color.black : Color.white)
+                .frame(height: UIScreen.main.bounds.height / 2.5)
+                .edgesIgnoringSafeArea(.top)
+            
+            ScrollView {
                 
-                Text(HelperFunctions.formatToDate(receipt.dateGenerated)).padding(.bottom)
-                
-            }
-
-            HStack{
-                Text("For")
-                    .bold()
-                Text(order.customer.name)
-            }
-
-            Section(header:
-                        Text("Order Details")
-                .font(.headline)
-                .fontWeight(.bold)
-                .padding(.top)
-            ) {
-                List(order.orderItems, id: \.inventoryItem.name) { orderItem in
-                    HStack {
-                        Text("\(orderItem.inventoryItem.name)")
-                        Spacer()
-                        Text("Q: \(orderItem.quantity)")
-                        Spacer()
-                        Text("\(currency)\(orderItem.price, specifier: "%.2f")")
-                    }
+                VStack(alignment: .leading, spacing: 10) {
+                    
+                    Spacer()
+                        .frame(height: UIScreen.main.bounds.height / 40)
+                    
+                    receiptInformationSection
+                    
+                    Spacer()
+                        .frame(height: UIScreen.main.bounds.height / 35)
+                    
+                    orderDetailsSection
+                    
+                    pricingAndPaymentSection
+                    
                 }
             }
-            
-            if((order.delivery.address != "") || (order.delivery.cost != 0)){
-                HStack {
-                    Text("Delivery Cost:")
-                        .font(.headline)
-                    
-                    let deliveryCostStr = String(format: "%.2f", order.delivery.cost)
-                    let deliveryCost = currency + deliveryCostStr
-                    
-                    Text(deliveryCost)
-                }
-            }
-            
-            HStack{
-                Text("Total Price:").font(.headline)
-                let totalPriceStr = String(format: "%.2f", order.totalPrice)
-                let totalPrice = currency + totalPriceStr
-                Text(totalPrice)
-                
-            }
-            
-            HStack(alignment: .center, spacing: 5) {
-                
-                Text("Payment Method:")
-                    .font(.headline)
-                Text(NSLocalizedString(receipt.paymentMethod, comment: "Localized payment method"))
-
-            }
-            
-            HStack(alignment: .center, spacing: 5) {
-                
-                Text("Payment Details:")
-                    .font(.headline)
-                Text("\(receipt.paymentDetails)")
-
-            }
-
-            HStack(alignment: .center, spacing: 5){
-                Text("Payment Date:")
-                    .font(.headline)
-                Text(HelperFunctions.formatToDate(receipt.paymentDate))
-
-            }
-            
         }
-        .padding()
+        .navigationBarTitle(
+            Text("Receipt Details")
+                .foregroundColor((colorScheme == .light ? Color.white : Color.black))
+            , displayMode: .inline)
         .toolbar {
 
             if OrderManager.shared.receiptExists(forOrderID: order.orderID) {
@@ -159,7 +103,129 @@ struct GeneratedReceiptView: View {
             }
 
         }
+                
+    }
+    
+    private var receiptInformationSection: some View {
         
+            VStack(alignment: .leading, spacing: 8) {
+                
+                let receipt = OrderManager.shared.getReceipt(forOrderID: order.orderID)
+                
+                HStack {
+                    Text("Receipt No. \(receipt.myID)")
+                        .font(.title3)
+                        .bold()
+                        .foregroundStyle(colorScheme == .light ? Color.white : Color.black)
+                    
+                    Spacer()
+                }
+                
+                HStack {
+                    
+                    Text(order.customer.name)
+                        .foregroundStyle(colorScheme == .light ? Color.white : Color.black)
+                    
+                    Spacer()
+                }
+                
+                HStack{
+                    Text("Generated in \(HelperFunctions.formatToDate(receipt.dateGenerated))")
+                        .fontWeight(.thin)
+                        .foregroundStyle(colorScheme == .light ? Color.white : Color.black)
+                                        
+                }
+                
+            }
+            .padding(.horizontal)
+            .padding()
+    }
+    
+    private var orderDetailsSection: some View {
+        
+        CustomSection(header: "Order Details", headerColor: Color.gray) {
+            
+            ForEach(order.orderItems, id: \.inventoryItem.name) { orderItem in
+                HStack {
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(orderItem.inventoryItem.name)
+                            .foregroundColor(.primary)
+                            .bold()
+                        
+                        Text("Q: \(orderItem.quantity)")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        
+                        Text("\(orderItem.price, specifier: "%.2f")\(currency)")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    Spacer()
+                }
+            }
+        }
+    }
+    
+    private var pricingAndPaymentSection: some View {
+        
+        CustomSection(header: "Pricing and Payment", headerColor: Color.gray) {
+            
+            let receipt = OrderManager.shared.getReceipt(forOrderID: order.orderID)
+            
+            VStack(alignment: .leading) {
+                
+                HStack {
+                    Text("Delivery Cost")
+                    Spacer()
+                    Text("\(order.delivery.cost, specifier: "%.2f")\(currency)")
+                        .bold()
+                }
+                .padding(8)
+                
+                Divider().padding(.horizontal, 8)
+                
+                HStack {
+                    Text("Total Price")
+                    Spacer()
+                    Text("\(order.totalPrice, specifier: "%.2f")\(currency)")
+                        .bold()
+                }
+                .padding(8)
+                
+                Divider().padding(.horizontal, 8)
+                
+                HStack {
+                    Text("Payment Method")
+                    Spacer()
+                    Text(NSLocalizedString(receipt.paymentMethod, comment: "Localized payment method"))
+                        .bold()
+                }
+                .padding(8)
+                
+                Divider().padding(.horizontal, 8)
+                
+                HStack {
+                    Text("Payment Details")
+                    Spacer()
+                    Text("\(receipt.paymentDetails)")
+                        .bold()
+                }
+                .padding(8)
+                
+                Divider().padding(.horizontal, 8)
+                
+                HStack {
+                    Text("Payment Date")
+                    Spacer()
+                    Text(HelperFunctions.formatToDate(receipt.paymentDate))
+                        .bold()
+                }
+                .padding(8)
+            }
+        }
+
     }
     
 }
