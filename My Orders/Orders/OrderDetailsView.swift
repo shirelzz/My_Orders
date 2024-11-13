@@ -252,14 +252,8 @@ struct OrderDetailsView: View {
             VStack(alignment: .leading) {
                 Toggle("Paid", isOn: $order.isPaid)
                     .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
-                    .padding(8)
-                
-                Divider().padding(.horizontal, 8)
-                
-                Toggle("Delivered", isOn: $order.isDelivered)
-                    .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
-                    .padding(8)
-                
+                    .padding(.horizontal, 8)
+
                 if order.isPaid {
                     Button("Show Receipt Details") {
                         if orderManager.receiptExists(forOrderID: order.orderID) {
@@ -268,6 +262,7 @@ struct OrderDetailsView: View {
                             showReceiptPreview = true
                         }
                     }
+                    .padding(.horizontal, 8)
                     .sheet(isPresented: $showReceiptPreview) {
                         NavigationView {
                             ReceiptView(orderManager: orderManager, order: order, showGenerationAlert: $showReceiptPreview)
@@ -279,6 +274,17 @@ struct OrderDetailsView: View {
                         }
                     }
                 }
+                
+                
+                Divider()
+                    .padding(.horizontal, 8)
+                    .padding(8)
+
+                
+                Toggle("Delivered", isOn: $order.isDelivered)
+                    .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
+                    .padding(.horizontal, 8)
+                
             }
         }
     }

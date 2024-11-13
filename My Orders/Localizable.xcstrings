@@ -1740,6 +1740,7 @@
       }
     },
     "Date Generated:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2417,6 +2418,7 @@
       }
     },
     "For" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2536,6 +2538,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ייצר קבלה"
+          }
+        }
+      }
+    },
+    "Generated in %@" : {
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "נוצר בתאריך %@"
           }
         }
       }
@@ -3048,6 +3060,7 @@
       }
     },
     "Name: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3722,6 +3735,7 @@
       }
     },
     "Payment Date:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3772,6 +3786,7 @@
       }
     },
     "Payment Details:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "he" : {
           "stringUnit" : {
@@ -3815,6 +3830,7 @@
       }
     },
     "Payment Method:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4091,6 +4107,7 @@
       }
     },
     "Price: %.2f" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4373,6 +4390,7 @@
       }
     },
     "Quantity: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4449,6 +4467,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "הגדרות קבלה"
+          }
+        }
+      }
+    },
+    "Receipt Details" : {
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פרטי קבלה"
           }
         }
       }

@@ -499,6 +499,16 @@ class ReceiptUtils {
         }
     }
     
+    static private func sanitizeForCSV(_ text: String) -> String {
+        // Escape double quotes by doubling them and replace control characters
+        let sanitized = text.replacingOccurrences(of: "\"", with: "\"\"") // Escape double quotes
+            .components(separatedBy: .controlCharacters).joined() // Remove control characters
+            .replacingOccurrences(of: "\n", with: " ") // Replace newline with space
+            .replacingOccurrences(of: "\r", with: " ") // Replace carriage return with space
+            .trimmingCharacters(in: .whitespacesAndNewlines) // Trim spaces and newlines
+        
+        return sanitized
+    }
 
     static func exportReceiptsAsCSV(orderManager: OrderManager,
                                     selectedYear: Int,
@@ -507,13 +517,16 @@ class ReceiptUtils {
         
         // Define the CSV headers and the data string
 //        var csvText = "ReceiptID, OrderID, Date, Amount\n"
-        var csvText = "Document Date, Document Number, Document Type, Value Date, Payment Method, Payment Details, Customer Name, Payment Amount\n"
+        var csvText = "Document Date, Document Number, Document Type, Value Date, Payment Method, Payment Details, Payment Amount, Customer Name\n"
 
-        // Filter receipts by the selected year
-        let filteredReceipts = orderManager.receipts.filter { receipt in
-            let receiptYear = Calendar.current.component(.year, from: receipt.dateGenerated)
-            return receiptYear == selectedYear
-        }
+        // Filter receipts by the selected year and then sort by paymentDate
+        let filteredReceipts = orderManager.receipts
+            .filter { receipt in
+                let receiptYear = Calendar.current.component(.year, from: receipt.dateGenerated)
+                return receiptYear == selectedYear
+            }
+            .sorted { $0.paymentDate < $1.paymentDate }
+
         
         // Iterate over each receipt and extract relevant details
         for (_, receipt) in filteredReceipts.enumerated() {
@@ -521,17 +534,36 @@ class ReceiptUtils {
             
             if order.orderID != "" {
                 
-                let documentDate = HelperFunctions.formatToDate(receipt.dateGenerated)
-                let documentNumber = receipt.myID
-                let documentType = "receipt"
-                let valueDate = HelperFunctions.formatToDate(receipt.paymentDate)
-                let paymentMethod = receipt.paymentMethod
-                let paymentDetails = receipt.paymentDetails
-                let customerName = order.customer.name
-                let paymentAmount = String(format: "%.2f", order.totalPrice)
+//                let documentDate = HelperFunctions.formatToDate(receipt.dateGenerated)
+//                let documentNumber = receipt.myID
+//                let documentType = "receipt"
+//                let valueDate = HelperFunctions.formatToDate(receipt.paymentDate)
+//                print("receipt.paymentDate: \(receipt.paymentDate)")
+//                print("valueDate: \(valueDate)")
+//                let paymentMethod = receipt.paymentMethod
+//                let paymentDetails = receipt.paymentDetails
+//                let paymentAmount = String(format: "%.2f", order.totalPrice)
+//                let customerName = String(order.customer.name)
+//                print("customerName: \(order.customer.name)")
                 
-                // Format each line of CSV with values separated by commas
-                let csvLine = "\(documentDate), \(documentNumber), \(documentType), \(valueDate), \(paymentMethod), \(paymentDetails), \(customerName), \(paymentAmount)\n"
+                let documentDate = sanitizeForCSV(HelperFunctions.formatToDate(receipt.dateGenerated))
+                let documentNumber = sanitizeForCSV("\(receipt.myID)")
+                let documentType = sanitizeForCSV("receipt")
+                let valueDate = sanitizeForCSV(HelperFunctions.formatToDate(receipt.paymentDate))
+                let paymentMethod = sanitizeForCSV(receipt.paymentMethod)
+                let paymentDetails = sanitizeForCSV(receipt.paymentDetails)
+                let paymentAmount = sanitizeForCSV(String(format: "%.2f", order.totalPrice))
+                let customerName = sanitizeForCSV(order.customer.name)
+
+                let csvLine = "\"\(documentDate)\",\"\(documentNumber)\",\"\(documentType)\",\"\(valueDate)\",\"\(paymentMethod)\",\"\(paymentDetails)\",\"\(paymentAmount)\",\"\(customerName)\"\r\n"
+
+
+                
+                orderManager.printOrder(order: order)
+                orderManager.printReceipt(receipt: receipt)
+                print(csvLine)
+                print("----------------------------------------------")
+                
                 csvText += csvLine
             }
         }

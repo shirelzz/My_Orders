@@ -16,7 +16,7 @@ struct CustomVStackStyle: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .background(backgroundColor.opacity(0.1))
+            .background(backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
             .shadow(radius: shadowRadius)
     }
@@ -29,7 +29,7 @@ struct CustomGraySectionVStyle: ViewModifier {
             .padding(.vertical, 10)
             .background(
                 RoundedRectangle(cornerRadius: 15)
-                    .fill(Color.white)
+                    .fill(Color(.systemBackground))
             )
     }
 }

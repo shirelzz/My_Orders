@@ -38,7 +38,8 @@ class HelperFunctions {
     
     static func formatToDate(_ date: Date) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) // Set to UTC
+        dateFormatter.dateFormat = "dd/MM/yyyy" // Specify date format explicitly
         return dateFormatter.string(from: date)
     }
     
