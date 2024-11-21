@@ -545,6 +545,11 @@ class OrderManager: ObservableObject {
     // MARK: - Manage Orders
 
     func addOrder(order: Order) {
+        if order.orderID == "" {
+            print("Attempt to add an empty order")
+            return
+        }
+        
         orders.append(order)
         if isUserSignedIn {
             saveOrder2DB(order)
