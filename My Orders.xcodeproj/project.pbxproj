@@ -117,6 +117,7 @@
 		D6F8CA672B2F7F870031A7A2 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = D6F8CA662B2F7F870031A7A2 /* FirebaseDatabase */; };
 		D6F8CA692B2F7F870031A7A2 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D6F8CA682B2F7F870031A7A2 /* FirebaseDatabaseSwift */; };
 		D6F8CA732B31C40E0031A7A2 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F8CA722B31C40E0031A7A2 /* DatabaseManager.swift */; };
+		D6FC99672CF7F9A10077C62E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D6FC99662CF7F9A10077C62E /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -231,6 +232,7 @@
 		D6F6A3642AC5B058002ECA81 /* AllOrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllOrdersView.swift; sourceTree = "<group>"; };
 		D6F8CA642B2F55050031A7A2 /* ReceiptsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptsUtils.swift; sourceTree = "<group>"; };
 		D6F8CA722B31C40E0031A7A2 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		D6FC99662CF7F9A10077C62E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../Desktop/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -494,6 +496,7 @@
 				D6AF62EB2B13A7D20056C973 /* AppManager.swift */,
 				D67557DA2B4E1D8900F4036E /* My Orders.entitlements */,
 				D66A36E62B26F0DE00A921CF /* My-Orders-Info.plist */,
+				D6FC99662CF7F9A10077C62E /* GoogleService-Info.plist */,
 				D6E3BDA42CEF42A80008E6C5 /* General */,
 				D6E3BDA22CEF41680008E6C5 /* BusinessSide */,
 				D6E3BDA12CEF41590008E6C5 /* ClientSide */,
@@ -660,6 +663,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6F6A3382AC593FA002ECA81 /* Preview Assets.xcassets in Resources */,
+				D6FC99672CF7F9A10077C62E /* GoogleService-Info.plist in Resources */,
 				D6F6A3352AC593FA002ECA81 /* Assets.xcassets in Resources */,
 				D6AF630A2B1972620056C973 /* Localizable.xcstrings in Resources */,
 			);
