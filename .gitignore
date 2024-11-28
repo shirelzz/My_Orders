@@ -1,10 +1,14 @@
 # Ignore plist files
 *.plist
 
-# Ignore Xcode user data
-*.xcuserdata
-
 # Ignore build directories
 build/s
 
+# macOS system files
+.DS_Store
+
+# Xcode user-specific files
+*.xcuserstate
+*.xcuserdata
 *.xcodeproj
+
