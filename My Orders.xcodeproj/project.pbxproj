@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D614BEEE2C21DDE2003F9961 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D614BEED2C21DDE2003F9961 /* GoogleService-Info.plist */; };
 		D64DD7502B1B8C910066BB7E /* Whatsapp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DD74F2B1B8C910066BB7E /* Whatsapp.swift */; };
 		D64DD75B2B2273470066BB7E /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DD75A2B2273470066BB7E /* DashboardView.swift */; };
 		D64DD75E2B22743D0066BB7E /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = D64DD75D2B22743D0066BB7E /* SwiftUICharts */; };
@@ -131,7 +130,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D614BEED2C21DDE2003F9961 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D64DD74F2B1B8C910066BB7E /* Whatsapp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Whatsapp.swift; sourceTree = "<group>"; };
 		D64DD75A2B2273470066BB7E /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		D657A2812B516CF60009FCD6 /* ShoppingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingList.swift; sourceTree = "<group>"; };
@@ -310,19 +308,6 @@
 			path = User;
 			sourceTree = "<group>";
 		};
-		D68CEA2F2B54065C006D4933 /* Customer */ = {
-			isa = PBXGroup;
-			children = (
-				D68CEA272B53047F006D4933 /* CustomerContentView.swift */,
-				D6F435552BDBD54A0038938F /* AddBusPopUp.swift */,
-				D6E7D2D12B62AE8C0027DF29 /* SeeBusinessDetails.swift */,
-				D6E7D2D52B63312B0027DF29 /* Customer.swift */,
-				D6E7D2D72B6332C80027DF29 /* AddBusinessView.swift */,
-				D6E7D2D92B63D2A00027DF29 /* BusinessRowView.swift */,
-			);
-			path = Customer;
-			sourceTree = "<group>";
-		};
 		D69E2A712B611077004F0D5C /* MainViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -422,6 +407,49 @@
 			path = "My OrdersTests";
 			sourceTree = "<group>";
 		};
+		D6E3BDA12CEF41590008E6C5 /* ClientSide */ = {
+			isa = PBXGroup;
+			children = (
+				D6E3BDA32CEF41EE0008E6C5 /* Database */,
+				D68CEA272B53047F006D4933 /* CustomerContentView.swift */,
+				D6E7D2D52B63312B0027DF29 /* Customer.swift */,
+				D6E7D2D72B6332C80027DF29 /* AddBusinessView.swift */,
+				D6E7D2D92B63D2A00027DF29 /* BusinessRowView.swift */,
+				D6E7D2D12B62AE8C0027DF29 /* SeeBusinessDetails.swift */,
+				D6F435552BDBD54A0038938F /* AddBusPopUp.swift */,
+			);
+			path = ClientSide;
+			sourceTree = "<group>";
+		};
+		D6E3BDA22CEF41680008E6C5 /* BusinessSide */ = {
+			isa = PBXGroup;
+			children = (
+				D6AF62DE2B1362EA0056C973 /* Settings */,
+				D6AF62CE2B12BC9F0056C973 /* Inventory */,
+				D64DD7572B2270920066BB7E /* Review */,
+				D6AF62DC2B12F5E80056C973 /* Orders */,
+			);
+			path = BusinessSide;
+			sourceTree = "<group>";
+		};
+		D6E3BDA32CEF41EE0008E6C5 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				D6F435652BDBDB200038938F /* CustomerDatabaseManager.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		D6E3BDA42CEF42A80008E6C5 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				D68CEA2E2B54063E006D4933 /* User */,
+				D69E2A712B611077004F0D5C /* MainViews */,
+				D6AF62DD2B12F6220056C973 /* Utils */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
 		D6F435672BDBE7650038938F /* WorkingHours */ = {
 			isa = PBXGroup;
 			children = (
@@ -461,22 +489,16 @@
 		D6F6A32F2AC593F8002ECA81 /* My Orders */ = {
 			isa = PBXGroup;
 			children = (
-				D6F435672BDBE7650038938F /* WorkingHours */,
-				D67557DA2B4E1D8900F4036E /* My Orders.entitlements */,
-				D66A36E62B26F0DE00A921CF /* My-Orders-Info.plist */,
-				D614BEED2C21DDE2003F9961 /* GoogleService-Info.plist */,
 				D6F6A3302AC593F8002ECA81 /* MyOrdersApp.swift */,
 				D6E7D2DB2B6A556C0027DF29 /* AppDelegate.swift */,
 				D6AF62EB2B13A7D20056C973 /* AppManager.swift */,
-				D69E2A712B611077004F0D5C /* MainViews */,
-				D68CEA2F2B54065C006D4933 /* Customer */,
-				D68CEA2E2B54063E006D4933 /* User */,
+				D67557DA2B4E1D8900F4036E /* My Orders.entitlements */,
+				D66A36E62B26F0DE00A921CF /* My-Orders-Info.plist */,
+				D6E3BDA42CEF42A80008E6C5 /* General */,
+				D6E3BDA22CEF41680008E6C5 /* BusinessSide */,
+				D6E3BDA12CEF41590008E6C5 /* ClientSide */,
+				D6F435672BDBE7650038938F /* WorkingHours */,
 				D6F8CA6A2B31B94A0031A7A2 /* Database */,
-				D64DD7572B2270920066BB7E /* Review */,
-				D6AF62DC2B12F5E80056C973 /* Orders */,
-				D6AF62CE2B12BC9F0056C973 /* Inventory */,
-				D6AF62DE2B1362EA0056C973 /* Settings */,
-				D6AF62DD2B12F6220056C973 /* Utils */,
 				D6F6A3342AC593FA002ECA81 /* Assets.xcassets */,
 				D6F6A3362AC593FA002ECA81 /* Preview Content */,
 				D6AF63092B1972620056C973 /* Localizable.xcstrings */,
@@ -519,7 +541,6 @@
 				D6F4355F2BDBDAB70038938F /* VendorDatabaseManager.swift */,
 				D6F435612BDBDAD50038938F /* NotificationsDatabaseManager.swift */,
 				D6F435632BDBDAF10038938F /* UserDatabaseManager.swift */,
-				D6F435652BDBDB200038938F /* CustomerDatabaseManager.swift */,
 				D6F435732BDBEE030038938F /* CurrencyDatabaseManager.swift */,
 				D6F435792BE4FDD40038938F /* TagsDatabaseManager.swift */,
 			);
@@ -641,7 +662,6 @@
 				D6F6A3382AC593FA002ECA81 /* Preview Assets.xcassets in Resources */,
 				D6F6A3352AC593FA002ECA81 /* Assets.xcassets in Resources */,
 				D6AF630A2B1972620056C973 /* Localizable.xcstrings in Resources */,
-				D614BEEE2C21DDE2003F9961 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
