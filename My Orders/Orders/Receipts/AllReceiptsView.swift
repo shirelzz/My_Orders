@@ -155,7 +155,3 @@ struct AllReceiptsView: View {
         orderManager.fetchReceipts()
     }
 }
-
-#Preview {
-    AllReceiptsView(orderManager: OrderManager.shared)
-}

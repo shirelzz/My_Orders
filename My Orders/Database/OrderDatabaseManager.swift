@@ -52,29 +52,26 @@ class OrderDatabaseManager: DatabaseManager {
                 )
                 
                 let orderDate = self.convertStringToDateAndTime(orderDateStr)
-//                print("order date str: \(orderDateStr)")
-//                print("order date: \(orderDate)")
-
 
                 var orderItems = [OrderItem]()
                 for orderItemData in orderItemsData {
-                         guard let orderItemDict = orderItemData as? [String: Any],
-                               let inventoryItemDict = orderItemDict["inventoryItem"] as? [String: Any],
-                               
-                               let quantity = orderItemDict["quantity"] as? Int,
-                               let price = orderItemDict["price"] as? Double,
-                               
-                                let itemID = inventoryItemDict["itemID"] as? String,
-                                let name = inventoryItemDict["name"] as? String,
-                                let itemPrice = inventoryItemDict["itemPrice"] as? Double,
-                                let itemQuantity = inventoryItemDict["itemQuantity"] as? Int,
-                                let size = inventoryItemDict["size"] as? String,
-                                let additionDateStr = inventoryItemDict["AdditionDate"] as? String,
-                                let itemNotes = inventoryItemDict["itemNotes"] as? String
-                         else {
-                             print("Failed to parse orderItemData")
-                             continue
-                         }
+                    guard let inventoryItemDict = orderItemData["inventoryItem"] as? [String: Any],
+                          
+                          let quantity = orderItemData["quantity"] as? Int,
+                          let price = orderItemData["price"] as? Double,
+                          
+                          let itemID = inventoryItemDict["itemID"] as? String,
+                          let name = inventoryItemDict["name"] as? String,
+                          let itemPrice = inventoryItemDict["itemPrice"] as? Double,
+                          let itemQuantity = inventoryItemDict["itemQuantity"] as? Int,
+                          let size = inventoryItemDict["size"] as? String,
+                          let additionDateStr = inventoryItemDict["AdditionDate"] as? String,
+                          let itemNotes = inventoryItemDict["itemNotes"] as? String
+                    else {
+                        print("Failed to parse orderItemData")
+                        continue
+                    }
+
                                              
                     let additionDate = self.convertStringToDate(additionDateStr)
 

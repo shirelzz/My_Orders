@@ -13,7 +13,7 @@ struct CustomSection<Content: View>: View {
     var content: Content
 
     init(header: String, headerColor: Color, @ViewBuilder content: () -> Content) {
-        self.header = NSLocalizedString(header, comment: "")
+        self.header = header
         self.headerColor = headerColor
         self.content = content()
     }

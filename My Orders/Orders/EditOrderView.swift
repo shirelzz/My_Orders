@@ -81,7 +81,7 @@ struct EditOrderView: View {
                 Section(header: Text("Order Details")) {
                     //                            List {
                     ForEach(0..<editedOrder.orderItems.count, id: \.self) { index in
-                        OrderItemEditRow(orderItem: $editedOrder.orderItems[index])
+                        DessertEditRow(orderItem: $editedOrder.orderItems[index])
                     }
                     .onDelete { indices in
                         deleteOrderItems(at: indices)
@@ -212,7 +212,6 @@ struct EditOrderView: View {
                 Section(header: Text("Additional Details")) {
                     
                     Toggle("Delivery", isOn: $isDelivering)
-                        .toggleStyle(SwitchToggleStyle(tint: Color.accentColor))
                         .onChange(of: isDelivering) { newValue in
                              if !isDelivering {
                                 deliveryAddress = ""
@@ -241,6 +240,7 @@ struct EditOrderView: View {
                      }
                     
                     TextField("Allergies", text: $editedOrder.allergies)
+                    TextField("Delivery", text: $editedOrder.delivery.address)
                     TextField("Notes", text: $editedOrder.notes)
                 }
                 
@@ -462,33 +462,29 @@ struct EditOrderView: View {
     
 }
 
-struct OrderItemEditRow: View {
+struct DessertEditRow: View {
     
     @Binding var orderItem: OrderItem
     
     var body: some View {
-        VStack(alignment: .leading) {
+        HStack(alignment: .center) {
             Text(orderItem.inventoryItem.name)
-                        
+            
+            Spacer()
+            
             HStack {
                 Text("Q:")
-                
-                Spacer()
-
                 TextField("Enter Quantity", value: $orderItem.quantity, formatter: NumberFormatter())
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: 60)
+//                    .frame(width: 40)
                     .background(Color.clear)
             }
             
             HStack {
                 Text("Price:")
-                
-                Spacer()
-                
                 TextField("Enter Price", value: $orderItem.price, formatter: NumberFormatter())
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: 60)
+//                    .frame(width: 40)
                     .background(Color.clear)
             }
         }
@@ -496,6 +492,6 @@ struct OrderItemEditRow: View {
     }
 }
 
-#Preview {
-    AllOrdersView(orderManager: OrderManager.shared, inventoryManager: InventoryManager.shared)
-}
+//#Preview {
+//    EditOrderView(orderManager: OrderManager., order: <#Binding<Order>#>, editedOrder: <#Order#>)
+//}

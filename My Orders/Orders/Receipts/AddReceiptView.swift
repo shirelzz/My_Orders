@@ -291,11 +291,9 @@ struct AddReceiptView: View {
                     Button(action: {
                         createOrder()
                         createReceipt()
+                        print(receipt)
                         pdfData = ReceiptUtils.drawPreviewPDF(for: order)
-                        
-                        if pdfData != nil {
-                            showingPDFPreview = true
-                        }
+                        showingPDFPreview = true
                     }) {
                         HStack {
                             Text("See receipt preview")

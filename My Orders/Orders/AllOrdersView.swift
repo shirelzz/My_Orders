@@ -27,22 +27,20 @@ struct AllOrdersView: View {
     }
     
     var filteredOrders: [Order] {
-        orderManager.getOrders()
-            .filter { order in
-                let nameMatches = searchText.isEmpty || order.customer.name.localizedCaseInsensitiveContains(searchText)
-                
-                switch filterType {
-                case .paid:
-                    return nameMatches && order.isPaid
-                case .notPaid:
-                    return nameMatches && !order.isPaid
-                case .delivered:
-                    return nameMatches && order.isDelivered
-                case .all:
-                    return nameMatches
-                }
+        orderManager.getOrders().filter { order in
+            let nameMatches = searchText.isEmpty || order.customer.name.localizedCaseInsensitiveContains(searchText)
+            
+            switch filterType {
+            case .paid:
+                return nameMatches && order.isPaid
+            case .notPaid:
+                return nameMatches && !order.isPaid
+            case .delivered:
+                return nameMatches && order.isDelivered
+            case .all:
+                return nameMatches
             }
-            .sorted { $0.orderDate > $1.orderDate }
+        }
     }
     
     
